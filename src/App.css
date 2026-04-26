@@ -5,9 +5,9 @@
 
 :root {
   /* Paper palette (default light surfaces) */
-  --paper:        #f3e8db;
-  --paper-deep:   #ebdcc8;
-  --paper-edge:   #e2d2bd;
+  --paper:        #ffffff;
+  --paper-deep:   #f6f1ea;
+  --paper-edge:   #eadbc7;
 
   /* Ink */
   --ink:          #14110d;
@@ -25,10 +25,10 @@
   --night-mute:   rgba(255, 255, 255, 0.62);
 
   /* Accents */
-  --amber:        #c9651b;
-  --amber-deep:   #a14e10;
-  --signal:       #6cf2c0;     /* live indicators / AI accents */
-  --signal-deep:  #3acc97;
+  --amber:        #b18147;
+  --amber-deep:   #8f6634;
+  --signal:       #b18147;     /* live indicators / AI accents */
+  --signal-deep:  #8f6634;
 
   /* Type — Latin display first, then Han serif fallback */
   --font-display: "Fraunces", "Noto Serif TC", "Source Han Serif TC", "Songti TC", "PingFang TC", Georgia, serif;
@@ -471,6 +471,76 @@ ul, ol  { margin: 0; }
 .navbar-toggler.open .bars span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
 .navbar-toggler.open .bars span:nth-child(2) { opacity: 0; }
 .navbar-toggler.open .bars span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
+.header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-switch {
+  position: relative;
+  z-index: 60;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  min-width: 116px;
+  height: 44px;
+  padding: 4px;
+  border: 1px solid var(--ink-line);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.language-switch .language-track {
+  position: absolute;
+  inset: 4px;
+  background: rgba(20, 17, 13, 0.04);
+}
+
+.language-switch .language-option {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color var(--t-base) var(--ease-soft);
+}
+
+.language-switch .language-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  background: var(--amber);
+  box-shadow: inset 0 0 0 1px rgba(20, 17, 13, 0.08);
+  transition: transform var(--t-slow) var(--ease-soft), background var(--t-quick) var(--ease-soft);
+}
+
+.language-switch.is-en .language-thumb {
+  transform: translateX(100%);
+}
+
+.language-switch.is-zh .language-option.zh,
+.language-switch.is-en .language-option.en {
+  color: #ffffff;
+}
+
+.language-switch.is-zh .language-option.en,
+.language-switch.is-en .language-option.zh {
+  color: var(--ink-mute);
+}
+
+.language-switch:hover .language-thumb {
+  background: var(--amber-deep);
+}
 
 /* ============================================================
    DRAWER — editorial site index, slide-in from right
@@ -1929,6 +1999,11 @@ ul, ol  { margin: 0; }
     gap: 12px;
     padding: 0 20px;
     height: 64px;
+  }
+  .header-actions { gap: 8px; }
+  .language-switch {
+    min-width: 98px;
+    height: 40px;
   }
   .status-bar { display: none; }
   .brand-mark .ident { display: none; }

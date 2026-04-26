@@ -1,5 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
 
+const localeCopy = {
+  zh: {
+    languageName: "中文",
+    languageAlt: "EN",
+    menuOpen: "關閉",
+    menuClosed: "選單",
+    maintenanceTitle: "網站維護中",
+    maintenancePhone: "+886 2 2431 5362",
+    maintenanceToggle: "返回完整頁面",
+    maintenancePreview: "預覽維護畫面",
+  },
+  en: {
+    languageName: "EN",
+    languageAlt: "中文",
+    menuOpen: "Close",
+    menuClosed: "Menu",
+    maintenanceTitle: "Maintenance",
+    maintenancePhone: "+886 2 2431 5362",
+    maintenanceToggle: "Back to full site",
+    maintenancePreview: "Preview maintenance",
+  },
+};
+
 /* ============================================================
    Data
    ============================================================ */
@@ -222,8 +245,25 @@ const heroConsole = [
    Components
    ============================================================ */
 
-function Header({ onToggleMenu, menuOpen }) {
+function LanguageSwitch({ locale, onToggle }) {
+  return (
+    <button
+      className={`language-switch ${locale === "en" ? "is-en" : "is-zh"}`}
+      type="button"
+      aria-label="Switch language"
+      onClick={onToggle}
+    >
+      <span className="language-track" aria-hidden="true" />
+      <span className="language-option zh">中文</span>
+      <span className="language-option en">EN</span>
+      <span className="language-thumb" aria-hidden="true" />
+    </button>
+  );
+}
+
+function Header({ onToggleMenu, menuOpen, locale, onToggleLocale }) {
   const [stamp, setStamp] = useState("");
+  const copy = localeCopy[locale];
   useEffect(() => {
     const tick = () => {
       const d = new Date();
@@ -260,18 +300,21 @@ function Header({ onToggleMenu, menuOpen }) {
         <span>{stamp}</span>
       </div>
 
-      <button
-        className={`navbar-toggler ${menuOpen ? "open" : ""}`}
-        type="button"
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
-        aria-expanded={menuOpen}
-        onClick={onToggleMenu}
-      >
-        <span>{menuOpen ? "Close" : "Index"}</span>
-        <span className="bars" aria-hidden="true">
-          <span /><span /><span />
-        </span>
-      </button>
+      <div className="header-actions">
+        <LanguageSwitch locale={locale} onToggle={onToggleLocale} />
+        <button
+          className={`navbar-toggler ${menuOpen ? "open" : ""}`}
+          type="button"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={menuOpen}
+          onClick={onToggleMenu}
+        >
+          <span>{menuOpen ? copy.menuOpen : copy.menuClosed}</span>
+          <span className="bars" aria-hidden="true">
+            <span /><span /><span />
+          </span>
+        </button>
+      </div>
     </header>
   );
 }
@@ -867,14 +910,15 @@ function Footer() {
   );
 }
 
-function ConstructionScreen() {
+function ConstructionScreen({ locale }) {
+  const copy = localeCopy[locale];
   return (
     <main className="construction-screen" aria-labelledby="construction-title">
       <div className="construction-shell">
         <p className="construction-kicker">ESTIGINTO</p>
-        <h1 id="construction-title">網站維護中</h1>
+        <h1 id="construction-title">{copy.maintenanceTitle}</h1>
         <div className="construction-meta">
-          <span>+886 2 2431 5362</span>
+          <span>{copy.maintenancePhone}</span>
           <span>contact@estiginto.com</span>
         </div>
       </div>
@@ -889,6 +933,13 @@ function ConstructionScreen() {
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showConstructionPreview, setShowConstructionPreview] = useState(false);
+  const [locale, setLocale] = useState(() => {
+    if (typeof window === "undefined") {
+      return "zh";
+    }
+
+    return window.localStorage.getItem("estiginto-locale") === "en" ? "en" : "zh";
+  });
   const isLocalPreview = useMemo(() => {
     if (typeof window === "undefined") {
       return false;
@@ -909,6 +960,11 @@ export default function App() {
       document.body.style.overflow = "";
     }
   }, [isLocalPreview]);
+
+  useEffect(() => {
+    document.documentElement.lang = locale === "en" ? "en" : "zh-Hant";
+    window.localStorage.setItem("estiginto-locale", locale);
+  }, [locale]);
 
   // Reveal on scroll
   useEffect(() => {
@@ -950,14 +1006,14 @@ export default function App() {
   if (!isLocalPreview || showConstructionPreview) {
     return (
       <>
-        <ConstructionScreen />
+        <ConstructionScreen locale={locale} />
         {isLocalPreview ? (
           <button
             className="preview-toggle"
             type="button"
             onClick={() => setShowConstructionPreview(false)}
           >
-            返回完整頁面
+            {localeCopy[locale].maintenanceToggle}
           </button>
         ) : null}
       </>
@@ -971,9 +1027,14 @@ export default function App() {
         type="button"
         onClick={() => setShowConstructionPreview(true)}
       >
-        預覽建置中畫面
+        {localeCopy[locale].maintenancePreview}
       </button>
-      <Header onToggleMenu={() => setMenuOpen((v) => !v)} menuOpen={menuOpen} />
+      <Header
+        onToggleMenu={() => setMenuOpen((v) => !v)}
+        menuOpen={menuOpen}
+        locale={locale}
+        onToggleLocale={() => setLocale((prev) => (prev === "zh" ? "en" : "zh"))}
+      />
       <Drawer open={menuOpen} onClose={() => setMenuOpen(false)} />
       <main className="page-main" id="mainpage">
         <Hero />
