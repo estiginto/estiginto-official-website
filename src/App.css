@@ -59,6 +59,29 @@ em {
   font-synthesis-style: none;
 }
 
+/* CJK headline typography — never break inside a Han word, balance lines */
+h1, h2, h3, h4,
+.hero-title,
+.manifesto-quote,
+.ai-headline h2,
+.sol-row .body h3,
+.case-body h3,
+.faq-q,
+.process-step h4,
+.contact h2,
+.section-eyebrow > span:last-child {
+  word-break: keep-all;
+  line-break: strict;
+  overflow-wrap: break-word;
+}
+.hero-title,
+.ai-headline h2,
+.case-body h3,
+.contact h2,
+.process-step h4 {
+  text-wrap: balance;
+}
+
 /* .hl — for CJK highlights, no fake oblique. Use instead of <em> for Chinese. */
 .hl {
   font-style: normal;
@@ -258,70 +281,192 @@ ul, ol  { margin: 0; }
 .drawer-panel {
   position: absolute;
   inset: 0 0 0 auto;
-  width: min(560px, 100vw);
-  background: var(--paper-deep);
-  padding: 110px var(--rail) 56px;
+  width: min(640px, 100vw);
+  background: var(--paper);
+  padding: 0;
   transform: translateX(100%);
-  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
   overflow-y: auto;
   border-left: 1px solid var(--ink-line);
+  display: flex;
+  flex-direction: column;
+  box-shadow: -32px 0 64px -32px rgba(20, 17, 13, 0.18);
 }
 .drawer.open .drawer-panel { transform: translateX(0); }
-.drawer .nav-meta {
+
+.drawer-head {
+  padding: clamp(76px, 7vw, 104px) clamp(28px, 4.5vw, 52px) 28px;
+  border-bottom: 1px solid var(--ink-line);
+  background:
+    linear-gradient(180deg, var(--paper-deep) 0%, var(--paper) 100%);
+}
+.drawer-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   font-family: var(--font-mono);
   font-size: 0.66rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-mute);
-  margin-bottom: 36px;
+  margin-bottom: 22px;
+  font-variant-numeric: tabular-nums;
+}
+.drawer-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.6rem, 5.4vw, 4.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.028em;
+  color: var(--ink);
+}
+.drawer-title em {
+  font-style: italic;
+  color: var(--amber);
+  font-weight: 400;
+}
+
+.drawer-nav {
+  flex: 1 0 auto;
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  flex-direction: column;
 }
-.drawer ul { list-style: none; padding: 0; display: grid; gap: 8px; }
-.drawer ul li {
+.drawer-link {
   display: grid;
-  grid-template-columns: 56px 1fr;
-  align-items: baseline;
+  grid-template-columns: 44px 1fr 28px;
+  gap: 18px;
+  align-items: center;
+  padding: 18px clamp(28px, 4.5vw, 52px);
   border-bottom: 1px solid var(--ink-line);
-  padding: 14px 0 10px;
+  position: relative;
+  isolation: isolate;
+  color: var(--ink);
+  transition: color 200ms ease, padding-left 280ms ease;
 }
-.drawer ul li .num {
+.drawer-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--paper-deep);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.drawer-link:hover::before,
+.drawer-link:focus-visible::before { transform: scaleX(1); }
+.drawer-link:hover,
+.drawer-link:focus-visible {
+  padding-left: clamp(36px, 5.2vw, 64px);
+}
+
+.drawer-link .num {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
   color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+  align-self: center;
+  transition: color 220ms ease;
 }
-.drawer ul li a {
+.drawer-link:hover .num,
+.drawer-link:focus-visible .num { color: var(--amber); }
+
+.drawer-link .text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.drawer-link .main {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2rem, 5.6vw, 3.4rem);
-  line-height: 1.04;
-  letter-spacing: -0.01em;
-  transition: color 160ms ease, transform 220ms ease;
-  display: inline-block;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1.05;
+  letter-spacing: -0.018em;
+  color: var(--ink);
 }
-.drawer ul li a:hover { color: var(--amber); transform: translateX(6px); }
-.drawer ul li a em {
-  font-style: italic;
-  font-family: var(--font-display);
+.drawer-link .sub {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 2px;
+}
+.drawer-link .sub .zh {
+  font-family: var(--font-body);
+  font-size: 0.84rem;
   color: var(--ink-mute);
-  margin-left: 8px;
-  font-size: 0.5em;
-  vertical-align: super;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.02em;
 }
-.drawer-footer {
-  margin-top: 56px;
-  padding-top: 28px;
+.drawer-link .sub .desc {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.drawer-link .arrow {
+  position: relative;
+  width: 22px;
+  height: 1px;
+  background: var(--ink-line);
+  align-self: center;
+  justify-self: end;
+  transition: width 220ms ease, background 220ms ease, transform 220ms ease;
+}
+.drawer-link .arrow::after {
+  content: "";
+  position: absolute;
+  right: 0; top: -3px;
+  width: 6px; height: 6px;
+  border-top: 1px solid var(--ink-line);
+  border-right: 1px solid var(--ink-line);
+  transform: rotate(45deg);
+  transition: border-color 220ms ease;
+}
+.drawer-link:hover .arrow,
+.drawer-link:focus-visible .arrow {
+  width: 36px;
+  background: var(--amber);
+  transform: translateX(4px);
+}
+.drawer-link:hover .arrow::after,
+.drawer-link:focus-visible .arrow::after {
+  border-color: var(--amber);
+}
+
+.drawer-foot {
+  padding: 32px clamp(28px, 4.5vw, 52px);
   border-top: 1px solid var(--ink-line);
   display: grid;
-  gap: 16px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--ink-mute);
-  letter-spacing: 0.06em;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  background: var(--paper-deep);
 }
-.drawer-footer b { color: var(--ink); font-weight: 600; }
+.drawer-foot h6 {
+  margin: 0 0 10px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  font-weight: 600;
+}
+.drawer-foot a,
+.drawer-foot span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: var(--ink);
+  padding: 2px 0;
+  transition: color 160ms ease;
+}
+.drawer-foot a:hover { color: var(--amber); }
+.drawer-foot span { color: var(--ink-soft); }
+.drawer-foot > div:last-child { text-align: right; }
 
 /* ============================================================
    SECTION SCAFFOLDING
@@ -745,6 +890,61 @@ ul, ol  { margin: 0; }
   line-height: 1.04;
   letter-spacing: -0.022em;
   color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  word-break: keep-all;
+  line-break: strict;
+  margin: 0;
+}
+.manifesto-quote .mq-line {
+  display: block;
+  text-wrap: balance;
+}
+.manifesto-quote .mq-prelude {
+  font-size: 0.42em;
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--ink-soft);
+  letter-spacing: 0;
+  line-height: 1.45;
+  margin-bottom: 0.55em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+}
+.manifesto-quote .mq-prelude::before {
+  content: "01 /";
+  font-family: var(--font-mono);
+  font-size: 0.74em;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--amber);
+  align-self: center;
+}
+.manifesto-quote .mq-headline {
+  font-size: 1em;
+  font-weight: 300;
+  letter-spacing: -0.028em;
+  line-height: 1;
+}
+.manifesto-quote .mq-coda {
+  font-size: 0.52em;
+  font-weight: 400;
+  color: var(--ink);
+  letter-spacing: -0.008em;
+  padding-left: clamp(24px, 9vw, 110px);
+  margin-top: 0.7em;
+  line-height: 1.45;
+  position: relative;
+}
+.manifesto-quote .mq-coda::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: clamp(16px, 6vw, 72px);
+  height: 1px;
+  background: var(--amber);
 }
 .manifesto-quote em {
   font-style: italic;
@@ -754,7 +954,7 @@ ul, ol  { margin: 0; }
 .manifesto-quote .underline {
   text-decoration: underline;
   text-decoration-thickness: 1px;
-  text-underline-offset: 8px;
+  text-underline-offset: 0.16em;
   text-decoration-color: var(--ink-faint);
 }
 .manifesto-aside p {
@@ -1605,9 +1805,17 @@ ul, ol  { margin: 0; }
   .number-cell .desc { display: none; }
   .number-cell .val { font-size: clamp(2.4rem, 11vw, 3.4rem); }
 
-  .drawer-panel { padding: 90px 24px 40px; }
-  .drawer ul li { grid-template-columns: 36px 1fr; }
-  .drawer ul li a { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+  .drawer-panel { width: 100vw; }
+  .drawer-head { padding: 70px 22px 22px; }
+  .drawer-meta { font-size: 0.6rem; margin-bottom: 16px; }
+  .drawer-title { font-size: clamp(2.2rem, 9vw, 3rem); }
+  .drawer-link { padding: 16px 22px; gap: 14px; grid-template-columns: 36px 1fr 22px; }
+  .drawer-link:hover,
+  .drawer-link:focus-visible { padding-left: 30px; }
+  .drawer-link .main { font-size: clamp(1.3rem, 5.5vw, 1.7rem); }
+  .drawer-link .sub .desc { display: none; }
+  .drawer-foot { padding: 24px 22px; gap: 16px; grid-template-columns: 1fr; }
+  .drawer-foot > div:last-child { text-align: left; }
 
   .section { padding: clamp(72px, 14vw, 96px) 0; }
   .section-eyebrow { gap: 12px; font-size: 0.66rem; }

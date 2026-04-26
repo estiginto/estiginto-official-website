@@ -5,14 +5,14 @@ import { useEffect, useMemo, useState } from "react";
    ============================================================ */
 
 const navItems = [
-  { href: "#home",         label: "首頁 / Home",         eyebrow: "00" },
-  { href: "#solutions",    label: "解決方案 / Solutions", eyebrow: "01" },
-  { href: "#about",        label: "工坊主張 / Studio",   eyebrow: "02" },
-  { href: "#ai-lab",       label: "AI Lab",              eyebrow: "03" },
-  { href: "#case",         label: "案例 / Case",         eyebrow: "04" },
-  { href: "#process",      label: "規劃流程 / Process",  eyebrow: "05" },
-  { href: "#stack",        label: "技術棧 / Stack",      eyebrow: "06" },
-  { href: "#contact",      label: "聯絡 / Contact",      eyebrow: "07" },
+  { href: "#home",      num: "00", main: "Home",       sub: "首頁",     desc: "Live status" },
+  { href: "#solutions", num: "01", main: "Solutions",  sub: "解決方案", desc: "6 programs" },
+  { href: "#about",     num: "02", main: "Studio",     sub: "工坊主張", desc: "Manifesto" },
+  { href: "#ai-lab",    num: "03", main: "AI Lab",     sub: "AI 整合",  desc: "12 agents in production" },
+  { href: "#case",      num: "04", main: "Case",       sub: "精選案例", desc: "Anonymized · K/2025" },
+  { href: "#process",   num: "05", main: "Process",    sub: "規劃流程", desc: "6 phases" },
+  { href: "#stack",     num: "06", main: "Stack",      sub: "技術棧",   desc: "FE · BE · AI · Ops" },
+  { href: "#contact",   num: "07", main: "Contact",    sub: "聯絡我們", desc: "Within 1 business day" },
 ];
 
 const marqueeItems = [
@@ -281,23 +281,44 @@ function Drawer({ open, onClose }) {
     <div className={`drawer ${open ? "open" : ""}`} aria-hidden={!open}>
       <button className="drawer-scrim" type="button" aria-label="Close menu" onClick={onClose} />
       <aside className="drawer-panel">
-        <div className="nav-meta">
-          <span>Index / 目次</span>
-          <span>08 / sections</span>
-        </div>
-        <ul>
+        <header className="drawer-head">
+          <div className="drawer-meta">
+            <span>Index · 目次</span>
+            <span>{navItems.length} sections · v.2026.04</span>
+          </div>
+          <h2 className="drawer-title">
+            Site<br /><em>Index</em>.
+          </h2>
+        </header>
+
+        <nav className="drawer-nav">
           {navItems.map((item) => (
-            <li key={item.href}>
-              <span className="num">{item.eyebrow}</span>
-              <a href={item.href} onClick={onClose}>{item.label}</a>
-            </li>
+            <a className="drawer-link" href={item.href} key={item.href} onClick={onClose}>
+              <span className="num">{item.num}</span>
+              <span className="text">
+                <span className="main">{item.main}</span>
+                <span className="sub">
+                  <span className="zh">{item.sub}</span>
+                  <span className="desc">{item.desc}</span>
+                </span>
+              </span>
+              <span className="arrow" aria-hidden="true" />
+            </a>
           ))}
-        </ul>
-        <div className="drawer-footer">
-          <span><b>contact@estiginto.com</b></span>
-          <span>+886 2 2431 5362</span>
-          <span>週二至週五 · 10:00 – 18:00 (GMT+8)</span>
-        </div>
+        </nav>
+
+        <footer className="drawer-foot">
+          <div>
+            <h6>Reach</h6>
+            <a href="mailto:contact@estiginto.com">contact@estiginto.com</a>
+            <a href="tel:+886224315362">+886 2 2431 5362</a>
+          </div>
+          <div>
+            <h6>Hours</h6>
+            <span>Mon – Fri · 10:00 – 18:00</span>
+            <span>GMT+8 · Taipei</span>
+          </div>
+        </footer>
       </aside>
     </div>
   );
@@ -439,9 +460,15 @@ function Manifesto() {
         />
         <div className="manifesto">
           <h2 className="manifesto-quote">
-            我們<span className="hl">不寫</span>程式。<br />
-            我們造<span className="underline">能撐十年</span>的系統，<br />
-            並且，把 <em>AI</em> 變成可以營運的資產。
+            <span className="mq-line mq-prelude">
+              我們<span className="hl">不寫</span>程式。
+            </span>
+            <span className="mq-line mq-headline">
+              我們造能<span className="hl underline">撐十年</span>的系統。
+            </span>
+            <span className="mq-line mq-coda">
+              並且，把 <em>AI</em> 變成可營運的資產。
+            </span>
           </h2>
           <div className="manifesto-aside">
             <p>
@@ -774,7 +801,7 @@ function Contact() {
             </div>
             <div className="contact-row">
               <span className="k">Office Hours</span>
-              <span className="v">週二至週五 · 10:00 – 18:00 (GMT+8)</span>
+              <span className="v">週一至週五 · 10:00 – 18:00 (GMT+8)</span>
             </div>
             <div className="contact-row">
               <span className="k">Locale</span>
