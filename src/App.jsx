@@ -867,12 +867,36 @@ function Footer() {
   );
 }
 
+function ConstructionScreen() {
+  return (
+    <main className="construction-screen" aria-labelledby="construction-title">
+      <div className="construction-shell">
+        <p className="construction-kicker">ESTIGINTO</p>
+        <h1 id="construction-title">網站維護中</h1>
+        <div className="construction-meta">
+          <span>+886 2 2431 5362</span>
+          <span>contact@estiginto.com</span>
+        </div>
+      </div>
+    </main>
+  );
+}
+
 /* ============================================================
    App
    ============================================================ */
 
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [showConstructionPreview, setShowConstructionPreview] = useState(false);
+  const isLocalPreview = useMemo(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    const localHosts = new Set(["localhost", "127.0.0.1", "::1"]);
+    return import.meta.env.DEV || localHosts.has(window.location.hostname);
+  }, []);
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -880,8 +904,18 @@ export default function App() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (!isLocalPreview) {
+      document.body.style.overflow = "";
+    }
+  }, [isLocalPreview]);
+
   // Reveal on scroll
   useEffect(() => {
+    if (!isLocalPreview || showConstructionPreview) {
+      return undefined;
+    }
+
     const sections = document.querySelectorAll(".reveal");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -911,10 +945,34 @@ export default function App() {
       }
     });
     return () => observer.disconnect();
-  }, []);
+  }, [isLocalPreview, showConstructionPreview]);
+
+  if (!isLocalPreview || showConstructionPreview) {
+    return (
+      <>
+        <ConstructionScreen />
+        {isLocalPreview ? (
+          <button
+            className="preview-toggle"
+            type="button"
+            onClick={() => setShowConstructionPreview(false)}
+          >
+            返回完整頁面
+          </button>
+        ) : null}
+      </>
+    );
+  }
 
   return (
     <>
+      <button
+        className="preview-toggle"
+        type="button"
+        onClick={() => setShowConstructionPreview(true)}
+      >
+        預覽建置中畫面
+      </button>
       <Header onToggleMenu={() => setMenuOpen((v) => !v)} menuOpen={menuOpen} />
       <Drawer open={menuOpen} onClose={() => setMenuOpen(false)} />
       <main className="page-main" id="mainpage">
