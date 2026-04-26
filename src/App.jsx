@@ -359,9 +359,12 @@ function Hero() {
 
           <h1 className="hero-title">
             <span className="row1">
-              {"\u8fce\u63a5\u6700\u597d\u7684"}
+              {"\u8fce\u63a5\u6709\u53f2\u4ee5\u4f86"}
             </span>
             <span className="row2">
+              {"\u6700\u597d\u7684"}
+            </span>
+            <span className="row3 accent">
               {"\u9ec3\u91d1\u6642\u4ee3"}
             </span>
           </h1>
@@ -369,7 +372,7 @@ function Hero() {
           <div className="hero-rule" aria-hidden="true" />
 
           <p className="hero-lede">
-            {"AI \u6642\u4ee3\uff0c\u8b93\u50f9\u503c\u9ad4\u73fe\u5728\u771f\u6b63\u91cd\u8981\u7684\u4e8b\u60c5\u4e0a"}
+            {"AI \u9769\u547d\uff0c\u8b93\u50f9\u503c\u805a\u7126\u5728\u771f\u6b63\u91cd\u8981\u7684\u4e8b\u7269\u4e0a"}
           </p>
 
           <div className="hero-actions">
