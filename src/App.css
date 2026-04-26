@@ -208,12 +208,18 @@ h1, h2, h3, h4,
   text-wrap: balance;
 }
 
-/* .hl — for CJK highlights, no fake oblique. Use instead of <em> for Chinese. */
+/* .hl — for CJK highlights, no fake oblique. Use instead of <em> for Chinese.
+   Stays as a single token (never breaks mid-phrase). */
 .hl {
   font-style: normal;
   font-weight: 600;
   color: var(--amber);
+  white-space: nowrap;
 }
+
+/* .nb — generic "no-break" utility. Wrap mixed phrases that must stay on one line
+   (e.g. "受理 2026 Q3 起", "200+ shipped", "v.2026.04.26 · 14:23 GMT+8"). */
+.nb { white-space: nowrap; }
 .hl.underline {
   text-decoration: underline;
   text-decoration-thickness: 1px;

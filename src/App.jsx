@@ -134,7 +134,7 @@ const aiCards = [
     span: "span-6",
     idx: "AI/02",
     tag: "RAG Knowledge",
-    titleHTML: <>讓員工不用再問 <span className="hl">「文件在哪」</span>。</>,
+    titleHTML: <>讓員工不用再問<span className="hl">「文件在哪」</span>。</>,
     body: "把產品手冊、合約範本、SOP、過往工單向量化，內接 Slack / LINE / 內部系統，回答可追溯來源、可校稿、可保密。",
     chips: ["pgvector", "LlamaIndex", "Hybrid Search", "Permission-aware"],
   },
@@ -211,11 +211,11 @@ const faqs = [
 ];
 
 const heroConsole = [
-  { k: "Status",        v: <><span className="live" /> Open for briefs · 受理 2026 Q3 起</> },
-  { k: "Pipeline",      v: <>4 lines in parallel · <span className="ghost">200+ shipped</span></> },
-  { k: "Latest deploy", v: <>v.2026.04.26 · 14:23 GMT+8</> },
-  { k: "AI Agents",     v: <>12 in production · <span className="ghost">3 staging</span></> },
-  { k: "Locale",        v: <>Taipei · TW · zh-Hant / en</> },
+  { k: "Status",        v: <><span className="live" /> <span className="nb">Open for briefs</span> · <span className="nb">受理 2026 Q3 起</span></> },
+  { k: "Pipeline",      v: <><span className="nb">4 lines in parallel</span> · <span className="ghost nb">200+ shipped</span></> },
+  { k: "Latest deploy", v: <><span className="nb">v.2026.04.26</span> · <span className="nb">14:23 GMT+8</span></> },
+  { k: "AI Agents",     v: <><span className="nb">12 in production</span> · <span className="ghost nb">3 staging</span></> },
+  { k: "Locale",        v: <><span className="nb">Taipei · TW</span> · <span className="nb">zh-Hant / en</span></> },
 ];
 
 /* ============================================================
@@ -561,7 +561,7 @@ function AILab() {
         <div className="ai-headline">
           <h2>
             不是 <span className="strike">PoC</span>。<br />
-            是會處理 <span className="hl">單據</span>、回應 <span className="hl">客戶</span>、跑 <span className="hl">帳</span> 的 AI。
+            是會處理<span className="hl">單據</span>、回應<span className="hl">客戶</span>、跑<span className="hl">帳</span>的 AI。
           </h2>
           <p className="lede">
             2024–2025 我們把實驗室裡的 LLM 帶上 production。
@@ -588,8 +588,7 @@ function AILab() {
 
         <div className="ai-callout">
           <p>
-            <b>不做的事 ☓</b>　 包賺 ROI 的承諾、把資料丟進 ChatGPT、用 AI 寫敏感邏輯後就放生、
-            把「裝個 chatbot」當作 AI 轉型。
+            <b>不做的事 ☓</b>　包賺 ROI 的承諾、把資料丟進 ChatGPT、用 AI 寫敏感邏輯後就放生、把「裝個 chatbot」當作 AI 轉型。
           </p>
           <a className="btn btn-on-night" href="#contact">
             <span>討論你的 AI 場景</span>
@@ -624,7 +623,7 @@ function CaseStudy() {
           <div className="case-body">
             <div className="tag">Cross-border DTC · Beauty · 2024–在線</div>
             <h3>
-              五個系統各自為政，<span className="hl">倉儲錯誤率 3.2%</span>。<br />
+              五個系統各自為政，<span className="hl">倉儲錯誤率 3.2%。</span><br />
               我們重做了流程，再做系統。
             </h3>
             <p className="summary">
