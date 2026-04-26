@@ -1,405 +1,632 @@
 import { useEffect, useMemo, useState } from "react";
 
+/* ============================================================
+   Data
+   ============================================================ */
+
 const navItems = [
-  { href: "#home", label: "首頁" },
-  { href: "#about-us", label: "關於我們" },
-  { href: "#portfolio", label: "解決方案" },
-  { href: "#process", label: "企劃階段" },
-  { href: "#contact-info", label: "聯絡我們" },
+  { href: "#home",         label: "首頁 / Home",         eyebrow: "00" },
+  { href: "#solutions",    label: "解決方案 / Solutions", eyebrow: "01" },
+  { href: "#about",        label: "工坊主張 / Studio",   eyebrow: "02" },
+  { href: "#ai-lab",       label: "AI Lab",              eyebrow: "03" },
+  { href: "#case",         label: "案例 / Case",         eyebrow: "04" },
+  { href: "#process",      label: "規劃流程 / Process",  eyebrow: "05" },
+  { href: "#stack",        label: "技術棧 / Stack",      eyebrow: "06" },
+  { href: "#contact",      label: "聯絡 / Contact",      eyebrow: "07" },
 ];
 
-const portfolioItems = [
+const marqueeItems = [
+  "14 yrs continuous operation",
+  "200+ shipped projects",
+  "12 AI agents in production",
+  "ISO 27001 ready",
+  "Taipei · Taiwan",
+  "API-first by default",
+  "99.9% SLA · monitored",
+  "since 2012",
+];
+
+const numbers = [
+  { idx: "N.01", val: "14",  unit: "yrs",   sup: "+", desc: "從 2012 年起，持續為客戶交付商業營運系統。" },
+  { idx: "N.02", val: "200", unit: "ships", sup: "+", desc: "已交付電商、ERP、WMS、品牌官網與客製平台。" },
+  { idx: "N.03", val: "99.9", unit: "% SLA",        desc: "近 36 個月維運專案的平均可用性。" },
+  { idx: "N.04", val: "12",  unit: "Agents", sup: "*", desc: "已上線且實際處理工單／訂單／文件的 AI 代理。" },
+];
+
+const solutions = [
   {
+    num: "01",
     eyebrow: "e-Commerce",
-    title: "電子商務方案",
+    titleHTML: <>電子商務 <em>方案</em></>,
     image: "/img/plan/man-holding-credit-card-hand-entering-security-code-using-laptop-keyboard.jpg",
-    alt: "電子商務方案示意圖",
-    body: "規劃商品結構、客服/出貨流程與金物流串接，提供順暢購物體驗並支援會員成長與行銷自動化。",
-    points: ["金流/物流/發票/ERP 串接", "會員等級/點數/優惠券/再行銷", "跨境與多語多幣"],
-    cta: "查看技術與模組",
-    href: "#service-dev",
+    label: "ESG-COM/2026",
+    body: "規劃商品結構、客服／出貨流程與金物流串接，提供順暢購物體驗與會員成長。",
+    points: [
+      "金流／物流／發票／ERP 串接",
+      "會員等級／點數／優惠券／再行銷",
+      "跨境多語多幣，CDN 邊緣加速",
+    ],
+    meta: "≥ 8 wks",
   },
   {
-    eyebrow: "Official Website",
-    title: "品牌形象方案",
+    num: "02",
+    eyebrow: "Brand Site",
+    titleHTML: <>品牌形象 <em>方案</em></>,
     image: "/img/plan/laptop-coworking-space_53876-14515.webp",
-    alt: "品牌形象網站方案示意圖",
-    body: "在有限的注意力裡先被看見，以敘事與視覺建立差異化，兼顧速度與 SEO。",
-    points: ["首頁敘事/關鍵頁腳本與版型", "RWD + Core Web Vitals 優化", "搜尋曝光與社群分享設定"],
-    cta: "看我們怎麼做設計",
-    href: "#service-design",
+    label: "ESG-BRD/2026",
+    body: "在有限的注意力裡先被看見。以敘事與視覺建立差異化，兼顧速度與 SEO。",
+    points: [
+      "首頁敘事／關鍵頁腳本與版型",
+      "RWD + Core Web Vitals 優化",
+      "搜尋曝光與社群分享設定",
+    ],
+    meta: "≥ 4 wks",
   },
   {
+    num: "03",
     eyebrow: "Enterprise Resource",
-    title: "企業資源管理方案",
+    titleHTML: <>企業資源管理 <em>方案</em></>,
     image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
-    alt: "企業資源管理方案示意圖",
+    label: "ESG-ERP/2026",
     body: "從流程盤點到系統落地，打通商務、財務、人資、製造與供應鏈資料。",
-    points: ["流程藍圖、權限/稽核制度", "報表/儀表板與 KPI 追蹤", "與既有系統雙向整合"],
-    cta: "整合服務詳情",
-    href: "#service-integration",
+    points: [
+      "流程藍圖、權限／稽核制度",
+      "報表／儀表板與 KPI 追蹤",
+      "與既有系統雙向整合",
+    ],
+    meta: "≥ 12 wks",
   },
   {
+    num: "04",
     eyebrow: "Warehouse Management",
-    title: "倉儲管理方案",
+    titleHTML: <>倉儲管理 <em>方案</em></>,
     image: "/img/plan/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.jpg",
-    alt: "倉儲管理方案示意圖",
-    body: "條碼/PDA/批號/效期/盤點/庫齡一站式導入，降錯誤、提周轉，讓庫存看得見、控得住。",
-    points: ["入出庫/調撥/庫存追蹤", "撿料策略與路徑最佳化", "與 ERP、電商、OMS 串接"],
-    cta: "導入重點與費用範圍",
-    href: "#service-dev",
+    label: "ESG-WMS/2026",
+    body: "條碼／PDA／批號／效期／盤點／庫齡一站式導入，降錯誤、提周轉。",
+    points: [
+      "入出庫／調撥／庫存追蹤",
+      "撿料策略與路徑最佳化",
+      "與 ERP、電商、OMS 串接",
+    ],
+    meta: "≥ 10 wks",
   },
   {
-    eyebrow: "Customization",
-    title: "客製化解決方案",
+    num: "05",
+    eyebrow: "AI Integration",
+    titleHTML: <>AI 整合 <em>方案</em></>,
+    image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
+    label: "ESG-AI/2026 · NEW",
+    body: "把 LLM、RAG、Document AI 接進你的營運流程，不是 PoC，是真的會跑帳的 Agent。",
+    points: [
+      "AI Agent 工單／客服／業務工作流",
+      "RAG 私有知識庫（含資料治理）",
+      "私有部署 LLM／向量資料庫",
+    ],
+    meta: "≥ 6 wks",
+    isNew: true,
+  },
+  {
+    num: "06",
+    eyebrow: "Bespoke",
+    titleHTML: <>客製化 <em>解決方案</em></>,
     image: "/img/plan/close-up-elegant-decoration-house.jpg",
-    alt: "客製化解決方案示意圖",
-    body: "平台服務、B2B 工具、APP 到資訊看板，以迭代方式，把你的構想穩定變成產品。",
-    points: ["POC/MVP 快速驗證", "資料流與雲端架構設計", "安全/權限/稽核與維運"],
-    cta: "從規劃開始",
-    href: "#process",
+    label: "ESG-CST/2026",
+    body: "平台服務、B2B 工具、APP 到資訊看板。以迭代方式，把你的構想穩定變成產品。",
+    points: [
+      "POC／MVP 快速驗證",
+      "資料流與雲端架構設計",
+      "安全／權限／稽核與維運",
+    ],
+    meta: "依範圍而定",
   },
 ];
 
-const services = [
+const aiCards = [
   {
-    id: "service-dev",
-    title: "軟體系統開發",
-    body: "網站、電商、WMS/ERP/CRM/HRM、SaaS 平台、資料儀表板。使用 React/Next.js、Node、PostgreSQL/MySQL、雲端與容器化部署。",
-    points: ["模組化設計、API First、可水平擴充", "權限/稽核/日誌與備援備份", "Core Web Vitals 與 SEO 友善"],
-    cta: "瞭解規劃與估算",
-    href: "#process",
+    span: "span-6 flagship",
+    idx: "AI/01",
+    tag: "Agent Workflow",
+    titleHTML: <>會處理單據的 <em>AI 代理</em>，不只是 chatbot。</>,
+    body: "把客服、補單、退換貨、發票勘誤、報價單核對等重複工作交給 Agent。Agent 能讀懂內部 SOP、操作 ERP 與 WMS、必要時轉接真人。",
+    chips: ["LangGraph", "Claude / GPT-4o", "Function Calling", "Audit Log"],
   },
   {
-    id: "service-design",
-    title: "視覺設計",
-    body: "品牌識別、版型系統、元件設計與設計規範。以敘事導向與可讀性，建立一致且可延展的品牌體驗。",
-    points: ["Design System / 元件庫與文件化", "RWD 響應式與無障礙 (a11y) 細節", "社群素材與開箱頁/活動頁"],
-    cta: "看看案例方向",
-    href: "#portfolio",
+    span: "span-6",
+    idx: "AI/02",
+    tag: "RAG Knowledge",
+    titleHTML: <>讓員工不用再問 <em>「文件在哪」</em>。</>,
+    body: "把產品手冊、合約範本、SOP、過往工單向量化，內接 Slack / LINE / 內部系統，回答可追溯來源、可校稿、可保密。",
+    chips: ["pgvector", "LlamaIndex", "Hybrid Search", "Permission-aware"],
   },
   {
-    id: "service-integration",
-    title: "整合資訊與行銷",
-    body: "以資料流與營運流程為主軸，整合金物流、第三方服務與內部系統，讓行銷與營運能被量化、被追蹤、可持續優化。",
-    points: ["金流/物流/發票、LINE/Email 自動化", "GA4/事件追蹤/儀表板", "CRM/工單/客服/倉儲/會計 串接"],
-    cta: "討論你的整合清單",
-    href: "#contact-info",
+    span: "span-4",
+    idx: "AI/03",
+    tag: "Document AI",
+    titleHTML: <>OCR + LLM <em>智能擷取</em></>,
+    body: "發票、報價單、提單、合約批量解析，欄位寫進 ERP 即可入帳。",
+    chips: ["Vision", "Layout-aware", "Schema Validate"],
+  },
+  {
+    span: "span-4",
+    idx: "AI/04",
+    tag: "Private LLM",
+    titleHTML: <>地端／VPC <em>私有部署</em></>,
+    body: "資料不出機房。Llama / Qwen / Mistral 模型微調與量化，內部 GPU 可跑。",
+    chips: ["Ollama", "vLLM", "Fine-tune", "Quantize"],
+  },
+  {
+    span: "span-4",
+    idx: "AI/05",
+    tag: "Dev Velocity",
+    titleHTML: <>用 AI <em>加速交付</em></>,
+    body: "我們內部以 Claude Code、Codex、Cursor 為日常引擎，同樣價碼可交付更多範圍。",
+    chips: ["Claude Code", "Codex", "Spec-driven", "QA Auto"],
   },
 ];
 
 const processSteps = [
-  ["初談（30-45 分）", "釐清目標、預算範圍、時程限制與風險。"],
-  ["規劃提案", "使用情境、資料流、里程碑、估算與 UAT 驗收指標。"],
-  ["MVP/模組優先級", "先做能帶來效益的 20%，快速驗證。"],
-  ["開發與週更", "每週迭代，提供可操作版本與進度回報。"],
-  ["上線與培訓", "文件/權限/備援上線，並安排操作訓練。"],
-  ["維運與優化", "事件回應、性能安全、功能優化與報表增補。"],
+  ["01", "初談 30–45 分", "釐清商業目標、預算範圍、時程限制與風險。", "Week 0"],
+  ["02", "規劃提案",       "使用情境、資料流、里程碑、估算與 UAT 驗收指標。", "Week 1"],
+  ["03", "MVP / 模組優先級", "先做能帶來效益的 20%，快速驗證商業假設。", "Week 2–4"],
+  ["04", "開發與週更",      "每週迭代，提供可操作版本與透明的進度回報。", "Week 4–N"],
+  ["05", "上線與培訓",      "文件、權限、備援上線，安排操作訓練與資料移轉。", "Go-live"],
+  ["06", "維運與優化",      "事件回應、性能安全、功能優化與報表增補。", "持續"],
+];
+
+const techStack = [
+  {
+    title: "Frontend",
+    code: "FE",
+    chips: ["React 19", "Next.js 15", "TypeScript", "Vite", "Tailwind", "RWD", "a11y"],
+  },
+  {
+    title: "Backend",
+    code: "BE",
+    chips: ["Node.js", "Bun", "REST", "GraphQL", "PostgreSQL", "MySQL", "Redis", "Directus"],
+  },
+  {
+    title: "AI / ML",
+    code: "AI",
+    chips: ["Claude", "OpenAI", "Llama", "Ollama", "LangGraph", "LlamaIndex", "pgvector", "Whisper"],
+    signal: true,
+  },
+  {
+    title: "DevOps & Cloud",
+    code: "OPS",
+    chips: ["Docker", "Kubernetes", "GCP", "AWS", "Cloudflare", "CI/CD", "Grafana", "Sentry"],
+  },
 ];
 
 const faqs = [
-  ["Q1：預算怎麼抓？", "我們會在規劃時提供分階段估算，先落地最關鍵的 20-40%，再視成效追加，降低一次到位的風險。"],
-  ["Q2：時程怎麼排？", "以里程碑與 UAT 指標拆分，每週固定 Demo 與回報，避免後期才發現落差。"],
-  ["Q3：上線後怎麼維護？", "提供事件回應、月度例行檢查、版本升級、安全修補與備份演練等維運方案。"],
-  ["Q4：可與現有系統整合嗎？", "可。我們採 API First，支援 ERP/金流/物流/CRM/電商等常見系統雙向串接。"],
+  ["Q1", "預算怎麼抓？",
+    "我們會在規劃時提供分階段估算，先落地最關鍵的 20–40%，再視成效追加，降低一次到位的風險。"],
+  ["Q2", "時程怎麼排？",
+    "以里程碑與 UAT 指標拆分，每週固定 Demo 與回報，避免後期才發現落差。"],
+  ["Q3", "AI 真的能上 production？",
+    "可以，但前提是「資料治理」與「保護機制」要同時做。我們已有實際運行的 Agent，會搭配 audit log、人工複核點、Fallback 流程。"],
+  ["Q4", "上線後怎麼維護？",
+    "提供事件回應、月度例行檢查、版本升級、安全修補與備份演練等維運方案。"],
+  ["Q5", "可與現有系統整合嗎？",
+    "可。我們採 API First，支援 ERP／金流／物流／CRM／電商等常見系統雙向串接。"],
 ];
 
-const heroStats = [
-  ["10+", "年資深團隊"],
-  ["0-1", "規劃到上線"],
-  ["API", "整合優先"],
+const heroConsole = [
+  { k: "Status",        v: <><span className="live" /> Available · 受理 2026 Q3 起</> },
+  { k: "Now Building",  v: <>4 production systems</> },
+  { k: "Latest deploy", v: <>v.2026.04.26 · 14:23 GMT+8</> },
+  { k: "AI Agents",     v: <>12 in production · <span className="ghost">3 staging</span></> },
+  { k: "Locale",        v: <>Taipei · TW · zh-Hant / en</> },
 ];
 
-function ImageBlock({ src, alt, className = "" }) {
-  return (
-    <>
-      <img className={`img-block ${className}`} src={src} alt={alt} />
-      <div
-        className="img"
-        role="img"
-        aria-label={alt}
-        style={{ backgroundImage: `url("${src}")` }}
-      />
-    </>
-  );
-}
+/* ============================================================
+   Components
+   ============================================================ */
 
-function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
+function Header({ onToggleMenu, menuOpen }) {
+  const [stamp, setStamp] = useState("");
   useEffect(() => {
-    document.body.classList.toggle("menu-visible", menuOpen);
-    return () => document.body.classList.remove("menu-visible");
-  }, [menuOpen]);
+    const tick = () => {
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      setStamp(
+        `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())} · ${pad(
+          d.getHours()
+        )}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
+      );
+    };
+    tick();
+    const t = window.setInterval(tick, 1000);
+    return () => window.clearInterval(t);
+  }, []);
 
   return (
-    <header className="page-header navbar page-header-drawer menu-right logo-left topmenu-right">
-      <button
-        className={`navbar-toggler site-menu-icon ${menuOpen ? "menu-visible" : ""}`}
-        id="navMenuIcon"
-        type="button"
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
-        aria-expanded={menuOpen}
-        onClick={() => setMenuOpen((open) => !open)}
-      >
-        <span className={`menu-icon menu-icon-line ${menuOpen ? "menu-visible" : ""}`}>
-          <span className="text show-menu-visible">Close</span>
-          <span className="text hide-menu-visible">Menu</span>
-          <span className="bars">
-            <span className="bar1" />
-            <span className="bar2" />
-            <span className="bar3" />
-          </span>
-        </span>
-      </button>
-
-      <a className="navbar-brand" href="/">
+    <header className="page-header">
+      <a className="brand-mark" href="/">
         <span className="logo">
-          <img className="light-logo" src="/img/Logo_ESTIGINTO.svg" alt="ESTIGINTO 造物者科技" />
+          <img src="/img/Logo_ESTIGINTO.svg" alt="ESTIGINTO 造物者科技" />
+        </span>
+        <span className="ident">
+          <span>System Craft Studio</span>
+          <span>Est. 2012 · 造物者科技</span>
         </span>
       </a>
 
-      <div className={`all-menu-wrapper ${menuOpen ? "menu-visible" : ""}`} id="navbarMenu">
-        <nav className="navbar-mainmenu">
-          <button className="mainmenu-bg" type="button" aria-label="Close menu" onClick={() => setMenuOpen(false)} />
-          <div className="mainmenu-content">
-            <ul className="navbar-nav">
-              {navItems.map((item, index) => (
-                <li className={`nav-item ${index === 0 ? "active" : ""}`} key={item.href}>
-                  <a className={`nav-link ${menuOpen ? "menu-visible" : ""}`} href={item.href} onClick={() => setMenuOpen(false)}>
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <div className="navbar-footer">
-              <div className="row no-gutters">
-                <div className="col col-12 col-md-6" />
-                <div className="col col-12 col-md-6 footer-notes">
-                  <p className="text-right">Since 2012 © ESTIGINTO Co., Ltd. All rights reserved.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
+      <div className="status-bar" aria-live="polite">
+        <span className="pulse" aria-hidden="true" />
+        <span>Open for briefs</span>
+        <span className="sep" />
+        <span>TPE</span>
+        <span className="sep" />
+        <span>{stamp}</span>
       </div>
+
+      <button
+        className={`navbar-toggler ${menuOpen ? "open" : ""}`}
+        type="button"
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
+        aria-expanded={menuOpen}
+        onClick={onToggleMenu}
+      >
+        <span>{menuOpen ? "Close" : "Index"}</span>
+        <span className="bars" aria-hidden="true">
+          <span /><span /><span />
+        </span>
+      </button>
     </header>
   );
 }
 
-function SectionTitle({ children }) {
+function Drawer({ open, onClose }) {
   return (
-    <div className="section-title text-center anim" aria-hidden="true">
-      <h2 className="title-bg">{children}</h2>
+    <div className={`drawer ${open ? "open" : ""}`} aria-hidden={!open}>
+      <button className="drawer-scrim" type="button" aria-label="Close menu" onClick={onClose} />
+      <aside className="drawer-panel">
+        <div className="nav-meta">
+          <span>Index / 目次</span>
+          <span>08 / sections</span>
+        </div>
+        <ul>
+          {navItems.map((item) => (
+            <li key={item.href}>
+              <span className="num">{item.eyebrow}</span>
+              <a href={item.href} onClick={onClose}>{item.label}</a>
+            </li>
+          ))}
+        </ul>
+        <div className="drawer-footer">
+          <span><b>contact@estiginto.com</b></span>
+          <span>+886 2 2431 5362</span>
+          <span>週二至週五 · 10:00 – 18:00 (GMT+8)</span>
+        </div>
+      </aside>
+    </div>
+  );
+}
+
+function SectionEyebrow({ index, label, meta }) {
+  return (
+    <div className="section-eyebrow">
+      <span className="index">{index}</span>
+      <span className="rule" aria-hidden="true" />
+      <span className="meta">{meta}</span>
+      <span style={{ gridColumn: "1 / -1", marginTop: 8, color: "inherit" }}>
+        <span style={{ marginRight: 14, opacity: 0.5 }}>—</span>
+        {label}
+      </span>
     </div>
   );
 }
 
 function Hero() {
   return (
-    <section className="section section-home fullscreen-md main-home section-center content-black bg-level-1" id="home">
-      <div className="section-frame" aria-hidden="true" />
-      <div className="section-wrapper with-margin">
-        <div className="section-content anim">
-          <div className="row c-wrapper">
-            <div className="col-12 col-md-8 text-left">
-              <div className="title-desc mb-0">
-                <p className="section-kicker hero-kicker">ESTIGINTO / System Craft Studio</p>
-                <h1 className="display-4 display-title home-title text-no-shadow anim-blur anim-2 mb-4">
-                  <span className="line-mask"><span className="text-stroke">Solution</span></span>
-                  <br />
-                  <span className="line-mask"><span>Provider</span></span>
-                </h1>
-                <p className="hero-copy anim-3">
-                  始於一群國家程式競賽代表選手組成的工作室
-                  <br />
-                  擅長在有限預算下提供直接有效、永續與彈性的解決方案
-                  並提供良好的溝通反饋，持續成為客戶滿意的首選
-                </p>
-              </div>
-              <div className="btns-action anim-4">
-                <a className="btn btn-line" href="#about-us"><span className="text">關於我們</span></a>
-                <a className="btn btn-line" href="#process"><span className="text">如何開始規劃</span></a>
-                <a className="btn btn-line" href="#contact-info"><span className="text">預約初步規劃</span></a>
-              </div>
-              <div className="hero-stats anim-5">
-                {heroStats.map(([value, label]) => (
-                  <div className="hero-stat" key={label}>
-                    <strong>{value}</strong>
-                    <span>{label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+    <section className="hero" id="home">
+      <div className="wrap">
+        <div>
+          <div className="hero-meta">
+            <b>ESTIGINTO</b>
+            <span className="dot">/</span>
+            <span>System Craft Studio</span>
+            <span className="dot">·</span>
+            <span>Est. 2012 — 14 yrs</span>
+            <span className="dot">·</span>
+            <span>Taipei, Taiwan</span>
+          </div>
 
-            <div className="image-bg-wrapper center-vh">
-              <div className="image-orbit" aria-hidden="true" />
-              <div className="col-wrapper">
-                <ImageBlock src="/img/bg-style-2.jpg" alt="ESTIGINTO 服務情境示意圖" />
-              </div>
-            </div>
+          <h1 className="hero-title">
+            <span className="row1">
+              <span className="stroke">Solutions</span> for
+            </span>
+            <span className="row2">
+              <em>serious</em> operators<span className="ampersand">,</span>
+            </span>
+            <span className="row1" style={{ paddingLeft: "clamp(20px, 8vw, 140px)" }}>
+              <em>not</em> demos.
+            </span>
+          </h1>
+
+          <div className="hero-rule" aria-hidden="true" />
+
+          <p className="hero-lede">
+            <strong>由國家級程式競賽選手創立，14 年連續營運。</strong>
+            從電商、ERP、WMS 到 AI Agent，我們在有限預算下交付能真正
+            上線、能維運、能擴充的系統。每週迭代、透明回報、API-first。
+          </p>
+
+          <div className="hero-actions">
+            <a className="btn btn-primary" href="#contact">
+              <span>預約 30 分鐘規劃對談</span>
+              <span className="arrow" aria-hidden="true" />
+            </a>
+            <a className="btn" href="#ai-lab">
+              <span>看 AI Lab 在做什麼</span>
+              <span className="arrow" aria-hidden="true" />
+            </a>
           </div>
         </div>
 
-        <footer className="section-footer scrolldown">
-          <a className="down" href="#portfolio">
-            <span className="icon" />
-            <span className="txt">Scroll</span>
-          </a>
-        </footer>
-      </div>
-    </section>
-  );
-}
-
-function Portfolio() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const active = portfolioItems[activeIndex];
-
-  const next = () => setActiveIndex((index) => (index + 1) % portfolioItems.length);
-  const prev = () => setActiveIndex((index) => (index - 1 + portfolioItems.length) % portfolioItems.length);
-
-  useEffect(() => {
-    const timer = window.setInterval(next, 7000);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  return (
-    <section className="section section-slider fp-auto-height-responsive content-black reveal" id="portfolio">
-      <SectionTitle>Portfolio</SectionTitle>
-      <div className="section-wrapper fullwidth fullscreen-md">
-        <div className="slider-swiper-alpha react-portfolio-slider" style={{ "--slide-index": activeIndex }}>
-          <article className="media-slide-item-alpha" key={active.title}>
-            <div className="media-image mask-black">
-              <ImageBlock src={active.image} alt={active.alt} />
-            </div>
-            <div className="media-content text-white">
-              <div className="row">
-                <div className="col col-12">
-                  <div className="media-body body-margin-right text-anim">
-                    <h4 className="text-white">{active.eyebrow}</h4>
-                    <h3 className="text-white">{active.title}</h3>
-                    <p>{active.body}</p>
-                    <ul className="mt-2">
-                      {active.points.map((point) => <li key={point}>{point}</li>)}
-                    </ul>
-                    <div className="btns-action">
-                      <a className="btn btn-line" href={active.href}><span className="text">{active.cta}</span></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </article>
-
-          <nav className="items-navigation" aria-label="Portfolio slider">
-            <div className="items-pagination bar" aria-label={`${activeIndex + 1} / ${portfolioItems.length}`}>
-              {portfolioItems.map((item, index) => (
-                <button
-                  className={index === activeIndex ? "active" : ""}
-                  type="button"
-                  key={item.title}
-                  aria-label={`Show ${item.title}`}
-                  onClick={() => setActiveIndex(index)}
-                />
-              ))}
-            </div>
-            <div className="items-buttons">
-              <div className="items-button-prev">
-                <button className="btn btn-transp-arrow" type="button" onClick={prev}>
-                  <i className="icon text-white"><span className="arrow-left" /></i>
-                  <span className="text text-white">Prev</span>
-                </button>
-              </div>
-              <div className="items-button-next">
-                <button className="btn btn-transp-arrow" type="button" onClick={next}>
-                  <span className="text text-white">Next</span>
-                  <i className="icon text-white"><span className="arrow-right" /></i>
-                </button>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Advantage() {
-  return (
-    <section className="section fp-auto-height-responsive bg-level-1 reveal" id="about-us">
-      <SectionTitle>Advantage</SectionTitle>
-      <div className="section-wrapper with-margin">
-        <div className="section-content anim">
-          <div className="row">
-            <div className="col-12 col-md-4 text-left">
-              <div className="title-desc pr-4">
-                <h2 className="display-5 anim-2">做好 0 到 1<br />才能順利<br />從 1 到 100</h2>
-              </div>
-              <div className="btns-action anim-3 mb-3">
-                <a className="btn btn-line" href="#process"><span className="text">了解更多細節</span></a>
-              </div>
-            </div>
-            <div className="col-12 col-md-8 text-left">
-              <div className="title-desc anim-4">
-                <p>
-                  專案成功率，取決於「規劃」與「驗收標準」。
-                  <br />
-                  我們以使用情境拆解需求、定義可交付與里程碑，同步考量預算、期程與未來擴充，先讓 0→1 站穩，再用資料與流程把 1→100 做扎實。
-                </p>
-                <ul className="mt-2">
-                  <li>以商業目標與限制條件為核心，制定路線圖</li>
-                  <li>每階段有清楚可驗收產出（UAT 指標）</li>
-                  <li>成本/效益與風險透明，決策可控</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Services() {
-  return (
-    <section className="section section-list-feature reveal" id="services">
-      <SectionTitle>Services</SectionTitle>
-      <div className="section-wrapper with-margin">
-        <div className="section-content anim">
-          <div className="section-content-header decor">
-            <div className="row">
-              <div className="col-12 col-md-4 text-left">
-                <div className="title-desc pr-4">
-                  <h2 className="display-5 anim-2">服務範圍</h2>
-                </div>
-              </div>
-              <div className="col-12 col-md-8 text-left">
-                <div className="title-desc anim-4">
-                  <p>提供你的產業火箭<br />所需要的一切支援與協助<br />將許多的不可能，實現為可能</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="list-items row anim-list">
-            {services.map((service, index) => (
-              <div className="item col-12 col-lg-4" id={service.id} key={service.id}>
-                <div className="media media-service">
-                  <span className="service-index">0{index + 1}</span>
-                  <div className="media-body">
-                    <h4>{service.title}</h4>
-                    <p>{service.body}</p>
-                    <ul className="mt-2">
-                      {service.points.map((point) => <li key={point}>{point}</li>)}
-                    </ul>
-                  </div>
-                  <footer className="media-footer">
-                    <a className="btn btn-line" href={service.href}><span className="text">{service.cta}</span></a>
-                  </footer>
-                </div>
+        <aside className="console" aria-label="ESTIGINTO live status console">
+          <div className="console-body">
+            {heroConsole.map((row) => (
+              <div className="console-row" key={row.k}>
+                <span className="k">{row.k}</span>
+                <span className="v">{row.v}</span>
               </div>
             ))}
+          </div>
+        </aside>
+      </div>
+
+      <a className="scrolldown" href="#marquee">Scroll · Index 01</a>
+    </section>
+  );
+}
+
+function Marquee() {
+  const items = [...marqueeItems, ...marqueeItems];
+  return (
+    <div className="marquee" id="marquee" aria-hidden="true">
+      <div className="marquee-track">
+        {items.map((text, i) => (
+          <span className="marquee-item" key={`m-${i}`}>
+            <span className="glyph">§</span>
+            <span>{text}</span>
+            <span className="dot" />
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Numbers() {
+  return (
+    <section className="section reveal" aria-label="Studio numbers">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ Numbers"
+          label="十四年的營運，是規模也是責任。"
+          meta="updated · 2026.04"
+        />
+        <div className="numbers">
+          {numbers.map((n) => (
+            <div className="number-cell" key={n.idx}>
+              <div className="key">
+                <span>Metric</span>
+                <span className="idx">{n.idx}</span>
+              </div>
+              <div className="val">
+                <span>{n.val}</span>
+                {n.sup && <sup>{n.sup}</sup>}
+                <span className="unit">{n.unit}</span>
+              </div>
+              <div className="desc">{n.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Manifesto() {
+  return (
+    <section className="section bg-deep reveal" id="about" aria-label="Studio manifesto">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 02 / Studio"
+          label="我們的工作哲學。"
+          meta="manifesto · 2026"
+        />
+        <div className="manifesto">
+          <h2 className="manifesto-quote">
+            我們<em>不寫</em>程式。<br />
+            我們造<span className="underline">能撐十年</span>的系統，<br />
+            並且，把 <em>AI</em> 變成可以營運的資產。
+          </h2>
+          <div className="manifesto-aside">
+            <p>
+              專案成功率取決於「規劃」與「驗收標準」。
+              我們以使用情境拆解需求、定義可交付與里程碑，同步考量預算、期程與未來擴充。
+              先讓 0→1 站穩，再用資料與流程把 1→100 做扎實。
+            </p>
+            <p>
+              這也是為什麼 2012 年的客戶，2026 年仍與我們合作。
+            </p>
+            <span className="signoff">— 主理人 / Founders, ESTIGINTO</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Solutions() {
+  const [active, setActive] = useState(0);
+  const item = solutions[active];
+
+  return (
+    <section className="section reveal" id="solutions" aria-label="Solutions">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 01 / Solutions"
+          label="我們交付的方案範圍。"
+          meta={`${solutions.length} programs`}
+        />
+        <div className="solutions">
+          <ul className="sol-list">
+            {solutions.map((s, i) => (
+              <li
+                key={s.num}
+                className={`sol-row ${i === active ? "active" : ""}`}
+                onMouseEnter={() => setActive(i)}
+                onFocus={() => setActive(i)}
+                tabIndex={0}
+              >
+                <span className="num">{s.num}</span>
+                <div className="body">
+                  <span className="tag">
+                    <span>{s.eyebrow}</span>
+                    {s.isNew && <span className="pill">NEW</span>}
+                  </span>
+                  <h3>{s.titleHTML}</h3>
+                </div>
+                <span className="meta">{s.meta}</span>
+              </li>
+            ))}
+          </ul>
+
+          <aside className="sol-preview" aria-live="polite">
+            <div
+              className="figure"
+              style={{ backgroundImage: `url(${item.image})` }}
+              role="img"
+              aria-label={item.eyebrow}
+            >
+              <span className="frame" aria-hidden="true" />
+              <span className="label">{item.label}</span>
+            </div>
+            <div className="info">
+              <p>{item.body}</p>
+              <ul>
+                {item.points.map((p) => <li key={p}>{p}</li>)}
+              </ul>
+              <a className="btn" href="#contact" style={{ marginTop: 8 }}>
+                <span>討論這個方案</span>
+                <span className="arrow" aria-hidden="true" />
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AILab() {
+  return (
+    <section className="section bg-night reveal" id="ai-lab" aria-label="AI Lab">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 03 / AI Lab"
+          label="把 AI 變成可營運的系統。"
+          meta="12 agents · in production"
+        />
+        <div className="ai-headline">
+          <h2>
+            不是 <span className="strike">PoC</span>。<br />
+            是會處理 <em>單據</em>、回應 <em>客戶</em>、跑 <em>帳</em> 的 AI。
+          </h2>
+          <p className="lede">
+            2024–2025 我們把實驗室裡的 LLM 帶上 production。
+            到 2026 年，我們已經有 12 個 Agent 在客戶營運線上每天工作。
+            下面是我們做的東西。
+          </p>
+        </div>
+
+        <div className="ai-grid">
+          {aiCards.map((c) => (
+            <article className={`ai-card ${c.span}`} key={c.idx}>
+              <div className="head">
+                <span>{c.tag}</span>
+                <span className="idx">{c.idx}</span>
+              </div>
+              <h3>{c.titleHTML}</h3>
+              <p>{c.body}</p>
+              <div className="stack">
+                {c.chips.map((chip) => <span className="chip" key={chip}>{chip}</span>)}
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="ai-callout">
+          <p>
+            <b>不做的事 ☓</b>　 包賺 ROI 的承諾、把資料丟進 ChatGPT、用 AI 寫敏感邏輯後就放生、
+            把「裝個 chatbot」當作 AI 轉型。
+          </p>
+          <a className="btn btn-on-night" href="#contact">
+            <span>討論你的 AI 場景</span>
+            <span className="arrow" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseStudy() {
+  return (
+    <section className="section reveal" id="case" aria-label="Selected case">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 04 / Selected"
+          label="一個正在跑的案例。"
+          meta="anonymized · cross-border beauty"
+        />
+        <div className="case">
+          <div
+            className="figure"
+            style={{
+              backgroundImage:
+                "url(/img/plan/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.jpg)",
+            }}
+          >
+            <span className="stamp">Case · K/2025</span>
+          </div>
+
+          <div className="case-body">
+            <div className="tag">Cross-border DTC · Beauty · 2024–在線</div>
+            <h3>
+              五個系統各自為政，<em>倉儲錯誤率 3.2%</em>。<br />
+              我們重做了流程，再做系統。
+            </h3>
+            <p className="summary">
+              客戶原本電商、WMS、ERP、客服、會員五套系統各自更新，業務每天用 Excel 對單。
+              我們重新設計商品主檔、訂單流與庫存事件，串成單一資料源，再把 AI 客服接上 SOP。
+            </p>
+
+            <div className="case-metrics">
+              <div className="case-metric">
+                <div className="label">出貨錯誤率</div>
+                <div className="val"><span className="arrow">↓</span>0.4<span style={{fontSize: "0.5em", color: "var(--ink-mute)"}}>%</span></div>
+                <div className="delta">原 3.2% · 8x 改善</div>
+              </div>
+              <div className="case-metric">
+                <div className="label">出貨時效</div>
+                <div className="val"><span className="arrow">↑</span>2.8<span style={{fontSize: "0.5em", color: "var(--ink-mute)"}}>x</span></div>
+                <div className="delta">D+2 → D+0.7</div>
+              </div>
+              <div className="case-metric">
+                <div className="label">客服自動化率</div>
+                <div className="val"><span className="arrow">↑</span>68<span style={{fontSize: "0.5em", color: "var(--ink-mute)"}}>%</span></div>
+                <div className="delta">Agent 接管 L1，真人處理 L2/L3</div>
+              </div>
+              <div className="case-metric">
+                <div className="label">月對帳工時</div>
+                <div className="val"><span className="arrow">↓</span>92<span style={{fontSize: "0.5em", color: "var(--ink-mute)"}}>%</span></div>
+                <div className="delta">人工 28h → 自動 2h</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -409,20 +636,30 @@ function Services() {
 
 function Process() {
   return (
-    <section className="section fp-auto-height-responsive bg-level-1 reveal" id="process">
-      <SectionTitle>Process</SectionTitle>
-      <div className="section-wrapper with-margin">
-        <div className="section-content anim">
-          <ol className="row process-list">
-            {processSteps.map(([title, body], index) => (
-              <li className="col-12 col-md-6 mb-3 process-card" key={title}>
-                <b>{index + 1}. {title}</b>：{body}
-              </li>
-            ))}
-          </ol>
-          <div className="btns-action mt-2">
-            <a className="btn btn-line" href="#contact-info"><span className="text">預約初步規劃</span></a>
-          </div>
+    <section className="section bg-deep reveal" id="process" aria-label="Engagement process">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 05 / Process"
+          label="從第一封信到上線維運。"
+          meta="6 phases · transparent"
+        />
+        <div className="process-grid">
+          {processSteps.map(([num, title, body, week]) => (
+            <article className="process-step" key={num}>
+              <div className="num">
+                <span>Phase {num}</span>
+              </div>
+              <h4>{title}</h4>
+              <p>{body}</p>
+              <div className="week">{week}</div>
+            </article>
+          ))}
+        </div>
+        <div style={{ marginTop: 36, display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <a className="btn btn-primary" href="#contact">
+            <span>預約初步規劃</span>
+            <span className="arrow" aria-hidden="true" />
+          </a>
         </div>
       </div>
     </section>
@@ -430,25 +667,30 @@ function Process() {
 }
 
 function TechStack() {
-  const stacks = useMemo(() => [
-    ["Frontend", "React / Next.js、TypeScript、Tailwind、Vite、RWD、a11y"],
-    ["Backend", "Node.js、REST/GraphQL、PostgreSQL/MySQL、Redis、Directus/Strapi"],
-    ["DevOps & Cloud", "Docker、Nginx、CI/CD、Linux、CDN、備援與監控、物件儲存"],
-  ], []);
-
   return (
-    <section className="section fp-auto-height-responsive reveal">
-      <SectionTitle>Tech Stack</SectionTitle>
-      <div className="section-wrapper with-margin">
-        <div className="section-content anim">
-          <div className="row">
-            {stacks.map(([title, body]) => (
-              <div className="col-12 col-md-4 stack-card" key={title}>
-                <h4>{title}</h4>
-                <p>{body}</p>
+    <section className="section reveal" id="stack" aria-label="Tech stack">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 06 / Stack"
+          label="我們的工具與生產線。"
+          meta="curated · battle-tested"
+        />
+        <div className="stack-grid">
+          {techStack.map((col) => (
+            <div className="stack-col" key={col.code}>
+              <h4>
+                <b>{col.title}</b>
+                <span>{col.code}</span>
+              </h4>
+              <div className="stack-chips">
+                {col.chips.map((c) => (
+                  <span className={`stack-chip ${col.signal ? "signal" : ""}`} key={c}>
+                    {c}
+                  </span>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -456,19 +698,38 @@ function TechStack() {
 }
 
 function FAQ() {
+  const [open, setOpen] = useState(0);
   return (
-    <section className="section fp-auto-height-responsive bg-level-1 reveal">
-      <SectionTitle>FAQ</SectionTitle>
-      <div className="section-wrapper with-margin">
-        <div className="section-content anim">
-          <div className="row">
-            {faqs.map(([title, body]) => (
-              <div className="col-12 col-md-6 faq-card" key={title}>
-                <h4>{title}</h4>
-                <p>{body}</p>
+    <section className="section bg-deep reveal" aria-label="FAQ">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 07 / FAQ"
+          label="客戶最常問的事。"
+          meta={`${faqs.length} questions`}
+        />
+        <div className="faq-list">
+          {faqs.map(([num, q, a], i) => {
+            const isOpen = open === i;
+            return (
+              <div className={`faq-item ${isOpen ? "open" : ""}`} key={num}>
+                <button
+                  className="faq-q"
+                  type="button"
+                  onClick={() => setOpen(isOpen ? -1 : i)}
+                  aria-expanded={isOpen}
+                >
+                  <span className="num">{num}</span>
+                  <span>{q}</span>
+                  <span className="toggle" aria-hidden="true" />
+                </button>
+                <div className="faq-a">
+                  <div>
+                    <p>{a}</p>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -477,34 +738,57 @@ function FAQ() {
 
 function Contact() {
   return (
-    <section className="section section-contact fp-auto-height-responsive bg-level-1 reveal" id="contact-info">
-      <div className="section-wrapper with-margin">
-        <div className="section-content">
-          <div className="row">
-            <div className="col-12 col-lg-4 anim">
-              <div className="title-desc pr-4">
-                <h2 className="display-5 anim-2">聯絡我們</h2>
-              </div>
+    <section className="section reveal" id="contact" aria-label="Contact">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 08 / Contact"
+          label="從一封信開始。"
+          meta="response · within 1 business day"
+        />
+        <div className="contact">
+          <div>
+            <h2>
+              開始之前，<br />
+              我們會先<em>問你三個問題</em>。
+            </h2>
+            <p className="lede">
+              第一：你想解決的核心問題是什麼？<br />
+              第二：什麼時候必須上線、有沒有硬死線？<br />
+              第三：預算有沒有上限或階段拆分的彈性？<br /><br />
+              不需要規格書。先給我們大致方向，我們會在 30 分鐘內幫你想清楚。
+            </p>
+          </div>
+
+          <div className="contact-card">
+            <div className="contact-row">
+              <span className="k">Email</span>
+              <span className="v"><a href="mailto:contact@estiginto.com">contact@estiginto.com</a></span>
             </div>
-            <div className="col-12 col-lg-8">
-              <div className="section-content anim text-left">
-                <div className="contact-information" id="contact-information">
-                  <div className="title-desc mb-0">
-                    <div className="address-container anim-5">
-                      <div className="row">
-                        <div className="col-12 col-md-6 col-lg-6">
-                          <h4 className="display-6"><b>通訊資料</b></h4>
-                          <p>02-2431-5362<br />contact@estiginto.com</p>
-                        </div>
-                        <div className="col-12 col-md-6 col-lg-6">
-                          <h4 className="display-6"><b>服務時間</b></h4>
-                          <p>週二至週五 10:00-18:00</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div className="contact-row">
+              <span className="k">Phone</span>
+              <span className="v"><a href="tel:+886224315362">+886 2 2431 5362</a></span>
+            </div>
+            <div className="contact-row">
+              <span className="k">Sales</span>
+              <span className="v"><a href="tel:+886972118427">+886 972 118 427</a></span>
+            </div>
+            <div className="contact-row">
+              <span className="k">Office Hours</span>
+              <span className="v">週二至週五 · 10:00 – 18:00 (GMT+8)</span>
+            </div>
+            <div className="contact-row">
+              <span className="k">Locale</span>
+              <span className="v">Taipei · TW · zh-Hant / en</span>
+            </div>
+            <div className="contact-cta">
+              <a className="btn btn-primary" href="mailto:contact@estiginto.com?subject=Project%20Brief%20—%20ESTIGINTO">
+                <span>寄信給我們</span>
+                <span className="arrow" aria-hidden="true" />
+              </a>
+              <a className="btn" href="https://www.facebook.com/Estiginto/" target="_blank" rel="noopener noreferrer">
+                <span>Facebook</span>
+                <span className="arrow" aria-hidden="true" />
+              </a>
             </div>
           </div>
         </div>
@@ -513,13 +797,70 @@ function Contact() {
   );
 }
 
+function Footer() {
+  return (
+    <footer className="page-footer">
+      <div className="wrap">
+        <div className="footer-top">
+          <div>
+            <h3 className="footer-mark">
+              ESTIGINTO<em>.</em>
+            </h3>
+            <p>System Craft Studio · 造物者科技。十四年來，為認真經營的營運者打造系統。</p>
+          </div>
+          <div>
+            <h5>Studio</h5>
+            <a href="#about">工坊主張</a>
+            <a href="#process">規劃流程</a>
+            <a href="#stack">技術棧</a>
+            <a href="#case">精選案例</a>
+          </div>
+          <div>
+            <h5>Solutions</h5>
+            <a href="#solutions">電子商務</a>
+            <a href="#solutions">ERP / WMS</a>
+            <a href="#ai-lab">AI 整合</a>
+            <a href="#solutions">客製平台</a>
+          </div>
+          <div>
+            <h5>Reach</h5>
+            <a href="mailto:contact@estiginto.com">contact@estiginto.com</a>
+            <a href="tel:+886224315362">+886 2 2431 5362</a>
+            <a href="https://www.facebook.com/Estiginto/" target="_blank" rel="noopener noreferrer">Facebook</a>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>© 2012 – 2026 ESTIGINTO Co., Ltd. — Taipei · TW</span>
+          <span className="build">
+            <span className="live" aria-hidden="true" />
+            build · v.2026.04.26 · all systems nominal
+          </span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ============================================================
+   App
+   ============================================================ */
+
 export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Lock body scroll when drawer is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
+  // Reveal on scroll
   useEffect(() => {
     const sections = document.querySelectorAll(".reveal");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (prefersReducedMotion) {
-      sections.forEach((section) => section.classList.add("is-visible"));
+      sections.forEach((s) => s.classList.add("is-visible"));
       return undefined;
     }
 
@@ -532,27 +873,38 @@ export default function App() {
           }
         });
       },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.18 },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
     );
 
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach((s) => {
+      const r = s.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        s.classList.add("is-visible");
+      } else {
+        observer.observe(s);
+      }
+    });
     return () => observer.disconnect();
   }, []);
 
   return (
     <>
-      <Header />
-      <div className="page-cover" />
-      <main className="page-main main-anim fullpage-container" id="mainpage">
+      <Header onToggleMenu={() => setMenuOpen((v) => !v)} menuOpen={menuOpen} />
+      <Drawer open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <main className="page-main" id="mainpage">
         <Hero />
-        <Portfolio />
-        <Advantage />
-        <Services />
+        <Marquee />
+        <Numbers />
+        <Manifesto />
+        <Solutions />
+        <AILab />
+        <CaseStudy />
         <Process />
         <TechStack />
         <FAQ />
         <Contact />
       </main>
+      <Footer />
     </>
   );
 }
