@@ -216,13 +216,7 @@ const faqs = [
     "可。我們採 API First，支援 ERP／金流／物流／CRM／電商等常見系統雙向串接。"],
 ];
 
-const heroConsole = [
-  { k: "Status",        v: <><span className="live" /> <span className="nb">Open for briefs</span> · <span className="nb">受理 2026 Q3 起</span></> },
-  { k: "Pipeline",      v: <><span className="nb">4 lines in parallel</span> · <span className="ghost nb">200+ shipped</span></> },
-  { k: "Latest deploy", v: <><span className="nb">v.2026.04.26</span> · <span className="nb">14:23 GMT+8</span></> },
-  { k: "AI Agents",     v: <><span className="nb">12 in production</span> · <span className="ghost nb">3 staging</span></> },
-  { k: "Locale",        v: <><span className="nb">Taipei · TW</span> · <span className="nb">zh-Hant / en</span></> },
-];
+
 
 /* ============================================================
    Components
@@ -387,16 +381,7 @@ function Hero() {
           </div>
         </div>
 
-        <aside className="console" aria-label="ESTIGINTO live status console">
-          <div className="console-body">
-            {heroConsole.map((row) => (
-              <div className="console-row" key={row.k}>
-                <span className="k">{row.k}</span>
-                <span className="v">{row.v}</span>
-              </div>
-            ))}
-          </div>
-        </aside>
+        
       </div>
 
       <a className="scrolldown" href="#marquee">Scroll · Index 01</a>
@@ -537,7 +522,7 @@ function Solutions() {
             <div className="info">
               <p>{item.body}</p>
               <ul>
-                {item.points.map((p) => <li key={p}>{p}</li>)}
+                {item.points.map((p, pointIndex) => <li key={`${item.label}-${pointIndex}`}>{p}</li>)}
               </ul>
               <a className="btn" href="#contact" style={{ marginTop: 8 }}>
                 <span>討論這個方案</span>
@@ -582,7 +567,7 @@ function AILab() {
               <h3>{c.titleHTML}</h3>
               <p>{c.body}</p>
               <div className="stack">
-                {c.chips.map((chip) => <span className="chip" key={chip}>{chip}</span>)}
+                {c.chips.map((chip, chipIndex) => <span className="chip" key={`${c.idx}-${chipIndex}`}>{chip}</span>)}
               </div>
             </article>
           ))}
@@ -711,8 +696,8 @@ function TechStack() {
                 <span>{col.code}</span>
               </h4>
               <div className="stack-chips">
-                {col.chips.map((c) => (
-                  <span className={`stack-chip ${col.signal ? "signal" : ""}`} key={c}>
+                {col.chips.map((c, chipIndex) => (
+                  <span className={`stack-chip ${col.signal ? "signal" : ""}`} key={`${col.code}-${chipIndex}`}>
                     {c}
                   </span>
                 ))}
