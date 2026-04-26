@@ -37,7 +37,7 @@ const solutions = [
   {
     num: "01",
     eyebrow: "e-Commerce",
-    titleHTML: <>電子商務 <em>方案</em></>,
+    titleHTML: <>電子商務 <span className="hl">方案</span></>,
     image: "/img/plan/man-holding-credit-card-hand-entering-security-code-using-laptop-keyboard.jpg",
     label: "ESG-COM/2026",
     body: "規劃商品結構、客服／出貨流程與金物流串接，提供順暢購物體驗與會員成長。",
@@ -51,7 +51,7 @@ const solutions = [
   {
     num: "02",
     eyebrow: "Brand Site",
-    titleHTML: <>品牌形象 <em>方案</em></>,
+    titleHTML: <>品牌形象 <span className="hl">方案</span></>,
     image: "/img/plan/laptop-coworking-space_53876-14515.webp",
     label: "ESG-BRD/2026",
     body: "在有限的注意力裡先被看見。以敘事與視覺建立差異化，兼顧速度與 SEO。",
@@ -65,7 +65,7 @@ const solutions = [
   {
     num: "03",
     eyebrow: "Enterprise Resource",
-    titleHTML: <>企業資源管理 <em>方案</em></>,
+    titleHTML: <>企業資源管理 <span className="hl">方案</span></>,
     image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
     label: "ESG-ERP/2026",
     body: "從流程盤點到系統落地，打通商務、財務、人資、製造與供應鏈資料。",
@@ -79,7 +79,7 @@ const solutions = [
   {
     num: "04",
     eyebrow: "Warehouse Management",
-    titleHTML: <>倉儲管理 <em>方案</em></>,
+    titleHTML: <>倉儲管理 <span className="hl">方案</span></>,
     image: "/img/plan/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.jpg",
     label: "ESG-WMS/2026",
     body: "條碼／PDA／批號／效期／盤點／庫齡一站式導入，降錯誤、提周轉。",
@@ -93,7 +93,7 @@ const solutions = [
   {
     num: "05",
     eyebrow: "AI Integration",
-    titleHTML: <>AI 整合 <em>方案</em></>,
+    titleHTML: <>AI 整合 <span className="hl">方案</span></>,
     image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
     label: "ESG-AI/2026 · NEW",
     body: "把 LLM、RAG、Document AI 接進你的營運流程，不是 PoC，是真的會跑帳的 Agent。",
@@ -108,7 +108,7 @@ const solutions = [
   {
     num: "06",
     eyebrow: "Bespoke",
-    titleHTML: <>客製化 <em>解決方案</em></>,
+    titleHTML: <>客製化 <span className="hl">解決方案</span></>,
     image: "/img/plan/close-up-elegant-decoration-house.jpg",
     label: "ESG-CST/2026",
     body: "平台服務、B2B 工具、APP 到資訊看板。以迭代方式，把你的構想穩定變成產品。",
@@ -126,7 +126,7 @@ const aiCards = [
     span: "span-6 flagship",
     idx: "AI/01",
     tag: "Agent Workflow",
-    titleHTML: <>會處理單據的 <em>AI 代理</em>，不只是 chatbot。</>,
+    titleHTML: <>會處理單據的 <span className="hl">AI 代理</span>，不只是 chatbot。</>,
     body: "把客服、補單、退換貨、發票勘誤、報價單核對等重複工作交給 Agent。Agent 能讀懂內部 SOP、操作 ERP 與 WMS、必要時轉接真人。",
     chips: ["LangGraph", "Claude / GPT-4o", "Function Calling", "Audit Log"],
   },
@@ -134,7 +134,7 @@ const aiCards = [
     span: "span-6",
     idx: "AI/02",
     tag: "RAG Knowledge",
-    titleHTML: <>讓員工不用再問 <em>「文件在哪」</em>。</>,
+    titleHTML: <>讓員工不用再問 <span className="hl">「文件在哪」</span>。</>,
     body: "把產品手冊、合約範本、SOP、過往工單向量化，內接 Slack / LINE / 內部系統，回答可追溯來源、可校稿、可保密。",
     chips: ["pgvector", "LlamaIndex", "Hybrid Search", "Permission-aware"],
   },
@@ -142,7 +142,7 @@ const aiCards = [
     span: "span-4",
     idx: "AI/03",
     tag: "Document AI",
-    titleHTML: <>OCR + LLM <em>智能擷取</em></>,
+    titleHTML: <>OCR + LLM <span className="hl">智能擷取</span></>,
     body: "發票、報價單、提單、合約批量解析，欄位寫進 ERP 即可入帳。",
     chips: ["Vision", "Layout-aware", "Schema Validate"],
   },
@@ -150,7 +150,7 @@ const aiCards = [
     span: "span-4",
     idx: "AI/04",
     tag: "Private LLM",
-    titleHTML: <>地端／VPC <em>私有部署</em></>,
+    titleHTML: <>地端／VPC <span className="hl">私有部署</span></>,
     body: "資料不出機房。Llama / Qwen / Mistral 模型微調與量化，內部 GPU 可跑。",
     chips: ["Ollama", "vLLM", "Fine-tune", "Quantize"],
   },
@@ -158,7 +158,7 @@ const aiCards = [
     span: "span-4",
     idx: "AI/05",
     tag: "Dev Velocity",
-    titleHTML: <>用 AI <em>加速交付</em></>,
+    titleHTML: <>用 AI <span className="hl">加速交付</span></>,
     body: "我們內部以 Claude Code、Codex、Cursor 為日常引擎，同樣價碼可交付更多範圍。",
     chips: ["Claude Code", "Codex", "Spec-driven", "QA Auto"],
   },
@@ -211,8 +211,8 @@ const faqs = [
 ];
 
 const heroConsole = [
-  { k: "Status",        v: <><span className="live" /> Available · 受理 2026 Q3 起</> },
-  { k: "Now Building",  v: <>4 production systems</> },
+  { k: "Status",        v: <><span className="live" /> Open for briefs · 受理 2026 Q3 起</> },
+  { k: "Pipeline",      v: <>4 lines in parallel · <span className="ghost">200+ shipped</span></> },
   { k: "Latest deploy", v: <>v.2026.04.26 · 14:23 GMT+8</> },
   { k: "AI Agents",     v: <>12 in production · <span className="ghost">3 staging</span></> },
   { k: "Locale",        v: <>Taipei · TW · zh-Hant / en</> },
@@ -439,7 +439,7 @@ function Manifesto() {
         />
         <div className="manifesto">
           <h2 className="manifesto-quote">
-            我們<em>不寫</em>程式。<br />
+            我們<span className="hl">不寫</span>程式。<br />
             我們造<span className="underline">能撐十年</span>的系統，<br />
             並且，把 <em>AI</em> 變成可以營運的資產。
           </h2>
@@ -534,7 +534,7 @@ function AILab() {
         <div className="ai-headline">
           <h2>
             不是 <span className="strike">PoC</span>。<br />
-            是會處理 <em>單據</em>、回應 <em>客戶</em>、跑 <em>帳</em> 的 AI。
+            是會處理 <span className="hl">單據</span>、回應 <span className="hl">客戶</span>、跑 <span className="hl">帳</span> 的 AI。
           </h2>
           <p className="lede">
             2024–2025 我們把實驗室裡的 LLM 帶上 production。
@@ -597,7 +597,7 @@ function CaseStudy() {
           <div className="case-body">
             <div className="tag">Cross-border DTC · Beauty · 2024–在線</div>
             <h3>
-              五個系統各自為政，<em>倉儲錯誤率 3.2%</em>。<br />
+              五個系統各自為政，<span className="hl">倉儲錯誤率 3.2%</span>。<br />
               我們重做了流程，再做系統。
             </h3>
             <p className="summary">
@@ -749,7 +749,7 @@ function Contact() {
           <div>
             <h2>
               開始之前，<br />
-              我們會先<em>問你三個問題</em>。
+              我們會先<span className="hl">問你三個問題</span>。
             </h2>
             <p className="lede">
               第一：你想解決的核心問題是什麼？<br />
