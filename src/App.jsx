@@ -1,27 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 
-const localeCopy = {
-  zh: {
-    languageName: "中文",
-    languageAlt: "EN",
-    menuOpen: "關閉",
-    menuClosed: "選單",
-    maintenanceTitle: "網站維護中",
-    maintenancePhone: "+886 2 2431 5362",
-    maintenanceToggle: "返回完整頁面",
-    maintenancePreview: "預覽維護畫面",
-  },
-  en: {
-    languageName: "EN",
-    languageAlt: "中文",
-    menuOpen: "Close",
-    menuClosed: "Menu",
-    maintenanceTitle: "Maintenance",
-    maintenancePhone: "+886 2 2431 5362",
-    maintenanceToggle: "Back to full site",
-    maintenancePreview: "Preview maintenance",
-  },
-};
+const localeOptions = [
+  ["zh", "\u4e2d\u6587"],
+  ["en", "EN"],
+  ["ja", "\u65e5\u672c\u8a9e"],
+];
 
 /* ============================================================
    Data
@@ -245,63 +228,41 @@ const heroConsole = [
    Components
    ============================================================ */
 
-function LanguageSwitch({ locale, onToggle }) {
+function LanguageSwitch({ locale, onSelect }) {
   return (
-    <button
-      className={`language-switch ${locale === "en" ? "is-en" : "is-zh"}`}
-      type="button"
-      aria-label="Switch language"
-      onClick={onToggle}
-    >
+    <div className={`language-switch is-${locale}`} role="group" aria-label="Switch language">
       <span className="language-track" aria-hidden="true" />
-      <span className="language-option zh">中文</span>
-      <span className="language-option en">EN</span>
       <span className="language-thumb" aria-hidden="true" />
-    </button>
+      {localeOptions.map(([value, label]) => (
+        <button
+          key={value}
+          className={`language-option ${value}`}
+          type="button"
+          aria-pressed={locale === value}
+          onClick={() => onSelect(value)}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
   );
 }
 
 function Header({ onToggleMenu, menuOpen, locale, onToggleLocale }) {
-  const [stamp, setStamp] = useState("");
-  const copy = localeCopy[locale];
-  useEffect(() => {
-    const tick = () => {
-      const d = new Date();
-      const pad = (n) => String(n).padStart(2, "0");
-      setStamp(
-        `${d.getFullYear()}.${pad(d.getMonth() + 1)}.${pad(d.getDate())} · ${pad(
-          d.getHours()
-        )}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`
-      );
-    };
-    tick();
-    const t = window.setInterval(tick, 1000);
-    return () => window.clearInterval(t);
-  }, []);
-
   return (
     <header className="page-header">
       <a className="brand-mark" href="/">
         <span className="logo">
-          <img src="/img/Logo_ESTIGINTO.svg" alt="ESTIGINTO 造物者科技" />
+          <img src="/img/Logo_ESTIGINTO.svg" alt="ESTIGINTO ????" />
         </span>
         <span className="ident">
           <span>System Craft Studio</span>
-          <span>Est. 2012 · 造物者科技</span>
+          <span>Est. 2012 繚 ????</span>
         </span>
       </a>
 
-      <div className="status-bar" aria-live="polite">
-        <span className="pulse" aria-hidden="true" />
-        <span>Open for briefs</span>
-        <span className="sep" />
-        <span>TPE</span>
-        <span className="sep" />
-        <span>{stamp}</span>
-      </div>
-
       <div className="header-actions">
-        <LanguageSwitch locale={locale} onToggle={onToggleLocale} />
+        <LanguageSwitch locale={locale} onSelect={onToggleLocale} />
         <button
           className={`navbar-toggler ${menuOpen ? "open" : ""}`}
           type="button"
@@ -309,7 +270,7 @@ function Header({ onToggleMenu, menuOpen, locale, onToggleLocale }) {
           aria-expanded={menuOpen}
           onClick={onToggleMenu}
         >
-          <span>{menuOpen ? copy.menuOpen : copy.menuClosed}</span>
+          <span>{menuOpen ? "Close" : "Index"}</span>
           <span className="bars" aria-hidden="true">
             <span /><span /><span />
           </span>
@@ -398,22 +359,17 @@ function Hero() {
 
           <h1 className="hero-title">
             <span className="row1">
-              <span className="stroke">Solutions</span> for
+              {"\u8fce\u63a5\u6700\u597d\u7684"}
             </span>
             <span className="row2">
-              <em>serious</em> operators<span className="ampersand">,</span>
-            </span>
-            <span className="row1" style={{ paddingLeft: "clamp(20px, 8vw, 140px)" }}>
-              <em>not</em> demos.
+              {"\u9ec3\u91d1\u6642\u4ee3"}
             </span>
           </h1>
 
           <div className="hero-rule" aria-hidden="true" />
 
           <p className="hero-lede">
-            <strong>由國家級程式競賽選手創立，14 年連續營運。</strong>
-            從電商、ERP、WMS 到 AI Agent，我們在有限預算下交付能真正
-            上線、能維運、能擴充的系統。每週迭代、透明回報、API-first。
+            {"AI \u6642\u4ee3\uff0c\u8b93\u50f9\u503c\u9ad4\u73fe\u5728\u771f\u6b63\u91cd\u8981\u7684\u4e8b\u60c5\u4e0a"}
           </p>
 
           <div className="hero-actions">
@@ -910,15 +866,14 @@ function Footer() {
   );
 }
 
-function ConstructionScreen({ locale }) {
-  const copy = localeCopy[locale];
+function ConstructionScreen() {
   return (
     <main className="construction-screen" aria-labelledby="construction-title">
       <div className="construction-shell">
         <p className="construction-kicker">ESTIGINTO</p>
-        <h1 id="construction-title">{copy.maintenanceTitle}</h1>
+        <h1 id="construction-title">網站維護中</h1>
         <div className="construction-meta">
-          <span>{copy.maintenancePhone}</span>
+          <span>+886 2 2431 5362</span>
           <span>contact@estiginto.com</span>
         </div>
       </div>
@@ -938,7 +893,8 @@ export default function App() {
       return "zh";
     }
 
-    return window.localStorage.getItem("estiginto-locale") === "en" ? "en" : "zh";
+    const savedLocale = window.localStorage.getItem("estiginto-locale");
+    return ["zh", "en", "ja"].includes(savedLocale) ? savedLocale : "zh";
   });
   const isLocalPreview = useMemo(() => {
     if (typeof window === "undefined") {
@@ -962,7 +918,7 @@ export default function App() {
   }, [isLocalPreview]);
 
   useEffect(() => {
-    document.documentElement.lang = locale === "en" ? "en" : "zh-Hant";
+    document.documentElement.lang = locale === "en" ? "en" : locale === "ja" ? "ja" : "zh-Hant";
     window.localStorage.setItem("estiginto-locale", locale);
   }, [locale]);
 
@@ -1006,14 +962,14 @@ export default function App() {
   if (!isLocalPreview || showConstructionPreview) {
     return (
       <>
-        <ConstructionScreen locale={locale} />
+        <ConstructionScreen />
         {isLocalPreview ? (
           <button
             className="preview-toggle"
             type="button"
             onClick={() => setShowConstructionPreview(false)}
           >
-            {localeCopy[locale].maintenanceToggle}
+            返回完整頁面
           </button>
         ) : null}
       </>
@@ -1027,13 +983,13 @@ export default function App() {
         type="button"
         onClick={() => setShowConstructionPreview(true)}
       >
-        {localeCopy[locale].maintenancePreview}
+        預覽建置中畫面
       </button>
       <Header
         onToggleMenu={() => setMenuOpen((v) => !v)}
         menuOpen={menuOpen}
         locale={locale}
-        onToggleLocale={() => setLocale((prev) => (prev === "zh" ? "en" : "zh"))}
+        onToggleLocale={setLocale}
       />
       <Drawer open={menuOpen} onClose={() => setMenuOpen(false)} />
       <main className="page-main" id="mainpage">
