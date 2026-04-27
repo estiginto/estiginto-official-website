@@ -1035,6 +1035,55 @@ ul, ol  { margin: 0; }
   position: relative;
 }
 
+/* Page title — standalone page heading */
+.page-title {
+  position: relative;
+  padding: clamp(120px, 15vw, 184px) 0 clamp(56px, 8vw, 96px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(245, 247, 250, 0.96)),
+    var(--paper);
+  border-bottom: 1px solid var(--ink-line);
+  overflow: hidden;
+}
+.page-title::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(10, 31, 68, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10, 31, 68, 0.05) 1px, transparent 1px);
+  background-size: 88px 88px;
+  pointer-events: none;
+}
+.page-title .wrap {
+  display: grid;
+  gap: 18px;
+}
+.page-title-kicker {
+  margin: 0;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.page-title h1 {
+  margin: 0;
+  max-width: 11ch;
+  color: var(--ink);
+  font-size: var(--fs-display);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: var(--ls-base);
+}
+.page-title p:not(.page-title-kicker) {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--ink-soft);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-relaxed);
+}
+
 /* Section header — eyebrow with index + hairline rail */
 .section-eyebrow {
   display: grid;
@@ -1531,6 +1580,35 @@ ul, ol  { margin: 0; }
 }
 
 /* ============================================================
+   SCENARIO TEASER — bridge to showcase page
+   ============================================================ */
+.scenario-teaser {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(24px, 5vw, 72px);
+  align-items: end;
+  border-top: 1px solid var(--ink-line);
+  border-bottom: 1px solid var(--ink-line);
+  padding: clamp(36px, 6vw, 72px) 0;
+}
+.scenario-teaser-kicker {
+  grid-column: 1 / -1;
+  margin: 0 0 -8px;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.scenario-teaser h2 {
+  margin: 0;
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  letter-spacing: var(--ls-snug);
+  max-width: 16ch;
+}
+
+/* ============================================================
    SOLUTIONS — index list with hover preview
    ============================================================ */
 .solutions {
@@ -2021,6 +2099,69 @@ ul, ol  { margin: 0; }
 /* ============================================================
    FAQ — accordion
    ============================================================ */
+.faq-groups {
+  display: grid;
+  gap: 18px;
+}
+.faq-group {
+  display: grid;
+  border-top: 1px solid var(--ink-line);
+}
+.faq-group:last-child { border-bottom: 1px solid var(--ink-line); }
+.faq-group-head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 28px;
+  gap: 24px;
+  align-items: center;
+  padding: 28px 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+.faq-group-title {
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: 1.16;
+}
+.faq-group-subtitle {
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.faq-group-toggle {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  justify-self: end;
+}
+.faq-group-toggle::before,
+.faq-group-toggle::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 1px;
+  background: currentColor;
+  transition: transform 220ms ease;
+}
+.faq-group-toggle::after { transform: rotate(90deg); }
+.faq-group.open .faq-group-toggle::after { transform: rotate(0deg); }
+.faq-group-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 320ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.faq-group.open .faq-group-body { grid-template-rows: 1fr; }
+.faq-group-body > div {
+  overflow: hidden;
+}
+.faq-group.open .faq-group-body > div {
+  padding-bottom: 30px;
+}
 .faq-list {
   display: grid;
   gap: 0;
@@ -2083,6 +2224,23 @@ ul, ol  { margin: 0; }
   color: var(--ink-soft);
 }
 .faq-item.open .faq-a > div { padding-bottom: 24px; }
+.faq-note {
+  display: grid;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 20px 24px;
+  border: 1px solid var(--ink-line);
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: var(--fs-base);
+}
+.faq-note span {
+  color: var(--amber);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
 
 /* ============================================================
    CONTACT — editorial mailer
@@ -2277,6 +2435,11 @@ ul, ol  { margin: 0; }
 
   .solutions { grid-template-columns: 1fr; }
   .sol-preview { display: none; }
+
+  .scenario-teaser {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
 
   .case { grid-template-columns: 1fr; }
   .manifesto { grid-template-columns: 1fr; }
@@ -2518,6 +2681,13 @@ ul, ol  { margin: 0; }
   .hero-actions { gap: 10px; }
   .hero-actions .btn { min-height: 46px; padding: 0 1.1rem; font-size: var(--fs-sm); }
 
+  .page-title {
+    padding: 104px 0 56px;
+  }
+  .page-title h1 {
+    font-size: var(--fs-h1);
+  }
+
   .console { font-size: var(--fs-xs); padding: 16px 16px; }
   .console::after { font-size: var(--fs-2xs); }
   .console-row { grid-template-columns: 11ch 1fr; gap: 10px; padding: 8px 0; }
@@ -2555,6 +2725,28 @@ ul, ol  { margin: 0; }
     margin-bottom: 32px;
   }
   .section-eyebrow .meta { display: none; }
+
+  .faq-group-head {
+    grid-template-columns: 1fr 24px;
+    gap: 8px;
+  }
+  .faq-group-subtitle {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .faq-group-toggle {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  .faq-q {
+    grid-template-columns: 54px 1fr 24px;
+    gap: 10px;
+    font-size: var(--fs-lg);
+  }
+  .faq-a > div {
+    padding-left: 0;
+    padding-right: 34px;
+  }
 
   .sol-row { padding: 22px 0; grid-template-columns: 36px 1fr; }
   .sol-row .meta { display: none; }

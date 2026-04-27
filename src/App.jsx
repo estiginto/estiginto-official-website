@@ -9,28 +9,28 @@ const localeOptions = [
 const menuLabels = {
   zh: {
     about: "關於我們",
-    solutions: "解決方案",
-    case: "參考案例",
+    solutions: "參考案例",
+    case: "常見問題",
     contact: "聯繫我們",
   },
   en: {
     about: "About",
-    solutions: "Solutions",
-    case: "Case Studies",
+    solutions: "Case Studies",
+    case: "FAQ",
     contact: "Contact",
   },
   ja: {
     about: "私たちについて",
-    solutions: "ソリューション",
-    case: "事例紹介",
+    solutions: "事例紹介",
+    case: "よくある質問",
     contact: "お問い合わせ",
   },
 };
 
 const menuTargets = [
   { key: "about", href: "/about.html", section: "about", position: "top" },
-  { key: "solutions", href: "/solutions.html", section: "solutions", position: "left" },
-  { key: "case", href: "/case.html", section: "case", position: "right" },
+  { key: "solutions", href: "/case.html", section: "case", position: "left" },
+  { key: "case", href: "/faq.html", section: "faq", position: "right" },
   { key: "contact", href: "/contact.html", section: "contact", position: "bottom" },
 ];
 
@@ -215,13 +215,165 @@ const techStack = [
   },
 ];
 
-const faqs = [
-  ["Q1", "預算怎麼抓？", "我們會在規劃時提供分階段估算，先落地最關鍵的 20–40%，再視成效追加，降低一次到位的風險。"],
-  ["Q2", "時程怎麼排？", "以里程碑與 UAT 指標拆分，每週固定 Demo 與回報，避免後期才發現落差。"],
-  ["Q3", "AI 真的能上 production？", "可以，但前提是資料治理與保護機制要同時做。我們已有實際運行的 Agent，會搭配 audit log、人工複核點與 fallback 流程。"],
-  ["Q4", "上線後怎麼維護？", "提供事件回應、月度例行檢查、版本升級、安全修補與備份演練等維運方案。"],
-  ["Q5", "可與現有系統整合嗎？", "可。我們採 API First，支援 ERP、金流、物流、CRM、電商等常見系統雙向串接。"],
+const faqGroups = [
+  {
+    title: "A. 入門與價格認知",
+    subtitle: "常見議題",
+    items: [
+      ["1", "做一個網站多少錢？ *", "依功能與複雜度不同，製作總價從 5 萬～500 萬皆有可能，就像建築及裝潢，從套房到豪宅飯店皆有懸殊之差異。"],
+      ["2", "為什麼報價差異這麼大？ *", "差異來自：功能、設計、客製程度、穩定性與擴展性。就像車子，有代步車也有跑車，即便都是輪子也有懸殊差異，最終還是取決於總預算。此外若是涉及商業模式，亦不建議總預算放置過多於系統部位，因為需考量保留行銷、行政、規劃等執行預算。"],
+      ["3", "為什麼評估起來比較貴？ *", "儘管我們已相較業界優惠許多，但仍有許多隱性成本往往是決定系統成敗的關鍵，若有實際預算考量應先如實告知，我方亦擅長在有限預算內達到客戶的核心需求目標。"],
+      ["4", "可以做便宜一點嗎？ *", "可以，只要如實告知實際預算，可以根據重要性減少功能、改變機制，或降低客製程度。"],
+      ["5", "為什麼不能直接報價？或者報價很久？ *", "所有系統皆須經過詳細規劃過程，才能評估越趨近於實際施作情境所需要的成本；當需求尚不明朗或細節不足時，報價容易以超出安全的粗估範圍來提供。"],
+      ["6", "MVP 是什麼？ *", "最小可行產品，先做核心功能驗證，確保商業邏輯正確，且避免一次性投入過多成本卻走錯路，可以階段性試錯後調整。"],
+      ["7", "為什麼建議分階段？ *", "過往近乎所有專案失敗都是始於評估規劃的階段不充分，造成雙輸局面，理應降低風險，避免一次投入過大。"],
+      ["8", "開發時間多久？ *", "根據需求，約 2 週～6 個月以上，大型專案可能涉及更長時間。"],
+      ["9", "維護費是什麼？", "包含主機、更新、安全與維運。包含查找隱性未知的錯誤以及維持環境更新至安全版本。"],
+    ],
+  },
+  {
+    title: "B. 系統觀念與基本理解",
+    subtitle: "基礎名詞",
+    items: [
+      ["11", "網址（URL）是什麼？", "使用者進入網站的地址。（像門牌號碼）"],
+      ["12", "網域（Domain）是什麼？", "網站名稱，需要每年續費。（像你的品牌名稱）"],
+      ["13", "主機（Hosting）是什麼？", "放網站資料的伺服器。（像房子本體）"],
+      ["14", "網域 vs 主機差在哪？", "網域是地址，主機是內容所在。（像地址 vs 房子）"],
+      ["15", "API 是什麼？", "系統與系統之間的溝通方式。（像服務生幫你點餐）"],
+      ["16", "什麼叫「串接」？", "將不同系統連接。（像把不同電器接到同一個電源）"],
+      ["17", "為什麼串接會增加費用？ *", "需要整合第三方系統與處理例外。（像接不同品牌設備要轉接）"],
+      ["18", "前端 vs 後端？", "前端是畫面，後端是邏輯。（像店面 vs 廚房）"],
+      ["19", "資料庫是什麼？", "用來儲存資料。（像倉庫）"],
+      ["20", "SaaS 是什麼？", "雲端軟體服務。（像租用現成店面）"],
+    ],
+  },
+  {
+    title: "C. 功能與開發決策",
+    subtitle: "範圍選擇",
+    items: [
+      ["21", "可以之後再加功能嗎？ *", "可以，但前期架構需設計好。（像預留管線）"],
+      ["22", "可以只做部分功能嗎？", "可以，建議先做核心。（像先開主店）"],
+      ["23", "是否一定要做 App？", "不一定，很多情況 Web 即可。（像不一定要開分店）"],
+      ["24", "Web App 跟網站差在哪？", "Web App 偏功能，網站偏展示。（像工具 vs 展示間）"],
+      ["25", "是否需要後台？", "大部分系統都需要。（像控制室）"],
+      ["26", "是否需要權限控管？", "幾乎一定需要。（像門禁系統）"],
+      ["27", "是否需要報表？", "視營運需求而定。（像財報）"],
+      ["28", "是否需要即時系統？", "例如聊天才需要。（像即時通訊）"],
+      ["29", "是否可以用現成工具？", "可以，但彈性有限。（像租現成店面）"],
+      ["30", "客製 vs 套版怎麼選？ *", "看是否需要差異化。（像訂製西裝 vs 成衣）"],
+    ],
+  },
+  {
+    title: "D. 設計與使用體驗",
+    subtitle: "介面與流程",
+    items: [
+      ["31", "為什麼設計也要錢？ *", "影響轉換率與效率。（像店面動線設計）"],
+      ["32", "UI vs UX 差在哪？", "UI 是畫面，UX 是體驗。（像裝潢 vs 動線）"],
+      ["33", "是否一定要做 RWD？", "建議要。（像一個空間適合不同人使用）"],
+      ["34", "可以照參考網站做嗎？", "可以參考但不能複製。（像參考風格）"],
+      ["35", "為什麼要先做設計？", "避免開發後錯誤。（像先畫藍圖）"],
+      ["36", "是否需要 Dashboard？", "依需求而定。（像儀表板）"],
+      ["37", "是否需要動畫？", "不一定。（像裝飾）"],
+      ["38", "可以自己提供設計嗎？", "可以但需可實作。（像自己帶設計圖）"],
+      ["39", "品牌風格重要嗎？", "影響信任感。（像門面）"],
+      ["40", "為什麼有些網站比較順？", "因為流程有設計。（像動線順暢）"],
+    ],
+  },
+  {
+    title: "E. AI 與技術現實",
+    subtitle: "工具與限制",
+    items: [
+      ["41", "你們會用 AI 做嗎？ *", "會，但 AI 是工具。（像自動化機器）"],
+      ["42", "用 AI 為什麼還這麼貴？ *", "AI 解決速度，不解決決策。（像有工具但還要設計師）"],
+      ["43", "AI 可以直接做完整系統嗎？", "目前不行。（像自動化但還需要規劃）"],
+      ["44", "為什麼還需要工程團隊？", "需要整合與設計。（像工程師蓋房）"],
+      ["45", "AI 會偷我的資料嗎？", "公開 AI 有風險。（像把機密講給外人）"],
+      ["46", "可以做私有 AI 嗎？", "可以。（像內部系統）"],
+      ["47", "AI 做出來可靠嗎？", "需要驗證。（像實習生）"],
+      ["48", "AI 會取代工程師嗎？", "目前不會。（像工具不會取代設計）"],
+      ["49", "可以用 AI 降成本嗎？", "部分可以。（像自動化降低工時）"],
+      ["50", "AI 最大限制是什麼？", "缺乏整體決策。（像沒有全局視角）"],
+    ],
+  },
+  {
+    title: "F. 合約、權利與控制權",
+    subtitle: "交付與授權",
+    items: [
+      ["51", "程式碼會給我嗎？ *", "依合約。（像房子的產權）"],
+      ["52", "設計稿可以給原始檔嗎？ *", "可以但需約定。（像設計藍圖）"],
+      ["53", "著作權是誰的？", "依合約。（像設計權）"],
+      ["54", "我可以拿去給別人用嗎？", "需確認授權。（像轉讓設計）"],
+      ["55", "可以只買設計嗎？", "可以。（像只買設計圖）"],
+      ["56", "我可以自己架主機嗎？", "可以。（像自己管理房子）"],
+      ["57", "可以轉給別人維護嗎？", "可以。（像換管理公司）"],
+      ["58", "如果你們不在了怎麼辦？", "需有文件。（像有施工圖）"],
+      ["59", "我可以改程式嗎？", "可以。（像改裝）"],
+      ["60", "是否需要合約？", "一定需要。（像法律保障）"],
+    ],
+  },
+  {
+    title: "G. 風險、品質與現實",
+    subtitle: "交付管理",
+    items: [
+      ["61", "可以保證成功嗎？ *", "不能。（像工具不能保證賺錢）"],
+      ["62", "可以保證排名（SEO）嗎？ *", "不能。（像廣告不能保證成交）"],
+      ["63", "為什麼專案會失敗？ *", "方向錯誤。（像走錯路）"],
+      ["64", "為什麼需求要寫很細？", "避免做錯。（像施工圖）"],
+      ["65", "可以很快做完嗎？", "可以但有代價。（像趕工）"],
+      ["66", "可以邊做邊改嗎？", "可以但成本高。（像邊蓋邊改）"],
+      ["67", "為什麼修改要收費？", "因為影響工時。（像改設計）"],
+      ["68", "可以無限修改嗎？", "通常不行。（像工程變更）"],
+      ["69", "為什麼要驗收？", "確保品質。（像驗屋）"],
+      ["70", "為什麼要文件？", "確保可維護。（像施工圖）"],
+    ],
+  },
+  {
+    title: "H. 付款相關",
+    subtitle: "最關鍵",
+    items: [
+      ["71", "別人比較便宜？ *", "品質與架構不同。（像不同等級產品）"],
+      ["72", "我只要很簡單功能 *", "表面簡單但邏輯不簡單。（像看起來簡單的機器）"],
+      ["73", "可以用模板嗎？", "可以但有限。（像現成方案）"],
+      ["74", "為什麼這功能這麼貴？", "成本在邏輯。（像機械設計）"],
+      ["75", "可以免費試做嗎？", "通常不行。（像免費設計）"],
+      ["76", "可以成功再付錢嗎？", "可分階段。（像工程付款）"],
+      ["77", "為什麼要簽約？", "保障雙方。（像契約）"],
+      ["78", "為什麼要分階段付款？", "降低風險。（像工程款）"],
+      ["79", "為什麼要這麼多討論？", "避免錯誤。（像設計會議）"],
+      ["80", "為什麼系統這麼複雜？", "因為反映商業流程。（像一整套運作系統）"],
+    ],
+  },
 ];
+
+const faqCount = faqGroups.reduce((count, group) => count + group.items.length, 0);
+
+const pageTitles = {
+  about: {
+    kicker: "About",
+    title: "關於我們",
+    lede: "理解我們如何規劃系統、設計流程，並把長期可維護性放進每一次交付。",
+  },
+  case: {
+    kicker: "Showcase",
+    title: "參考案例",
+    lede: "從真實應用情境出發，看系統如何解決流程、資料與營運效率問題。",
+  },
+  solutions: {
+    kicker: "Showcase",
+    title: "參考案例",
+    lede: "依產業與情境整理常見系統應用方向，協助你對照自己的需求。",
+  },
+  faq: {
+    kicker: "FAQ",
+    title: "常見問題",
+    lede: "整理入門、系統、功能、設計、AI、合約、風險與付款相關等合作前最常遇到的問題。",
+  },
+  contact: {
+    kicker: "Contact",
+    title: "聯繫我們",
+    lede: "告訴我們你的現況、目標與卡住的地方，我們會先協助釐清方向。",
+  },
+};
 
 function getMenuItems(locale) {
   const labels = menuLabels[locale] || menuLabels.zh;
@@ -281,6 +433,22 @@ function SectionEyebrow({ index, label, meta }) {
         {label}
       </span>
     </div>
+  );
+}
+
+function PageTitle({ page }) {
+  if (!page) {
+    return null;
+  }
+
+  return (
+    <section className="page-title reveal" aria-labelledby="page-title">
+      <div className="wrap">
+        <p className="page-title-kicker">{page.kicker}</p>
+        <h1 id="page-title">{page.title}</h1>
+        <p>{page.lede}</p>
+      </div>
+    </section>
   );
 }
 
@@ -387,7 +555,7 @@ function Manifesto() {
         <div className="manifesto">
           <h2 className="manifesto-quote">
             <span className="mq-line mq-prelude">
-              難用的系統，多半不是技術問題，
+              難用的系統，多半不是技術或預算問題
             </span>
             <span className="mq-line mq-headline">
               而是<span className="hl underline">設計方向錯了</span>。
@@ -400,12 +568,17 @@ function Manifesto() {
           </h2>
           <div className="manifesto-aside">
             <p>
-              規劃與設計的深度，
-              決定系統的壽命。
+              「規劃與機制構思的深度，決定系統的產品壽命。」
             </p>
             <p>
-              我們不為交付而做，
-              只為真正服務使用者而設計。
+              使用敏捷開發及靈活應用的彈性架構<br />
+              如同建築師的設計圖<br />
+              在<b>施工前</b>就要把結構、動線、使用者體驗都反覆驗證。
+            </p>
+            <p>
+              設計出來的系統規劃，即便交由任何人執行<br />
+              都能確保與設計初衷及目標相合<br />
+              不單為交付而做，而是為真正服務使用者而設計。
             </p>
             <span className="signoff">— 這，就是系統永續的關鍵。</span>
           </div>
@@ -422,7 +595,7 @@ function Solutions() {
   return (
     <section className="section reveal" id="solutions" aria-label="Solutions">
       <div className="wrap">
-        <SectionEyebrow index="§ 01 / Solutions" label="我們交付的方案範圍。" meta={`${solutions.length} programs`} />
+        <SectionEyebrow index="§ 參考其他人的應用情境" label="根據產業分類" meta={`${solutions.length} programs`} />
         <div className="solutions">
           <ul className="sol-list">
             {solutions.map((s, i) => (
@@ -469,6 +642,40 @@ function Solutions() {
               </a>
             </div>
           </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ApplicationScenarioTeaser() {
+  return (
+    <section className="section bg-deep reveal" aria-label="Application scenario reference">
+      <div className="wrap">
+        <div className="scenario-teaser">
+          <p className="scenario-teaser-kicker">Showcase</p>
+          <h2>如果你需要參考其他人的應用情境</h2>
+          <a className="btn btn-primary" href="/case.html">
+            <span>了解更多</span>
+            <span className="arrow" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FAQTeaser() {
+  return (
+    <section className="section bg-deep reveal" aria-label="FAQ reference">
+      <div className="wrap">
+        <div className="scenario-teaser">
+          <p className="scenario-teaser-kicker">FAQ</p>
+          <h2>常見問題已整理成獨立頁面</h2>
+          <a className="btn btn-primary" href="/faq.html">
+            <span>前往常見問題</span>
+            <span className="arrow" aria-hidden="true" />
+          </a>
         </div>
       </div>
     </section>
@@ -620,35 +827,75 @@ function TechStack() {
 }
 
 function FAQ() {
-  const [open, setOpen] = useState(0);
+  const [openGroup, setOpenGroup] = useState(0);
+  const [open, setOpen] = useState("0-0");
 
   return (
-    <section className="section bg-deep reveal" aria-label="FAQ">
+    <section className="section bg-deep reveal" id="faq" aria-label="FAQ">
       <div className="wrap">
-        <SectionEyebrow index="§ 07 / FAQ" label="客戶最常問的事。" meta={`${faqs.length} questions`} />
-        <div className="faq-list">
-          {faqs.map(([num, q, a], i) => {
-            const isOpen = open === i;
-            return (
-              <div className={`faq-item ${isOpen ? "open" : ""}`} key={num}>
-                <button
-                  className="faq-q"
-                  type="button"
-                  onClick={() => setOpen(isOpen ? -1 : i)}
-                  aria-expanded={isOpen}
-                >
-                  <span className="num">{num}</span>
-                  <span>{q}</span>
-                  <span className="toggle" aria-hidden="true" />
-                </button>
-                <div className="faq-a">
-                  <div>
-                    <p>{a}</p>
+        <div className="faq-groups">
+          {faqGroups.map((group, groupIndex) => (
+            <section
+              className={`faq-group ${openGroup === groupIndex ? "open" : ""}`}
+              key={group.title}
+              aria-labelledby={`faq-group-${groupIndex}`}
+            >
+              <button
+                className="faq-group-head"
+                type="button"
+                id={`faq-group-${groupIndex}`}
+                aria-expanded={openGroup === groupIndex}
+                onClick={() => {
+                  setOpenGroup((current) => {
+                    const next = current === groupIndex ? -1 : groupIndex;
+                    if (next !== -1) {
+                      setOpen(`${next}-0`);
+                    }
+                    return next;
+                  });
+                }}
+              >
+                <span className="faq-group-title">{group.title}</span>
+                <span className="faq-group-subtitle">{group.subtitle}</span>
+                <span className="faq-group-toggle" aria-hidden="true" />
+              </button>
+              <div className="faq-group-body">
+                <div>
+                  <div className="faq-list">
+                    {group.items.map(([num, q, a], itemIndex) => {
+                      const itemId = `${groupIndex}-${itemIndex}`;
+                      const isOpen = open === itemId;
+                      return (
+                        <div className={`faq-item ${isOpen ? "open" : ""}`} key={num}>
+                          <button
+                            className="faq-q"
+                            type="button"
+                            onClick={() => setOpen(isOpen ? "" : itemId)}
+                            aria-expanded={isOpen}
+                          >
+                            <span className="num">{num}</span>
+                            <span>{q}</span>
+                            <span className="toggle" aria-hidden="true" />
+                          </button>
+                          <div className="faq-a">
+                            <div>
+                              <p>{a}</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
+                  {group.note ? (
+                    <p className="faq-note">
+                      <span>關鍵回答邏輯</span>
+                      {group.note}
+                    </p>
+                  ) : null}
                 </div>
               </div>
-            );
-          })}
+            </section>
+          ))}
         </div>
       </div>
     </section>
@@ -727,8 +974,8 @@ function Footer() {
           </div>
           <div>
             <a href="/about.html">關於我們</a>
-            <a href="/solutions.html">解決方案</a>
             <a href="/case.html">參考案例</a>
+            <a href="/faq.html">常見問題</a>
             <a href="/contact.html">聯繫我們</a>
           </div>
           <div>
@@ -1075,6 +1322,10 @@ export default function App() {
     }
     return window.matchMedia("(max-width: 640px), (pointer: coarse)").matches;
   }, []);
+  const pageTitle = pageTitles[initialSection];
+  const isStandalonePage = Boolean(pageTitle);
+  const isFAQPage = initialSection === "faq";
+  const shouldShowApplicationScenarios = initialSection === "case" || initialSection === "solutions";
 
   useEffect(() => {
     document.documentElement.lang = locale === "en" ? "en" : locale === "ja" ? "ja" : "zh-Hant";
@@ -1082,7 +1333,7 @@ export default function App() {
   }, [locale]);
 
   useEffect(() => {
-    if (!initialSection) {
+    if (!initialSection || isStandalonePage) {
       return undefined;
     }
 
@@ -1096,7 +1347,7 @@ export default function App() {
     return () => {
       window.clearTimeout(timer);
     };
-  }, [initialSection]);
+  }, [initialSection, isStandalonePage]);
 
   useEffect(() => {
     if (!isLocalPreview || showConstructionPreview) {
@@ -1156,19 +1407,44 @@ export default function App() {
       <Header locale={locale} onToggleLocale={setLocale} />
       {shouldUseMobileNav ? <MobileNav locale={locale} /> : <DesktopCursorMenu locale={locale} />}
       <main className="page-main" id="mainpage">
-        <Hero />
-        <Marquee />
-        <Numbers />
-        <Manifesto />
-        <Solutions />
-        <AILab />
-        <CaseStudy />
-        <Process />
-        <TechStack />
-        <FAQ />
-        <Contact />
+        {isStandalonePage ? (
+          <>
+            <PageTitle page={pageTitle} />
+            {initialSection === "about" ? (
+              <>
+                <Numbers />
+                <Manifesto />
+              </>
+            ) : null}
+            {initialSection === "case" ? (
+              <>
+                <CaseStudy />
+                <Solutions />
+              </>
+            ) : null}
+            {initialSection === "solutions" ? <Solutions /> : null}
+            {isFAQPage ? <FAQ /> : null}
+            {initialSection === "contact" ? <Contact /> : null}
+          </>
+        ) : (
+          <>
+            <Hero />
+            <Marquee />
+            <Numbers />
+            <Manifesto />
+            {initialSection === "solutions" ? <Solutions /> : null}
+            {shouldShowApplicationScenarios ? null : <ApplicationScenarioTeaser />}
+            <AILab />
+            <CaseStudy />
+            {initialSection === "case" ? <Solutions /> : null}
+            <Process />
+            <TechStack />
+            <FAQTeaser />
+            <Contact />
+          </>
+        )}
       </main>
-      <Footer />
+      {isFAQPage ? null : <Footer />}
       <GoToTop />
     </>
   );
