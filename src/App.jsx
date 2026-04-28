@@ -8,18 +8,21 @@ const localeOptions = [
 
 const menuLabels = {
   zh: {
+    home: "首頁",
     about: "關於我們",
     solutions: "參考案例",
     case: "常見問題",
     contact: "聯繫我們",
   },
   en: {
+    home: "Home",
     about: "About",
     solutions: "Case Studies",
     case: "FAQ",
     contact: "Contact",
   },
   ja: {
+    home: "ホーム",
     about: "私たちについて",
     solutions: "事例紹介",
     case: "よくある質問",
@@ -28,6 +31,7 @@ const menuLabels = {
 };
 
 const menuTargets = [
+  { key: "home", href: "/", section: "home", position: "center" },
   { key: "about", href: "/about.html", section: "about", position: "top" },
   { key: "solutions", href: "/case.html", section: "case", position: "left" },
   { key: "case", href: "/faq.html", section: "faq", position: "right" },
@@ -142,44 +146,52 @@ const solutions = [
 const aiCards = [
   {
     span: "span-6 flagship",
-    idx: "AI/01",
-    tag: "Agent Workflow",
-    titleHTML: <>會處理單據的 <span className="hl">AI 代理</span>，不只是 chatbot。</>,
-    body: "把客服、補單、退換貨、發票勘誤、報價單核對等重複工作交給 Agent。Agent 能讀懂內部 SOP、操作 ERP 與 WMS、必要時轉接真人。",
-    chips: ["LangGraph", "Claude / GPT-4o", "Function Calling", "Audit Log"],
+    idx: "01",
+    tag: "客製化企業營運系統",
+    titleHTML: <>企業成長的 <span className="hl">加速器</span></>,
+    body: "將實際業務流程、情境、核心競爭力系統化、自動作業，將注意力放在最有價值的地方。",
+    chips: ["APP", "ERP", "CRM", "BDM", "HRM", "WMS", "SCM"],
   },
   {
     span: "span-6",
-    idx: "AI/02",
-    tag: "RAG Knowledge",
-    titleHTML: <>讓員工不用再問<span className="hl">「文件在哪」</span>。</>,
-    body: "把產品手冊、合約範本、SOP、過往工單向量化，內接 Slack / LINE / 內部系統，回答可追溯來源、可校稿、可保密。",
-    chips: ["pgvector", "LlamaIndex", "Hybrid Search", "Permission-aware"],
+    idx: "02",
+    tag: "Website APP",
+    titleHTML: <>商務網站<span className="hl">應用</span></>,
+    body: "商務官方網站、品牌形象、電子商務網站、線上預約、客製化應用等",
+    chips: ["靜態網站", "動態網站", "中型網站", "大型網站"],
   },
   {
     span: "span-4",
-    idx: "AI/03",
-    tag: "Document AI",
-    titleHTML: <>OCR + LLM <span className="hl">智能擷取</span></>,
-    body: "發票、報價單、提單、合約批量解析，欄位寫進 ERP 即可入帳。",
-    chips: ["Vision", "Layout-aware", "Schema Validate"],
+    idx: "03",
+    tag: "Global Growth",
+    titleHTML: <><span className="hl">國際</span>行銷</>,
+    body: "從市場策略、SEO 到業務開發與經銷代理，我們協助企業建立完整的成長與成交路徑，而不只是曝光。",
+    chips: [
+      "Business Development",
+      "SEO Strategy",
+      "Channel Partner",
+      "Sales Funnel",
+      "Go-to-Market",
+      "Consulting"
+    ],
   },
   {
     span: "span-4",
-    idx: "AI/04",
-    tag: "Private LLM",
-    titleHTML: <>地端／VPC <span className="hl">私有部署</span></>,
-    body: "資料不出機房。Llama / Qwen / Mistral 模型微調與量化，內部 GPU 可跑。",
-    chips: ["Ollama", "vLLM", "Fine-tune", "Quantize"],
+    idx: "04",
+    tag: "Graphic Design",
+    titleHTML: <><span className="hl">視覺</span>設計</>,
+    body: "UI、UX、品牌視覺設計、海報、商務簡報、印刷品、行銷素材 等。",
+    chips: ["簡報", "海報", "DM", "社群宣傳", "活動策展", "印刷品", "CIS", "Logo"],
   },
   {
     span: "span-4",
-    idx: "AI/05",
-    tag: "Dev Velocity",
-    titleHTML: <>用 AI <span className="hl">加速交付</span></>,
-    body: "我們內部以 Claude Code、Codex、Cursor 為日常引擎，同樣價碼可交付更多範圍。",
-    chips: ["Claude Code", "Codex", "Spec-driven", "QA Auto"],
+    idx: "05",
+    tag: "Documents",
+    titleHTML: <>整合<span className="hl">資訊</span>服務 </>,
+    body: "系統維運、雲端架構、私有模型、資料分析、自動化、資料處理。",
+    chips: ["VPS", "CI/CD", "LLM", "Workflow"],
   },
+
 ];
 
 const processSteps = [
@@ -235,14 +247,14 @@ const faqGroups = [
     title: "B. 系統觀念與基本理解",
     subtitle: "基礎名詞",
     items: [
-      ["11", "網址（URL）是什麼？", "使用者進入網站的地址。（像門牌號碼）"],
-      ["12", "網域（Domain）是什麼？", "網站名稱，需要每年續費。（像你的品牌名稱）"],
-      ["13", "主機（Hosting）是什麼？", "放網站資料的伺服器。（像房子本體）"],
-      ["14", "網域 vs 主機差在哪？", "網域是地址，主機是內容所在。（像地址 vs 房子）"],
-      ["15", "API 是什麼？", "系統與系統之間的溝通方式。（像服務生幫你點餐）"],
+      ["11", "網址（URL）是什麼？", "使用者進入網站的地址。（就像門牌號碼）"],
+      ["12", "網域（Domain）是什麼？", "網站名稱就像是你的住宅或社區名稱，需要向網域供應商每年續費，沒辦法買斷。(全世界的網域由 ICANN 管理，規則只能註冊／續租，不能永久擁有) "],
+      ["13", "主機（Hosting）是什麼？", "放網站資料的伺服器。（就像是放置房屋建物的土地）"],
+      ["14", "網域 vs 主機差在哪？", "網域是地址，主機是土地所在。而土地上面的房屋建物則是網站或程式系統。"],
+      ["15", "API 是什麼？", "系統與系統之間的溝通方式。（按照特定規格溝通對接的模式）"],
       ["16", "什麼叫「串接」？", "將不同系統連接。（像把不同電器接到同一個電源）"],
-      ["17", "為什麼串接會增加費用？ *", "需要整合第三方系統與處理例外。（像接不同品牌設備要轉接）"],
-      ["18", "前端 vs 後端？", "前端是畫面，後端是邏輯。（像店面 vs 廚房）"],
+      ["17", "為什麼串接會增加費用？ *", "需要整合第三方系統與處理流程及例外（例如：第三方支付、刷卡、電子發票、數位錢包、數位憑證等）。"],
+      ["18", "什麼是前端 vs 後端？", "前端是畫面，後端是邏輯。（像餐廳店面裝潢 vs 餐廳動線機能）"],
       ["19", "資料庫是什麼？", "用來儲存資料。（像倉庫）"],
       ["20", "SaaS 是什麼？", "雲端軟體服務。（像租用現成店面）"],
     ],
@@ -251,96 +263,122 @@ const faqGroups = [
     title: "C. 功能與開發決策",
     subtitle: "範圍選擇",
     items: [
-      ["21", "可以之後再加功能嗎？ *", "可以，但前期架構需設計好。（像預留管線）"],
-      ["22", "可以只做部分功能嗎？", "可以，建議先做核心。（像先開主店）"],
-      ["23", "是否一定要做 App？", "不一定，很多情況 Web 即可。（像不一定要開分店）"],
-      ["24", "Web App 跟網站差在哪？", "Web App 偏功能，網站偏展示。（像工具 vs 展示間）"],
-      ["25", "是否需要後台？", "大部分系統都需要。（像控制室）"],
-      ["26", "是否需要權限控管？", "幾乎一定需要。（像門禁系統）"],
-      ["27", "是否需要報表？", "視營運需求而定。（像財報）"],
-      ["28", "是否需要即時系統？", "例如聊天才需要。（像即時通訊）"],
-      ["29", "是否可以用現成工具？", "可以，但彈性有限。（像租現成店面）"],
-      ["30", "客製 vs 套版怎麼選？ *", "看是否需要差異化。（像訂製西裝 vs 成衣）"],
+      ["21", "可以先做一部分後再加功能嗎？ *", "可以，但前期架構需設計好。（像預留施工管線）"],
+      ["22", "可以只做部分功能嗎？", "可以，建議先做核心。（先求有再求好）"],
+      ["23", "是否一定要做 App？", "不一定，需要根據使用者類型，以及行銷策略而定。"],
+      ["24", "Web App 跟網站差在哪？", "架構相同，但呈現方式大不同，通常是因為純移動裝置 APP 開發及維護成本較高，而優先使用 Web App。"],
+      ["25", "是否需要管理後台？", "若是資料時常異動或時常累積，希望由公司內部人員可直接管理，最小化後期開發公司的支援，則需要管理後台。(需先定義好哪些資料可以編輯)"],
+      ["26", "是否需要權限控管？", "幾乎一定需要。"],
+      ["27", "是否需要報表？", "視營運需求而定，應將數據轉為可視化呈現或報表下載。"],
+      ["28", "是否需要即時系統？", "若涉及到即時聊天室，則需要架構即時系統。若預算有限則改為非即時系統，則需要調整使用者體驗以配合非即時的特性，如 留言式對話。"],
+      ["29", "是否可以用現成工具？", "可以，諸如 WordPress、Shopify、Wix 等，但擴充彈性受限於平台規範。（像租現成店面）"],
+      ["30", "客製 vs 套版怎麼選？ *", "取決於功能需求、上線時間要求，看是否需要差異化。（像訂製西裝 vs 成衣）"],
     ],
   },
   {
     title: "D. 設計與使用體驗",
     subtitle: "介面與流程",
     items: [
-      ["31", "為什麼設計也要錢？ *", "影響轉換率與效率。（像店面動線設計）"],
+      ["31", "為什麼視覺設計也要錢？ *", "若使用者為終端消費者，則視覺設計將嚴重影響轉換率與效率，但同時需要經過市場驗證，顧視覺設計仍然是使用型系統佔比非常大的部分，甚至部分品牌可能超過系統設計。（像店面品牌、店面動線設計）"],
       ["32", "UI vs UX 差在哪？", "UI 是畫面，UX 是體驗。（像裝潢 vs 動線）"],
-      ["33", "是否一定要做 RWD？", "建議要。（像一個空間適合不同人使用）"],
-      ["34", "可以照參考網站做嗎？", "可以參考但不能複製。（像參考風格）"],
-      ["35", "為什麼要先做設計？", "避免開發後錯誤。（像先畫藍圖）"],
-      ["36", "是否需要 Dashboard？", "依需求而定。（像儀表板）"],
-      ["37", "是否需要動畫？", "不一定。（像裝飾）"],
-      ["38", "可以自己提供設計嗎？", "可以但需可實作。（像自己帶設計圖）"],
-      ["39", "品牌風格重要嗎？", "影響信任感。（像門面）"],
-      ["40", "為什麼有些網站比較順？", "因為流程有設計。（像動線順暢）"],
+      ["33", "是否一定要做 RWD？", "通常是內建選項。（像一個空間適合不同人使用）"],
+      ["34", "可以照參考網站做嗎？", "可以參考但不能複製，必須以同品質但不同風格方式呈現。（像參考風格）"],
+      ["35", "為什麼要先做設計規劃？", "避免開發後才發現不是自己要的或者規劃錯誤。（像先畫藍圖）"],
+      ["36", "是否需要儀表板 Dashboard？", "通常都需要，因為只要系統有數據，就應該有可視化操作作呈現。尤其是若大型電視牆或者螢幕呈現。"],
+      ["37", "是否需要動畫？", "不一定，視是否增加使用者體驗 UX 而定。"],
+      ["38", "可以自己提供設計嗎？", "可以，但仍然需要實作成可施工設計圖。"],
+      ["39", "品牌風格重要嗎？", "如同門面一般，影響信任感。"],
+      ["40", "為什麼有些網站比較順？", "讀取速度取決於 前端設計架構、素材選擇、主機環境等，應逐步檢核、逐步優化。"],
     ],
   },
   {
-    title: "E. AI 與技術現實",
+    title: "E. AI 技術現實",
     subtitle: "工具與限制",
     items: [
-      ["41", "你們會用 AI 做嗎？ *", "會，但 AI 是工具。（像自動化機器）"],
-      ["42", "用 AI 為什麼還這麼貴？ *", "AI 解決速度，不解決決策。（像有工具但還要設計師）"],
-      ["43", "AI 可以直接做完整系統嗎？", "目前不行。（像自動化但還需要規劃）"],
-      ["44", "為什麼還需要工程團隊？", "需要整合與設計。（像工程師蓋房）"],
-      ["45", "AI 會偷我的資料嗎？", "公開 AI 有風險。（像把機密講給外人）"],
-      ["46", "可以做私有 AI 嗎？", "可以。（像內部系統）"],
-      ["47", "AI 做出來可靠嗎？", "需要驗證。（像實習生）"],
-      ["48", "AI 會取代工程師嗎？", "目前不會。（像工具不會取代設計）"],
-      ["49", "可以用 AI 降成本嗎？", "部分可以。（像自動化降低工時）"],
-      ["50", "AI 最大限制是什麼？", "缺乏整體決策。（像沒有全局視角）"],
+      ["41", "你們會用 AI 做嗎？ *", "僅在我們的規劃下輔助使用，因為 AI 設計風格過於鮮明，而每一位客戶的需求及風格都不同，仍然需要搭配非常多的規劃設計、價值驗證。"],
+      ["42", "用 AI 為什麼還這麼貴？ *", "AI 僅能解決部分的設計速度，但無法解決決策及底層邏輯，但可以讓預算用在最有價值的地方。"],
+      ["43", "AI 可以直接做完整系統嗎？", "就實際落地商業化仍然還有一段距離。"],
+      ["44", "為什麼還需要工程團隊？", "AI 如同施工助理，可以加速，但仍然需要整合與設計核心。"],
+      ["45", "AI 會偷我的資料嗎？", "若涉及機密或者商業邏輯，則應該使用內部私有模型，避免外洩風險。"],
+      ["46", "可以做私有 AI 嗎？", "可以，根據需求架設私人模型。"],
+      ["47", "AI 做出來可靠嗎？", "就商業落地而言仍然有非常的多細節需要逐步修正。"],
+      ["48", "AI 會取代工程師嗎？", "中高階工程師仍無法取代，但會對既有的市場收入產生影響。"],
+      ["49", "可以用 AI 降成本嗎？", "絕對可以，根據目前已實際落地的專案，AI 已加速節省開發時間達 70%，剩餘決策、溝通、反饋時間仍無法縮短。"],
+      ["50", "AI 最大限制是什麼？", "目前最缺乏的部份是商業邏輯機制、視覺設計、使用者體驗等，仍然需要有詳盡的系統規劃及品牌統一性。"],
     ],
   },
   {
     title: "F. 合約、權利與控制權",
     subtitle: "交付與授權",
     items: [
-      ["51", "程式碼會給我嗎？ *", "依合約。（像房子的產權）"],
-      ["52", "設計稿可以給原始檔嗎？ *", "可以但需約定。（像設計藍圖）"],
-      ["53", "著作權是誰的？", "依合約。（像設計權）"],
-      ["54", "我可以拿去給別人用嗎？", "需確認授權。（像轉讓設計）"],
-      ["55", "可以只買設計嗎？", "可以。（像只買設計圖）"],
-      ["56", "我可以自己架主機嗎？", "可以。（像自己管理房子）"],
-      ["57", "可以轉給別人維護嗎？", "可以。（像換管理公司）"],
-      ["58", "如果你們不在了怎麼辦？", "需有文件。（像有施工圖）"],
-      ["59", "我可以改程式嗎？", "可以。（像改裝）"],
-      ["60", "是否需要合約？", "一定需要。（像法律保障）"],
+      ["51", "程式碼會給我嗎？ *", "視合約條件而定。一般可分為：僅提供系統使用權、交付程式碼但不包含重製／轉售／再授權權利，或依專案另行約定完整原始碼與智慧財產權歸屬。實際交付範圍、授權方式、維護責任與使用限制，皆應以合約明確載明。"],
+      ["52", "設計稿可以給原始檔嗎？ *", "可提供，但需於合約中明確約定交付範圍（如 Figma / AI / PSD 等原始檔）、使用授權（是否包含修改權、再利用權）、以及是否包含設計系統與元件庫。未約定時，預設僅提供最終輸出檔。"],
+
+      ["53", "著作權是誰的？", "依合約約定。一般區分為：著作財產權移轉（買斷）或授權使用（非專屬／專屬）。未特別約定時，著作權通常仍歸創作者所有，客戶僅取得使用授權。另需特別區分：若涉及客戶既有之專利、商業機密、營業秘密或專有技術（Know-how），其權利仍專屬於客戶，我方僅於專案範圍內為履約目的使用，且負有保密義務，不因設計或開發成果而取得任何權利或衍生權。相關權利歸屬與使用範圍，應於合約中明確載明。"],
+
+      ["54", "我可以拿去給別人用嗎？", "需依授權範圍判定。若為非專屬授權且未限制，可於約定範圍內使用；若涉及轉讓、再授權或商業擴散，通常需取得書面同意或另行授權。"],
+
+      ["55", "可以只買設計嗎？", "可以。可單獨委託設計服務，但需明確界定交付內容（如視覺稿、系統規劃書）、檔案格式、以及後續使用與授權範圍，避免與開發權責混淆。"],
+
+      ["56", "我可以自己架主機嗎？", "可以。若採自架模式，需由客戶負責主機環境（含資安、備份、監控、更新維護等），我方可提供部署文件或技術支援，並於合約中界定責任邊界。"],
+
+      ["57", "可以轉給別人維護嗎？", "可以，但需符合授權條款。若涉及程式碼交付，應確認是否包含維護權、修改權與技術文件完整性；必要時可提供交接文件或付費技術交接服務。"],
+
+      ["58", "如果你們不在了怎麼辦？", "可透過機制降低風險，例如：完整技術文件、原始碼託管（如 escrow）、版本控管（Git）、第三方可接手的架構設計等，並於合約中事先約定交付與備援條款。"],
+
+      ["59", "我可以改程式嗎？", "需視授權而定。若包含原始碼且授權含修改權，則可自行或委外修改；若未授權修改或僅提供使用權，則不得擅自變更，以免違反合約或影響維護責任。"],
+
+      ["60", "是否需要合約？", "視專案規模與複雜度而定。小型案件可由報價單或訂單條款構成契約；中大型或涉及客製開發、智慧財產權與維運責任之專案，建議簽訂正式合約。無論形式為何，均應明確約定交付內容、費用、時程、驗收與授權條款，以降低履約與法律風險。"],
     ],
   },
   {
     title: "G. 風險、品質與現實",
     subtitle: "交付管理",
     items: [
-      ["61", "可以保證成功嗎？ *", "不能。（像工具不能保證賺錢）"],
-      ["62", "可以保證排名（SEO）嗎？ *", "不能。（像廣告不能保證成交）"],
-      ["63", "為什麼專案會失敗？ *", "方向錯誤。（像走錯路）"],
-      ["64", "為什麼需求要寫很細？", "避免做錯。（像施工圖）"],
-      ["65", "可以很快做完嗎？", "可以但有代價。（像趕工）"],
-      ["66", "可以邊做邊改嗎？", "可以但成本高。（像邊蓋邊改）"],
-      ["67", "為什麼修改要收費？", "因為影響工時。（像改設計）"],
-      ["68", "可以無限修改嗎？", "通常不行。（像工程變更）"],
-      ["69", "為什麼要驗收？", "確保品質。（像驗屋）"],
-      ["70", "為什麼要文件？", "確保可維護。（像施工圖）"],
+      ["61", "可以保證成功嗎？ *", "無法保證最終商業成果（如營收或轉換率）。我們可保證依約完成交付內容、品質標準與技術規格；成效仍取決於市場、營運策略與使用方式等多重因素。"],
+
+      ["62", "可以保證排名（SEO）嗎？ *", "無法保證特定排名。搜尋引擎演算法與競爭環境持續變動，我們可依最佳實務提供優化策略（技術SEO、內容結構等），但不承諾特定名次或流量。"],
+
+      ["63", "為什麼專案會失敗？ *", "常見原因包含：需求定義不清、決策方向錯誤、頻繁變更範圍、資源不足或溝通落差。多數問題源於前期規劃與共識不足，而非單一技術問題。"],
+
+      ["64", "為什麼需求要寫很細？", "為確保交付一致性與可驗收性。明確需求可作為報價、排程與驗收依據，降低誤解與重工風險。"],
+
+      ["65", "可以很快做完嗎？", "可透過增加人力、簡化功能或採用現成方案加速，但通常會影響成本、品質或可擴展性，需於三者間取得平衡並事前約定。"],
+
+      ["66", "可以邊做邊改嗎？", "可行，但需納入變更管理流程（Change Request），包含影響評估、時程與費用調整，避免失控與延誤。"],
+
+      ["67", "為什麼修改要收費？", "若超出原合約範圍或影響既有設計／開發，將產生額外工時與風險，因此需依變更內容另行報價或計費。"],
+
+      ["68", "可以無限修改嗎？", "通常不行。合約會約定修改次數或範圍；超出部分需走變更流程並另計費，以確保專案可控與如期交付。"],
+
+      ["69", "為什麼要驗收？", "驗收用於確認交付是否符合合約規格與品質標準，並作為里程碑款項與責任轉移的依據。"],
+
+      ["70", "為什麼要文件？", "文件可確保系統可維護、可交接與可擴展，並作為後續營運、除錯與風險控管的重要依據。"],
     ],
   },
   {
     title: "H. 付款相關",
     subtitle: "最關鍵",
     items: [
-      ["71", "別人比較便宜？ *", "品質與架構不同。（像不同等級產品）"],
-      ["72", "我只要很簡單功能 *", "表面簡單但邏輯不簡單。（像看起來簡單的機器）"],
-      ["73", "可以用模板嗎？", "可以但有限。（像現成方案）"],
-      ["74", "為什麼這功能這麼貴？", "成本在邏輯。（像機械設計）"],
-      ["75", "可以免費試做嗎？", "通常不行。（像免費設計）"],
-      ["76", "可以成功再付錢嗎？", "可分階段。（像工程付款）"],
-      ["77", "為什麼要簽約？", "保障雙方。（像契約）"],
-      ["78", "為什麼要分階段付款？", "降低風險。（像工程款）"],
-      ["79", "為什麼要這麼多討論？", "避免錯誤。（像設計會議）"],
-      ["80", "為什麼系統這麼複雜？", "因為反映商業流程。（像一整套運作系統）"],
+      ["71", "別人比較便宜？ *", "報價差異通常來自架構設計、穩定性、擴展性與服務範圍不同，而非單純功能表面。較低價格可能未包含完整測試、文件、資安、設計機制或長期維護成本，需綜合評估整體價值與風險。"],
+
+      ["72", "我只要很簡單功能 *", "表面功能簡單不代表實作簡單，背後仍涉及資料結構、權限邏輯、例外處理與未來擴展性。需先釐清使用情境與邊界條件，才能準確評估成本與時程。"],
+
+      ["73", "可以用模板嗎？", "可以。模板或現成方案可降低開發成本與時程，但在客製化程度、擴展性與系統整合上會有所限制，需評估是否符合長期需求。"],
+
+      ["74", "為什麼客製功能這麼貴？", "成本主要來自邏輯設計、系統整合、穩定性與測試，而非畫面本身。越是關鍵功能，對資料正確性與例外處理要求越高，開發成本亦相對提升。"],
+
+      ["75", "可以免費試做嗎？", "通常不提供免費開發。可透過需求訪談、原型設計或系統規劃來降低決策風險，確保方向正確後再進入正式開發。"],
+
+      ["76", "可以成功再付錢嗎？", "原則上不建議以「最終商業成功」作為唯一付款條件，因其定義模糊且受市場與營運等外部因素影響。較可行方式為採里程碑分階段付款，並可另行約定具體且可驗證的量化指標（KPI），如流量、轉換率或系統效能等，作為部分款項的觸發條件。相關指標之定義、量測方式與責任歸屬，應於合約中明確約定。"],
+
+      ["77", "為什麼要簽約？", "非所有案件皆需正式合約。小型或低複雜度專案可由報價單或訂單條款構成契約；但對於中大型、客製化或涉及智慧財產權與維運責任之專案，建議簽訂正式合約，以明確界定交付範圍、費用、時程、驗收與權利義務，降低履約風險與爭議。"],
+
+      ["78", "為什麼要分階段付款？", "分攤雙方風險並對齊進度與成果，確保專案能持續推進，同時避免單方資金或履約壓力過高。"],
+
+      ["79", "為什麼要這麼多討論？", "前期討論不僅為建立需求共識，亦包含機制設計、流程驗證與風險評估。透過完整規劃，可於開發前先進行市場驗證（如原型測試、用戶回饋、MVP 驗證等），提早修正方向，降低後續變更、重工與決策錯誤所帶來的成本與風險。"],
+
+      ["80", "為什麼系統這麼複雜？", "系統複雜度通常源自實際商業流程、權限控管與資料流轉需求。為確保可用性與可擴展性，需反映這些真實條件，而非僅呈現表面功能。"],
     ],
   },
 ];
@@ -665,36 +703,18 @@ function ApplicationScenarioTeaser() {
   );
 }
 
-function FAQTeaser() {
-  return (
-    <section className="section bg-deep reveal" aria-label="FAQ reference">
-      <div className="wrap">
-        <div className="scenario-teaser">
-          <p className="scenario-teaser-kicker">FAQ</p>
-          <h2>常見問題已整理成獨立頁面</h2>
-          <a className="btn btn-primary" href="/faq.html">
-            <span>前往常見問題</span>
-            <span className="arrow" aria-hidden="true" />
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function AILab() {
   return (
     <section className="section bg-night reveal" id="ai-lab" aria-label="AI Lab">
       <div className="wrap">
-        <SectionEyebrow index="§ 03 / AI Lab" label="把 AI 變成可營運的系統。" meta="12 agents · in production" />
+        <SectionEyebrow index="§ Service" label="以客戶為本" meta="12 agents · in production" />
         <div className="ai-headline">
           <h2>
-            不是 <span className="strike">PoC</span>。
-            <br />
-            是會處理<span className="hl">單據</span>、回應<span className="hl">客戶</span>、跑<span className="hl">帳</span>的 AI。
+            核心服務項目
           </h2>
           <p className="lede">
-            2024–2025 我們把實驗室裡的 LLM 帶上 production。到 2026 年，已經有 12 個 Agent 在客戶營運線上每天工作。
+            自 2012 開始，深度結合台灣產業鏈資源，逐步走向國際
           </p>
         </div>
 
@@ -819,6 +839,75 @@ function TechStack() {
                 ))}
               </div>
             </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Insights() {
+  const posts = [
+    {
+      idx: "01",
+      tag: "AI Strategy",
+      title: "AI 不是工具，而是營運流程的重構",
+      body: "多數企業導入 AI 失敗，不是模型問題，而是流程沒有重設。我們看到的成功案例，都是先重做流程，再導入 AI。",
+      image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
+      meta: "Insight · 2026",
+    },
+    {
+      idx: "02",
+      tag: "System Design",
+      title: "為什麼多數系統上線後就開始失敗",
+      body: "問題從來不是技術，而是規劃。當系統用來「限制人」而不是「輔助決策」，它就會開始被繞過。",
+      image: "/img/plan/laptop-coworking-space_53876-14515.webp",
+      meta: "Journal · 2026",
+    },
+    {
+      idx: "03",
+      tag: "Growth",
+      title: "國際市場，不只是翻譯，而是重做銷售路徑",
+      body: "從 SEO 到 Channel Partner，真正的關鍵是：你是否理解當地市場如何做決策，而不是只做曝光。",
+      image: "/img/plan/man-holding-credit-card-hand-entering-security-code-using-laptop-keyboard.jpg",
+      meta: "Field Note · 2026",
+    },
+  ];
+
+  return (
+    <section className="section reveal" id="insights" aria-label="Insights">
+      <div className="wrap">
+        <SectionEyebrow
+          index="§ 07 / Insights"
+          label="我們正在觀察、實驗與實際運行的事情"
+          meta="latest · field intelligence"
+        />
+
+        <div className="insights-grid">
+          {posts.map((p) => (
+            <article className="insight-card" key={p.idx}>
+              <div
+                className="figure"
+                style={{ backgroundImage: `url(${p.image})` }}
+              >
+                <span className="label">{p.meta}</span>
+              </div>
+
+              <div className="body">
+                <div className="head">
+                  <span>{p.tag}</span>
+                  <span className="idx">{p.idx}</span>
+                </div>
+
+                <h3>{p.title}</h3>
+                <p>{p.body}</p>
+
+                <a className="link" href="#">
+                  <span>Read more</span>
+                  <span className="arrow" />
+                </a>
+              </div>
+            </article>
           ))}
         </div>
       </div>
@@ -985,7 +1074,7 @@ function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2012 – 2026 ESTIGINTO Co., Ltd. — Taipei · TW</span>
+          <span>© 2012 – 2026 ESTIGINTO Co., Ltd.</span>
           <span className="build">
             <span className="live" aria-hidden="true" />
             build · v.2026.04.26 · all systems nominal
@@ -1011,7 +1100,44 @@ function ConstructionScreen() {
   );
 }
 
-function MobileNav({ locale }) {
+function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDecrease, isDefault }) {
+  return (
+    <div className="menu-font-controls" aria-label="字體大小">
+      <button
+        className="menu-font-button"
+        type="button"
+        aria-label="放大字體"
+        title="放大字體"
+        onClick={onIncrease}
+        disabled={!canIncrease}
+      >
+        <span aria-hidden="true">A+</span>
+      </button>
+      <button
+        className="menu-font-button"
+        type="button"
+        aria-label="標準字體"
+        title="標準字體"
+        onClick={onReset}
+        disabled={isDefault}
+      >
+        <span aria-hidden="true">A</span>
+      </button>
+      <button
+        className="menu-font-button"
+        type="button"
+        aria-label="縮小字體"
+        title="縮小字體"
+        onClick={onDecrease}
+        disabled={!canDecrease}
+      >
+        <span aria-hidden="true">A-</span>
+      </button>
+    </div>
+  );
+}
+
+function MobileNav({ locale, fontControls }) {
   const items = getMenuItems(locale);
   const [open, setOpen] = useState(false);
 
@@ -1050,12 +1176,13 @@ function MobileNav({ locale }) {
             ))}
           </div>
         </div>
+        <FontSizeControls {...fontControls} />
       </div>
     </div>
   );
 }
 
-function DesktopCursorMenu({ locale }) {
+function DesktopCursorMenu({ locale, fontControls }) {
   const items = getMenuItems(locale);
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -1260,6 +1387,7 @@ function DesktopCursorMenu({ locale }) {
           ))}
         </div>
       </div>
+      <FontSizeControls {...fontControls} />
     </div>
   );
 }
@@ -1291,6 +1419,8 @@ function GoToTop() {
   );
 }
 
+const fontScaleOptions = [90, 100, 110, 120];
+
 export default function App() {
   const [showConstructionPreview, setShowConstructionPreview] = useState(false);
   const initialSection = useMemo(() => {
@@ -1306,6 +1436,14 @@ export default function App() {
     }
     const savedLocale = window.localStorage.getItem("estiginto-locale");
     return ["zh", "en", "ja"].includes(savedLocale) ? savedLocale : "zh";
+  });
+  const [fontScale, setFontScale] = useState(() => {
+    if (typeof window === "undefined") {
+      return 100;
+    }
+
+    const savedScale = Number(window.localStorage.getItem("estiginto-font-scale"));
+    return fontScaleOptions.includes(savedScale) ? savedScale : 100;
   });
 
   const isLocalPreview = useMemo(() => {
@@ -1326,11 +1464,31 @@ export default function App() {
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
   const shouldShowApplicationScenarios = initialSection === "case" || initialSection === "solutions";
+  const currentFontScaleIndex = fontScaleOptions.indexOf(fontScale);
+  const fontControls = {
+    canDecrease: currentFontScaleIndex > 0,
+    canIncrease: currentFontScaleIndex < fontScaleOptions.length - 1,
+    isDefault: fontScale === 100,
+    onDecrease: () => {
+      setFontScale((value) => fontScaleOptions[Math.max(0, fontScaleOptions.indexOf(value) - 1)] || 100);
+    },
+    onIncrease: () => {
+      setFontScale((value) => fontScaleOptions[Math.min(fontScaleOptions.length - 1, fontScaleOptions.indexOf(value) + 1)] || 100);
+    },
+    onReset: () => {
+      setFontScale(100);
+    },
+  };
 
   useEffect(() => {
     document.documentElement.lang = locale === "en" ? "en" : locale === "ja" ? "ja" : "zh-Hant";
     window.localStorage.setItem("estiginto-locale", locale);
   }, [locale]);
+
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${fontScale}%`;
+    window.localStorage.setItem("estiginto-font-scale", String(fontScale));
+  }, [fontScale]);
 
   useEffect(() => {
     if (!initialSection || isStandalonePage) {
@@ -1405,7 +1563,7 @@ export default function App() {
         預覽建置中畫面
       </button>
       <Header locale={locale} onToggleLocale={setLocale} />
-      {shouldUseMobileNav ? <MobileNav locale={locale} /> : <DesktopCursorMenu locale={locale} />}
+      {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
       <main className="page-main" id="mainpage">
         {isStandalonePage ? (
           <>
@@ -1432,14 +1590,12 @@ export default function App() {
             <Marquee />
             <Numbers />
             <Manifesto />
-            {initialSection === "solutions" ? <Solutions /> : null}
-            {shouldShowApplicationScenarios ? null : <ApplicationScenarioTeaser />}
             <AILab />
-            <CaseStudy />
+            <Insights />
+            {initialSection === "solutions" ? <Solutions /> : null}
+            {initialSection === "case" ? <CaseStudy /> : null}
             {initialSection === "case" ? <Solutions /> : null}
-            <Process />
-            <TechStack />
-            <FAQTeaser />
+            {initialSection === "about" ? <TechStack /> : null}
             <Contact />
           </>
         )}
