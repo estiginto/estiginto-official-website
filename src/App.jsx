@@ -1250,138 +1250,54 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const [visible, setVisible] = useState(false);
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
   const [position, setPosition] = useState({ x: 160, y: 160 });
-  const positionRef = useRef(position);
-  const lastMouseRef = useRef({ x: 160, y: 160 });
-  const prevClientRef = useRef({ x: 160, y: 160 });
-  const lastMotionTimeRef = useRef(Date.now());
-  const freezeRef = useRef(false);
   const hideTimerRef = useRef(null);
-  const rejoinTimerRef = useRef(null);
 
   useEffect(() => {
-    positionRef.current = position;
-  }, [position]);
-
-  useEffect(() => {
-    const clearTimers = () => {
+    const clearHideTimer = () => {
       window.clearTimeout(hideTimerRef.current);
-      window.clearTimeout(rejoinTimerRef.current);
     };
 
     const scheduleHide = () => {
       window.clearTimeout(hideTimerRef.current);
       hideTimerRef.current = window.setTimeout(() => {
-        if (!freezeRef.current && !hoveringTrigger && !open) {
+        if (!hoveringTrigger && !open) {
           setVisible(false);
         }
-      }, 2000);
+      }, 6000);
     };
 
     const onMove = (event) => {
-      if (open) {
+      if (open || hoveringTrigger) {
         return;
       }
 
       const next = { x: event.clientX + 48, y: event.clientY + 48 };
-      const current = positionRef.current;
-      const distance = Math.hypot(next.x - current.x, next.y - current.y);
 
-      // movement delta since last mouse event
-      const moveDelta = Math.hypot(event.clientX - prevClientRef.current.x, event.clientY - prevClientRef.current.y);
-      prevClientRef.current = { x: event.clientX, y: event.clientY };
-
-      lastMouseRef.current = next;
-
-      // Prevent showing the trigger for tiny accidental movements, but be more permissive so it is easier to catch
-      if (!visible && distance < 12 && moveDelta < 2) {
-        // still ignore extremely small accidental movement
-        return;
-      }
-
-      if (hoveringTrigger) {
-        console.log('[menu] hoveringTrigger is true - skipping follow');
-        return;
-      }
-
-      const now = performance.now();
-
-      // update last motion time only when movement exceeds a small threshold
-      const motionThreshold = 2; // px
-      if (moveDelta > motionThreshold) {
-        lastMotionTimeRef.current = now;
-      }
-
-      const stationaryMs = now - lastMotionTimeRef.current;
-      console.log('[menu] onMove', { clientX: event.clientX, clientY: event.clientY, open, hoveringTrigger, freeze: freezeRef.current, moveDelta, stationaryMs });
-      console.log('[menu] computed', { next, distance });
-
-      // large move -> immediately follow (lowered threshold to be more responsive)
-      if (distance > 120) {
-        console.log('[menu] large distance - immediate follow');
-        freezeRef.current = false;
-        clearTimers();
-        setVisible(true);
+      if (!visible) {
         setPosition(next);
-        scheduleHide();
-        return;
+        setVisible(true);
       }
 
-      // if mouse has been effectively stationary for >= 500ms, freeze
-      const freezeAfter = 100; // ms
-      if (stationaryMs >= freezeAfter) {
-        if (!freezeRef.current) {
-          console.log('[menu] stationary threshold reached - freezing follow');
-        }
-        freezeRef.current = true;
-        // do not update position while frozen
-        return;
-      }
-
-      // if we were frozen and user moves beyond rejoin distance, unfreeze
-      if (freezeRef.current) {
-        const movedFromPos = Math.hypot(next.x - positionRef.current.x, next.y - positionRef.current.y);
-        console.log('[menu] was frozen, movedFromPos=', movedFromPos);
-        const rejoinDistance = 40; // px
-        if (movedFromPos > rejoinDistance) {
-          console.log('[menu] moved beyond rejoin distance - unfreezing');
-          freezeRef.current = false;
-          clearTimers();
-          setVisible(true);
-          setPosition(next);
-          scheduleHide();
-        }
-        // otherwise remain frozen
-        return;
-      }
-
-      // default: update position
-      clearTimers();
-      setVisible(true);
-      setPosition(next);
-      console.log('[menu] updated position', next);
       scheduleHide();
     };
 
     const onLeave = () => {
-      clearTimers();
+      clearHideTimer();
       if (open) {
         return;
       }
-      rejoinTimerRef.current = window.setTimeout(() => {
-        freezeRef.current = false;
-        setVisible(false);
-      }, 1500);
+      setVisible(false);
     };
 
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseleave", onLeave);
 
     return () => {
-      clearTimers();
+      clearHideTimer();
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);
     };
-  }, [hoveringTrigger, open]);
+  }, [hoveringTrigger, open, visible]);
 
   useEffect(() => {
     if (!hoveringTrigger || open) {
@@ -1389,9 +1305,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
     }
 
     window.clearTimeout(hideTimerRef.current);
-    window.clearTimeout(rejoinTimerRef.current);
-    console.log('[menu] hoveringTrigger effect — setting freezeRef = true');
-    freezeRef.current = true;
     setVisible(true);
 
     return undefined;
@@ -1402,14 +1315,10 @@ function DesktopCursorMenu({ locale, fontControls }) {
     if (open) {
       return;
     }
-    window.clearTimeout(rejoinTimerRef.current);
-    console.log('[menu] handleTriggerLeave — scheduling rejoin timer to unfreeze in 1500ms');
-    rejoinTimerRef.current = window.setTimeout(() => {
-      console.log('[menu] rejoin timer fired — unfreezing and restoring position', lastMouseRef.current);
-      freezeRef.current = false;
-      setPosition(lastMouseRef.current);
-      setVisible(true);
-    }, 1500);
+    window.clearTimeout(hideTimerRef.current);
+    hideTimerRef.current = window.setTimeout(() => {
+      setVisible(false);
+    }, 6000);
   };
 
   return (
