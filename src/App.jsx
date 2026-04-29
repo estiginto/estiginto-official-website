@@ -1244,7 +1244,7 @@ function MobileNav({ locale, fontControls }) {
   );
 }
 
-function DesktopCursorMenu({ locale, fontControls }) {
+function DesktopCursorMenu({ locale, fontControls, isLocalPreview }) {
   const items = getMenuItems(locale);
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -1378,11 +1378,20 @@ function DesktopCursorMenu({ locale, fontControls }) {
         onMouseLeave={handleTriggerLeave}
       >
         <div className="desktop-menu-diamond-core">
-          {items.map((item) => (
-            <a key={item.key} className={`desktop-menu-link ${item.position}`} href={item.href}>
-              <span>{item.label}</span>
-            </a>
-          ))}
+          {items.map((item) => {
+            const disabled = item.key === "solutions" && !isLocalPreview;
+            const className = `desktop-menu-link ${item.position}${disabled ? " disabled" : ""}`;
+
+            return disabled ? (
+              <span key={item.key} className={className} aria-disabled="true">
+                <span>{item.label}</span>
+              </span>
+            ) : (
+              <a key={item.key} className={className} href={item.href}>
+                <span>{item.label}</span>
+              </a>
+            );
+          })}
         </div>
       </div>
       <FontSizeControls {...fontControls} />
@@ -1565,7 +1574,7 @@ export default function App() {
         </button>
       ) : null}
       <Header locale={locale} onToggleLocale={setLocale} />
-      {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
+      {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} isLocalPreview={isLocalPreview} />}
       <main className="page-main" id="mainpage">
         {isStandalonePage ? (
           <>
