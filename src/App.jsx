@@ -413,6 +413,248 @@ const pageTitles = {
   },
 };
 
+const localizedCopy = {
+  zh: {
+    pageTitles,
+    numbers,
+    solutions,
+    aiCards,
+    processSteps,
+    faqGroups,
+    hero: {
+      kicker: "AI 革命，讓價值聚焦在真正重要的事物上",
+      title: ["迎接有史以來", "最好的", "黃金時代"],
+      lede: ["透過深度技術核心", "致力於提供永續、高效的解決方案", "持續成為企業成長的推手"],
+      scrolldown: "往下滾動",
+    },
+    marquee: [
+      "主動式應變決策系統",
+      "軟體系統規劃及建置",
+      "軟硬體 IOT 整合",
+      "ERP / WMS / CRM",
+      "商務網站應用 / 電子商務 / 金流 / 發票",
+      "客製化應用 APP",
+      "戰情室儀表板",
+      "自動化執行輔助系統",
+    ],
+    achievements: {
+      label: "致力於打造有靈魂的設計 — 讓系統成為品牌成長的推手，並持續產生影響力",
+      meta: "從 2012 開始",
+    },
+    manifesto: {
+      label: "獨家競爭力",
+      prelude: "難用的系統，多半不是技術或預算問題",
+      headlinePrefix: "而是",
+      headlineHighlight: "設計方向錯了",
+      points: ["1. 用工程邏輯在設計人類行為", "2. 用流程取代決策，而不是輔助決策", "3. 用標準化套版，套用在非標準的業務場景"],
+      quote: "「規劃與機制構思的深度，決定系統的產品壽命。」",
+      paragraphs: [
+        ["使用敏捷開發及靈活應用的彈性架構", "如同建築師的設計圖", "在施工前就要把結構、動線、使用者體驗都反覆驗證。"],
+        ["設計出來的系統規劃，即便交由任何人執行", "都能確保與設計初衷及目標相合", "不單為交付而做，而是為真正服務使用者而設計。"],
+      ],
+      signoff: "— 這，就是系統永續的關鍵。",
+    },
+    solutionsUi: {
+      index: "§ 參考其他人的應用情境",
+      label: "根據產業分類",
+      button: "討論這個方案",
+    },
+    aiLab: {
+      label: "以客戶為本",
+      title: "核心服務項目",
+      lede: "自 2012 開始，深度結合台灣產業鏈資源，逐步走向國際",
+    },
+    caseStudy: {
+      label: "一個正在跑的案例。",
+      tag: "Cross-border DTC · Beauty · 2024–在線",
+      titleA: "五個系統各自為政，",
+      titleHighlight: "倉儲錯誤率 3.2%。",
+      titleB: "我們重做了流程，再做系統。",
+      summary: "客戶原本電商、WMS、ERP、客服、會員五套系統各自更新，業務每天用 Excel 對單。我們重新設計商品主檔、訂單流與庫存事件，串成單一資料源，再把 AI 客服接上 SOP。",
+      metrics: [
+        ["出貨錯誤率", "原 3.2% · 8x 改善"],
+        ["出貨時效", "D+2 → D+0.7"],
+        ["客服自動化率", "Agent 接管 L1，真人處理 L2/L3"],
+        ["月對帳工時", "人工 28h → 自動 2h"],
+      ],
+    },
+    faqNoteLabel: "關鍵回答邏輯",
+    contact: {
+      label: "如果您準備好了",
+      meta: "立即預約",
+      titleA: "將想像",
+      titleHighlight: "化為現實",
+      lede: ["立即預約線上諮詢", "協助您打造自己的商業版圖。"],
+      emailButton: "寄信給我們",
+    },
+    footer: {
+      company: "造物者科技",
+      navLabel: "頁尾網站導覽",
+      line: "LINE@ 官方帳號",
+    },
+    construction: "網站內容更新中 敬請期待",
+    font: {
+      label: "字體大小",
+      increase: "放大字體",
+      reset: "標準字體",
+      decrease: "縮小字體",
+    },
+    preview: {
+      show: "預覽建置中畫面",
+      back: "返回完整頁面",
+    },
+  },
+  en: {
+    pageTitles: {
+      about: { kicker: "About", title: "About Us", lede: "How we plan systems, design workflows, and build long-term maintainability into every delivery." },
+      case: { kicker: "Showcase", title: "Case Studies", lede: "Real application scenarios showing how systems solve workflow, data, and operational efficiency problems." },
+      solutions: { kicker: "Showcase", title: "Case Studies", lede: "Common system applications by industry and scenario, so you can compare them with your own needs." },
+      faq: { kicker: "FAQ", title: "FAQ", lede: "Questions clients most often ask before working with us, covering pricing, systems, design, AI, contracts, risk, and payment." },
+      contact: { kicker: "Contact", title: "Contact Us", lede: "Tell us where you are, what you want to achieve, and where you are stuck. We will help clarify the direction first." },
+    },
+    numbers: [
+      { idx: "Sustainability", keyLabel: "Sustainability", val: "12", sup: "+", unit: " yrs", desc: "Our longest-running system has operated reliably for more than 12 years." },
+      { idx: "Stability", keyLabel: "Stability", val: "99.9", sup: "%", unit: "", desc: "Mission-critical systems are kept highly available and stable over the long term." },
+      { idx: "Delivery", keyLabel: "Expertise", val: "325", sup: "+", unit: "", desc: <>Delivered systems, design assets,<br />and complete solution packages.</> },
+      { idx: "Partners", keyLabel: "Partners", val: "70", sup: "+", unit: "", desc: "Global strategic partners sharing resources and growing together." },
+    ],
+    solutions: [
+      { ...solutions[0], titleHTML: <>E-commerce <span className="hl">Solutions</span></>, body: "We plan product structures, service and fulfillment flows, payment, logistics, and member growth.", points: ["Payment, logistics, invoice, and ERP integration", "Membership tiers, points, coupons, and remarketing", "Cross-border multilingual and multicurrency setup with CDN acceleration"] },
+      { ...solutions[1], titleHTML: <>Brand Website <span className="hl">Solutions</span></>, body: "Be seen within limited attention. We build differentiation through narrative and visual systems while preserving speed and SEO.", points: ["Homepage narrative, key page scripts, and layout", "RWD and Core Web Vitals optimization", "Search visibility and social sharing setup"] },
+      { ...solutions[2], titleHTML: <>Enterprise Resource <span className="hl">Solutions</span></>, body: "From process discovery to implementation, we connect commerce, finance, HR, manufacturing, and supply-chain data.", points: ["Process blueprint, permissions, and audit model", "Reports, dashboards, and KPI tracking", "Two-way integration with existing systems"] },
+      { ...solutions[3], titleHTML: <>Warehouse Management <span className="hl">Solutions</span></>, body: "Barcode, PDA, lot number, expiry date, inventory count, and stock aging workflows in one implementation.", points: ["Inbound, outbound, transfer, and inventory tracking", "Picking strategy and route optimization", "Integration with ERP, e-commerce, and OMS"] },
+      { ...solutions[4], titleHTML: <>AI Integration <span className="hl">Solutions</span></>, body: "We connect LLMs, RAG, and Document AI into real operational workflows, not just PoCs.", points: ["AI Agent workflows for tickets, service, and sales", "Private RAG knowledge bases with data governance", "Private LLM and vector database deployment"] },
+      { ...solutions[5], titleHTML: <>Bespoke <span className="hl">Solutions</span></>, body: "Platforms, B2B tools, apps, and dashboards. We turn ideas into stable products through iteration.", points: ["POC and MVP validation", "Data-flow and cloud architecture design", "Security, permissions, audit, and operations"] },
+    ],
+    aiCards: [
+      { ...aiCards[0], tag: "Bespoke enterprise operating systems", titleHTML: <>A growth <span className="hl">accelerator</span> for business</>, body: "We systematize real workflows, operating contexts, and core capabilities so teams can focus on the work that creates value." },
+      { ...aiCards[1], tag: "Website APP", titleHTML: <>Business website <span className="hl">applications</span></>, body: "Official sites, brand websites, e-commerce, booking flows, and custom web applications.", chips: ["Static sites", "Dynamic sites", "Mid-sized sites", "Large sites"] },
+      { ...aiCards[2], titleHTML: <><span className="hl">International</span> growth</>, body: "From market strategy and SEO to business development and channel partners, we build paths to growth and conversion, not just exposure." },
+      { ...aiCards[3], titleHTML: <><span className="hl">Visual</span> design</>, body: "UI, UX, brand identity, posters, business decks, printed materials, and marketing assets.", chips: ["Decks", "Posters", "DM", "Social campaigns", "Event curation", "Print", "CIS", "Logo"] },
+      { ...aiCards[4], titleHTML: <>Integrated <span className="hl">information</span> services</>, body: "System operations, cloud architecture, private models, data analysis, automation, and data processing." },
+    ],
+    processSteps: [
+      ["01", "30-45 min discovery", "Clarify business goals, budget range, timeline constraints, and risks.", "Week 0"],
+      ["02", "Planning proposal", "Use cases, data flow, milestones, estimates, and UAT acceptance metrics.", "Week 1"],
+      ["03", "MVP / module priority", "Build the 20% that creates value first and validate business assumptions quickly.", "Week 2-4"],
+      ["04", "Development and weekly updates", "Iterate weekly with usable builds and transparent progress reports.", "Week 4-N"],
+      ["05", "Launch and training", "Documentation, permissions, backup launch, training, and data migration.", "Go-live"],
+      ["06", "Operations and optimization", "Incident response, performance, security, feature optimization, and reporting additions.", "Ongoing"],
+    ],
+    faqGroups,
+    hero: { kicker: "The AI shift lets value focus on what truly matters", title: ["Entering the", "best", "golden age"], lede: ["Powered by deep technical capability", "we deliver sustainable and efficient solutions", "and keep driving business growth"], scrolldown: "Scroll down" },
+    marquee: ["Adaptive decision systems", "Software system planning and implementation", "Software, hardware, and IoT integration", "ERP / WMS / CRM", "Business websites / e-commerce / payments / invoices", "Custom app development", "War-room dashboards", "Automation execution support systems"],
+    achievements: { label: "We build designs with a soul, turning systems into engines for brand growth and lasting impact.", meta: "Since 2012" },
+    manifesto: { label: "Our Edge", prelude: "Hard-to-use systems are usually not caused by technology or budget", headlinePrefix: "They fail because", headlineHighlight: "the design direction is wrong", points: ["1. Engineering logic is used to design human behavior", "2. Processes replace decisions instead of supporting them", "3. Standard templates are forced onto non-standard business scenarios"], quote: "\"The depth of planning and mechanism design determines a system's product life.\"", paragraphs: [["With agile development and flexible architecture", "we work like architects drawing before construction", "validating structure, flow, and user experience before anything is built."], ["A well-designed system plan can be executed by any capable team", "while still preserving the original intent and goals", "because it is designed to serve users, not merely to be delivered."]], signoff: "- This is the key to sustainable systems." },
+    solutionsUi: { index: "§ Reference application scenarios", label: "By industry", button: "Discuss this solution" },
+    aiLab: { label: "Customer-centered", title: "Core Services", lede: "Since 2012, we have connected deeply with Taiwan's industry chain and gradually expanded internationally." },
+    caseStudy: { label: "A case currently in operation.", tag: "Cross-border DTC · Beauty · 2024-present", titleA: "Five systems ran separately, ", titleHighlight: "warehouse error rate was 3.2%.", titleB: "We redesigned the process before rebuilding the system.", summary: "The client had separate e-commerce, WMS, ERP, service, and membership systems, with daily Excel reconciliation. We redesigned the product master, order flow, and inventory events into a single data source, then connected AI service to SOPs.", metrics: [["Shipping error rate", "From 3.2% · 8x improvement"], ["Fulfillment speed", "D+2 -> D+0.7"], ["Service automation rate", "Agent handles L1; humans handle L2/L3"], ["Monthly reconciliation hours", "Manual 28h -> automated 2h"]] },
+    faqNoteLabel: "Key answer logic",
+    contact: { label: "When you are ready", meta: "Book a consultation", titleA: "Turn imagination", titleHighlight: "into reality", lede: ["Book an online consultation now", "and let us help build your business landscape."], emailButton: "Email us" },
+    footer: { company: "ESTIGINTO Co., Ltd.", navLabel: "Footer navigation", line: "LINE@ Official Account" },
+    construction: "Website content is being updated. Please stay tuned.",
+    font: { label: "Font size", increase: "Increase font size", reset: "Default font size", decrease: "Decrease font size" },
+    preview: { show: "Preview construction page", back: "Back to full page" },
+  },
+  ja: {
+    pageTitles: {
+      about: { kicker: "About", title: "私たちについて", lede: "システム設計、業務フロー設計、長期保守性をどのように納品へ組み込むかをご紹介します。" },
+      case: { kicker: "Showcase", title: "事例紹介", lede: "実際の利用シーンから、システムが業務、データ、運用効率をどう改善するかをご覧ください。" },
+      solutions: { kicker: "Showcase", title: "事例紹介", lede: "業界やシーン別に、よくあるシステム活用の方向性を整理しています。" },
+      faq: { kicker: "FAQ", title: "よくある質問", lede: "価格、システム、機能、設計、AI、契約、リスク、支払いなど、相談前によくある質問をまとめました。" },
+      contact: { kicker: "Contact", title: "お問い合わせ", lede: "現状、目標、課題をお聞かせください。まず方向性の整理からお手伝いします。" },
+    },
+    numbers: [
+      { idx: "持続性", keyLabel: "Sustainability", val: "12", sup: "+", unit: " 年", desc: "最も長く稼働しているシステムは 12 年以上安定運用されています。" },
+      { idx: "安定性", keyLabel: "Stability", val: "99.9", sup: "%", unit: "", desc: "重要システムの高可用性と安定稼働を長期的に維持します。" },
+      { idx: "実績", keyLabel: "Expertise", val: "325", sup: "+", unit: "", desc: <>システム、デザイン成果物、<br />総合ソリューションを納品。</> },
+      { idx: "パートナー", keyLabel: "Partners", val: "70", sup: "+", unit: "", desc: "世界の戦略パートナーと資源を共有し、共に成長しています。" },
+    ],
+    solutions: [
+      { ...solutions[0], titleHTML: <>Eコマース <span className="hl">ソリューション</span></>, body: "商品構成、カスタマーサポート、出荷、決済、物流、会員成長まで一貫して設計します。", points: ["決済、物流、請求書、ERP 連携", "会員ランク、ポイント、クーポン、リマーケティング", "越境向け多言語・多通貨と CDN 高速化"] },
+      { ...solutions[1], titleHTML: <>ブランドサイト <span className="hl">ソリューション</span></>, body: "限られた注目の中で選ばれるために、ストーリーとビジュアルで差別化し、速度と SEO も両立します。", points: ["トップページのストーリー、主要ページ構成", "RWD と Core Web Vitals 最適化", "検索露出と SNS 共有設定"] },
+      { ...solutions[2], titleHTML: <>企業資源管理 <span className="hl">ソリューション</span></>, body: "業務整理から導入まで、商流、財務、人事、製造、サプライチェーンのデータを接続します。", points: ["業務フロー、権限、監査設計", "レポート、ダッシュボード、KPI 追跡", "既存システムとの双方向連携"] },
+      { ...solutions[3], titleHTML: <>倉庫管理 <span className="hl">ソリューション</span></>, body: "バーコード、PDA、ロット、期限、棚卸、在庫年齢を一括導入し、ミスを減らして回転率を上げます。", points: ["入出庫、移動、在庫追跡", "ピッキング戦略と動線最適化", "ERP、EC、OMS 連携"] },
+      { ...solutions[4], titleHTML: <>AI 統合 <span className="hl">ソリューション</span></>, body: "LLM、RAG、Document AI を実際の運用フローへ接続し、PoC で終わらない仕組みにします。", points: ["チケット、サポート、営業向け AI Agent", "データガバナンス込みの非公開 RAG 知識ベース", "プライベート LLM とベクトルDB導入"] },
+      { ...solutions[5], titleHTML: <>カスタム <span className="hl">ソリューション</span></>, body: "プラットフォーム、B2B ツール、アプリ、ダッシュボードまで、反復開発で構想を安定した製品にします。", points: ["POC / MVP の迅速な検証", "データフローとクラウド設計", "セキュリティ、権限、監査、運用"] },
+    ],
+    aiCards: [
+      { ...aiCards[0], tag: "カスタム企業運用システム", titleHTML: <>企業成長の <span className="hl">加速装置</span></>, body: "実際の業務、現場状況、競争力をシステム化し、価値の高い仕事に集中できる環境を作ります。" },
+      { ...aiCards[1], tag: "Website APP", titleHTML: <>ビジネスサイト<span className="hl">活用</span></>, body: "公式サイト、ブランドサイト、EC、予約導線、カスタム Web アプリケーション。", chips: ["静的サイト", "動的サイト", "中規模サイト", "大規模サイト"] },
+      { ...aiCards[2], titleHTML: <><span className="hl">国際</span>展開</>, body: "市場戦略、SEO、事業開発、販売代理まで、露出だけでなく成長と成約の導線を設計します。" },
+      { ...aiCards[3], titleHTML: <><span className="hl">ビジュアル</span>デザイン</>, body: "UI、UX、ブランドビジュアル、ポスター、ビジネス資料、印刷物、マーケティング素材など。", chips: ["資料", "ポスター", "DM", "SNS", "イベント", "印刷", "CIS", "Logo"] },
+      { ...aiCards[4], titleHTML: <>統合<span className="hl">情報</span>サービス</>, body: "システム運用、クラウド構成、プライベートモデル、データ分析、自動化、データ処理。" },
+    ],
+    processSteps: [
+      ["01", "初回相談 30-45 分", "事業目標、予算範囲、期間制約、リスクを整理します。", "Week 0"],
+      ["02", "計画提案", "利用シーン、データフロー、マイルストーン、見積、UAT 指標を整理します。", "Week 1"],
+      ["03", "MVP / 優先順位", "価値を生む 20% から作り、仮説を素早く検証します。", "Week 2-4"],
+      ["04", "開発と週次更新", "毎週利用可能な版と進捗を共有しながら反復します。", "Week 4-N"],
+      ["05", "公開とトレーニング", "文書、権限、バックアップ、操作説明、データ移行を行います。", "Go-live"],
+      ["06", "運用と改善", "障害対応、性能、セキュリティ、機能改善、レポート追加を継続します。", "継続"],
+    ],
+    faqGroups,
+    hero: { kicker: "AI 革命により、価値は本当に重要なことへ集中します", title: ["これまでで", "最良の", "黄金時代へ"], lede: ["深い技術力を基盤に", "持続可能で効率的なソリューションを提供し", "企業成長を継続的に支えます"], scrolldown: "下へスクロール" },
+    marquee: ["能動型意思決定システム", "ソフトウェアシステムの設計と構築", "ソフト・ハード・IoT 統合", "ERP / WMS / CRM", "ビジネスサイト / EC / 決済 / 請求書", "カスタム APP", "戦情室ダッシュボード", "自動化実行支援システム"],
+    achievements: { label: "魂のあるデザインを作り、システムをブランド成長と持続的な影響力の推進力にします。", meta: "2012 年から" },
+    manifesto: { label: "独自の競争力", prelude: "使いにくいシステムの多くは、技術や予算の問題ではありません", headlinePrefix: "本質は", headlineHighlight: "設計方向の誤りです", points: ["1. 人の行動を工学的な論理だけで設計している", "2. 意思決定を支援せず、流程で置き換えている", "3. 非標準の業務に標準テンプレートを当てはめている"], quote: "「計画と仕組み設計の深さが、システムの寿命を決めます。」", paragraphs: [["アジャイル開発と柔軟なアーキテクチャを用い", "建築家の設計図のように", "施工前に構造、動線、体験を検証します。"], ["適切に設計されたシステム計画は、誰が実行しても", "設計意図と目標を保てます", "単なる納品ではなく、利用者に本当に役立つための設計です。"]], signoff: "- これが、持続するシステムの鍵です。" },
+    solutionsUi: { index: "§ 他社の活用シーンを参考にする", label: "業界別", button: "この方案を相談する" },
+    aiLab: { label: "顧客中心", title: "主要サービス", lede: "2012 年から台湾の産業チェーン資源と深く連携し、国際展開を進めています。" },
+    caseStudy: { label: "現在稼働中の事例。", tag: "Cross-border DTC · Beauty · 2024-現在", titleA: "5つのシステムが分断され、", titleHighlight: "倉庫ミス率は 3.2%。", titleB: "私たちは流程を作り直してから、システムを再構築しました。", summary: "EC、WMS、ERP、客服、会員の5システムが別々に更新され、営業は毎日 Excel で照合していました。商品マスタ、注文フロー、在庫イベントを再設計し、単一データソースへ統合したうえで、AI サポートを SOP に接続しました。", metrics: [["出荷ミス率", "元 3.2% · 8倍改善"], ["出荷スピード", "D+2 -> D+0.7"], ["サポート自動化率", "Agent が L1、担当者が L2/L3 を処理"], ["月次照合作業", "手作業 28h -> 自動 2h"]] },
+    faqNoteLabel: "回答の要点",
+    contact: { label: "準備ができたら", meta: "相談を予約", titleA: "想像を", titleHighlight: "現実へ", lede: ["オンライン相談をご予約ください", "あなたのビジネス構想を形にするお手伝いをします。"], emailButton: "メールする" },
+    footer: { company: "造物者科技", navLabel: "フッターナビゲーション", line: "LINE@ 公式アカウント" },
+    construction: "サイト内容を更新中です。しばらくお待ちください。",
+    font: { label: "文字サイズ", increase: "文字を大きく", reset: "標準サイズ", decrease: "文字を小さく" },
+    preview: { show: "工事中画面をプレビュー", back: "完全ページへ戻る" },
+  },
+};
+
+function getCopy(locale) {
+  const copy = localizedCopy[locale] || localizedCopy.zh;
+  if (locale === "en") {
+    const faqHeadings = [
+      ["A. Getting Started and Pricing", "Common topics"],
+      ["B. System Concepts and Basics", "Basic terms"],
+      ["C. Feature and Development Decisions", "Scope choices"],
+      ["D. Design and User Experience", "Interface and flow"],
+      ["E. The Reality of AI", "Tools and limits"],
+      ["F. Contracts, Rights, and Control", "Delivery and licensing"],
+      ["G. Risk, Quality, and Reality", "Delivery management"],
+      ["H. Payment", "Key points"],
+    ];
+    return {
+      ...copy,
+      faqGroups: faqGroups.map((group, index) => ({
+        ...group,
+        title: faqHeadings[index]?.[0] || group.title,
+        subtitle: faqHeadings[index]?.[1] || group.subtitle,
+      })),
+    };
+  }
+  if (locale === "ja") {
+    const faqHeadings = [
+      ["A. 入門と価格の考え方", "よくある議題"],
+      ["B. システムの基本理解", "基礎用語"],
+      ["C. 機能と開発判断", "範囲選択"],
+      ["D. デザインと利用体験", "画面と流れ"],
+      ["E. AI 技術の現実", "ツールと制約"],
+      ["F. 契約、権利、管理権", "納品とライセンス"],
+      ["G. リスク、品質、現実", "納品管理"],
+      ["H. 支払い関連", "重要事項"],
+    ];
+    return {
+      ...copy,
+      faqGroups: faqGroups.map((group, index) => ({
+        ...group,
+        title: faqHeadings[index]?.[0] || group.title,
+        subtitle: faqHeadings[index]?.[1] || group.subtitle,
+      })),
+    };
+  }
+  return copy;
+}
+
 function getMenuItems(locale) {
   const labels = menuLabels[locale] || menuLabels.zh;
   return menuTargets.map((item) => ({
@@ -490,7 +732,7 @@ function PageTitle({ page }) {
   );
 }
 
-function Hero() {
+function Hero({ copy }) {
   return (
     <section className="hero" id="home">
       <div className="wrap">
@@ -505,40 +747,31 @@ function Hero() {
             <span>Taipei, Taiwan</span>
           </div>
 
-          <p className="hero-kicker">AI 革命，讓價值聚焦在真正重要的事物上</p>
+          <p className="hero-kicker">{copy.hero.kicker}</p>
 
           <h1 className="hero-title">
-            <span className="row1">迎接有史以來</span>
-            <span className="row2">最好的</span>
-            <span className="row3 accent">黃金時代</span>
+            <span className="row1">{copy.hero.title[0]}</span>
+            <span className="row2">{copy.hero.title[1]}</span>
+            <span className="row3 accent">{copy.hero.title[2]}</span>
           </h1>
 
           <p className="hero-lede">
-            透過深度技術核心
+            {copy.hero.lede[0]}
             <br />
-            致力於提供永續、高效的解決方案
+            {copy.hero.lede[1]}
             <br />
-            持續成為企業成長的推手
+            {copy.hero.lede[2]}
           </p>
         </div>
       </div>
 
-      <a className="scrolldown" href="#marquee">往下滾動</a>
+      <a className="scrolldown" href="#marquee">{copy.hero.scrolldown}</a>
     </section>
   );
 }
 
-function Marquee() {
-  const items = [
-    "主動式應變決策系統",
-    "軟體系統規劃及建置",
-    "軟硬體 IOT 整合",
-    "ERP / WMS / CRM",
-    "商務網站應用 / 電子商務 / 金流 / 發票",
-    "客製化應用 APP",
-    "戰情室儀表板",
-    "自動化執行輔助系統",
-  ];
+function Marquee({ copy }) {
+  const items = copy.marquee;
   const doubled = [...items, ...items];
 
   return (
@@ -555,18 +788,18 @@ function Marquee() {
   );
 }
 
-function Numbers() {
+function Numbers({ copy }) {
   return (
     <section className="section reveal" aria-label="Studio achievements">
       <div className="wrap">
         <SectionEyebrow
           className="achievements-eyebrow"
           index="§ Achievements"
-          label="致力於打造有靈魂的設計 — 讓系統成為品牌成長的推手，並持續產生影響力"
-          meta="從 2012 開始"
+          label={copy.achievements.label}
+          meta={copy.achievements.meta}
         />
         <div className="numbers">
-          {numbers.map((n) => (
+          {copy.numbers.map((n) => (
             <div className="number-cell" key={n.idx}>
               <div className="key">
                 <span>{n.keyLabel}</span>
@@ -586,40 +819,44 @@ function Numbers() {
   );
 }
 
-function Manifesto() {
+function Manifesto({ copy }) {
+  const manifesto = copy.manifesto;
   return (
     <section className="section bg-deep reveal" id="about" aria-label="Studio manifesto">
       <div className="wrap">
-        <SectionEyebrow index="§ Industry-first" label="獨家競爭力" meta="manifesto · 2026" />
+        <SectionEyebrow index="§ Industry-first" label={manifesto.label} meta="manifesto · 2026" />
         <div className="manifesto">
           <h2 className="manifesto-quote">
             <span className="mq-line mq-prelude">
-              難用的系統，多半不是技術或預算問題
+              {manifesto.prelude}
             </span>
             <span className="mq-line mq-headline">
-              而是<span className="hl underline">設計方向錯了</span>。
+              {manifesto.headlinePrefix}<span className="hl underline">{manifesto.headlineHighlight}</span>。
             </span>
             <span className="mq-line mq-coda">
-              1. 用工程邏輯在設計人類行為<br />
-              2. 用流程取代決策，而不是輔助決策<br />
-              3. 用標準化套版，套用在非標準的業務場景
+              {manifesto.points.map((point, index) => (
+                <span key={point}>
+                  {point}
+                  {index < manifesto.points.length - 1 ? <br /> : null}
+                </span>
+              ))}
             </span>
           </h2>
           <div className="manifesto-aside">
             <p>
-              「規劃與機制構思的深度，決定系統的產品壽命。」
+              {manifesto.quote}
             </p>
-            <p>
-              使用敏捷開發及靈活應用的彈性架構<br />
-              如同建築師的設計圖<br />
-              在<b>施工前</b>就要把結構、動線、使用者體驗都反覆驗證。
-            </p>
-            <p>
-              設計出來的系統規劃，即便交由任何人執行<br />
-              都能確保與設計初衷及目標相合<br />
-              不單為交付而做，而是為真正服務使用者而設計。
-            </p>
-            <span className="signoff">— 這，就是系統永續的關鍵。</span>
+            {manifesto.paragraphs.map((paragraph) => (
+              <p key={paragraph.join("|")}>
+                {paragraph.map((line, index) => (
+                  <span key={line}>
+                    {line}
+                    {index < paragraph.length - 1 ? <br /> : null}
+                  </span>
+                ))}
+              </p>
+            ))}
+            <span className="signoff">{manifesto.signoff}</span>
           </div>
         </div>
       </div>
@@ -627,17 +864,17 @@ function Manifesto() {
   );
 }
 
-function Solutions() {
+function Solutions({ copy }) {
   const [active, setActive] = useState(0);
-  const item = solutions[active];
+  const item = copy.solutions[active];
 
   return (
     <section className="section reveal" id="solutions" aria-label="Solutions">
       <div className="wrap">
-        <SectionEyebrow index="§ 參考其他人的應用情境" label="根據產業分類" meta={`${solutions.length} programs`} />
+        <SectionEyebrow index={copy.solutionsUi.index} label={copy.solutionsUi.label} meta={`${copy.solutions.length} programs`} />
         <div className="solutions">
           <ul className="sol-list">
-            {solutions.map((s, i) => (
+            {copy.solutions.map((s, i) => (
               <li
                 key={s.num}
                 className={`sol-row ${i === active ? "active" : ""}`}
@@ -676,7 +913,7 @@ function Solutions() {
                 ))}
               </ul>
               <a className="btn" href="/contact.html" style={{ marginTop: 8 }}>
-                <span>討論這個方案</span>
+                <span>{copy.solutionsUi.button}</span>
                 <span className="arrow" aria-hidden="true" />
               </a>
             </div>
@@ -705,22 +942,22 @@ function ApplicationScenarioTeaser() {
 }
 
 
-function AILab() {
+function AILab({ copy }) {
   return (
     <section className="section bg-night reveal" id="ai-lab" aria-label="AI Lab">
       <div className="wrap">
-        <SectionEyebrow index="§ Service" label="以客戶為本" meta="12 agents · in production" />
+        <SectionEyebrow index="§ Service" label={copy.aiLab.label} meta="12 agents · in production" />
         <div className="ai-headline">
           <h2>
-            核心服務項目
+            {copy.aiLab.title}
           </h2>
           <p className="lede">
-            自 2012 開始，深度結合台灣產業鏈資源，逐步走向國際
+            {copy.aiLab.lede}
           </p>
         </div>
 
         <div className="ai-grid">
-          {aiCards.map((c) => (
+          {copy.aiCards.map((c) => (
             <article className={`ai-card ${c.span}`} key={c.idx}>
               <div className="head">
                 <span>{c.tag}</span>
@@ -741,11 +978,12 @@ function AILab() {
   );
 }
 
-function CaseStudy() {
+function CaseStudy({ copy }) {
+  const caseStudy = copy.caseStudy;
   return (
     <section className="section reveal" id="case" aria-label="Selected case">
       <div className="wrap">
-        <SectionEyebrow index="§ 04 / Selected" label="一個正在跑的案例。" meta="anonymized · cross-border beauty" />
+        <SectionEyebrow index="§ 04 / Selected" label={caseStudy.label} meta="anonymized · cross-border beauty" />
         <div className="case">
           <div
             className="figure"
@@ -758,37 +996,36 @@ function CaseStudy() {
           </div>
 
           <div className="case-body">
-            <div className="tag">Cross-border DTC · Beauty · 2024–在線</div>
+            <div className="tag">{caseStudy.tag}</div>
             <h3>
-              五個系統各自為政，<span className="hl">倉儲錯誤率 3.2%。</span>
+              {caseStudy.titleA}<span className="hl">{caseStudy.titleHighlight}</span>
               <br />
-              我們重做了流程，再做系統。
+              {caseStudy.titleB}
             </h3>
             <p className="summary">
-              客戶原本電商、WMS、ERP、客服、會員五套系統各自更新，業務每天用 Excel 對單。我們重新設計商品主檔、
-              訂單流與庫存事件，串成單一資料源，再把 AI 客服接上 SOP。
+              {caseStudy.summary}
             </p>
 
             <div className="case-metrics">
               <div className="case-metric">
-                <div className="label">出貨錯誤率</div>
+                <div className="label">{caseStudy.metrics[0][0]}</div>
                 <div className="val"><span className="arrow">↓</span>0.4<span style={{ fontSize: "0.5em", color: "var(--ink-mute)" }}>%</span></div>
-                <div className="delta">原 3.2% · 8x 改善</div>
+                <div className="delta">{caseStudy.metrics[0][1]}</div>
               </div>
               <div className="case-metric">
-                <div className="label">出貨時效</div>
+                <div className="label">{caseStudy.metrics[1][0]}</div>
                 <div className="val"><span className="arrow">↑</span>2.8<span style={{ fontSize: "0.5em", color: "var(--ink-mute)" }}>x</span></div>
-                <div className="delta">D+2 → D+0.7</div>
+                <div className="delta">{caseStudy.metrics[1][1]}</div>
               </div>
               <div className="case-metric">
-                <div className="label">客服自動化率</div>
+                <div className="label">{caseStudy.metrics[2][0]}</div>
                 <div className="val"><span className="arrow">↑</span>68<span style={{ fontSize: "0.5em", color: "var(--ink-mute)" }}>%</span></div>
-                <div className="delta">Agent 接管 L1，真人處理 L2/L3</div>
+                <div className="delta">{caseStudy.metrics[2][1]}</div>
               </div>
               <div className="case-metric">
-                <div className="label">月對帳工時</div>
+                <div className="label">{caseStudy.metrics[3][0]}</div>
                 <div className="val"><span className="arrow">↓</span>92<span style={{ fontSize: "0.5em", color: "var(--ink-mute)" }}>%</span></div>
-                <div className="delta">人工 28h → 自動 2h</div>
+                <div className="delta">{caseStudy.metrics[3][1]}</div>
               </div>
             </div>
           </div>
@@ -798,13 +1035,13 @@ function CaseStudy() {
   );
 }
 
-function Process() {
+function Process({ copy }) {
   return (
     <section className="section bg-deep reveal" id="process" aria-label="Engagement process">
       <div className="wrap">
         <SectionEyebrow index="§ 05 / Process" label="從第一封信到上線維運。" meta="6 phases · transparent" />
         <div className="process-grid">
-          {processSteps.map(([num, title, body, week]) => (
+          {copy.processSteps.map(([num, title, body, week]) => (
             <article className="process-step" key={num}>
               <div className="num">
                 <span>Phase {num}</span>
@@ -989,7 +1226,7 @@ function Insights() {
   );
 }
 
-function FAQ() {
+function FAQ({ copy }) {
   const [openGroup, setOpenGroup] = useState(0);
   const [open, setOpen] = useState("0-0");
 
@@ -997,7 +1234,7 @@ function FAQ() {
     <section className="section bg-deep reveal" id="faq" aria-label="FAQ">
       <div className="wrap">
         <div className="faq-groups">
-          {faqGroups.map((group, groupIndex) => (
+          {copy.faqGroups.map((group, groupIndex) => (
             <section
               className={`faq-group ${openGroup === groupIndex ? "open" : ""}`}
               key={group.title}
@@ -1051,7 +1288,7 @@ function FAQ() {
                   </div>
                   {group.note ? (
                     <p className="faq-note">
-                      <span>關鍵回答邏輯</span>
+                      <span>{copy.faqNoteLabel}</span>
                       {group.note}
                     </p>
                   ) : null}
@@ -1065,19 +1302,20 @@ function FAQ() {
   );
 }
 
-function Contact() {
+function Contact({ copy }) {
+  const contact = copy.contact;
   return (
     <section className="section reveal" id="contact" aria-label="Contact">
       <div className="wrap">
-        <SectionEyebrow index="§ Contact Us" label="如果您準備好了" meta="立即預約" />
+        <SectionEyebrow index="§ Contact Us" label={contact.label} meta={contact.meta} />
         <div className="contact">
           <div>
             <h2>
-              將想像<br />
-              <span className="hl">化為現實</span>。
+              {contact.titleA}<br />
+              <span className="hl">{contact.titleHighlight}</span>。
             </h2>
             <p className="lede">
-              立即預約線上諮詢<br />協助您打造自己的商業版圖。
+              {contact.lede[0]}<br />{contact.lede[1]}
             </p>
           </div>
 
@@ -1100,7 +1338,7 @@ function Contact() {
             </div>
             <div className="contact-cta">
               <a className="btn btn-primary" href="mailto:contact@estiginto.com?subject=Project%20Brief%20%7C%20ESTIGINTO">
-                <span>寄信給我們</span>
+                <span>{contact.emailButton}</span>
                 <span className="arrow" aria-hidden="true" />
               </a>
               <a className="btn" href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">
@@ -1115,27 +1353,28 @@ function Contact() {
   );
 }
 
-function Footer() {
+function Footer({ copy }) {
+  const footer = copy.footer;
   return (
     <footer className="page-footer">
       <div className="wrap">
         <div className="footer-top">
           <div className="footer-brand">
             <p className="footer-wordmark">ESTIGINTO</p>
-            <p>造物者科技<br />統一編號: 42752468</p>
+            <p>{footer.company}<br />統一編號: 42752468</p>
           </div>
-          <nav className="footer-links" aria-label="頁尾網站導覽">
+          <nav className="footer-links" aria-label={footer.navLabel}>
             <h5>Explore</h5>
-            <a href="/about.html">關於我們</a>
-            <a href="/case.html">參考案例</a>
-            <a href="/faq.html">常見問題</a>
-            <a href="/contact.html">聯繫我們</a>
+            <a href="/about.html">{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
+            <a href="/case.html">{menuLabels[copy.locale]?.solutions || menuLabels.zh.solutions}</a>
+            <a href="/faq.html">{menuLabels[copy.locale]?.case || menuLabels.zh.case}</a>
+            <a href="/contact.html">{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
           </nav>
           <div className="footer-links">
             <h5>Contact</h5>
             <a href="mailto:contact@estiginto.com">contact@estiginto.com</a>
             <a href="tel:+886224315362">+886 2 2431 5362</a>
-            <a href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">LINE@ 官方帳號</a>
+            <a href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">{footer.line}</a>
             <a href="https://www.facebook.com/Estiginto/" target="_blank" rel="noopener noreferrer">Facebook</a>
           </div>
         </div>
@@ -1147,12 +1386,12 @@ function Footer() {
   );
 }
 
-function ConstructionScreen() {
+function ConstructionScreen({ copy }) {
   return (
     <main className="construction-screen" aria-labelledby="construction-title">
       <div className="construction-shell">
         <p className="construction-kicker">ESTIGINTO</p>
-        <h1 id="construction-title">網站內容更新中 敬請期待</h1>
+        <h1 id="construction-title">{copy.construction}</h1>
         <div className="construction-meta">
           <span>+886 2 2431 5362</span>
           <span>contact@estiginto.com</span>
@@ -1162,14 +1401,14 @@ function ConstructionScreen() {
   );
 }
 
-function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDecrease, isDefault }) {
+function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDecrease, isDefault, labels }) {
   return (
-    <div className="menu-font-controls" aria-label="字體大小">
+    <div className="menu-font-controls" aria-label={labels.label}>
       <button
         className="menu-font-button"
         type="button"
-        aria-label="放大字體"
-        title="放大字體"
+        aria-label={labels.increase}
+        title={labels.increase}
         onClick={onIncrease}
         disabled={!canIncrease}
       >
@@ -1178,8 +1417,8 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
       <button
         className="menu-font-button"
         type="button"
-        aria-label="標準字體"
-        title="標準字體"
+        aria-label={labels.reset}
+        title={labels.reset}
         onClick={onReset}
         disabled={isDefault}
       >
@@ -1188,8 +1427,8 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
       <button
         className="menu-font-button"
         type="button"
-        aria-label="縮小字體"
-        title="縮小字體"
+        aria-label={labels.decrease}
+        title={labels.decrease}
         onClick={onDecrease}
         disabled={!canDecrease}
       >
@@ -1244,7 +1483,7 @@ function MobileNav({ locale, fontControls }) {
   );
 }
 
-function DesktopCursorMenu({ locale, fontControls, isLocalPreview }) {
+function DesktopCursorMenu({ locale, fontControls }) {
   const items = getMenuItems(locale);
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -1378,20 +1617,11 @@ function DesktopCursorMenu({ locale, fontControls, isLocalPreview }) {
         onMouseLeave={handleTriggerLeave}
       >
         <div className="desktop-menu-diamond-core">
-          {items.map((item) => {
-            const disabled = (item.key === "about" || item.key === "solutions") && !isLocalPreview;
-            const className = `desktop-menu-link ${item.position}${disabled ? " disabled" : ""}`;
-
-            return disabled ? (
-              <span key={item.key} className={className} aria-disabled="true">
-                <span>{item.label}</span>
-              </span>
-            ) : (
-              <a key={item.key} className={className} href={item.href}>
-                <span>{item.label}</span>
-              </a>
-            );
-          })}
+          {items.map((item) => (
+            <a key={item.key} className={`desktop-menu-link ${item.position}`} href={item.href}>
+              <span>{item.label}</span>
+            </a>
+          ))}
         </div>
       </div>
       <FontSizeControls {...fontControls} />
@@ -1452,6 +1682,7 @@ export default function App() {
     const savedScale = Number(window.localStorage.getItem("estiginto-font-scale"));
     return fontScaleOptions.includes(savedScale) ? savedScale : 100;
   });
+  const copy = useMemo(() => ({ ...getCopy(locale), locale }), [locale]);
 
   const isLocalPreview = useMemo(() => {
     if (typeof window === "undefined") {
@@ -1467,7 +1698,7 @@ export default function App() {
     }
     return window.matchMedia("(max-width: 640px), (pointer: coarse)").matches;
   }, []);
-  const pageTitle = pageTitles[initialSection];
+  const pageTitle = copy.pageTitles[initialSection];
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
   const isCasePage = initialSection === "case";
@@ -1476,6 +1707,7 @@ export default function App() {
   const shouldShowApplicationScenarios = initialSection === "case" || initialSection === "solutions";
   const currentFontScaleIndex = fontScaleOptions.indexOf(fontScale);
   const fontControls = {
+    labels: copy.font,
     canDecrease: currentFontScaleIndex > 0,
     canIncrease: currentFontScaleIndex < fontScaleOptions.length - 1,
     isDefault: fontScale === 100,
@@ -1557,10 +1789,12 @@ export default function App() {
   if (shouldShowConstructionScreen) {
     return (
       <>
-        <ConstructionScreen />
+        <Header locale={locale} onToggleLocale={setLocale} />
+        {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
+        <ConstructionScreen copy={copy} />
         {isLocalPreview ? (
           <button className="preview-toggle" type="button" onClick={() => setShowConstructionPreview(false)}>
-            返回完整頁面
+            {copy.preview.back}
           </button>
         ) : null}
       </>
@@ -1571,48 +1805,48 @@ export default function App() {
     <>
       {isLocalPreview ? (
         <button className="preview-toggle" type="button" onClick={() => setShowConstructionPreview(true)}>
-          預覽建置中畫面
+          {copy.preview.show}
         </button>
       ) : null}
       <Header locale={locale} onToggleLocale={setLocale} />
-      {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} isLocalPreview={isLocalPreview} />}
+      {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
       <main className="page-main" id="mainpage">
         {isStandalonePage ? (
           <>
             <PageTitle page={pageTitle} />
             {initialSection === "about" ? (
               <>
-                <Numbers />
-                <Manifesto />
+                <Numbers copy={copy} />
+                <Manifesto copy={copy} />
               </>
             ) : null}
             {initialSection === "case" ? (
               <>
-                <CaseStudy />
-                <Solutions />
+                <CaseStudy copy={copy} />
+                <Solutions copy={copy} />
               </>
             ) : null}
-            {initialSection === "solutions" ? <Solutions /> : null}
-            {isFAQPage ? <FAQ /> : null}
-            {initialSection === "contact" ? <Contact /> : null}
+            {initialSection === "solutions" ? <Solutions copy={copy} /> : null}
+            {isFAQPage ? <FAQ copy={copy} /> : null}
+            {initialSection === "contact" ? <Contact copy={copy} /> : null}
           </>
         ) : (
           <>
-            <Hero />
-            <Marquee />
-            <Numbers />
-            <Manifesto />
-            <AILab />
+            <Hero copy={copy} />
+            <Marquee copy={copy} />
+            <Numbers copy={copy} />
+            <Manifesto copy={copy} />
+            <AILab copy={copy} />
             {isLocalPreview ? <Insights /> : null}
-            {initialSection === "solutions" ? <Solutions /> : null}
-            {initialSection === "case" ? <CaseStudy /> : null}
-            {initialSection === "case" ? <Solutions /> : null}
+            {initialSection === "solutions" ? <Solutions copy={copy} /> : null}
+            {initialSection === "case" ? <CaseStudy copy={copy} /> : null}
+            {initialSection === "case" ? <Solutions copy={copy} /> : null}
             {initialSection === "about" ? <TechStack /> : null}
-            <Contact />
+            <Contact copy={copy} />
           </>
         )}
       </main>
-      {isFAQPage ? null : <Footer />}
+      {isFAQPage ? null : <Footer copy={copy} />}
       <GoToTop />
     </>
   );

@@ -880,15 +880,6 @@ ul, ol  { margin: 0; }
   transform: translate(-50%, -50%) scale(1.14);
 }
 
-.desktop-menu-trigger-shape {
-  position: absolute;
-  inset: 0;
-  background: rgba(10, 31, 68, 0.94);
-  transform: rotate(45deg);
-  box-shadow: 0 14px 30px -18px rgba(10, 31, 68, 0.45);
-  transition: box-shadow 220ms ease, background 220ms ease;
-}
-
 .desktop-menu-trigger:hover .desktop-menu-trigger-shape,
 .desktop-menu-trigger:focus-visible .desktop-menu-trigger-shape {
   background: #0a1f44;
@@ -1081,8 +1072,8 @@ ul, ol  { margin: 0; }
 .desktop-menu-link.center {
   left: 50%;
   top: 50%;
-  width: 22%;
-  height: 22%;
+  width: 28%;
+  height: 28%;
   transform: translate(-50%, -50%);
   z-index: 4;
   color: var(--signal); /* blue text by default */
