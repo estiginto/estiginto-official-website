@@ -1490,6 +1490,8 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
   const [position, setPosition] = useState({ x: 160, y: 160 });
   const positionRef = useRef(position);
+  const pendingPositionRef = useRef(position);
+  const frameRef = useRef(null);
   const frozenRef = useRef(false);
   const hideTimerRef = useRef(null);
   const freezeTimerRef = useRef(null);
@@ -1502,6 +1504,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
     const clearTimers = () => {
       window.clearTimeout(hideTimerRef.current);
       window.clearTimeout(freezeTimerRef.current);
+      window.cancelAnimationFrame(frameRef.current);
     };
 
     const scheduleHide = () => {
@@ -1536,7 +1539,13 @@ function DesktopCursorMenu({ locale, fontControls }) {
       }
 
       frozenRef.current = false;
-      setPosition(next);
+      pendingPositionRef.current = next;
+      if (!frameRef.current) {
+        frameRef.current = window.requestAnimationFrame(() => {
+          frameRef.current = null;
+          setPosition(pendingPositionRef.current);
+        });
+      }
       setVisible(true);
       scheduleFreeze();
       scheduleHide();
@@ -1594,7 +1603,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
       <button
         className={`desktop-menu-trigger ${visible ? "visible" : ""}`}
         type="button"
-        style={{ left: `${position.x}px`, top: `${position.y}px` }}
+        style={{ "--cursor-x": `${position.x}px`, "--cursor-y": `${position.y}px` }}
         aria-label="Open desktop menu"
         onClick={() => setOpen(true)}
         onMouseEnter={() => setHoveringTrigger(true)}
