@@ -1379,7 +1379,7 @@ function DesktopCursorMenu({ locale, fontControls, isLocalPreview }) {
       >
         <div className="desktop-menu-diamond-core">
           {items.map((item) => {
-            const disabled = item.key === "solutions" && !isLocalPreview;
+            const disabled = (item.key === "about" || item.key === "solutions") && !isLocalPreview;
             const className = `desktop-menu-link ${item.position}${disabled ? " disabled" : ""}`;
 
             return disabled ? (
@@ -1471,7 +1471,8 @@ export default function App() {
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
   const isCasePage = initialSection === "case";
-  const shouldShowConstructionScreen = (!isLocalPreview && isCasePage) || (isLocalPreview && showConstructionPreview);
+  const isDraftPage = initialSection === "about" || initialSection === "case";
+  const shouldShowConstructionScreen = (!isLocalPreview && isDraftPage) || (isLocalPreview && showConstructionPreview);
   const shouldShowApplicationScenarios = initialSection === "case" || initialSection === "solutions";
   const currentFontScaleIndex = fontScaleOptions.indexOf(fontScale);
   const fontControls = {
