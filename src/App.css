@@ -612,7 +612,7 @@ ul, ol  { margin: 0; }
 .drawer {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 100;
   display: none;
   visibility: hidden;
   pointer-events: none;
@@ -2961,6 +2961,19 @@ ul, ol  { margin: 0; }
   min-height: 560px;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.insight-card:hover,
+.insight-card:focus-visible {
+  border-color: rgba(12, 28, 55, 0.34);
+  box-shadow: 0 28px 70px rgba(12, 28, 55, 0.12);
+  transform: translateY(-3px);
+  outline: 0;
 }
 
 .insight-card .figure {
@@ -3036,11 +3049,13 @@ ul, ol  { margin: 0; }
   display: inline-flex;
   align-items: center;
   gap: 12px;
+  width: fit-content;
   color: var(--ink);
   text-decoration: none;
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  pointer-events: none;
 }
 
 .insight-card .link .arrow {
@@ -3062,6 +3077,147 @@ ul, ol  { margin: 0; }
   transform: rotate(45deg);
 }
 
+.news-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+
+.news-modal-scrim {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(12, 12, 12, 0.72);
+  cursor: pointer;
+}
+
+.news-modal-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(420px, 52vw) minmax(0, 1fr);
+  background: #f8f5ef;
+  color: var(--ink);
+  overflow: auto;
+}
+
+.news-modal-close {
+  position: fixed;
+  top: clamp(18px, 3vw, 34px);
+  right: clamp(18px, 3vw, 34px);
+  z-index: 3;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(255,255,255,0.26);
+  background: rgba(20, 17, 13, 0.82);
+  color: #fff;
+  cursor: pointer;
+}
+
+.news-modal-close span,
+.news-modal-close span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+}
+
+.news-modal-close span {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.news-modal-close span::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.news-modal-figure {
+  position: sticky;
+  top: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-size: cover;
+  background-position: center;
+}
+
+.news-modal-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(5, 13, 30, 0.06), rgba(5, 13, 30, 0.58)),
+    linear-gradient(90deg, rgba(5, 13, 30, 0.28), rgba(5, 13, 30, 0));
+}
+
+.news-modal-figure span {
+  position: absolute;
+  left: clamp(24px, 4vw, 56px);
+  bottom: clamp(24px, 4vw, 56px);
+  z-index: 1;
+  color: #fff;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.news-modal-body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: clamp(86px, 10vw, 152px) clamp(38px, 8vw, 132px);
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.news-modal-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(28px, 5vw, 72px);
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.news-modal-body h3 {
+  margin: 0;
+  max-width: 13ch;
+  font-size: clamp(4rem, 7.4vw, 8.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  font-weight: 300;
+}
+
+.news-modal-lede {
+  max-width: 54ch;
+  margin: clamp(32px, 4vw, 56px) 0;
+  color: var(--ink);
+  font-size: clamp(1.18rem, 0.9vw + 0.98rem, 1.65rem);
+  line-height: 1.72;
+}
+
+.news-modal-copy {
+  max-width: 68ch;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--ink-line);
+  padding-top: clamp(28px, 3vw, 42px);
+  font-size: clamp(1rem, 0.35vw + 0.92rem, 1.16rem);
+  line-height: 1.9;
+}
+
+.news-modal-copy p {
+  margin: 0 0 1.25rem;
+}
+
 @media (max-width: 960px) {
   .insights-grid {
     grid-template-columns: 1fr;
@@ -3073,5 +3229,30 @@ ul, ol  { margin: 0; }
 
   .insight-card .figure {
     min-height: 220px;
+  }
+
+  .news-modal-panel {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .news-modal-figure {
+    position: relative;
+    min-height: 52vh;
+    min-height: 52dvh;
+  }
+
+  .news-modal-body {
+    min-height: 48vh;
+    min-height: 48dvh;
+    padding: 48px 24px 80px;
+    justify-content: flex-start;
+  }
+
+  .news-modal-body h3 {
+    max-width: none;
+    font-size: clamp(2.4rem, 12vw, 4.2rem);
   }
 }

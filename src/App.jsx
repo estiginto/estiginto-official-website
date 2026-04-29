@@ -848,6 +848,7 @@ function TechStack() {
 }
 
 function Insights() {
+  const [activePost, setActivePost] = useState(null);
   const posts = [
     {
       idx: "01",
@@ -856,6 +857,10 @@ function Insights() {
       body: "多數企業導入 AI 失敗，不是模型問題，而是流程沒有重設。我們看到的成功案例，都是先重做流程，再導入 AI。",
       image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
       meta: "Insight · 2026",
+      content: [
+        "企業真正需要的不是把 AI 放進每一個部門，而是先定義哪些流程值得被重新設計。從接案、客服、報價、庫存到決策報表，每一個節點都需要清楚的資料來源與責任邊界。",
+        "ESTIGINTO 會先協助團隊拆解既有流程，找出重複、延遲與容易出錯的環節，再決定該由 AI、自動化或系統規則介入。這樣導入後的工具才會變成營運能力，而不是另一個需要維護的負擔。",
+      ],
     },
     {
       idx: "02",
@@ -864,6 +869,10 @@ function Insights() {
       body: "問題從來不是技術，而是規劃。當系統用來「限制人」而不是「輔助決策」，它就會開始被繞過。",
       image: "/img/plan/laptop-coworking-space_53876-14515.webp",
       meta: "Journal · 2026",
+      content: [
+        "系統失敗通常不是因為功能不夠，而是它沒有對齊真實工作現場。當使用者需要用截圖、Excel 或通訊軟體補流程，就代表系統設計沒有承接決策脈絡。",
+        "好的系統應該讓資訊更透明、責任更清楚、例外更容易被處理。我們在規劃階段會先整理角色、權限、狀態與資料流，讓上線後的系統能被長期使用與持續擴充。",
+      ],
     },
     {
       idx: "03",
@@ -872,8 +881,33 @@ function Insights() {
       body: "從 SEO 到 Channel Partner，真正的關鍵是：你是否理解當地市場如何做決策，而不是只做曝光。",
       image: "/img/plan/man-holding-credit-card-hand-entering-security-code-using-laptop-keyboard.jpg",
       meta: "Field Note · 2026",
+      content: [
+        "進入海外市場時，語言只是第一層。更重要的是客戶如何搜尋、如何比較供應商、如何建立信任，以及付款、物流、客服與售後流程是否符合當地期待。",
+        "我們會把品牌內容、網站架構、轉換路徑與合作夥伴流程一起規劃，讓國際化不只是多語頁面，而是一套能支撐成交與服務交付的完整系統。",
+      ],
     },
   ];
+  const selectedPost = activePost === null ? null : posts[activePost];
+
+  useEffect(() => {
+    if (!selectedPost) {
+      return undefined;
+    }
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setActivePost(null);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [selectedPost]);
 
   return (
     <section className="section reveal" id="insights" aria-label="Insights">
@@ -885,8 +919,20 @@ function Insights() {
         />
 
         <div className="insights-grid">
-          {posts.map((p) => (
-            <article className="insight-card" key={p.idx}>
+          {posts.map((p, index) => (
+            <article
+              className="insight-card"
+              key={p.idx}
+              role="button"
+              tabIndex={0}
+              onClick={() => setActivePost(index)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  setActivePost(index);
+                }
+              }}
+            >
               <div
                 className="figure"
                 style={{ backgroundImage: `url(${p.image})` }}
@@ -903,14 +949,41 @@ function Insights() {
                 <h3>{p.title}</h3>
                 <p>{p.body}</p>
 
-                <a className="link" href="#">
+                <span className="link" aria-hidden="true">
                   <span>Read more</span>
                   <span className="arrow" />
-                </a>
+                </span>
               </div>
             </article>
           ))}
         </div>
+
+        {selectedPost ? (
+          <div className="news-modal" role="dialog" aria-modal="true" aria-labelledby="news-modal-title">
+            <button className="news-modal-scrim" type="button" aria-label="關閉最新消息" onClick={() => setActivePost(null)} />
+            <article className="news-modal-panel">
+              <button className="news-modal-close" type="button" aria-label="關閉最新消息" onClick={() => setActivePost(null)}>
+                <span aria-hidden="true" />
+              </button>
+              <div className="news-modal-figure" style={{ backgroundImage: `url(${selectedPost.image})` }}>
+                <span>{selectedPost.meta}</span>
+              </div>
+              <div className="news-modal-body">
+                <div className="news-modal-meta">
+                  <span>{selectedPost.tag}</span>
+                  <span>{selectedPost.idx}</span>
+                </div>
+                <h3 id="news-modal-title">{selectedPost.title}</h3>
+                <p className="news-modal-lede">{selectedPost.body}</p>
+                <div className="news-modal-copy">
+                  {selectedPost.content.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                </div>
+              </div>
+            </article>
+          </div>
+        ) : null}
       </div>
     </section>
   );
