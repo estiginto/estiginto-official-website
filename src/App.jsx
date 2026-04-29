@@ -1525,6 +1525,8 @@ export default function App() {
   const pageTitle = pageTitles[initialSection];
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
+  const isCasePage = initialSection === "case";
+  const shouldShowConstructionScreen = isCasePage && (!isLocalPreview || showConstructionPreview);
   const shouldShowApplicationScenarios = initialSection === "case" || initialSection === "solutions";
   const currentFontScaleIndex = fontScaleOptions.indexOf(fontScale);
   const fontControls = {
@@ -1570,7 +1572,7 @@ export default function App() {
   }, [initialSection, isStandalonePage]);
 
   useEffect(() => {
-    if (!isLocalPreview || showConstructionPreview) {
+    if (shouldShowConstructionScreen) {
       return undefined;
     }
 
@@ -1604,9 +1606,9 @@ export default function App() {
     });
 
     return () => observer.disconnect();
-  }, [isLocalPreview, showConstructionPreview]);
+  }, [shouldShowConstructionScreen]);
 
-  if (!isLocalPreview || showConstructionPreview) {
+  if (shouldShowConstructionScreen) {
     return (
       <>
         <ConstructionScreen />
@@ -1621,9 +1623,11 @@ export default function App() {
 
   return (
     <>
-      <button className="preview-toggle" type="button" onClick={() => setShowConstructionPreview(true)}>
-        預覽建置中畫面
-      </button>
+      {isLocalPreview && isCasePage ? (
+        <button className="preview-toggle" type="button" onClick={() => setShowConstructionPreview(true)}>
+          預覽建置中畫面
+        </button>
+      ) : null}
       <Header locale={locale} onToggleLocale={setLocale} />
       {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
       <main className="page-main" id="mainpage">
@@ -1653,7 +1657,7 @@ export default function App() {
             <Numbers />
             <Manifesto />
             <AILab />
-            <Insights />
+            {isLocalPreview ? <Insights /> : null}
             {initialSection === "solutions" ? <Solutions /> : null}
             {initialSection === "case" ? <CaseStudy /> : null}
             {initialSection === "case" ? <Solutions /> : null}
