@@ -819,6 +819,7 @@ ul, ol  { margin: 0; }
 .desktop-menu-scrim {
   position: absolute;
   inset: 0;
+  z-index: 1;
   border: 0;
   background: rgba(10, 31, 68, 0.36);
   opacity: 0;
@@ -850,13 +851,18 @@ ul, ol  { margin: 0; }
     left 140ms cubic-bezier(0.22, 0.9, 0.2, 1),
     top 140ms cubic-bezier(0.22, 0.9, 0.2, 1);
   pointer-events: none;
-  z-index: 9999; /* ensure it's above page content */
+  z-index: 2;
 }
 
 .desktop-menu-trigger.visible {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
+}
+
+.desktop-cursor-menu.open .desktop-menu-trigger {
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* keep the visual shape size by constraining inner shape */
@@ -911,6 +917,7 @@ ul, ol  { margin: 0; }
   position: absolute;
   left: 50%;
   top: 50%;
+  z-index: 3;
   width: min(34vw, 320px);
   aspect-ratio: 1;
   transform: translate(-50%, -50%) scale(0.86) rotate(45deg);
@@ -929,7 +936,7 @@ ul, ol  { margin: 0; }
   position: fixed;
   left: 50%;
   top: calc(50% + min(20vw, 188px));
-  z-index: 52;
+  z-index: 4;
   display: inline-flex;
   gap: 16px;
   opacity: 0;
