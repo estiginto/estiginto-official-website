@@ -460,13 +460,13 @@ function Header({ locale, onToggleLocale }) {
   );
 }
 
-function SectionEyebrow({ index, label, meta }) {
+function SectionEyebrow({ index, label, meta, className = "" }) {
   return (
-    <div className="section-eyebrow">
+    <div className={`section-eyebrow ${className}`.trim()}>
       <span className="index">{index}</span>
       <span className="rule" aria-hidden="true" />
       <span className="meta">{meta}</span>
-      <span style={{ gridColumn: "1 / -1", marginTop: 8, color: "inherit" }}>
+      <span className="section-eyebrow-label" style={{ gridColumn: "1 / -1", marginTop: 8, color: "inherit" }}>
         <span style={{ marginRight: 14, opacity: 0.5 }}></span>
         {label}
       </span>
@@ -560,6 +560,7 @@ function Numbers() {
     <section className="section reveal" aria-label="Studio achievements">
       <div className="wrap">
         <SectionEyebrow
+          className="achievements-eyebrow"
           index="§ Achievements"
           label="致力於打造有靈魂的設計 — 讓系統成為品牌成長的推手，並持續產生影響力"
           meta="從 2012 開始"
@@ -878,9 +879,9 @@ function Insights() {
     <section className="section reveal" id="insights" aria-label="Insights">
       <div className="wrap">
         <SectionEyebrow
-          index="§ 07 / Insights"
-          label="我們正在觀察、實驗與實際運行的事情"
-          meta="latest · field intelligence"
+          index="§ News"
+          label="最新消息"
+          meta="latest"
         />
 
         <div className="insights-grid">
@@ -995,23 +996,15 @@ function Contact() {
   return (
     <section className="section reveal" id="contact" aria-label="Contact">
       <div className="wrap">
-        <SectionEyebrow index="§ 08 / Contact" label="準備開始合作了嗎" meta="response · within 1 business day" />
+        <SectionEyebrow index="§ Contact Us" label="如果您準備好了" meta="立即預約" />
         <div className="contact">
           <div>
             <h2>
-              告訴我們你的需求，
-              <br />
-              我們會一起<span className="hl">定義最合適的解法</span>。
+              將想像<br />
+              <span className="hl">化為現實</span>。
             </h2>
             <p className="lede">
-              先告訴我們你目前的營運情境與主要問題。
-              <br />
-              不論是網站、系統、流程整合，或 AI 導入，我們都會先幫你梳理脈絡。
-              <br />
-              接著再用合適的技術與執行方式，做出能真正落地的方案。
-              <br />
-              <br />
-              你也可以直接預約一次 30 分鐘的初步討論。
+              立即預約線上諮詢<br />協助您打造自己的商業版圖。
             </p>
           </div>
 
@@ -1029,20 +1022,16 @@ function Contact() {
               <span className="v"><a href="tel:+886972118427">+886 972 118 427</a></span>
             </div>
             <div className="contact-row">
-              <span className="k">Office Hours</span>
-              <span className="v">週一至週五 · 10:00 – 18:00 (GMT+8)</span>
-            </div>
-            <div className="contact-row">
-              <span className="k">Locale</span>
-              <span className="v">Taipei · TW · zh-Hant / en / ja</span>
+              <span className="k">LINE@</span>
+              <span className="v"><a href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">@dbn3379w</a></span>
             </div>
             <div className="contact-cta">
               <a className="btn btn-primary" href="mailto:contact@estiginto.com?subject=Project%20Brief%20%7C%20ESTIGINTO">
                 <span>寄信給我們</span>
                 <span className="arrow" aria-hidden="true" />
               </a>
-              <a className="btn" href="https://www.facebook.com/Estiginto/" target="_blank" rel="noopener noreferrer">
-                <span>Facebook</span>
+              <a className="btn" href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">
+                <span>LINE@</span>
                 <span className="arrow" aria-hidden="true" />
               </a>
             </div>
@@ -1058,27 +1047,27 @@ function Footer() {
     <footer className="page-footer">
       <div className="wrap">
         <div className="footer-top">
-          <div>
-            <img className="footer-logo" src="/img/logo_estiginto_text.png" alt="ESTIGINTO" />
+          <div className="footer-brand">
+            <p className="footer-wordmark">ESTIGINTO</p>
+            <p>造物者科技<br />統一編號: 42752468</p>
           </div>
-          <div>
+          <nav className="footer-links" aria-label="頁尾網站導覽">
+            <h5>Explore</h5>
             <a href="/about.html">關於我們</a>
             <a href="/case.html">參考案例</a>
             <a href="/faq.html">常見問題</a>
             <a href="/contact.html">聯繫我們</a>
-          </div>
-          <div>
-            <h5>造物者科技</h5>
+          </nav>
+          <div className="footer-links">
+            <h5>Contact</h5>
             <a href="mailto:contact@estiginto.com">contact@estiginto.com</a>
             <a href="tel:+886224315362">+886 2 2431 5362</a>
+            <a href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">LINE@ 官方帳號</a>
+            <a href="https://www.facebook.com/Estiginto/" target="_blank" rel="noopener noreferrer">Facebook</a>
           </div>
         </div>
         <div className="footer-bottom">
           <span>© 2012 – 2026 ESTIGINTO Co., Ltd.</span>
-          <span className="build">
-            <span className="live" aria-hidden="true" />
-            build · v.2026.04.26 · all systems nominal
-          </span>
         </div>
       </div>
     </footer>
