@@ -1152,7 +1152,7 @@ function ConstructionScreen() {
     <main className="construction-screen" aria-labelledby="construction-title">
       <div className="construction-shell">
         <p className="construction-kicker">ESTIGINTO</p>
-        <h1 id="construction-title">網站維護中</h1>
+        <h1 id="construction-title">網站內容更新中 敬請期待</h1>
         <div className="construction-meta">
           <span>+886 2 2431 5362</span>
           <span>contact@estiginto.com</span>
