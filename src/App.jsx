@@ -1435,7 +1435,7 @@ export default function App() {
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
   const isCasePage = initialSection === "case";
-  const shouldShowConstructionScreen = isCasePage && (!isLocalPreview || showConstructionPreview);
+  const shouldShowConstructionScreen = (!isLocalPreview && isCasePage) || (isLocalPreview && showConstructionPreview);
   const shouldShowApplicationScenarios = initialSection === "case" || initialSection === "solutions";
   const currentFontScaleIndex = fontScaleOptions.indexOf(fontScale);
   const fontControls = {
@@ -1532,7 +1532,7 @@ export default function App() {
 
   return (
     <>
-      {isLocalPreview && isCasePage ? (
+      {isLocalPreview ? (
         <button className="preview-toggle" type="button" onClick={() => setShowConstructionPreview(true)}>
           預覽建置中畫面
         </button>
