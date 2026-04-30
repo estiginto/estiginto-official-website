@@ -1073,8 +1073,8 @@ ul, ol  { margin: 0; }
 .desktop-menu-link.center {
   left: 50%;
   top: 50%;
-  width: 28%;
-  height: 28%;
+  width: 22%;
+  height: 22%;
   transform: translate(-50%, -50%);
   z-index: 4;
   color: var(--signal); /* blue text by default */
