@@ -677,7 +677,7 @@ function render() {
 async function init() {
   const sourceLessons = window.GUIDE_DATA || (await fetch("data/guide.json").then((response) => response.json()));
   state.lessons = [...customLessons, ...sourceLessons];
-  state.activeId = state.lessons[0]?.id || "";
+  state.activeId = "";
   els.countLabel.textContent = `Oasis/Duda-based · 共 ${state.lessons.length} 個章節`;
 
   els.searchInput.addEventListener("input", (event) => {
