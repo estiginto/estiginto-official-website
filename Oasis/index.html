@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Estiginto / WebCenter 網站管理教學</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="mark">W</span>
+        <div>
+          <h1>Estiginto / WebCenter 網站管理教學</h1>
+          <p id="countLabel">Oasis/Duda-based</p>
+        </div>
+      </div>
+
+      <label class="field">
+        <span>搜尋</span>
+        <input id="searchInput" type="search" placeholder="輸入標題或說明" autocomplete="off" />
+      </label>
+
+      <nav id="categoryNav" class="category-nav" aria-label="分類"></nav>
+    </aside>
+
+    <main class="reader">
+      <section class="lesson-panel">
+        <div class="lesson-meta">
+          <span id="audienceLabel"></span>
+          <span id="categoryLabel"></span>
+        </div>
+        <h2 id="lessonTitle">正在載入</h2>
+        <p id="lessonDescription"></p>
+        <article id="textContent" class="text-content" hidden></article>
+        <div class="video-frame">
+          <video id="lessonVideo" controls preload="metadata" playsinline></video>
+        </div>
+        <div class="actions">
+          <a id="openVideo" href="#" target="_blank" rel="noreferrer">開啟影片檔</a>
+          <a id="openSource" href="#" target="_blank" rel="noreferrer">原始來源</a>
+        </div>
+      </section>
+
+      <section>
+        <div class="toolbar">
+          <h2>全部章節</h2>
+          <span id="visibleCount"></span>
+        </div>
+        <div id="lessonGrid" class="lesson-grid"></div>
+      </section>
+    </main>
+
+    <script src="data/guide-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,473 @@
+:root {
+  color-scheme: light;
+  --ink: #17222b;
+  --muted: #65737d;
+  --line: #d7e0e4;
+  --panel: #ffffff;
+  --wash: #f3f7f8;
+  --accent: #008aa6;
+  --accent-soft: #e3f4f7;
+  --accent-strong: #075f73;
+  --gold: #b97812;
+  --shadow: 0 18px 42px rgba(23, 34, 43, 0.1);
+  --radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--wash);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 420px) 220px;
+  align-items: end;
+  gap: 16px;
+  padding: 18px 32px;
+  background: rgba(248, 251, 252, 0.96);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  backdrop-filter: blur(10px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: white;
+  font-weight: 800;
+  flex: 0 0 auto;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.brand h1 {
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.brand p,
+.field span,
+.lesson-meta,
+.toolbar span,
+.actions a {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+}
+
+.category-nav {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.category-nav button {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0 14px;
+  white-space: nowrap;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+}
+
+.category-nav button:hover,
+.category-nav button.active {
+  border-color: rgba(0, 138, 166, 0.35);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+
+.reader {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  min-width: 0;
+  padding: 28px 32px 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.9fr);
+  align-items: start;
+  gap: 22px;
+}
+
+.lesson-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.lesson-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.lesson-meta span:empty {
+  display: none;
+}
+
+#lessonTitle {
+  font-size: clamp(24px, 2.6vw, 38px);
+  line-height: 1.18;
+  letter-spacing: 0;
+  margin-bottom: 8px;
+}
+
+#lessonDescription {
+  max-width: 78ch;
+  color: #34464e;
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+
+.video-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #0e171b;
+}
+
+.video-frame[hidden],
+.actions[hidden],
+.text-content[hidden] {
+  display: none;
+}
+
+.text-content {
+  min-height: 420px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+  background: #fbfdfd;
+  color: #253842;
+  font-size: 17px;
+  line-height: 1.85;
+}
+
+.text-content h3 {
+  margin: 24px 0 8px;
+  font-size: 21px;
+  line-height: 1.35;
+}
+
+.text-content h3:first-child {
+  margin-top: 0;
+}
+
+.text-content p {
+  margin: 0 0 8px;
+}
+
+.text-gap {
+  height: 8px;
+}
+
+.text-list-item {
+  padding-left: 10px;
+  border-left: 3px solid var(--accent-soft);
+}
+
+.toc-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+  margin: 12px 0 24px;
+  padding: 0;
+  list-style: none;
+  counter-reset: toc;
+}
+
+.toc-list li {
+  counter-increment: toc;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid #d7e3e8;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.toc-list li::before {
+  content: counter(toc);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.guide-image {
+  margin: 14px 0 26px;
+  border: 1px dashed #b7c8d0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #f5fafb;
+}
+
+.guide-image img {
+  display: block;
+  width: 100%;
+  max-height: 680px;
+  object-fit: contain;
+  background: white;
+}
+
+.guide-image figcaption {
+  display: block;
+  padding: 14px 16px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.guide-image figcaption span {
+  display: none;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  word-break: break-all;
+}
+
+.guide-image.missing-image figcaption span {
+  display: block;
+}
+
+.guide-image.missing-image {
+  padding: 18px;
+}
+
+.guide-image.missing-image img {
+  display: none;
+}
+
+video {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.actions a {
+  color: var(--accent-strong);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 18px;
+  margin: 2px 0 12px;
+  padding: 0 2px;
+}
+
+.toolbar h2 {
+  font-size: 20px;
+}
+
+.lesson-grid {
+  display: grid;
+  gap: 10px;
+  max-height: calc(100vh - 190px);
+  overflow: auto;
+  padding: 2px 3px 10px 2px;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: white;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  font: inherit;
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.card:hover,
+.card.active {
+  transform: translateY(-1px);
+  border-color: var(--accent);
+  box-shadow: 0 10px 22px rgba(23, 34, 43, 0.1);
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+  min-height: 96px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #dce7ea;
+}
+
+.text-thumb {
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.card-body {
+  display: block;
+  padding: 12px 13px;
+  min-width: 0;
+}
+
+.tag {
+  display: block;
+  color: var(--gold);
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.card h3 {
+  font-size: 15px;
+  line-height: 1.32;
+  margin-bottom: 5px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.lesson-grid::-webkit-scrollbar,
+.category-nav::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.lesson-grid::-webkit-scrollbar-thumb,
+.category-nav::-webkit-scrollbar-thumb {
+  background: #c5d4da;
+  border-radius: 999px;
+}
+
+@media (max-width: 1120px) {
+  .sidebar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .brand {
+    grid-column: 1 / -1;
+  }
+
+  .reader {
+    grid-template-columns: 1fr;
+  }
+
+  .lesson-grid {
+    max-height: none;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .sidebar {
+    position: relative;
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .reader {
+    padding: 16px;
+  }
+
+  #lessonTitle {
+    font-size: 26px;
+  }
+  .lesson-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .toc-list {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    grid-template-columns: 112px minmax(0, 1fr);
+  }
+
+  .thumb {
+    min-height: 92px;
+  }
+}

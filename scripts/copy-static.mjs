@@ -6,6 +6,7 @@ const dist = join(root, "dist");
 
 const staticDirs = [
   "img",
+  "Oasis",
 ];
 
 await mkdir(dist, { recursive: true });
@@ -14,6 +15,9 @@ for (const dir of staticDirs) {
   await cp(join(root, dir), join(dist, dir), {
     recursive: true,
     force: true,
-    filter: (source) => !source.includes("/old/") && !source.endsWith(".psd") && !source.endsWith(".mp4"),
+    filter: (source) => {
+      if (dir !== "img") return true;
+      return !source.includes("/old/") && !source.endsWith(".psd") && !source.endsWith(".mp4");
+    },
   });
 }
