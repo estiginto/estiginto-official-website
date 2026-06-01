@@ -531,7 +531,7 @@ function renderActiveLesson(lesson) {
   state.activeId = lesson.id;
   const title = text(lesson.title, lesson.id);
   const description = text(lesson.description, ui().noDescription);
-  const video = lesson.localVideo || lesson.remoteVideo;
+  const video = lesson.remoteVideo || lesson.localVideo;
   const isText = lesson.kind === "text";
 
   els.title.textContent = title;
