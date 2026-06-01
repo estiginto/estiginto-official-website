@@ -198,6 +198,7 @@ select {
   margin: 24px 0 8px;
   font-size: 21px;
   line-height: 1.35;
+  scroll-margin-top: 18px;
 }
 
 .text-content h3:first-child {
@@ -217,18 +218,62 @@ select {
   border-left: 3px solid var(--accent-soft);
 }
 
+.toc-block {
+  margin: 12px 0 24px;
+  border: 1px solid #d7e3e8;
+  border-radius: 10px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.toc-block summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.4;
+  list-style: none;
+}
+
+.toc-block summary::-webkit-details-marker {
+  display: none;
+}
+
+.toc-block summary::after {
+  content: "展開";
+  flex: 0 0 auto;
+  color: var(--accent-strong);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.toc-block[open] summary {
+  border-bottom: 1px solid #d7e3e8;
+}
+
+.toc-block[open] summary::after {
+  content: "收合";
+}
+
 .toc-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px 12px;
-  margin: 12px 0 24px;
-  padding: 0;
+  margin: 0;
+  padding: 14px;
   list-style: none;
   counter-reset: toc;
 }
 
 .toc-list li {
   counter-increment: toc;
+}
+
+.toc-list a {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
   align-items: start;
@@ -238,11 +283,13 @@ select {
   border: 1px solid #d7e3e8;
   border-radius: 8px;
   background: #ffffff;
+  color: inherit;
   font-size: 15px;
   line-height: 1.45;
+  text-decoration: none;
 }
 
-.toc-list li::before {
+.toc-list a::before {
   content: counter(toc);
   display: grid;
   place-items: center;
@@ -253,6 +300,11 @@ select {
   color: var(--accent-strong);
   font-size: 13px;
   font-weight: 700;
+}
+
+.toc-list a:hover {
+  border-color: var(--accent);
+  background: #f7fcfd;
 }
 
 .guide-image {

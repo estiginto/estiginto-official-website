@@ -545,6 +545,7 @@ function renderActiveLesson(lesson) {
     els.video.load();
     const content = lesson.content?.[state.language] || lesson.content?.["zh-tw"] || lesson.content?.en || [];
     els.textContent.innerHTML = renderTextContent(content, lesson.gallery);
+    syncTocState();
   } else {
     els.textContent.innerHTML = "";
     els.video.poster = lesson.localThumbnail || lesson.remoteThumbnail || "";
@@ -559,17 +560,43 @@ function renderActiveLesson(lesson) {
   els.category.textContent = lesson.category.map(categoryLabel).join(" / ");
 }
 
+function syncTocState() {
+  const shouldOpen = window.matchMedia("(min-width: 721px)").matches;
+  document.querySelectorAll(".toc-block").forEach((toc) => {
+    toc.open = shouldOpen;
+  });
+}
+
 function renderTextContent(lines, gallery = []) {
   const renderedPaths = new Set();
   const chunks = [];
   let tocItems = [];
+  const sectionIds = new Map();
+
+  const sectionIdFor = (title) => {
+    const base = title
+      .toLowerCase()
+      .replace(/[^a-z0-9\u4e00-\u9fff]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 64) || "section";
+    const count = sectionIds.get(base) || 0;
+    sectionIds.set(base, count + 1);
+    return count ? `${base}-${count + 1}` : base;
+  };
 
   const flushToc = () => {
     if (tocItems.length === 0) return;
+    const tocLinks = tocItems.map((line) => {
+      const label = line.replace(/^\d+\.\s*/, "");
+      return `<li><a href="#${sectionIdFor(label)}">${escapeHtml(label)}</a></li>`;
+    });
     chunks.push(`
-      <ol class="toc-list">
-        ${tocItems.map((line) => `<li>${escapeHtml(line.replace(/^\d+\.\s*/, ""))}</li>`).join("")}
-      </ol>
+      <details class="toc-block">
+        <summary>教學範圍目錄</summary>
+        <ol class="toc-list">
+          ${tocLinks.join("")}
+        </ol>
+      </details>
     `);
     tocItems = [];
   };
@@ -593,7 +620,7 @@ function renderTextContent(lines, gallery = []) {
     if (line.trim() === "") {
       chunks.push(`<div class="text-gap"></div>`);
     } else if (!line.includes("。") && line.length <= 32) {
-      chunks.push(`<h3>${escapeHtml(line)}</h3>`);
+      chunks.push(`<h3 id="${sectionIdFor(line)}">${escapeHtml(line)}</h3>`);
     } else {
       chunks.push(`<p>${escapeHtml(line)}</p>`);
     }
@@ -691,3 +718,5 @@ init().catch((error) => {
   els.countLabel.textContent = ui().loadError;
   console.error(error);
 });
+
+window.addEventListener("resize", syncTocState);
