@@ -313,6 +313,7 @@ select {
   border-radius: var(--radius);
   overflow: hidden;
   background: #f5fafb;
+  scroll-margin-top: 18px;
 }
 
 .guide-image img {

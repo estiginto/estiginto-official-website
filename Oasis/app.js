@@ -580,7 +580,7 @@ function renderTextContent(lines, gallery = []) {
     if (tocItems.length === 0) return;
     const tocLinks = tocItems.map((line) => {
       const label = line.replace(/^\d+\.\s*/, "");
-      return `<li><a href="#${sectionIdFor(label)}">${escapeHtml(label)}</a></li>`;
+      return `<li><a href="#${tocTargetFor(label)}">${escapeHtml(label)}</a></li>`;
     });
     chunks.push(`
       <details class="toc-block">
@@ -640,11 +640,59 @@ function renderGuideImage(imagePath, caption) {
     ? `<figcaption><strong>${escapeHtml(caption)}</strong></figcaption>`
     : "";
   return `
-    <figure class="guide-image">
+    <figure id="${imageAnchorForPath(imagePath)}" class="guide-image">
       <img src="${imagePath}" alt="${escapeHtml(caption || "功能畫面")}" loading="lazy" onerror="this.closest('figure').remove()" />
       ${captionMarkup}
     </figure>
   `;
+}
+
+function tocTargetFor(label) {
+  const normalized = label.toLowerCase();
+  const has = (value) => normalized.includes(value.toLowerCase());
+  const pathByTarget = [
+    ["Dashboard", "dashboard-overview.png"],
+    ["Abandoned Carts", "my-sales-abandoned-carts.png"],
+    ["Customers", "my-sales-customers.png"],
+    ["Subscriptions", "my-sales-subscriptions.png"],
+    ["Orders", "my-sales-orders.png"],
+    ["Data Import and Export", "catalog-data-import-export.png"],
+    ["Gift Cards", "catalog-gift-cards.png"],
+    ["Categories", "catalog-categories.png"],
+    ["Products", "catalog-products.png"],
+    ["Automated Emails", "marketing-automated-emails.png"],
+    ["Discount Coupons", "marketing-discount-coupons.png"],
+    ["Facebook Ads", "marketing-facebook-ads.png"],
+    ["Google Ads", "marketing-google-ads.png"],
+    ["Newsletters", "marketing-newsletters.png"],
+    ["Promotions", "marketing-promotions.png"],
+    ["Retargeting", "marketing-retargeting.png"],
+    ["行銷管理：Overview", "marketing-overview.png"],
+    ["報表分析：Overview", "reports-overview.png"],
+    ["Visitors", "reports-visitors.png"],
+    ["Conversion", "reports-conversion.png"],
+    ["報表分析：Orders", "reports-orders.png"],
+    ["Revenue", "reports-revenue.png"],
+    ["報表分析：Marketing", "reports-marketing.png"],
+    ["Stats", "reports-stats.png"],
+    ["Sell Everywhere", "sales-channels-overview.png"],
+    ["銷售通路：Instagram", "sales-channel-instagram.png"],
+    ["銷售通路：Facebook", "sales-channel-facebook.png"],
+    ["TikTok", "sales-channel-tiktok.png"],
+    ["Mobile App", "sales-channel-mobile-app.png"],
+    ["Facebook Messenger", "other-channel-facebook-messenger.png"],
+    ["Google Shopping", "other-channel-google-shopping.png"],
+    ["eBay", "other-channel-ebay.png"],
+    ["Amazon", "other-channel-amazon.png"],
+  ];
+  const match = pathByTarget.find(([key]) => has(key));
+  return imageAnchorForPath(`assets/custom/store-management/${match?.[1] || "store-entry-welcome.png"}`);
+}
+
+function imageAnchorForPath(imagePath) {
+  const fileName = imagePath.split("/").pop() || "image";
+  const baseName = fileName.replace(/\.[^.]+$/, "");
+  return `image-${baseName.replace(/[^a-z0-9_-]+/gi, "-").toLowerCase()}`;
 }
 
 function escapeHtml(value) {
