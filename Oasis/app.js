@@ -545,7 +545,6 @@ function renderActiveLesson(lesson) {
     els.video.load();
     const content = lesson.content?.[state.language] || lesson.content?.["zh-tw"] || lesson.content?.en || [];
     els.textContent.innerHTML = renderTextContent(content, lesson.gallery);
-    syncTocState();
   } else {
     els.textContent.innerHTML = "";
     els.video.poster = lesson.localThumbnail || lesson.remoteThumbnail || "";
@@ -558,13 +557,6 @@ function renderActiveLesson(lesson) {
     ? `${ui().shownOn}: ${audience.map((key) => ui().audience[key] || key).join(", ")}`
     : "";
   els.category.textContent = lesson.category.map(categoryLabel).join(" / ");
-}
-
-function syncTocState() {
-  const shouldOpen = window.matchMedia("(min-width: 721px)").matches;
-  document.querySelectorAll(".toc-block").forEach((toc) => {
-    toc.open = shouldOpen;
-  });
 }
 
 function renderTextContent(lines, gallery = []) {
@@ -718,5 +710,3 @@ init().catch((error) => {
   els.countLabel.textContent = ui().loadError;
   console.error(error);
 });
-
-window.addEventListener("resize", syncTocState);
