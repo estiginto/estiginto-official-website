@@ -46,7 +46,7 @@ export const serviceFamiliesByLocale = {
   ],
 };
 
-export const caseStudiesByLocale = {
+const allCaseStudiesByLocale = {
   zh: [
     { id: "elevator-operations", number: "01", industry: "知名電梯製造商", title: "電梯總管系統", summary: "串接維修派工、設備狀態與跨區營運資訊，讓管理團隊即時掌握服務現場。", capabilities: ["自動化維修保養派工", "可視化管理", "行事曆與地圖", "物聯網電梯管理", "儀表板戰情室", "台灣／日本／中國多國運作"] },
     { id: "senior-care-iot", number: "02", industry: "大型安養中心", title: "安養物聯監控系統", summary: "整合全棟設備、健康監測與行政管理，建立安全且可持續運作的照護環境。", capabilities: ["全棟電氣設備聯網控制", "血氧與心率監控", "智慧電表／煙霧／瓦斯／香氛", "人員與物資採購管理", "資安防護", "UPS 備援"] },
@@ -96,3 +96,17 @@ export const caseStudiesByLocale = {
     { id: "consumer-brand-site", number: "14", industry: "大手スマートフォンアクセサリーブランド", title: "ブランド・ECサイト", summary: "インタラクティブなカラー提案と購買機能で、ブランド体験をオンライン成約へつなげます。", capabilities: ["オンラインカラーシミュレーション", "ブランド表現", "ビジュアルデザイン", "オンライン決済", "割引／キャンペーン設定"] },
   ],
 };
+
+const hiddenCaseIds = new Set(["elevator-operations"]);
+
+export const caseStudiesByLocale = Object.fromEntries(
+  Object.entries(allCaseStudiesByLocale).map(([locale, caseStudies]) => [
+    locale,
+    caseStudies
+      .filter(({ id }) => !hiddenCaseIds.has(id))
+      .map((caseStudy, index) => ({
+        ...caseStudy,
+        number: String(index + 1).padStart(2, "0"),
+      })),
+  ]),
+);

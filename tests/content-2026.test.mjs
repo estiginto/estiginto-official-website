@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 const expectedCaseIds = [
-  "elevator-operations",
   "senior-care-iot",
   "pharma-management",
   "shipping-warehouse",
@@ -50,11 +49,21 @@ test("2026 content provides complete, matching locale inventories", async () => 
   for (const locale of supportedLocales) {
     assert.equal(companyStatsByLocale[locale].length, 3, `${locale} company stats`);
     assert.equal(serviceFamiliesByLocale[locale].length, 4, `${locale} service families`);
-    assert.equal(caseStudiesByLocale[locale].length, 14, `${locale} case studies`);
+    assert.equal(caseStudiesByLocale[locale].length, 13, `${locale} case studies`);
     assert.deepEqual(
       caseStudiesByLocale[locale].map(({ id }) => id),
       expectedCaseIds,
       `${locale} case IDs and order`,
+    );
+    assert.equal(
+      caseStudiesByLocale[locale].some(({ id }) => id === "elevator-operations"),
+      false,
+      `${locale} elevator case must stay hidden`,
+    );
+    assert.deepEqual(
+      caseStudiesByLocale[locale].map(({ number }) => number),
+      ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13"],
+      `${locale} visible case numbering`,
     );
     assertCompleteStrings(companyStatsByLocale[locale], `${locale}.companyStats`);
     assertCompleteStrings(serviceFamiliesByLocale[locale], `${locale}.serviceFamilies`);
