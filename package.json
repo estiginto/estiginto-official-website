@@ -6,13 +6,19 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 --port 4302",
     "build": "vite build && node scripts/copy-static.mjs",
-    "preview": "vite preview --host 0.0.0.0 --port 4302"
+    "preview": "vite preview --host 0.0.0.0 --port 4302",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "verify:dist": "node scripts/verify-dist.mjs",
+    "check": "npm test && npm run build && npm run verify:dist"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^5.1.1",
-    "vite": "^7.3.0",
     "react": "^19.2.1",
-    "react-dom": "^19.2.1"
+    "react-dom": "^19.2.1",
+    "vite": "^7.3.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "sharp": "^0.35.3"
+  }
 }
