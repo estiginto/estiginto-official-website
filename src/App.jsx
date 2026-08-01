@@ -1,4 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  caseStudiesByLocale,
+  companyStatsByLocale,
+  serviceFamiliesByLocale,
+} from "./content2026.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -10,22 +15,22 @@ const menuLabels = {
   zh: {
     home: "首頁",
     about: "關於我們",
-    solutions: "參考案例",
-    case: "常見問題",
+    solutions: "解決方案",
+    case: "參考案例",
     contact: "聯繫我們",
   },
   en: {
     home: "Home",
     about: "About",
-    solutions: "Case Studies",
-    case: "FAQ",
+    solutions: "Solutions",
+    case: "Case Studies",
     contact: "Contact",
   },
   ja: {
     home: "ホーム",
     about: "私たちについて",
-    solutions: "事例紹介",
-    case: "よくある質問",
+    solutions: "ソリューション",
+    case: "事例紹介",
     contact: "お問い合わせ",
   },
 };
@@ -33,8 +38,8 @@ const menuLabels = {
 const menuTargets = [
   { key: "home", href: "/", section: "home", position: "center" },
   { key: "about", href: "/about.html", section: "about", position: "top" },
-  { key: "solutions", href: "/case.html", section: "case", position: "left" },
-  { key: "case", href: "/faq.html", section: "faq", position: "right" },
+  { key: "solutions", href: "/solutions.html", section: "solutions", position: "left" },
+  { key: "case", href: "/case.html", section: "case", position: "right" },
   { key: "contact", href: "/contact.html", section: "contact", position: "bottom" },
 ];
 
@@ -50,10 +55,10 @@ const numbers = [
   {
     idx: "穩定性",
     keyLabel: "Stability",
-    val: "99.9",
-    sup: "%",
-    unit: "",
-    desc: "關鍵系統長期維持高可用性與穩定運行",
+    val: "12",
+    sup: "",
+    unit: " 年",
+    desc: "最久的系統已持續穩定運作 12 年",
   },
   {
     idx: "實戰成績",
@@ -69,14 +74,6 @@ const numbers = [
       </>
     ),
   },
-  {
-    idx: "合作夥伴",
-    keyLabel: "Partners",
-    val: "70",
-    sup: "+",
-    unit: "",
-    desc: "全球策略聯盟夥伴，持續共享資源與協同成長",
-  },
 ];
 
 const solutions = [
@@ -84,7 +81,7 @@ const solutions = [
     num: "01",
     eyebrow: "e-Commerce",
     titleHTML: <>電子商務 <span className="hl">方案</span></>,
-    image: "/img/plan/man-holding-credit-card-hand-entering-security-code-using-laptop-keyboard.jpg",
+    image: "/img/plan/man-holding-credit-card-hand-entering-security-code-using-laptop-keyboard.webp",
     label: "ESG-COM/2026",
     body: "規劃商品結構、客服／出貨流程與金物流串接，提供順暢購物體驗與會員成長。",
     points: ["金流／物流／發票／ERP 串接", "會員等級／點數／優惠券／再行銷", "跨境多語多幣，CDN 邊緣加速"],
@@ -104,7 +101,7 @@ const solutions = [
     num: "03",
     eyebrow: "Enterprise Resource",
     titleHTML: <>企業資源管理 <span className="hl">方案</span></>,
-    image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
+    image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.webp",
     label: "ESG-ERP/2026",
     body: "從流程盤點到系統落地，打通商務、財務、人資、製造與供應鏈資料。",
     points: ["流程藍圖、權限／稽核制度", "報表／儀表板與 KPI 追蹤", "與既有系統雙向整合"],
@@ -114,7 +111,7 @@ const solutions = [
     num: "04",
     eyebrow: "Warehouse Management",
     titleHTML: <>倉儲管理 <span className="hl">方案</span></>,
-    image: "/img/plan/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.jpg",
+    image: "/img/plan/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.webp",
     label: "ESG-WMS/2026",
     body: "條碼／PDA／批號／效期／盤點／庫齡一站式導入，降錯誤、提周轉。",
     points: ["入出庫／調撥／庫存追蹤", "撿料策略與路徑最佳化", "與 ERP、電商、OMS 串接"],
@@ -124,7 +121,7 @@ const solutions = [
     num: "05",
     eyebrow: "AI Integration",
     titleHTML: <>AI 整合 <span className="hl">方案</span></>,
-    image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
+    image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.webp",
     label: "ESG-AI/2026 · NEW",
     body: "把 LLM、RAG、Document AI 接進你的營運流程，不是 PoC，是真的會跑帳的 Agent。",
     points: ["AI Agent 工單／客服／業務工作流", "RAG 私有知識庫（含資料治理）", "私有部署 LLM／向量資料庫"],
@@ -135,7 +132,7 @@ const solutions = [
     num: "06",
     eyebrow: "Bespoke",
     titleHTML: <>客製化 <span className="hl">解決方案</span></>,
-    image: "/img/plan/close-up-elegant-decoration-house.jpg",
+    image: "/img/plan/close-up-elegant-decoration-house.webp",
     label: "ESG-CST/2026",
     body: "平台服務、B2B 工具、APP 到資訊看板。以迭代方式，把你的構想穩定變成產品。",
     points: ["POC／MVP 快速驗證", "資料流與雲端架構設計", "安全／權限／稽核與維運"],
@@ -389,17 +386,17 @@ const pageTitles = {
   about: {
     kicker: "About",
     title: "關於我們",
-    lede: "理解我們如何規劃系統、設計流程，並把長期可維護性放進每一次交付。",
+    lede: "自 2011 年起，我們把規劃、設計與工程整合成能長期運作的解決方案。",
   },
   case: {
     kicker: "Showcase",
     title: "參考案例",
-    lede: "從真實應用情境出發，看系統如何解決流程、資料與營運效率問題。",
+    lede: "14 個跨產業匿名案例，呈現系統如何回應真實流程、資料與營運需求。",
   },
   solutions: {
-    kicker: "Showcase",
-    title: "參考案例",
-    lede: "依產業與情境整理常見系統應用方向，協助你對照自己的需求。",
+    kicker: "Solutions",
+    title: "解決方案",
+    lede: "網站、客製系統、品牌設計與數位行銷，從需求規劃到長期運作一次整合。",
   },
   faq: {
     kicker: "FAQ",
@@ -422,9 +419,9 @@ const localizedCopy = {
     processSteps,
     faqGroups,
     hero: {
-      kicker: "AI 革命，讓價值聚焦在真正重要的事物上",
-      title: ["迎接有史以來", "最好的", "黃金時代"],
-      lede: ["透過深度技術核心", "致力於提供永續、高效的解決方案", "持續成為企業成長的推手"],
+      kicker: "將你的願景，建構在磐石上",
+      title: ["有靈魂的設計", "長久的", "數位基礎"],
+      lede: ["從商業目標與真實流程出發", "打造直接、有效、永續且彈性的解決方案", "讓系統持續推動品牌成長"],
       scrolldown: "往下滾動",
     },
     marquee: [
@@ -439,7 +436,7 @@ const localizedCopy = {
     ],
     achievements: {
       label: "致力於打造有靈魂的設計 — 讓系統成為品牌成長的推手，並持續產生影響力",
-      meta: "從 2012 開始",
+      meta: "從 2011 開始",
     },
     manifesto: {
       label: "獨家競爭力",
@@ -462,21 +459,7 @@ const localizedCopy = {
     aiLab: {
       label: "以客戶為本",
       title: "核心服務項目",
-      lede: "自 2012 開始，深度結合台灣產業鏈資源，逐步走向國際",
-    },
-    caseStudy: {
-      label: "一個正在跑的案例。",
-      tag: "Cross-border DTC · Beauty · 2024–在線",
-      titleA: "五個系統各自為政，",
-      titleHighlight: "倉儲錯誤率 3.2%。",
-      titleB: "我們重做了流程，再做系統。",
-      summary: "客戶原本電商、WMS、ERP、客服、會員五套系統各自更新，業務每天用 Excel 對單。我們重新設計商品主檔、訂單流與庫存事件，串成單一資料源，再把 AI 客服接上 SOP。",
-      metrics: [
-        ["出貨錯誤率", "原 3.2% · 8x 改善"],
-        ["出貨時效", "D+2 → D+0.7"],
-        ["客服自動化率", "Agent 接管 L1，真人處理 L2/L3"],
-        ["月對帳工時", "人工 28h → 自動 2h"],
-      ],
+      lede: "自 2011 開始，深度結合台灣產業鏈資源，逐步走向國際",
     },
     faqNoteLabel: "關鍵回答邏輯",
     contact: {
@@ -491,6 +474,7 @@ const localizedCopy = {
       company: "造物者科技",
       navLabel: "頁尾網站導覽",
       line: "LINE@ 官方帳號",
+      faqLabel: "常見問題",
     },
     construction: "網站內容更新中 敬請期待",
     font: {
@@ -506,17 +490,17 @@ const localizedCopy = {
   },
   en: {
     pageTitles: {
-      about: { kicker: "About", title: "About Us", lede: "How we plan systems, design workflows, and build long-term maintainability into every delivery." },
-      case: { kicker: "Showcase", title: "Case Studies", lede: "Real application scenarios showing how systems solve workflow, data, and operational efficiency problems." },
-      solutions: { kicker: "Showcase", title: "Case Studies", lede: "Common system applications by industry and scenario, so you can compare them with your own needs." },
+      about: { kicker: "About", title: "About Us", lede: "Since 2011, we have combined planning, design, and engineering into solutions built to last." },
+      case: { kicker: "Showcase", title: "Case Studies", lede: "Fourteen anonymized cases showing how systems answer real workflow, data, and operational needs." },
+      solutions: { kicker: "Solutions", title: "Solutions", lede: "Websites, custom systems, brand design, and digital marketing - connected from planning through long-term operation." },
       faq: { kicker: "FAQ", title: "FAQ", lede: "Questions clients most often ask before working with us, covering pricing, systems, design, AI, contracts, risk, and payment." },
       contact: { kicker: "Contact", title: "Contact Us", lede: "Tell us where you are, what you want to achieve, and where you are stuck. We will help clarify the direction first." },
     },
     numbers: [
       { idx: "Sustainability", keyLabel: "Sustainability", val: "12", sup: "+", unit: " yrs", desc: "Our longest-running system has operated reliably for more than 12 years." },
-      { idx: "Stability", keyLabel: "Stability", val: "99.9", sup: "%", unit: "", desc: "Mission-critical systems are kept highly available and stable over the long term." },
+      { idx: "Longevity", keyLabel: "Longevity", val: "12", sup: "", unit: " yrs", desc: "Our longest-running system has operated for 12 years." },
       { idx: "Delivery", keyLabel: "Expertise", val: "325", sup: "+", unit: "", desc: <>Delivered systems, design assets,<br />and complete solution packages.</> },
-      { idx: "Partners", keyLabel: "Partners", val: "70", sup: "+", unit: "", desc: "Global strategic partners sharing resources and growing together." },
+      { idx: "Founded", keyLabel: "Founded", val: "2011", sup: "", unit: "", desc: "Formed by national software competition representatives." },
     ],
     solutions: [
       { ...solutions[0], titleHTML: <>E-commerce <span className="hl">Solutions</span></>, body: "We plan product structures, service and fulfillment flows, payment, logistics, and member growth.", points: ["Payment, logistics, invoice, and ERP integration", "Membership tiers, points, coupons, and remarketing", "Cross-border multilingual and multicurrency setup with CDN acceleration"] },
@@ -542,33 +526,32 @@ const localizedCopy = {
       ["06", "Operations and optimization", "Incident response, performance, security, feature optimization, and reporting additions.", "Ongoing"],
     ],
     faqGroups,
-    hero: { kicker: "The AI shift lets value focus on what truly matters", title: ["Entering the", "best", "golden age"], lede: ["Powered by deep technical capability", "we deliver sustainable and efficient solutions", "and keep driving business growth"], scrolldown: "Scroll down" },
+    hero: { kicker: "Build your vision on solid ground", title: ["Thoughtful design", "A lasting", "digital foundation"], lede: ["Starting from business goals and real workflows", "we create direct, effective, sustainable, and flexible solutions", "that keep driving brand growth"], scrolldown: "Scroll down" },
     marquee: ["Adaptive decision systems", "Software system planning and implementation", "Software, hardware, and IoT integration", "ERP / WMS / CRM", "Business websites / e-commerce / payments / invoices", "Custom app development", "War-room dashboards", "Automation execution support systems"],
-    achievements: { label: "We build designs with a soul, turning systems into engines for brand growth and lasting impact.", meta: "Since 2012" },
+    achievements: { label: "We build designs with a soul, turning systems into engines for brand growth and lasting impact.", meta: "Since 2011" },
     manifesto: { label: "Our Edge", prelude: "Hard-to-use systems are usually not caused by technology or budget", headlinePrefix: "They fail because", headlineHighlight: "the design direction is wrong", points: ["1. Engineering logic is used to design human behavior", "2. Processes replace decisions instead of supporting them", "3. Standard templates are forced onto non-standard business scenarios"], quote: "\"The depth of planning and mechanism design determines a system's product life.\"", paragraphs: [["With agile development and flexible architecture", "we work like architects drawing before construction", "validating structure, flow, and user experience before anything is built."], ["A well-designed system plan can be executed by any capable team", "while still preserving the original intent and goals", "because it is designed to serve users, not merely to be delivered."]], signoff: "- This is the key to sustainable systems." },
     solutionsUi: { index: "§ Reference application scenarios", label: "By industry", button: "Discuss this solution" },
-    aiLab: { label: "Customer-centered", title: "Core Services", lede: "Since 2012, we have connected deeply with Taiwan's industry chain and gradually expanded internationally." },
-    caseStudy: { label: "A case currently in operation.", tag: "Cross-border DTC · Beauty · 2024-present", titleA: "Five systems ran separately, ", titleHighlight: "warehouse error rate was 3.2%.", titleB: "We redesigned the process before rebuilding the system.", summary: "The client had separate e-commerce, WMS, ERP, service, and membership systems, with daily Excel reconciliation. We redesigned the product master, order flow, and inventory events into a single data source, then connected AI service to SOPs.", metrics: [["Shipping error rate", "From 3.2% · 8x improvement"], ["Fulfillment speed", "D+2 -> D+0.7"], ["Service automation rate", "Agent handles L1; humans handle L2/L3"], ["Monthly reconciliation hours", "Manual 28h -> automated 2h"]] },
+    aiLab: { label: "Customer-centered", title: "Core Services", lede: "Since 2011, we have connected deeply with Taiwan's industry chain and gradually expanded internationally." },
     faqNoteLabel: "Key answer logic",
     contact: { label: "When you are ready", meta: "Book a consultation", titleA: "Turn imagination", titleHighlight: "into reality", lede: ["Book an online consultation now", "and let us help build your business landscape."], emailButton: "Email us" },
-    footer: { company: "ESTIGINTO Co., Ltd.", navLabel: "Footer navigation", line: "LINE@ Official Account" },
+    footer: { company: "ESTIGINTO Co., Ltd.", navLabel: "Footer navigation", line: "LINE@ Official Account", faqLabel: "FAQ" },
     construction: "Website content is being updated. Please stay tuned.",
     font: { label: "Font size", increase: "Increase font size", reset: "Default font size", decrease: "Decrease font size" },
     preview: { show: "Preview construction page", back: "Back to full page" },
   },
   ja: {
     pageTitles: {
-      about: { kicker: "About", title: "私たちについて", lede: "システム設計、業務フロー設計、長期保守性をどのように納品へ組み込むかをご紹介します。" },
-      case: { kicker: "Showcase", title: "事例紹介", lede: "実際の利用シーンから、システムが業務、データ、運用効率をどう改善するかをご覧ください。" },
-      solutions: { kicker: "Showcase", title: "事例紹介", lede: "業界やシーン別に、よくあるシステム活用の方向性を整理しています。" },
+      about: { kicker: "About", title: "私たちについて", lede: "2011年の創業以来、企画・デザイン・開発を、長く運用できるソリューションとして提供しています。" },
+      case: { kicker: "Showcase", title: "事例紹介", lede: "14件の匿名事例を通じて、実際の業務、データ、運用課題への取り組みをご紹介します。" },
+      solutions: { kicker: "Solutions", title: "ソリューション", lede: "Webサイト、業務システム、ブランドデザイン、デジタルマーケティングを企画から長期運用まで一貫して支援します。" },
       faq: { kicker: "FAQ", title: "よくある質問", lede: "価格、システム、機能、設計、AI、契約、リスク、支払いなど、相談前によくある質問をまとめました。" },
       contact: { kicker: "Contact", title: "お問い合わせ", lede: "現状、目標、課題をお聞かせください。まず方向性の整理からお手伝いします。" },
     },
     numbers: [
       { idx: "持続性", keyLabel: "Sustainability", val: "12", sup: "+", unit: " 年", desc: "最も長く稼働しているシステムは 12 年以上安定運用されています。" },
-      { idx: "安定性", keyLabel: "Stability", val: "99.9", sup: "%", unit: "", desc: "重要システムの高可用性と安定稼働を長期的に維持します。" },
+      { idx: "長期運用", keyLabel: "Longevity", val: "12", sup: "", unit: " 年", desc: "最も長く稼働しているシステムは12年間運用されています。" },
       { idx: "実績", keyLabel: "Expertise", val: "325", sup: "+", unit: "", desc: <>システム、デザイン成果物、<br />総合ソリューションを納品。</> },
-      { idx: "パートナー", keyLabel: "Partners", val: "70", sup: "+", unit: "", desc: "世界の戦略パートナーと資源を共有し、共に成長しています。" },
+      { idx: "創業", keyLabel: "Founded", val: "2011", sup: "", unit: "", desc: "ソフトウェア全国大会の代表選手を中心に結成しました。" },
     ],
     solutions: [
       { ...solutions[0], titleHTML: <>Eコマース <span className="hl">ソリューション</span></>, body: "商品構成、カスタマーサポート、出荷、決済、物流、会員成長まで一貫して設計します。", points: ["決済、物流、請求書、ERP 連携", "会員ランク、ポイント、クーポン、リマーケティング", "越境向け多言語・多通貨と CDN 高速化"] },
@@ -594,16 +577,15 @@ const localizedCopy = {
       ["06", "運用と改善", "障害対応、性能、セキュリティ、機能改善、レポート追加を継続します。", "継続"],
     ],
     faqGroups,
-    hero: { kicker: "AI 革命により、価値は本当に重要なことへ集中します", title: ["これまでで", "最良の", "黄金時代へ"], lede: ["深い技術力を基盤に", "持続可能で効率的なソリューションを提供し", "企業成長を継続的に支えます"], scrolldown: "下へスクロール" },
+    hero: { kicker: "ビジョンを、揺るぎない基盤の上に", title: ["想いのある設計", "長く使える", "デジタル基盤"], lede: ["事業目標と実際の業務フローを起点に", "直接的で効果的、持続可能かつ柔軟なソリューションを構築し", "ブランドの成長を継続的に支えます"], scrolldown: "下へスクロール" },
     marquee: ["能動型意思決定システム", "ソフトウェアシステムの設計と構築", "ソフト・ハード・IoT 統合", "ERP / WMS / CRM", "ビジネスサイト / EC / 決済 / 請求書", "カスタム APP", "戦情室ダッシュボード", "自動化実行支援システム"],
-    achievements: { label: "魂のあるデザインを作り、システムをブランド成長と持続的な影響力の推進力にします。", meta: "2012 年から" },
+    achievements: { label: "魂のあるデザインを作り、システムをブランド成長と持続的な影響力の推進力にします。", meta: "2011 年から" },
     manifesto: { label: "独自の競争力", prelude: "使いにくいシステムの多くは、技術や予算の問題ではありません", headlinePrefix: "本質は", headlineHighlight: "設計方向の誤りです", points: ["1. 人の行動を工学的な論理だけで設計している", "2. 意思決定を支援せず、流程で置き換えている", "3. 非標準の業務に標準テンプレートを当てはめている"], quote: "「計画と仕組み設計の深さが、システムの寿命を決めます。」", paragraphs: [["アジャイル開発と柔軟なアーキテクチャを用い", "建築家の設計図のように", "施工前に構造、動線、体験を検証します。"], ["適切に設計されたシステム計画は、誰が実行しても", "設計意図と目標を保てます", "単なる納品ではなく、利用者に本当に役立つための設計です。"]], signoff: "- これが、持続するシステムの鍵です。" },
     solutionsUi: { index: "§ 他社の活用シーンを参考にする", label: "業界別", button: "この方案を相談する" },
-    aiLab: { label: "顧客中心", title: "主要サービス", lede: "2012 年から台湾の産業チェーン資源と深く連携し、国際展開を進めています。" },
-    caseStudy: { label: "現在稼働中の事例。", tag: "Cross-border DTC · Beauty · 2024-現在", titleA: "5つのシステムが分断され、", titleHighlight: "倉庫ミス率は 3.2%。", titleB: "私たちは流程を作り直してから、システムを再構築しました。", summary: "EC、WMS、ERP、客服、会員の5システムが別々に更新され、営業は毎日 Excel で照合していました。商品マスタ、注文フロー、在庫イベントを再設計し、単一データソースへ統合したうえで、AI サポートを SOP に接続しました。", metrics: [["出荷ミス率", "元 3.2% · 8倍改善"], ["出荷スピード", "D+2 -> D+0.7"], ["サポート自動化率", "Agent が L1、担当者が L2/L3 を処理"], ["月次照合作業", "手作業 28h -> 自動 2h"]] },
+    aiLab: { label: "顧客中心", title: "主要サービス", lede: "2011 年から台湾の産業チェーン資源と深く連携し、国際展開を進めています。" },
     faqNoteLabel: "回答の要点",
     contact: { label: "準備ができたら", meta: "相談を予約", titleA: "想像を", titleHighlight: "現実へ", lede: ["オンライン相談をご予約ください", "あなたのビジネス構想を形にするお手伝いをします。"], emailButton: "メールする" },
-    footer: { company: "造物者科技", navLabel: "フッターナビゲーション", line: "LINE@ 公式アカウント" },
+    footer: { company: "造物者科技", navLabel: "フッターナビゲーション", line: "LINE@ 公式アカウント", faqLabel: "よくある質問" },
     construction: "サイト内容を更新中です。しばらくお待ちください。",
     font: { label: "文字サイズ", increase: "文字を大きく", reset: "標準サイズ", decrease: "文字を小さく" },
     preview: { show: "工事中画面をプレビュー", back: "完全ページへ戻る" },
@@ -742,7 +724,7 @@ function Hero({ copy }) {
             <span className="dot">/</span>
             <span>System Craft Studio</span>
             <span className="dot">·</span>
-            <span>Est. 2012 — 14 yrs</span>
+            <span>Est. 2011</span>
             <span className="dot">·</span>
             <span>Taipei, Taiwan</span>
           </div>
@@ -789,6 +771,8 @@ function Marquee({ copy }) {
 }
 
 function Numbers({ copy }) {
+  const items = companyStatsByLocale[copy.locale] || companyStatsByLocale.zh;
+
   return (
     <section className="section reveal" aria-label="Studio achievements">
       <div className="wrap">
@@ -799,18 +783,17 @@ function Numbers({ copy }) {
           meta={copy.achievements.meta}
         />
         <div className="numbers">
-          {copy.numbers.map((n) => (
-            <div className="number-cell" key={n.idx}>
+          {items.map((n) => (
+            <div className="number-cell" key={n.id}>
               <div className="key">
                 <span>{n.keyLabel}</span>
-                <span className="idx">{n.idx}</span>
+                <span className="idx">{n.label}</span>
               </div>
               <div className="val">
-                <span>{n.val}</span>
-                {n.sup ? <sup>{n.sup}</sup> : null}
-                <span className="unit">{n.unit}</span>
+                <span>{n.value}</span>
+                <span className="unit">{n.suffix}</span>
               </div>
-              <div className="desc">{n.desc}</div>
+              <div className="desc">{n.description}</div>
             </div>
           ))}
         </div>
@@ -866,29 +849,29 @@ function Manifesto({ copy }) {
 
 function Solutions({ copy }) {
   const [active, setActive] = useState(0);
-  const item = copy.solutions[active];
+  const items = serviceFamiliesByLocale[copy.locale] || serviceFamiliesByLocale.zh;
+  const item = items[active] || items[0];
 
   return (
     <section className="section reveal" id="solutions" aria-label="Solutions">
       <div className="wrap">
-        <SectionEyebrow index={copy.solutionsUi.index} label={copy.solutionsUi.label} meta={`${copy.solutions.length} programs`} />
+        <SectionEyebrow index={copy.solutionsUi.index} label={copy.solutionsUi.label} meta={`${items.length} programs`} />
         <div className="solutions">
           <ul className="sol-list">
-            {copy.solutions.map((s, i) => (
+            {items.map((s, i) => (
               <li
-                key={s.num}
+                key={s.id}
                 className={`sol-row ${i === active ? "active" : ""}`}
                 onMouseEnter={() => setActive(i)}
                 onFocus={() => setActive(i)}
                 tabIndex={0}
               >
-                <span className="num">{s.num}</span>
+                <span className="num">{s.number}</span>
                 <div className="body">
                   <span className="tag">
                     <span>{s.eyebrow}</span>
-                    {s.isNew ? <span className="pill">NEW</span> : null}
                   </span>
-                  <h3>{s.titleHTML}</h3>
+                  <h3>{s.title}</h3>
                 </div>
                 <span className="meta">{s.meta}</span>
               </li>
@@ -903,13 +886,13 @@ function Solutions({ copy }) {
               aria-label={item.eyebrow}
             >
               <span className="frame" aria-hidden="true" />
-              <span className="label">{item.label}</span>
+              <span className="label">{item.meta}</span>
             </div>
             <div className="info">
-              <p>{item.body}</p>
+              <p>{item.summary}</p>
               <ul>
-                {item.points.map((p, pointIndex) => (
-                  <li key={`${item.label}-${pointIndex}`}>{p}</li>
+                {item.capabilities.map((p, pointIndex) => (
+                  <li key={`${item.id}-${pointIndex}`}>{p}</li>
                 ))}
               </ul>
               <a className="btn" href="/contact.html" style={{ marginTop: 8 }}>
@@ -978,57 +961,60 @@ function AILab({ copy }) {
   );
 }
 
-function CaseStudy({ copy }) {
-  const caseStudy = copy.caseStudy;
+function CasePortfolio({ copy }) {
+  const cases = caseStudiesByLocale[copy.locale] || caseStudiesByLocale.zh;
+  const [activeCaseId, setActiveCaseId] = useState(null);
+  const labels = {
+    zh: { section: "跨產業實戰", meta: "14 個匿名案例", expand: "查看能力", collapse: "收合內容", details: "案例能力" },
+    en: { section: "Cross-industry delivery", meta: "14 anonymized cases", expand: "View capabilities", collapse: "Collapse details", details: "Case capabilities" },
+    ja: { section: "業界横断の実績", meta: "匿名事例 14件", expand: "対応内容を見る", collapse: "詳細を閉じる", details: "対応内容" },
+  }[copy.locale] || { section: "跨產業實戰", meta: "14 個匿名案例", expand: "查看能力", collapse: "收合內容", details: "案例能力" };
+
   return (
-    <section className="section reveal" id="case" aria-label="Selected case">
+    <section className="section reveal" id="case" aria-label={labels.section}>
       <div className="wrap">
-        <SectionEyebrow index="§ 04 / Selected" label={caseStudy.label} meta="anonymized · cross-border beauty" />
-        <div className="case">
-          <div
-            className="figure"
-            style={{
-              backgroundImage:
-                "url(/img/plan/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.jpg)",
-            }}
-          >
-            <span className="stamp">Case · K/2025</span>
-          </div>
+        <SectionEyebrow index="§ 14 / Portfolio" label={labels.section} meta={labels.meta} />
+        <div className="case-portfolio">
+          {cases.map((caseStudy) => {
+            const isActive = activeCaseId === caseStudy.id;
+            const triggerId = `case-trigger-${caseStudy.id}`;
+            const detailId = `case-detail-${caseStudy.id}`;
 
-          <div className="case-body">
-            <div className="tag">{caseStudy.tag}</div>
-            <h3>
-              {caseStudy.titleA}<span className="hl">{caseStudy.titleHighlight}</span>
-              <br />
-              {caseStudy.titleB}
-            </h3>
-            <p className="summary">
-              {caseStudy.summary}
-            </p>
-
-            <div className="case-metrics">
-              <div className="case-metric">
-                <div className="label">{caseStudy.metrics[0][0]}</div>
-                <div className="val"><span className="arrow">↓</span>0.4<span style={{ fontSize: "0.5em", color: "var(--ink-mute)" }}>%</span></div>
-                <div className="delta">{caseStudy.metrics[0][1]}</div>
-              </div>
-              <div className="case-metric">
-                <div className="label">{caseStudy.metrics[1][0]}</div>
-                <div className="val"><span className="arrow">↑</span>2.8<span style={{ fontSize: "0.5em", color: "var(--ink-mute)" }}>x</span></div>
-                <div className="delta">{caseStudy.metrics[1][1]}</div>
-              </div>
-              <div className="case-metric">
-                <div className="label">{caseStudy.metrics[2][0]}</div>
-                <div className="val"><span className="arrow">↑</span>68<span style={{ fontSize: "0.5em", color: "var(--ink-mute)" }}>%</span></div>
-                <div className="delta">{caseStudy.metrics[2][1]}</div>
-              </div>
-              <div className="case-metric">
-                <div className="label">{caseStudy.metrics[3][0]}</div>
-                <div className="val"><span className="arrow">↓</span>92<span style={{ fontSize: "0.5em", color: "var(--ink-mute)" }}>%</span></div>
-                <div className="delta">{caseStudy.metrics[3][1]}</div>
-              </div>
-            </div>
-          </div>
+            return (
+              <article className={`case-portfolio-item ${isActive ? "is-active" : ""}`} key={caseStudy.id}>
+                <button
+                  className="case-portfolio-trigger"
+                  id={triggerId}
+                  type="button"
+                  aria-expanded={isActive}
+                  aria-controls={detailId}
+                  onClick={() => setActiveCaseId(isActive ? null : caseStudy.id)}
+                >
+                  <span className="case-portfolio-number">{caseStudy.number}</span>
+                  <span className="case-portfolio-heading">
+                    <span className="case-portfolio-industry">{caseStudy.industry}</span>
+                    <span className="case-portfolio-title">{caseStudy.title}</span>
+                  </span>
+                  <span className="case-portfolio-action">{isActive ? labels.collapse : labels.expand}</span>
+                  <span className="case-portfolio-icon" aria-hidden="true" />
+                </button>
+                <p className="case-portfolio-summary">{caseStudy.summary}</p>
+                {isActive ? (
+                  <div
+                    className="case-portfolio-detail"
+                    id={detailId}
+                    role="region"
+                    aria-labelledby={triggerId}
+                  >
+                    <span className="case-portfolio-detail-label">{labels.details}</span>
+                    <ul className="case-capability-list">
+                      {caseStudy.capabilities.map((capability) => <li key={capability}>{capability}</li>)}
+                    </ul>
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1092,7 +1078,7 @@ function Insights() {
       tag: "AI Strategy",
       title: "AI 不是工具，而是營運流程的重構",
       body: "多數企業導入 AI 失敗，不是模型問題，而是流程沒有重設。我們看到的成功案例，都是先重做流程，再導入 AI。",
-      image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.jpg",
+      image: "/img/plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.webp",
       meta: "Insight · 2026",
       content: [
         "企業真正需要的不是把 AI 放進每一個部門，而是先定義哪些流程值得被重新設計。從接案、客服、報價、庫存到決策報表，每一個節點都需要清楚的資料來源與責任邊界。",
@@ -1116,7 +1102,7 @@ function Insights() {
       tag: "Growth",
       title: "國際市場，不只是翻譯，而是重做銷售路徑",
       body: "從 SEO 到 Channel Partner，真正的關鍵是：你是否理解當地市場如何做決策，而不是只做曝光。",
-      image: "/img/plan/man-holding-credit-card-hand-entering-security-code-using-laptop-keyboard.jpg",
+      image: "/img/plan/man-holding-credit-card-hand-entering-security-code-using-laptop-keyboard.webp",
       meta: "Field Note · 2026",
       content: [
         "進入海外市場時，語言只是第一層。更重要的是客戶如何搜尋、如何比較供應商、如何建立信任，以及付款、物流、客服與售後流程是否符合當地期待。",
@@ -1366,20 +1352,22 @@ function Footer({ copy }) {
           <nav className="footer-links" aria-label={footer.navLabel}>
             <h5>Explore</h5>
             <a href="/about.html">{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
-            <a href="/case.html">{menuLabels[copy.locale]?.solutions || menuLabels.zh.solutions}</a>
-            <a href="/faq.html">{menuLabels[copy.locale]?.case || menuLabels.zh.case}</a>
+            <a href="/solutions.html">{menuLabels[copy.locale]?.solutions || menuLabels.zh.solutions}</a>
+            <a href="/case.html">{menuLabels[copy.locale]?.case || menuLabels.zh.case}</a>
+            <a href="/faq.html">{copy.footer.faqLabel}</a>
             <a href="/contact.html">{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
           </nav>
           <div className="footer-links">
             <h5>Contact</h5>
             <a href="mailto:contact@estiginto.com">contact@estiginto.com</a>
             <a href="tel:+886224315362">+886 2 2431 5362</a>
+            <a href="tel:+886972118427">+886 972 118 427</a>
             <a href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">{footer.line}</a>
             <a href="https://www.facebook.com/Estiginto/" target="_blank" rel="noopener noreferrer">Facebook</a>
           </div>
         </div>
         <div className="footer-bottom">
-          <span>© 2012 – 2026 ESTIGINTO Co., Ltd.</span>
+          <span>© 2011 – 2026 ESTIGINTO Co., Ltd.</span>
         </div>
       </div>
     </footer>
@@ -1668,7 +1656,6 @@ function GoToTop() {
 const fontScaleOptions = [90, 100, 110, 120];
 
 export default function App() {
-  const [showConstructionPreview, setShowConstructionPreview] = useState(false);
   const initialSection = useMemo(() => {
     if (typeof document === "undefined") {
       return "";
@@ -1711,8 +1698,6 @@ export default function App() {
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
   const isCasePage = initialSection === "case";
-  const isDraftPage = initialSection === "about" || initialSection === "case";
-  const shouldShowConstructionScreen = (!isLocalPreview && isDraftPage) || (isLocalPreview && showConstructionPreview);
   const shouldShowApplicationScenarios = initialSection === "case" || initialSection === "solutions";
   const currentFontScaleIndex = fontScaleOptions.indexOf(fontScale);
   const fontControls = {
@@ -1759,10 +1744,6 @@ export default function App() {
   }, [initialSection, isStandalonePage]);
 
   useEffect(() => {
-    if (shouldShowConstructionScreen) {
-      return undefined;
-    }
-
     const sections = document.querySelectorAll(".reveal");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -1793,30 +1774,10 @@ export default function App() {
     });
 
     return () => observer.disconnect();
-  }, [shouldShowConstructionScreen]);
-
-  if (shouldShowConstructionScreen) {
-    return (
-      <>
-        <Header locale={locale} onToggleLocale={setLocale} />
-        {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
-        <ConstructionScreen copy={copy} />
-        {isLocalPreview ? (
-          <button className="preview-toggle" type="button" onClick={() => setShowConstructionPreview(false)}>
-            {copy.preview.back}
-          </button>
-        ) : null}
-      </>
-    );
-  }
+  }, []);
 
   return (
     <>
-      {isLocalPreview ? (
-        <button className="preview-toggle" type="button" onClick={() => setShowConstructionPreview(true)}>
-          {copy.preview.show}
-        </button>
-      ) : null}
       <Header locale={locale} onToggleLocale={setLocale} />
       {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
       <main className="page-main" id="mainpage">
@@ -1831,7 +1792,7 @@ export default function App() {
             ) : null}
             {initialSection === "case" ? (
               <>
-                <CaseStudy copy={copy} />
+                <CasePortfolio copy={copy} />
                 <Solutions copy={copy} />
               </>
             ) : null}
@@ -1845,10 +1806,10 @@ export default function App() {
             <Marquee copy={copy} />
             <Numbers copy={copy} />
             <Manifesto copy={copy} />
-            <AILab copy={copy} />
+            <Solutions copy={copy} />
             {isLocalPreview ? <Insights /> : null}
             {initialSection === "solutions" ? <Solutions copy={copy} /> : null}
-            {initialSection === "case" ? <CaseStudy copy={copy} /> : null}
+            {initialSection === "case" ? <CasePortfolio copy={copy} /> : null}
             {initialSection === "case" ? <Solutions copy={copy} /> : null}
             {initialSection === "about" ? <TechStack /> : null}
             <Contact copy={copy} />
