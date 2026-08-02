@@ -17,6 +17,27 @@ const expectedCaseIds = [
   "consumer-brand-site",
 ];
 
+const expectedCaseGroups = {
+  "operations-management": [
+    "pharma-management",
+    "government-administration",
+    "production-quality",
+    "manufacturing-management",
+  ],
+  "iot-visibility": [
+    "senior-care-iot",
+    "shipping-warehouse",
+    "location-broadcast",
+  ],
+  "commerce-members": [
+    "fresh-food-omnichannel",
+    "yacht-event-management",
+    "event-booking-commerce",
+    "consumer-brand-site",
+  ],
+  "brand-digital": ["art-collection", "travel-discovery"],
+};
+
 function assertCompleteStrings(value, path = "content") {
   if (typeof value === "string") {
     if (path.endsWith(".suffix")) {
@@ -42,6 +63,7 @@ test("2026 content provides complete, matching locale inventories", async () => 
     companyStatsByLocale,
     serviceFamiliesByLocale,
     caseStudiesByLocale,
+    caseStudyGroupsByLocale,
   } = await import("../src/content2026.js");
 
   assert.deepEqual(supportedLocales, ["zh", "en", "ja"]);
@@ -69,6 +91,18 @@ test("2026 content provides complete, matching locale inventories", async () => 
     assertCompleteStrings(serviceFamiliesByLocale[locale], `${locale}.serviceFamilies`);
     assertCompleteStrings(caseStudiesByLocale[locale], `${locale}.caseStudies`);
 
+    const groups = caseStudyGroupsByLocale[locale];
+    assert.deepEqual(groups.map(({ id }) => id), Object.keys(expectedCaseGroups));
+    assert.deepEqual(
+      Object.fromEntries(groups.map(({ id, caseIds }) => [id, caseIds])),
+      expectedCaseGroups,
+    );
+    assert.deepEqual(
+      groups.flatMap(({ caseIds }) => caseIds).sort(),
+      [...expectedCaseIds].sort(),
+    );
+    assertCompleteStrings(groups, `${locale}.caseStudyGroups`);
+
     for (const service of serviceFamiliesByLocale[locale]) {
       assert.equal(service.image.endsWith(".webp"), true, `${locale}.${service.id} image must use WebP`);
       assert.ok(service.capabilities.length >= 4, `${locale}.${service.id} capabilities`);
@@ -76,7 +110,10 @@ test("2026 content provides complete, matching locale inventories", async () => 
 
     for (const caseStudy of caseStudiesByLocale[locale]) {
       assert.ok(caseStudy.capabilities.length >= 5, `${locale}.${caseStudy.id} capabilities`);
-      assert.equal("customerName" in caseStudy, false, `${locale}.${caseStudy.id} must stay anonymous`);
+      assert.equal("industry" in caseStudy, false, `${locale}.${caseStudy.id} must use outcome copy`);
+      assert.equal(typeof caseStudy.outcome, "string", `${locale}.${caseStudy.id} outcome`);
+      assert.notEqual(caseStudy.outcome.trim(), "", `${locale}.${caseStudy.id} outcome must not be blank`);
+      assert.equal("customerName" in caseStudy, false, `${locale}.${caseStudy.id} must not expose a customer name`);
       assert.equal("logo" in caseStudy, false, `${locale}.${caseStudy.id} must not expose a logo`);
     }
   }

@@ -99,14 +99,87 @@ const allCaseStudiesByLocale = {
 
 const hiddenCaseIds = new Set(["elevator-operations"]);
 
+const caseOutcomesByLocale = {
+  zh: {
+    "elevator-operations": "維修派工與設備即時管理",
+    "senior-care-iot": "全棟設備與照護資料整合",
+    "pharma-management": "跨國醫療關係與簽署流程",
+    "shipping-warehouse": "儲量、船運與指派同步",
+    "art-collection": "數位典藏到交易服務",
+    "fresh-food-omnichannel": "電商、冷鏈與配送整合",
+    "government-administration": "高安全性大規模資料管理",
+    "yacht-event-management": "報價、保險與預約串接",
+    "production-quality": "行動驗收與生產履歷",
+    "manufacturing-management": "物料、工單與成本串接",
+    "travel-discovery": "地點探索與社群互動",
+    "location-broadcast": "定位式訊息與實境互動",
+    "event-booking-commerce": "會員、預約與支付自動化",
+    "consumer-brand-site": "品牌體驗與購物轉換",
+  },
+  en: {
+    "elevator-operations": "Real-time dispatch and equipment operations",
+    "senior-care-iot": "Connected facilities and care data",
+    "pharma-management": "Global medical relationships and approvals",
+    "shipping-warehouse": "Inventory, shipping, and allocation in sync",
+    "art-collection": "From digital archives to transactions",
+    "fresh-food-omnichannel": "Commerce, cold chain, and delivery",
+    "government-administration": "Secure large-scale data operations",
+    "yacht-event-management": "Quotations, insurance, and booking",
+    "production-quality": "Mobile inspection and production records",
+    "manufacturing-management": "Materials, work orders, and costing",
+    "travel-discovery": "Place discovery and community engagement",
+    "location-broadcast": "Location-aware messaging and interaction",
+    "event-booking-commerce": "Automated membership, booking, and payment",
+    "consumer-brand-site": "Brand experience and shopping conversion",
+  },
+  ja: {
+    "elevator-operations": "保守派遣と設備のリアルタイム管理",
+    "senior-care-iot": "館内設備とケアデータの統合",
+    "pharma-management": "グローバル医療関係者・署名業務",
+    "shipping-warehouse": "在庫量・船便・割り当ての一元化",
+    "art-collection": "デジタルアーカイブから取引まで",
+    "fresh-food-omnichannel": "EC・コールドチェーン・配送の統合",
+    "government-administration": "高セキュリティの大規模データ管理",
+    "yacht-event-management": "見積・保険・予約の連携",
+    "production-quality": "モバイル検収と生産履歴",
+    "manufacturing-management": "材料・製造指示・原価の連携",
+    "travel-discovery": "スポット探索とコミュニティ交流",
+    "location-broadcast": "位置連動メッセージとリアル体験",
+    "event-booking-commerce": "会員・予約・決済の自動化",
+    "consumer-brand-site": "ブランド体験と購買導線",
+  },
+};
+
 export const caseStudiesByLocale = Object.fromEntries(
   Object.entries(allCaseStudiesByLocale).map(([locale, caseStudies]) => [
     locale,
     caseStudies
       .filter(({ id }) => !hiddenCaseIds.has(id))
-      .map((caseStudy, index) => ({
+      .map(({ industry: _industry, ...caseStudy }, index) => ({
         ...caseStudy,
+        outcome: caseOutcomesByLocale[locale][caseStudy.id],
         number: String(index + 1).padStart(2, "0"),
       })),
   ]),
 );
+
+export const caseStudyGroupsByLocale = {
+  zh: [
+    { id: "operations-management", number: "01", title: "營運整合與管理", summary: "把分散的人員、資料、權限與作業流程，整理成一套可追蹤、可管理的營運系統。", caseIds: ["pharma-management", "government-administration", "production-quality", "manufacturing-management"] },
+    { id: "iot-visibility", number: "02", title: "IoT 與即時監控", summary: "串接設備、感測資料、派工與戰情資訊，讓現場狀況即時可見，也更容易採取行動。", caseIds: ["senior-care-iot", "shipping-warehouse", "location-broadcast"] },
+    { id: "commerce-members", number: "03", title: "電商與會員服務", summary: "整合會員、預約、付款、物流與通知，讓線上服務不只好看，也能完成交易與後續營運。", caseIds: ["fresh-food-omnichannel", "yacht-event-management", "event-booking-commerce", "consumer-brand-site"] },
+    { id: "brand-digital", number: "04", title: "品牌體驗與數位創新", summary: "把內容、互動與服務設計成可使用的數位產品，讓品牌特色被看見，也能持續延伸。", caseIds: ["art-collection", "travel-discovery"] },
+  ],
+  en: [
+    { id: "operations-management", number: "01", title: "Operations & Management", summary: "Bring people, data, permissions, and workflows into one operation teams can track and manage.", caseIds: ["pharma-management", "government-administration", "production-quality", "manufacturing-management"] },
+    { id: "iot-visibility", number: "02", title: "IoT & Real-time Visibility", summary: "Connect equipment, sensor data, dispatch, and dashboards so teams can see what is happening and act sooner.", caseIds: ["senior-care-iot", "shipping-warehouse", "location-broadcast"] },
+    { id: "commerce-members", number: "03", title: "Commerce & Member Services", summary: "Connect membership, booking, payment, logistics, and notifications into services that complete transactions and support operations.", caseIds: ["fresh-food-omnichannel", "yacht-event-management", "event-booking-commerce", "consumer-brand-site"] },
+    { id: "brand-digital", number: "04", title: "Brand Experience & Digital Products", summary: "Turn content, interaction, and service ideas into useful digital products that carry the brand forward.", caseIds: ["art-collection", "travel-discovery"] },
+  ],
+  ja: [
+    { id: "operations-management", number: "01", title: "業務統合・管理", summary: "人、データ、権限、業務フローを一つに整理し、追跡・管理できる運用基盤を構築します。", caseIds: ["pharma-management", "government-administration", "production-quality", "manufacturing-management"] },
+    { id: "iot-visibility", number: "02", title: "IoT・リアルタイム監視", summary: "設備、センサーデータ、派遣、ダッシュボードをつなぎ、現場の状況把握と迅速な対応を支えます。", caseIds: ["senior-care-iot", "shipping-warehouse", "location-broadcast"] },
+    { id: "commerce-members", number: "03", title: "EC・会員サービス", summary: "会員、予約、決済、物流、通知をつなぎ、取引から運用まで続くオンラインサービスを設計します。", caseIds: ["fresh-food-omnichannel", "yacht-event-management", "event-booking-commerce", "consumer-brand-site"] },
+    { id: "brand-digital", number: "04", title: "ブランド体験・デジタルプロダクト", summary: "コンテンツ、体験、サービスを使えるデジタルプロダクトへ落とし込み、ブランドの展開を支えます。", caseIds: ["art-collection", "travel-discovery"] },
+  ],
+};
