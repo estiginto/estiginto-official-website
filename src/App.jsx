@@ -8,7 +8,7 @@ import {
   getInitialLocale,
   shouldShowMobileHomeLanguagePrompt,
 } from "./mobileLanguagePrompt.js";
-import { resolveMobileNavCompactState } from "./mobileNavScroll.js";
+import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -1575,18 +1575,24 @@ function MobileNav({ locale, fontControls }) {
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
   const previousScrollYRef = useRef(0);
+  const directionTravelRef = useRef(0);
 
   useEffect(() => {
     previousScrollYRef.current = window.scrollY;
 
     const onScroll = () => {
       const scrollY = window.scrollY;
-      setCompact((wasCompact) => resolveMobileNavCompactState({
-        scrollY,
-        previousScrollY: previousScrollYRef.current,
-        isOpen: open,
-        wasCompact,
-      }));
+      setCompact((wasCompact) => {
+        const nextState = advanceMobileNavScrollState({
+          scrollY,
+          previousScrollY: previousScrollYRef.current,
+          isOpen: open,
+          wasCompact,
+          directionTravel: directionTravelRef.current,
+        });
+        directionTravelRef.current = nextState.directionTravel;
+        return nextState.compact;
+      });
       previousScrollYRef.current = scrollY;
     };
 
@@ -1619,6 +1625,7 @@ function MobileNav({ locale, fontControls }) {
             const nextOpen = !value;
             if (nextOpen) {
               setCompact(false);
+              directionTravelRef.current = 0;
             }
             return nextOpen;
           })}
