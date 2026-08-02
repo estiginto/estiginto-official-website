@@ -4,7 +4,9 @@ import { resolve } from "node:path";
 import test from "node:test";
 import {
   getInitialLocale,
+  readLanguageCookie,
   resolveBrowserLocale,
+  serializeLanguageCookie,
   shouldShowMobileHomeLanguagePrompt,
 } from "../src/mobileLanguagePrompt.js";
 
@@ -24,6 +26,27 @@ test("saved locale wins and invalid saved locale falls back to browser locale", 
   assert.equal(getInitialLocale("ja", "en-US"), "ja");
   assert.equal(getInitialLocale("invalid", "en-US"), "en");
   assert.equal(getInitialLocale(null, "ja-JP"), "ja");
+});
+
+test("language cookie parser accepts only supported locale values", () => {
+  assert.equal(readLanguageCookie("session=x; estiginto_locale=ja; theme=dark"), "ja");
+  assert.equal(readLanguageCookie("estiginto_locale=zh"), "zh");
+  assert.equal(readLanguageCookie("estiginto_locale=en"), "en");
+  assert.equal(readLanguageCookie(""), null);
+  assert.equal(readLanguageCookie("estiginto_locale=fr"), null);
+  assert.equal(readLanguageCookie("estiginto_locale=%E0%A4%A"), null);
+});
+
+test("language cookie serialization uses the one-year shared preference policy", () => {
+  assert.equal(
+    serializeLanguageCookie("en", false),
+    "estiginto_locale=en; Max-Age=31536000; Path=/; SameSite=Lax",
+  );
+  assert.equal(
+    serializeLanguageCookie("ja", true),
+    "estiginto_locale=ja; Max-Age=31536000; Path=/; SameSite=Lax; Secure",
+  );
+  assert.equal(serializeLanguageCookie("fr", true), "");
 });
 
 test("prompt eligibility is limited to mobile home", () => {
