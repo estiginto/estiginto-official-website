@@ -693,16 +693,21 @@ function MobileHomeLanguagePrompt({ locale, onSelect, destinationRef, onComplete
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
+    const previousDocumentOverflow = document.documentElement.style.overflow;
     const pageMain = document.getElementById("mainpage");
     const pageHeader = document.querySelector(".page-header");
 
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.documentElement.classList.add("language-prompt-open");
     pageMain?.setAttribute("inert", "");
     pageHeader?.setAttribute("inert", "");
     activeOptionRef.current?.focus({ preventScroll: true });
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousDocumentOverflow;
+      document.documentElement.classList.remove("language-prompt-open");
       pageMain?.removeAttribute("inert");
       pageHeader?.removeAttribute("inert");
       window.clearTimeout(completionTimerRef.current);
@@ -1569,9 +1574,14 @@ function MobileNav({ locale, fontControls }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) {
+      return undefined;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
     };
   }, [open]);
 

@@ -53,3 +53,24 @@ test("language prompt CSS provides blur, safe-area placement, flight, and reduce
   assert.match(cssSource, /\.language-prompt-flight/);
   assert.match(cssSource, /prefers-reduced-motion:\s*reduce[\s\S]*language-prompt/);
 });
+
+test("closed mobile navigation does not release another overlay's scroll lock", () => {
+  const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
+  assert.match(mobileNavSource, /if \(!open\)\s*\{\s*return undefined;\s*\}/);
+  assert.match(mobileNavSource, /const previousOverflow = document\.body\.style\.overflow/);
+  assert.match(mobileNavSource, /document\.body\.style\.overflow = previousOverflow/);
+});
+
+test("language prompt locks the document root independently of other overlays", () => {
+  const promptSource = appSource.match(/function MobileHomeLanguagePrompt[\s\S]*?function Header/)?.[0] || "";
+  assert.match(promptSource, /const previousDocumentOverflow = document\.documentElement\.style\.overflow/);
+  assert.match(promptSource, /document\.documentElement\.style\.overflow = "hidden"/);
+  assert.match(promptSource, /document\.documentElement\.style\.overflow = previousDocumentOverflow/);
+});
+
+test("language prompt owns a dedicated root scroll-lock class", () => {
+  const promptSource = appSource.match(/function MobileHomeLanguagePrompt[\s\S]*?function Header/)?.[0] || "";
+  assert.match(promptSource, /document\.documentElement\.classList\.add\("language-prompt-open"\)/);
+  assert.match(promptSource, /document\.documentElement\.classList\.remove\("language-prompt-open"\)/);
+  assert.match(cssSource, /html\.language-prompt-open\s*\{[\s\S]*?overflow:\s*hidden\s*!important/);
+});
