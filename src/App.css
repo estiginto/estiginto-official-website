@@ -3096,7 +3096,7 @@ ul, ol  { margin: 0; }
     position: absolute;
     left: 0;
     right: 0;
-    bottom: max(128px, calc(env(safe-area-inset-bottom, 0px) + 128px));
+    bottom: calc(max(18px, env(safe-area-inset-bottom, 0px)) + 92px);
     z-index: 2;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -3413,7 +3413,6 @@ ul, ol  { margin: 0; }
   }
 
   .mobile-nav-category-switch {
-    bottom: max(124px, calc(env(safe-area-inset-bottom, 0px) + 124px));
     height: 52px;
   }
 }
