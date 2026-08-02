@@ -35,6 +35,13 @@ test("every public page has complete page-specific discovery metadata", () => {
   }
 });
 
+test("every public page declares the existing brand favicon", () => {
+  for (const [file] of pages) {
+    const html = read(file);
+    assert.match(html, /<link rel="icon" href="\/img\/logo_estiginto\.png"/s, `${file} favicon`);
+  }
+});
+
 test("primary navigation gives solutions and case studies distinct destinations", () => {
   const app = read("src/App.jsx");
 
