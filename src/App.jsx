@@ -6,6 +6,8 @@ import {
 } from "./content2026.js";
 import {
   getInitialLocale,
+  readLanguageCookie,
+  serializeLanguageCookie,
   shouldShowMobileHomeLanguagePrompt,
 } from "./mobileLanguagePrompt.js";
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
@@ -1851,7 +1853,8 @@ export default function App() {
       return "zh";
     }
     const savedLocale = window.localStorage.getItem("estiginto-locale");
-    return getInitialLocale(savedLocale, window.navigator.language);
+    const cookieLocale = readLanguageCookie(document.cookie);
+    return getInitialLocale(savedLocale, window.navigator.language, cookieLocale);
   });
   const [fontScale, setFontScale] = useState(() => {
     if (typeof window === "undefined") {
@@ -1877,7 +1880,17 @@ export default function App() {
     }
     return window.matchMedia("(max-width: 640px), (pointer: coarse)").matches;
   }, []);
-  const promptEligible = shouldShowMobileHomeLanguagePrompt({ initialSection, shouldUseMobileNav });
+  const hasLanguageCookie = useMemo(() => {
+    if (typeof document === "undefined") {
+      return false;
+    }
+    return readLanguageCookie(document.cookie) !== null;
+  }, []);
+  const promptEligible = shouldShowMobileHomeLanguagePrompt({
+    initialSection,
+    shouldUseMobileNav,
+    hasLanguageCookie,
+  });
   const [showLanguagePrompt, setShowLanguagePrompt] = useState(promptEligible);
   const pageTitle = copy.pageTitles[initialSection];
   const isStandalonePage = Boolean(pageTitle);
@@ -1899,6 +1912,18 @@ export default function App() {
     onReset: () => {
       setFontScale(100);
     },
+  };
+
+  const selectLocale = (nextLocale) => {
+    const languageCookie = serializeLanguageCookie(
+      nextLocale,
+      window.location.protocol === "https:",
+    );
+    if (!languageCookie) return;
+
+    setLocale(nextLocale);
+    window.localStorage.setItem("estiginto-locale", nextLocale);
+    document.cookie = languageCookie;
   };
 
   useEffect(() => {
@@ -1965,14 +1990,14 @@ export default function App() {
     <>
       <Header
         locale={locale}
-        onToggleLocale={setLocale}
+        onToggleLocale={selectLocale}
         languageSwitchRef={headerLanguageSwitchRef}
         promptActive={showLanguagePrompt}
       />
       {showLanguagePrompt ? (
         <MobileHomeLanguagePrompt
           locale={locale}
-          onSelect={setLocale}
+          onSelect={selectLocale}
           destinationRef={headerLanguageSwitchRef}
           onComplete={() => setShowLanguagePrompt(false)}
         />

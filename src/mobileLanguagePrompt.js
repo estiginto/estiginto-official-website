@@ -34,12 +34,13 @@ export function resolveBrowserLocale(language = "") {
   return supportedLocales.has(primary) ? primary : "zh";
 }
 
-export function getInitialLocale(savedLocale, browserLanguage) {
+export function getInitialLocale(savedLocale, browserLanguage, cookieLocale = null) {
+  if (supportedLocales.has(cookieLocale)) return cookieLocale;
   return supportedLocales.has(savedLocale)
     ? savedLocale
     : resolveBrowserLocale(browserLanguage);
 }
 
-export function shouldShowMobileHomeLanguagePrompt({ initialSection, shouldUseMobileNav }) {
-  return !initialSection && shouldUseMobileNav;
+export function shouldShowMobileHomeLanguagePrompt({ initialSection, shouldUseMobileNav, hasLanguageCookie = false }) {
+  return !initialSection && shouldUseMobileNav && !hasLanguageCookie;
 }

@@ -28,6 +28,12 @@ test("saved locale wins and invalid saved locale falls back to browser locale", 
   assert.equal(getInitialLocale(null, "ja-JP"), "ja");
 });
 
+test("valid language cookie takes precedence over saved and browser locales", () => {
+  assert.equal(getInitialLocale("ja", "en-US", "zh"), "zh");
+  assert.equal(getInitialLocale("zh", "ja-JP", "en"), "en");
+  assert.equal(getInitialLocale("ja", "en-US", "invalid"), "ja");
+});
+
 test("language cookie parser accepts only supported locale values", () => {
   assert.equal(readLanguageCookie("session=x; estiginto_locale=ja; theme=dark"), "ja");
   assert.equal(readLanguageCookie("estiginto_locale=zh"), "zh");
@@ -50,9 +56,24 @@ test("language cookie serialization uses the one-year shared preference policy",
 });
 
 test("prompt eligibility is limited to mobile home", () => {
-  assert.equal(shouldShowMobileHomeLanguagePrompt({ initialSection: "", shouldUseMobileNav: true }), true);
-  assert.equal(shouldShowMobileHomeLanguagePrompt({ initialSection: "about", shouldUseMobileNav: true }), false);
-  assert.equal(shouldShowMobileHomeLanguagePrompt({ initialSection: "", shouldUseMobileNav: false }), false);
+  assert.equal(shouldShowMobileHomeLanguagePrompt({ initialSection: "", shouldUseMobileNav: true, hasLanguageCookie: false }), true);
+  assert.equal(shouldShowMobileHomeLanguagePrompt({ initialSection: "about", shouldUseMobileNav: true, hasLanguageCookie: false }), false);
+  assert.equal(shouldShowMobileHomeLanguagePrompt({ initialSection: "", shouldUseMobileNav: false, hasLanguageCookie: false }), false);
+  assert.equal(shouldShowMobileHomeLanguagePrompt({ initialSection: "", shouldUseMobileNav: true, hasLanguageCookie: true }), false);
+});
+
+test("only explicit language selection writes and refreshes the language cookie", () => {
+  assert.match(appSource, /const cookieLocale = readLanguageCookie\(document\.cookie\)/);
+  assert.match(appSource, /const selectLocale = \(nextLocale\) =>/);
+  assert.match(appSource, /const languageCookie = serializeLanguageCookie/);
+  assert.match(appSource, /document\.cookie = languageCookie/);
+  assert.match(appSource, /onToggleLocale=\{selectLocale\}/);
+  assert.match(appSource, /onSelect=\{selectLocale\}/);
+
+  const localeEffect = appSource.match(
+    /useEffect\(\(\) => \{\s*document\.documentElement\.lang[\s\S]*?\}, \[locale\]\);/,
+  )?.[0] || "";
+  assert.doesNotMatch(localeEffect, /document\.cookie/);
 });
 
 test("mobile home prompt reuses the language switch and exposes dialog semantics", () => {
