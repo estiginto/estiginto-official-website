@@ -91,6 +91,13 @@ test("mobile home link keeps its center translation throughout menu motion", () 
   );
 });
 
+test("mobile home link uses a compact footprint that clears adjacent labels", () => {
+  assert.match(
+    cssSource,
+    /\.mobile-nav-link\.center\s*\{[\s\S]*?width:\s*16%;[\s\S]*?height:\s*16%;/,
+  );
+});
+
 test("mobile go-to-top arrow shares the menu trigger bottom edge", () => {
   assert.match(cssSource, /\.go-to-top\s*\{[\s\S]*?right:\s*14px;[\s\S]*?bottom:\s*max\(18px, env\(safe-area-inset-bottom, 0px\)\);[\s\S]*?display:\s*flex;[\s\S]*?align-items:\s*flex-end;/);
   assert.match(cssSource, /\.go-to-top span\s*\{[\s\S]*?margin:\s*0;/);
