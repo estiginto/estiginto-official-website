@@ -862,9 +862,87 @@ function PageTitle({ page }) {
   );
 }
 
+function HeroTechBackground() {
+  const backgroundRef = useRef(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const activate = () => setReady(true);
+    const fallbackTimer = window.setTimeout(activate, 900);
+    window.addEventListener("estiginto:page-entered", activate, { once: true });
+
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    let frameId = null;
+    const onPointerMove = (event) => {
+      if (!finePointer || !backgroundRef.current) return;
+      const x = ((event.clientX / window.innerWidth) - 0.5) * 24;
+      const y = ((event.clientY / window.innerHeight) - 0.5) * 18;
+      window.cancelAnimationFrame(frameId);
+      frameId = window.requestAnimationFrame(() => {
+        backgroundRef.current?.style.setProperty("--hero-parallax-x", `${x.toFixed(2)}px`);
+        backgroundRef.current?.style.setProperty("--hero-parallax-y", `${y.toFixed(2)}px`);
+      });
+    };
+
+    const onVisibilityChange = () => {
+      document.documentElement.classList.toggle("motion-paused", document.visibilityState !== "visible");
+    };
+
+    if (finePointer) window.addEventListener("pointermove", onPointerMove, { passive: true });
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () => {
+      window.clearTimeout(fallbackTimer);
+      window.removeEventListener("estiginto:page-entered", activate);
+      window.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      window.cancelAnimationFrame(frameId);
+      document.documentElement.classList.remove("motion-paused");
+    };
+  }, []);
+
+  return (
+    <div ref={backgroundRef} className="hero-tech-background" aria-hidden="true" data-ready={ready}>
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <g className="hero-tech-axis">
+          <path d="M790 430H1395M1092 74V826" />
+          <path d="M820 172H890M1296 680H1374M932 768H1006" />
+        </g>
+        <g className="hero-tech-ring hero-tech-ring-outer">
+          <circle cx="1092" cy="430" r="286" />
+          <circle cx="1092" cy="430" r="266" className="hero-tech-ring-dashed" />
+          <path d="M1092 123v36M1092 701v36M785 430h36M1363 430h36" />
+        </g>
+        <g className="hero-tech-ring hero-tech-ring-inner">
+          <circle cx="1092" cy="430" r="196" />
+          <circle cx="1092" cy="430" r="146" className="hero-tech-ring-dashed" />
+          <path d="M962 300l36 36M1186 524l36 36M1222 300l-36 36M998 524l-36 36" />
+        </g>
+        <g className="hero-tech-reticle">
+          <circle cx="1092" cy="430" r="42" />
+          <path d="M1028 430h128M1092 366v128" />
+          <rect x="1087" y="425" width="10" height="10" />
+        </g>
+        <g className="hero-tech-markers">
+          <text x="844" y="112">SYS / 011</text>
+          <text x="1204" y="188">LAT 25.03</text>
+          <text x="1260" y="744">E-CORE 72</text>
+          <text x="860" y="704">EST // SIGNAL</text>
+          <path d="M822 127h154M1204 204h108M1158 760h164M860 720h127" />
+        </g>
+        <g className="hero-tech-glitch">
+          <path d="M916 242h126M1250 338h94M864 592h148" />
+          <text x="1230" y="324">03:14:26</text>
+        </g>
+        <line className="hero-tech-scan" x1="760" y1="0" x2="760" y2="900" />
+      </svg>
+    </div>
+  );
+}
+
 function Hero({ copy }) {
   return (
     <section className="hero" id="home">
+      <HeroTechBackground />
       <div className="wrap">
         <div>
           <div className="hero-meta">

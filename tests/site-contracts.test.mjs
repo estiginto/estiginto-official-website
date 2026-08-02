@@ -113,6 +113,25 @@ test("all internal pages share the geometric transition overlay", () => {
   assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*page-transition/);
 });
 
+test("homepage hero provides an accessible mechanical background", () => {
+  const app = read("src/App.jsx");
+  const css = read("src/App.css");
+
+  assert.match(app, /function HeroTechBackground\(\)/);
+  assert.match(app, /className="hero-tech-background" aria-hidden="true"/);
+  assert.match(app, /hero-tech-ring-outer/);
+  assert.match(app, /hero-tech-ring-inner/);
+  assert.match(app, /hero-tech-markers/);
+  assert.match(app, /hero-tech-scan/);
+  assert.match(app, /matchMedia\("\(pointer: fine\)"\)/);
+  assert.match(app, /requestAnimationFrame/);
+  assert.match(app, /cancelAnimationFrame/);
+  assert.match(css, /\.hero-tech-ring-outer\s*\{[\s\S]*?28s linear infinite/);
+  assert.match(css, /\.hero-tech-ring-inner\s*\{[\s\S]*?22s linear infinite/);
+  assert.match(css, /\.hero-tech-scan\s*\{[\s\S]*?9s/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*hero-tech-background/);
+});
+
 test("case page groups selected work by client value", () => {
   const app = read("src/App.jsx");
   const css = read("src/App.css");
