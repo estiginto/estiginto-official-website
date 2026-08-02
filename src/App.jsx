@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  caseStudyGroupsByLocale,
   caseStudiesByLocale,
   companyStatsByLocale,
   serviceFamiliesByLocale,
@@ -402,9 +403,9 @@ const pageTitles = {
     lede: "自 2011 年起，我們把規劃、設計與工程整合成能長期運作的解決方案。",
   },
   case: {
-    kicker: "Showcase",
-    title: "參考案例",
-    lede: "14 個跨產業匿名案例，呈現系統如何回應真實流程、資料與營運需求。",
+    kicker: "Selected Work",
+    title: "精選實績",
+    lede: "不只完成系統，更把複雜的營運需求，整理成真正能長期使用的工具。",
   },
   solutions: {
     kicker: "Solutions",
@@ -466,7 +467,7 @@ const localizedCopy = {
     },
     solutionsUi: {
       index: "§ 參考其他人的應用情境",
-      label: "根據產業分類",
+      label: "依需求查看解法",
       button: "討論這個方案",
     },
     aiLab: {
@@ -504,7 +505,7 @@ const localizedCopy = {
   en: {
     pageTitles: {
       about: { kicker: "About", title: "About Us", lede: "Since 2011, we have combined planning, design, and engineering into solutions built to last." },
-      case: { kicker: "Showcase", title: "Case Studies", lede: "Fourteen anonymized cases showing how systems answer real workflow, data, and operational needs." },
+      case: { kicker: "Selected Work", title: "Selected Work", lede: "We turn complex operating needs into systems teams can rely on and keep using." },
       solutions: { kicker: "Solutions", title: "Solutions", lede: "Websites, custom systems, brand design, and digital marketing - connected from planning through long-term operation." },
       faq: { kicker: "FAQ", title: "FAQ", lede: "Questions clients most often ask before working with us, covering pricing, systems, design, AI, contracts, risk, and payment." },
       contact: { kicker: "Contact", title: "Contact Us", lede: "Tell us where you are, what you want to achieve, and where you are stuck. We will help clarify the direction first." },
@@ -543,7 +544,7 @@ const localizedCopy = {
     marquee: ["Adaptive decision systems", "Software system planning and implementation", "Software, hardware, and IoT integration", "ERP / WMS / CRM", "Business websites / e-commerce / payments / invoices", "Custom app development", "War-room dashboards", "Automation execution support systems"],
     achievements: { label: "We build designs with a soul, turning systems into engines for brand growth and lasting impact.", meta: "Since 2011" },
     manifesto: { label: "Our Edge", prelude: "Hard-to-use systems are usually not caused by technology or budget", headlinePrefix: "They fail because", headlineHighlight: "the design direction is wrong", points: ["1. Engineering logic is used to design human behavior", "2. Processes replace decisions instead of supporting them", "3. Standard templates are forced onto non-standard business scenarios"], quote: "\"The depth of planning and mechanism design determines a system's product life.\"", paragraphs: [["With agile development and flexible architecture", "we work like architects drawing before construction", "validating structure, flow, and user experience before anything is built."], ["A well-designed system plan can be executed by any capable team", "while still preserving the original intent and goals", "because it is designed to serve users, not merely to be delivered."]], signoff: "- This is the key to sustainable systems." },
-    solutionsUi: { index: "§ Reference application scenarios", label: "By industry", button: "Discuss this solution" },
+    solutionsUi: { index: "§ Reference application scenarios", label: "Explore by need", button: "Discuss this solution" },
     aiLab: { label: "Customer-centered", title: "Core Services", lede: "Since 2011, we have connected deeply with Taiwan's industry chain and gradually expanded internationally." },
     faqNoteLabel: "Key answer logic",
     contact: { label: "When you are ready", meta: "Book a consultation", titleA: "Turn imagination", titleHighlight: "into reality", lede: ["Book an online consultation now", "and let us help build your business landscape."], emailButton: "Email us" },
@@ -555,7 +556,7 @@ const localizedCopy = {
   ja: {
     pageTitles: {
       about: { kicker: "About", title: "私たちについて", lede: "2011年の創業以来、企画・デザイン・開発を、長く運用できるソリューションとして提供しています。" },
-      case: { kicker: "Showcase", title: "事例紹介", lede: "14件の匿名事例を通じて、実際の業務、データ、運用課題への取り組みをご紹介します。" },
+      case: { kicker: "Selected Work", title: "実績紹介", lede: "複雑な業務要件を整理し、現場で長く使える仕組みへ。" },
       solutions: { kicker: "Solutions", title: "ソリューション", lede: "Webサイト、業務システム、ブランドデザイン、デジタルマーケティングを企画から長期運用まで一貫して支援します。" },
       faq: { kicker: "FAQ", title: "よくある質問", lede: "価格、システム、機能、設計、AI、契約、リスク、支払いなど、相談前によくある質問をまとめました。" },
       contact: { kicker: "Contact", title: "お問い合わせ", lede: "現状、目標、課題をお聞かせください。まず方向性の整理からお手伝いします。" },
@@ -594,7 +595,7 @@ const localizedCopy = {
     marquee: ["能動型意思決定システム", "ソフトウェアシステムの設計と構築", "ソフト・ハード・IoT 統合", "ERP / WMS / CRM", "ビジネスサイト / EC / 決済 / 請求書", "カスタム APP", "戦情室ダッシュボード", "自動化実行支援システム"],
     achievements: { label: "魂のあるデザインを作り、システムをブランド成長と持続的な影響力の推進力にします。", meta: "2011 年から" },
     manifesto: { label: "独自の競争力", prelude: "使いにくいシステムの多くは、技術や予算の問題ではありません", headlinePrefix: "本質は", headlineHighlight: "設計方向の誤りです", points: ["1. 人の行動を工学的な論理だけで設計している", "2. 意思決定を支援せず、流程で置き換えている", "3. 非標準の業務に標準テンプレートを当てはめている"], quote: "「計画と仕組み設計の深さが、システムの寿命を決めます。」", paragraphs: [["アジャイル開発と柔軟なアーキテクチャを用い", "建築家の設計図のように", "施工前に構造、動線、体験を検証します。"], ["適切に設計されたシステム計画は、誰が実行しても", "設計意図と目標を保てます", "単なる納品ではなく、利用者に本当に役立つための設計です。"]], signoff: "- これが、持続するシステムの鍵です。" },
-    solutionsUi: { index: "§ 他社の活用シーンを参考にする", label: "業界別", button: "この方案を相談する" },
+    solutionsUi: { index: "§ 他社の活用シーンを参考にする", label: "課題別に見る", button: "この方案を相談する" },
     aiLab: { label: "顧客中心", title: "主要サービス", lede: "2011 年から台湾の産業チェーン資源と深く連携し、国際展開を進めています。" },
     faqNoteLabel: "回答の要点",
     contact: { label: "準備ができたら", meta: "相談を予約", titleA: "想像を", titleHighlight: "現実へ", lede: ["オンライン相談をご予約ください", "あなたのビジネス構想を形にするお手伝いをします。"], emailButton: "メールする" },
@@ -1109,58 +1110,77 @@ function AILab({ copy }) {
 
 function CasePortfolio({ copy }) {
   const cases = caseStudiesByLocale[copy.locale] || caseStudiesByLocale.zh;
+  const groups = caseStudyGroupsByLocale[copy.locale] || caseStudyGroupsByLocale.zh;
+  const casesById = new Map(cases.map((caseStudy) => [caseStudy.id, caseStudy]));
   const [activeCaseId, setActiveCaseId] = useState(null);
   const labels = {
-    zh: { section: "跨產業實戰", meta: "14 個匿名案例", expand: "查看能力", collapse: "收合內容", details: "案例能力" },
-    en: { section: "Cross-industry delivery", meta: "14 anonymized cases", expand: "View capabilities", collapse: "Collapse details", details: "Case capabilities" },
-    ja: { section: "業界横断の実績", meta: "匿名事例 14件", expand: "対応内容を見る", collapse: "詳細を閉じる", details: "対応内容" },
-  }[copy.locale] || { section: "跨產業實戰", meta: "14 個匿名案例", expand: "查看能力", collapse: "收合內容", details: "案例能力" };
+    zh: { section: "精選實績", meta: "依需求查看解法", intro: "從問題出發，看見我們如何把流程做成可持續運作的系統。", expand: "查看解法", collapse: "收合內容", details: "建置內容" },
+    en: { section: "Selected Work", meta: "Explore by need", intro: "Start with the problem and see how we turn workflows into systems built for ongoing use.", expand: "View solution", collapse: "Close details", details: "What we built" },
+    ja: { section: "実績紹介", meta: "課題別に見る", intro: "課題を起点に、業務フローを継続運用できる仕組みへ整えた事例をご紹介します。", expand: "解決内容を見る", collapse: "詳細を閉じる", details: "構築内容" },
+  }[copy.locale] || { section: "精選實績", meta: "依需求查看解法", intro: "從問題出發，看見我們如何把流程做成可持續運作的系統。", expand: "查看解法", collapse: "收合內容", details: "建置內容" };
 
   return (
     <section className="section reveal" id="case" aria-label={labels.section}>
       <div className="wrap">
-        <SectionEyebrow index="§ 14 / Portfolio" label={labels.section} meta={labels.meta} />
+        <SectionEyebrow index="§ Selected Work" label={labels.section} meta={labels.meta} />
+        <p className="case-portfolio-intro">{labels.intro}</p>
         <div className="case-portfolio">
-          {cases.map((caseStudy) => {
-            const isActive = activeCaseId === caseStudy.id;
-            const triggerId = `case-trigger-${caseStudy.id}`;
-            const detailId = `case-detail-${caseStudy.id}`;
+          {groups.map((group) => (
+            <section className="case-portfolio-group" key={group.id} aria-labelledby={`case-group-${group.id}`}>
+              <header className="case-portfolio-group-header">
+                <span className="case-portfolio-group-number">{group.number}</span>
+                <div>
+                  <h2 id={`case-group-${group.id}`}>{group.title}</h2>
+                  <p>{group.summary}</p>
+                </div>
+              </header>
+              <div className="case-portfolio-group-list">
+                {group.caseIds.map((caseId) => {
+                  const caseStudy = casesById.get(caseId);
+                  if (!caseStudy) return null;
 
-            return (
-              <article className={`case-portfolio-item ${isActive ? "is-active" : ""}`} key={caseStudy.id}>
-                <button
-                  className="case-portfolio-trigger"
-                  id={triggerId}
-                  type="button"
-                  aria-expanded={isActive}
-                  aria-controls={detailId}
-                  onClick={() => setActiveCaseId(isActive ? null : caseStudy.id)}
-                >
-                  <span className="case-portfolio-number">{caseStudy.number}</span>
-                  <span className="case-portfolio-heading">
-                    <span className="case-portfolio-industry">{caseStudy.industry}</span>
-                    <span className="case-portfolio-title">{caseStudy.title}</span>
-                  </span>
-                  <span className="case-portfolio-action">{isActive ? labels.collapse : labels.expand}</span>
-                  <span className="case-portfolio-icon" aria-hidden="true" />
-                </button>
-                <p className="case-portfolio-summary">{caseStudy.summary}</p>
-                {isActive ? (
-                  <div
-                    className="case-portfolio-detail"
-                    id={detailId}
-                    role="region"
-                    aria-labelledby={triggerId}
-                  >
-                    <span className="case-portfolio-detail-label">{labels.details}</span>
-                    <ul className="case-capability-list">
-                      {caseStudy.capabilities.map((capability) => <li key={capability}>{capability}</li>)}
-                    </ul>
-                  </div>
-                ) : null}
-              </article>
-            );
-          })}
+                  const isActive = activeCaseId === caseStudy.id;
+                  const triggerId = `case-trigger-${caseStudy.id}`;
+                  const detailId = `case-detail-${caseStudy.id}`;
+
+                  return (
+                    <article className={`case-portfolio-item ${isActive ? "is-active" : ""}`} key={caseStudy.id}>
+                      <button
+                        className="case-portfolio-trigger"
+                        id={triggerId}
+                        type="button"
+                        aria-expanded={isActive}
+                        aria-controls={detailId}
+                        onClick={() => setActiveCaseId(isActive ? null : caseStudy.id)}
+                      >
+                        <span className="case-portfolio-number">{caseStudy.number}</span>
+                        <span className="case-portfolio-heading">
+                          <span className="case-portfolio-outcome">{caseStudy.outcome}</span>
+                          <span className="case-portfolio-title">{caseStudy.title}</span>
+                        </span>
+                        <span className="case-portfolio-action">{isActive ? labels.collapse : labels.expand}</span>
+                        <span className="case-portfolio-icon" aria-hidden="true" />
+                      </button>
+                      <p className="case-portfolio-summary">{caseStudy.summary}</p>
+                      {isActive ? (
+                        <div
+                          className="case-portfolio-detail"
+                          id={detailId}
+                          role="region"
+                          aria-labelledby={triggerId}
+                        >
+                          <span className="case-portfolio-detail-label">{labels.details}</span>
+                          <ul className="case-capability-list">
+                            {caseStudy.capabilities.map((capability) => <li key={capability}>{capability}</li>)}
+                          </ul>
+                        </div>
+                      ) : null}
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          ))}
         </div>
       </div>
     </section>

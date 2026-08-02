@@ -97,15 +97,24 @@ test("public pages consume the verified localized 2026 content model", () => {
   assert.doesNotMatch(app, /val:\s*"70"/);
 });
 
-test("case page renders the anonymized localized portfolio instead of invented metrics", () => {
+test("case page groups selected work by client value", () => {
   const app = read("src/App.jsx");
-  const html = read("case.html");
+  const css = read("src/App.css");
 
   assert.match(app, /function CasePortfolio\(\{ copy \}\)/);
   assert.match(app, /caseStudiesByLocale\[copy\.locale\]/);
+  assert.match(app, /caseStudyGroupsByLocale\[copy\.locale\]/);
+  assert.match(app, /className="case-portfolio-group"/);
+  assert.match(app, /caseStudy\.outcome/);
+  assert.doesNotMatch(app, /caseStudy\.industry/);
   assert.match(app, /aria-expanded=\{isActive\}/);
   assert.match(app, /role="region"/);
-  assert.match(html, /14 個跨產業匿名案例/);
+  assert.match(app, /精選實績/);
+  assert.match(app, /查看解法/);
+  assert.doesNotMatch(app, /14 個匿名案例|跨產業匿名案例|14 anonymized cases|匿名事例 14件/);
+  assert.match(css, /\.case-portfolio-group\s*\{/);
+  assert.match(css, /\.case-portfolio-group-header\s*\{/);
+  assert.match(css, /\.case-portfolio-outcome/);
   assert.doesNotMatch(app, /3\.2%/);
   assert.doesNotMatch(app, /D\+0\.7/);
   assert.doesNotMatch(app, /28h/);
