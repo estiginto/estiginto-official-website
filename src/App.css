@@ -3255,8 +3255,8 @@ ul, ol  { margin: 0; }
   .mobile-nav-link.center {
     left: 50%;
     top: 50%;
-    width: 16%;
-    height: 16%;
+    width: 21%;
+    height: 21%;
     transform: translate(-50%, -50%);
     z-index: 4;
     color: var(--signal); /* blue text by default */

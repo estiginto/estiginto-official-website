@@ -127,10 +127,10 @@ test("mobile home link keeps its center translation throughout menu motion", () 
   );
 });
 
-test("mobile home link uses a compact footprint that clears adjacent labels", () => {
+test("mobile home link uses a balanced footprint that clears adjacent labels", () => {
   assert.match(
     cssSource,
-    /\.mobile-nav-link\.center\s*\{[\s\S]*?width:\s*16%;[\s\S]*?height:\s*16%;/,
+    /\.mobile-nav-link\.center\s*\{[\s\S]*?width:\s*21%;[\s\S]*?height:\s*21%;/,
   );
 });
 
