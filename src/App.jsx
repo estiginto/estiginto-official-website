@@ -4,6 +4,10 @@ import {
   companyStatsByLocale,
   serviceFamiliesByLocale,
 } from "./content2026.js";
+import {
+  getInitialLocale,
+  shouldShowMobileHomeLanguagePrompt,
+} from "./mobileLanguagePrompt.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -1668,7 +1672,7 @@ export default function App() {
       return "zh";
     }
     const savedLocale = window.localStorage.getItem("estiginto-locale");
-    return ["zh", "en", "ja"].includes(savedLocale) ? savedLocale : "zh";
+    return getInitialLocale(savedLocale, window.navigator.language);
   });
   const [fontScale, setFontScale] = useState(() => {
     if (typeof window === "undefined") {
