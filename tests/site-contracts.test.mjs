@@ -120,6 +120,14 @@ test("case page groups selected work by client value", () => {
   assert.doesNotMatch(app, /28h/);
 });
 
+test("case metadata presents selected capabilities without anonymity framing", () => {
+  const html = read("case.html");
+
+  assert.match(html, /精選實績｜ESTIGINTO 造物者科技/);
+  assert.match(html, /營運整合、IoT、電商會員與數位產品/);
+  assert.doesNotMatch(html, /匿名|14 個跨產業/);
+});
+
 test("asset policy excludes local Oasis videos", () => {
   const output = execFileSync(
     process.execPath,
