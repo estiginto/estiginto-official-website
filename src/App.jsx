@@ -12,6 +12,7 @@ import {
   shouldShowMobileHomeLanguagePrompt,
 } from "./mobileLanguagePrompt.js";
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
+import { getTransitionDestination } from "./pageTransition.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -896,6 +897,52 @@ function Hero({ copy }) {
 
       <a className="scrolldown" href="#marquee">{copy.hero.scrolldown}</a>
     </section>
+  );
+}
+
+function PageTransition() {
+  const [phase, setPhase] = useState("entering");
+  const leavingRef = useRef(false);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const enterDuration = reducedMotion ? 120 : 400;
+    const leaveDuration = reducedMotion ? 120 : 500;
+    const enteredTimer = window.setTimeout(() => {
+      setPhase("idle");
+      window.dispatchEvent(new CustomEvent("estiginto:page-entered"));
+    }, enterDuration);
+
+    const onClick = (event) => {
+      const anchor = event.target.closest?.("a[href]");
+      const destination = getTransitionDestination({
+        anchor,
+        event,
+        currentUrl: window.location.href,
+      });
+      if (!destination || leavingRef.current) return;
+
+      event.preventDefault();
+      leavingRef.current = true;
+      setPhase("leaving");
+      window.setTimeout(() => {
+        window.location.href = destination;
+      }, leaveDuration);
+    };
+
+    document.addEventListener("click", onClick);
+    return () => {
+      window.clearTimeout(enteredTimer);
+      document.removeEventListener("click", onClick);
+    };
+  }, []);
+
+  return (
+    <div className={`page-transition is-${phase}`} aria-hidden="true">
+      <span className="page-transition-panel-top" />
+      <span className="page-transition-panel-bottom" />
+      <span className="page-transition-scan" />
+    </div>
   );
 }
 
@@ -2008,6 +2055,7 @@ export default function App() {
 
   return (
     <>
+      <PageTransition />
       <Header
         locale={locale}
         onToggleLocale={selectLocale}

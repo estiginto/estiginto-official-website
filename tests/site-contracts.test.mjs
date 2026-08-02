@@ -97,6 +97,22 @@ test("public pages consume the verified localized 2026 content model", () => {
   assert.doesNotMatch(app, /val:\s*"70"/);
 });
 
+test("all internal pages share the geometric transition overlay", () => {
+  const app = read("src/App.jsx");
+  const css = read("src/App.css");
+
+  assert.match(app, /function PageTransition\(\)/);
+  assert.match(app, /getTransitionDestination/);
+  assert.match(app, /document\.addEventListener\("click"/);
+  assert.match(app, /page-transition-panel-top/);
+  assert.match(app, /page-transition-panel-bottom/);
+  assert.match(app, /page-transition-scan/);
+  assert.match(app, /estiginto:page-entered/);
+  assert.match(css, /\.page-transition\s*\{/);
+  assert.match(css, /\.page-transition\.is-leaving/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*page-transition/);
+});
+
 test("case page groups selected work by client value", () => {
   const app = read("src/App.jsx");
   const css = read("src/App.css");
