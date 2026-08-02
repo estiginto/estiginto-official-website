@@ -15,6 +15,12 @@ const localeOptions = [
   ["ja", "日本語"],
 ];
 
+const languagePromptCopy = {
+  zh: { eyebrow: "LANGUAGE", title: "選擇您的語言" },
+  en: { eyebrow: "LANGUAGE", title: "Choose your language" },
+  ja: { eyebrow: "LANGUAGE", title: "言語を選択してください" },
+};
+
 const menuLabels = {
   zh: {
     home: "首頁",
@@ -649,14 +655,20 @@ function getMenuItems(locale) {
   }));
 }
 
-function LanguageSwitch({ locale, onSelect }) {
+function LanguageSwitch({ locale, onSelect, switchRef, activeOptionRef, className = "" }) {
   return (
-    <div className={`language-switch is-${locale}`} role="group" aria-label="Switch language">
+    <div
+      ref={switchRef}
+      className={`language-switch is-${locale} ${className}`.trim()}
+      role="group"
+      aria-label="Switch language"
+    >
       <span className="language-track" aria-hidden="true" />
       <span className="language-thumb" aria-hidden="true" />
       {localeOptions.map(([value, label]) => (
         <button
           key={value}
+          ref={value === locale ? activeOptionRef : undefined}
           className={`language-option ${value}`}
           type="button"
           aria-pressed={locale === value}
@@ -669,7 +681,124 @@ function LanguageSwitch({ locale, onSelect }) {
   );
 }
 
-function Header({ locale, onToggleLocale }) {
+function MobileHomeLanguagePrompt({ locale, onSelect, destinationRef, onComplete }) {
+  const [phase, setPhase] = useState("idle");
+  const [flight, setFlight] = useState(null);
+  const [flightLocale, setFlightLocale] = useState(locale);
+  const sourceRef = useRef(null);
+  const activeOptionRef = useRef(null);
+  const completionTimerRef = useRef(null);
+  const animationFrameRef = useRef(null);
+  const copy = languagePromptCopy[locale] || languagePromptCopy.zh;
+
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const pageMain = document.getElementById("mainpage");
+    const pageHeader = document.querySelector(".page-header");
+
+    document.body.style.overflow = "hidden";
+    pageMain?.setAttribute("inert", "");
+    pageHeader?.setAttribute("inert", "");
+    activeOptionRef.current?.focus({ preventScroll: true });
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      pageMain?.removeAttribute("inert");
+      pageHeader?.removeAttribute("inert");
+      window.clearTimeout(completionTimerRef.current);
+      window.cancelAnimationFrame(animationFrameRef.current);
+    };
+  }, []);
+
+  const finishPrompt = (delay) => {
+    completionTimerRef.current = window.setTimeout(onComplete, delay);
+  };
+
+  const selectLanguage = (nextLocale) => {
+    if (phase !== "idle") {
+      return;
+    }
+
+    onSelect(nextLocale);
+    setFlightLocale(nextLocale);
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const sourceRect = sourceRef.current?.getBoundingClientRect();
+    const destinationRect = destinationRef.current?.getBoundingClientRect();
+
+    if (prefersReducedMotion || !sourceRect || !destinationRect) {
+      setPhase("fading");
+      finishPrompt(180);
+      return;
+    }
+
+    setFlight({
+      top: sourceRect.top,
+      left: sourceRect.left,
+      width: sourceRect.width,
+      height: sourceRect.height,
+      x: destinationRect.left - sourceRect.left,
+      y: destinationRect.top - sourceRect.top,
+      scaleX: destinationRect.width / sourceRect.width,
+      scaleY: destinationRect.height / sourceRect.height,
+    });
+    setPhase("preparing");
+
+    animationFrameRef.current = window.requestAnimationFrame(() => {
+      animationFrameRef.current = window.requestAnimationFrame(() => {
+        setPhase("flying");
+      });
+    });
+    finishPrompt(660);
+  };
+
+  const isTransitioning = phase !== "idle";
+
+  return (
+    <div
+      className={`mobile-language-prompt phase-${phase}`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="mobile-language-prompt-title"
+    >
+      <div className="mobile-language-prompt-backdrop" aria-hidden="true" />
+      <div className="mobile-language-prompt-panel">
+        <p className="mobile-language-prompt-eyebrow">{copy.eyebrow}</p>
+        <h2 id="mobile-language-prompt-title">{copy.title}</h2>
+        <LanguageSwitch
+          locale={locale}
+          onSelect={selectLanguage}
+          switchRef={sourceRef}
+          activeOptionRef={activeOptionRef}
+          className="language-prompt-switch"
+        />
+      </div>
+
+      {flight ? (
+        <div
+          className={`language-prompt-flight ${phase === "flying" ? "is-moving" : ""}`}
+          style={{
+            top: flight.top,
+            left: flight.left,
+            width: flight.width,
+            height: flight.height,
+            "--flight-x": `${flight.x}px`,
+            "--flight-y": `${flight.y}px`,
+            "--flight-scale-x": flight.scaleX,
+            "--flight-scale-y": flight.scaleY,
+          }}
+          aria-hidden="true"
+        >
+          <LanguageSwitch locale={flightLocale} onSelect={() => {}} />
+        </div>
+      ) : null}
+
+      {isTransitioning ? <span className="sr-only" aria-live="polite">Language selected</span> : null}
+    </div>
+  );
+}
+
+function Header({ locale, onToggleLocale, languageSwitchRef, promptActive }) {
   return (
     <header className="page-header">
       <a className="brand-mark" href="/">
@@ -682,7 +811,12 @@ function Header({ locale, onToggleLocale }) {
       </a>
 
       <div className="header-actions">
-        <LanguageSwitch locale={locale} onSelect={onToggleLocale} />
+        <LanguageSwitch
+          locale={locale}
+          onSelect={onToggleLocale}
+          switchRef={languageSwitchRef}
+          className={promptActive ? "is-prompt-destination-hidden" : ""}
+        />
       </div>
     </header>
   );
@@ -1660,6 +1794,7 @@ function GoToTop() {
 const fontScaleOptions = [90, 100, 110, 120];
 
 export default function App() {
+  const headerLanguageSwitchRef = useRef(null);
   const initialSection = useMemo(() => {
     if (typeof document === "undefined") {
       return "";
@@ -1698,6 +1833,8 @@ export default function App() {
     }
     return window.matchMedia("(max-width: 640px), (pointer: coarse)").matches;
   }, []);
+  const promptEligible = shouldShowMobileHomeLanguagePrompt({ initialSection, shouldUseMobileNav });
+  const [showLanguagePrompt, setShowLanguagePrompt] = useState(promptEligible);
   const pageTitle = copy.pageTitles[initialSection];
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
@@ -1782,7 +1919,20 @@ export default function App() {
 
   return (
     <>
-      <Header locale={locale} onToggleLocale={setLocale} />
+      <Header
+        locale={locale}
+        onToggleLocale={setLocale}
+        languageSwitchRef={headerLanguageSwitchRef}
+        promptActive={showLanguagePrompt}
+      />
+      {showLanguagePrompt ? (
+        <MobileHomeLanguagePrompt
+          locale={locale}
+          onSelect={setLocale}
+          destinationRef={headerLanguageSwitchRef}
+          onComplete={() => setShowLanguagePrompt(false)}
+        />
+      ) : null}
       {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
       <main className="page-main" id="mainpage">
         {isStandalonePage ? (
