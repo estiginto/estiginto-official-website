@@ -8,6 +8,7 @@ import {
   getInitialLocale,
   shouldShowMobileHomeLanguagePrompt,
 } from "./mobileLanguagePrompt.js";
+import { resolveMobileNavCompactState } from "./mobileNavScroll.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -1572,6 +1573,26 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
 function MobileNav({ locale, fontControls }) {
   const items = getMenuItems(locale);
   const [open, setOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
+  const previousScrollYRef = useRef(0);
+
+  useEffect(() => {
+    previousScrollYRef.current = window.scrollY;
+
+    const onScroll = () => {
+      const scrollY = window.scrollY;
+      setCompact((wasCompact) => resolveMobileNavCompactState({
+        scrollY,
+        previousScrollY: previousScrollYRef.current,
+        isOpen: open,
+        wasCompact,
+      }));
+      previousScrollYRef.current = scrollY;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [open]);
 
   useEffect(() => {
     if (!open) {
@@ -1586,7 +1607,7 @@ function MobileNav({ locale, fontControls }) {
   }, [open]);
 
   return (
-    <div className={`mobile-nav ${open ? "open" : ""}`}>
+    <div className={`mobile-nav ${open ? "open" : ""} ${compact ? "compact" : ""}`.trim()}>
       <button className="mobile-nav-scrim" type="button" aria-label="Close mobile menu" onClick={() => setOpen(false)} />
       <div className="mobile-nav-dialog" aria-hidden={!open}>
         <button
@@ -1594,7 +1615,13 @@ function MobileNav({ locale, fontControls }) {
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          onClick={() => setOpen((value) => !value)}
+          onClick={() => setOpen((value) => {
+            const nextOpen = !value;
+            if (nextOpen) {
+              setCompact(false);
+            }
+            return nextOpen;
+          })}
         >
           <span className="mobile-nav-trigger-shape" aria-hidden="true" />
           <span className="mobile-nav-trigger-icon" aria-hidden="true">

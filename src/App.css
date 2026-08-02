@@ -2798,7 +2798,8 @@ ul, ol  { margin: 0; }
     background: #0a1f44;
     clip-path: polygon(50% 0, 0 100%, 100% 100%);
     box-shadow: 0 18px 40px -18px rgba(10, 31, 68, 0.48);
-    transition: transform 280ms var(--ease-soft), background 200ms ease;
+    transform-origin: center bottom;
+    transition: transform 320ms var(--ease-soft), background 200ms ease;
   }
   .mobile-nav-trigger-icon {
     position: absolute;
@@ -2808,6 +2809,8 @@ ul, ol  { margin: 0; }
     flex-direction: column;
     gap: 5px;
     transform: translateX(-50%);
+    transform-origin: center bottom;
+    transition: transform 320ms var(--ease-soft);
   }
   .mobile-nav-trigger-icon span {
     display: block;
@@ -2815,6 +2818,12 @@ ul, ol  { margin: 0; }
     height: 2px;
     background: #ffffff;
     transition: transform 220ms ease, opacity 220ms ease;
+  }
+  .mobile-nav.compact:not(.open) .mobile-nav-trigger-shape {
+    transform: scale(0.78);
+  }
+  .mobile-nav.compact:not(.open) .mobile-nav-trigger-icon {
+    transform: translateX(-50%) scale(0.88);
   }
   .mobile-nav.open .mobile-nav-trigger-shape {
     transform: none;
