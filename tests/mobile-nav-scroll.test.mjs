@@ -59,7 +59,7 @@ test("mobile navigation connects scroll state without shrinking its touch target
   assert.match(mobileNavSource, /advanceMobileNavScrollState\(/);
   assert.match(mobileNavSource, /compact \? "compact" : ""/);
   assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?width:\s*120px;[\s\S]*?height:\s*92px;/);
-  assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-shape\s*\{[\s\S]*?scale\(0\.78\)/);
+  assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-shape\s*\{[\s\S]*?scale\(0\.5\)/);
   assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-icon\s*\{[\s\S]*?scale\(0\.88\)/);
   assert.match(cssSource, /transition:\s*transform 320ms var\(--ease-soft\)/);
 });

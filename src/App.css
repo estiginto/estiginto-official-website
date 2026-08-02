@@ -2820,7 +2820,7 @@ ul, ol  { margin: 0; }
     transition: transform 220ms ease, opacity 220ms ease;
   }
   .mobile-nav.compact:not(.open) .mobile-nav-trigger-shape {
-    transform: scale(0.78);
+    transform: scale(0.5);
   }
   .mobile-nav.compact:not(.open) .mobile-nav-trigger-icon {
     transform: translateX(-50%) scale(0.88);
