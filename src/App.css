@@ -2823,7 +2823,7 @@ ul, ol  { margin: 0; }
     transform: scale(0.5);
   }
   .mobile-nav.compact:not(.open) .mobile-nav-trigger-icon {
-    transform: translateX(-50%) scale(0.88);
+    transform: translateX(-50%) scale(0.5);
   }
   .mobile-nav.open .mobile-nav-trigger-shape {
     transform: none;

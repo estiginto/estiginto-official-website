@@ -28,7 +28,7 @@ This adjustment refines two existing mobile interactions without changing layout
 
 - Use a bottom-centered transform origin so the triangle appears anchored to the safe-area position.
 - Animate the visual scale with the site's existing soft easing over 320ms.
-- Scale the triangle to 50% and the hamburger icon to 88%, preserving legibility.
+- Scale both the triangle and hamburger icon to 50% so they remain visually synchronized.
 - Respect `prefers-reduced-motion` by removing the scroll-driven scale transition while still applying the correct final size.
 
 ## Testing and acceptance

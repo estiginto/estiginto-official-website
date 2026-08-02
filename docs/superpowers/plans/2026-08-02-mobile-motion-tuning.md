@@ -11,7 +11,7 @@
 ## Global Constraints
 
 - The language-switch transform duration is exactly 900ms and prompt completion is exactly 960ms.
-- The compact triangle scale is exactly 50%; the compact icon scale is exactly 88%.
+- The compact triangle and icon scales are both exactly 50%.
 - The compact transition duration is exactly 320ms using the existing soft easing.
 - The trigger keeps its existing 120x92px touch target.
 - Opening the menu or reaching the top restores full visual size.
@@ -84,7 +84,7 @@ Add `compact` state and `previousScrollYRef`. Attach one passive `scroll` listen
 
 - [ ] **Step 4: Add exact compact styling**
 
-Keep the button dimensions unchanged. Add bottom-centered `scale(0.5)` to the triangle and `scale(0.88)` to the icon under `.mobile-nav.compact:not(.open)`, using 320ms soft easing. Extend reduced-motion rules so these transforms have no animated transition.
+Keep the button dimensions unchanged. Add bottom-centered `scale(0.5)` to both the triangle and icon under `.mobile-nav.compact:not(.open)`, using 320ms soft easing. Extend reduced-motion rules so these transforms have no animated transition.
 
 - [ ] **Step 5: Run the focused test and verify GREEN**
 
