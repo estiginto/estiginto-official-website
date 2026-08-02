@@ -76,6 +76,41 @@ test("mobile menu stages its geometric open and close motion", () => {
   assert.match(cssSource, /\.mobile-nav-link\.is-selecting/);
 });
 
+test("mobile menu switches between two localized service link groups", () => {
+  const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
+
+  assert.match(appSource, /const mobileMenuGroupsByLocale\s*=\s*\{/);
+  assert.match(appSource, /digital:\s*\{[\s\S]*?label:\s*"數位解決方案"/);
+  assert.match(appSource, /growth:\s*\{[\s\S]*?label:\s*"商業顧問服務"/);
+  assert.match(mobileNavSource, /useState\("digital"\)/);
+  assert.match(mobileNavSource, /className="mobile-nav-category-switch"/);
+  assert.match(mobileNavSource, /aria-pressed=\{activeGroup === groupKey\}/);
+  assert.match(mobileNavSource, /setActiveGroup\(groupKey\)/);
+  assert.match(mobileNavSource, /\.\.\.activeGroupCopy\.items/);
+  assert.match(mobileNavSource, /items\.map/);
+});
+
+test("mobile category controls extend from both viewport edges", () => {
+  assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?left:\s*0;[\s\S]*?right:\s*0;[\s\S]*?grid-template-columns:\s*1fr 1fr;/);
+  assert.match(cssSource, /\.mobile-nav-category-button\.digital\s*\{[\s\S]*?clip-path:\s*polygon\(0 0, 92% 0, 100% 100%, 0 100%\)/);
+  assert.match(cssSource, /\.mobile-nav-category-button\.growth\s*\{[\s\S]*?clip-path:\s*polygon\(8% 0, 100% 0, 100% 100%, 0 100%\)/);
+});
+
+test("short mobile viewports separate the diamond, font controls, categories, and trigger", () => {
+  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)\s*\{[\s\S]*?\.mobile-nav-diamond\s*\{[\s\S]*?top:\s*43%;/);
+  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav \.menu-font-controls\s*\{[\s\S]*?top:\s*calc\(43% \+ min\(44vw, 178px\)\);/);
+  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav-category-switch\s*\{[\s\S]*?bottom:\s*max\(124px,[\s\S]*?height:\s*52px;/);
+});
+
+test("mobile trigger suppresses the native full-button tap highlight", () => {
+  assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?-webkit-tap-highlight-color:\s*transparent;/);
+  assert.match(cssSource, /\.mobile-nav-trigger:active\s*\{[\s\S]*?background:\s*transparent;/);
+});
+
+test("go to top hides while the mobile menu is open", () => {
+  assert.match(cssSource, /\.mobile-nav\.open\s*~\s*\.go-to-top(?:\.is-visible)?\s*\{[\s\S]*?opacity:\s*0;[\s\S]*?pointer-events:\s*none;/);
+});
+
 test("mobile home link keeps its center translation throughout menu motion", () => {
   assert.match(
     cssSource,

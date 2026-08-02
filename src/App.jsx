@@ -58,6 +58,69 @@ const menuTargets = [
   { key: "contact", href: "/contact.html", section: "contact", position: "bottom" },
 ];
 
+const mobileMenuGroupsByLocale = {
+  zh: {
+    digital: {
+      label: "數位解決方案",
+      items: [
+        { key: "system-planning", label: "系統規劃", href: "/solutions.html", position: "top" },
+        { key: "custom-development", label: "客製開發", href: "/solutions.html", position: "left" },
+        { key: "system-cases", label: "系統案例", href: "/case.html#case-group-operations-management", position: "right" },
+        { key: "project-consulting", label: "專案諮詢", href: "/contact.html", position: "bottom" },
+      ],
+    },
+    growth: {
+      label: "商業顧問服務",
+      items: [
+        { key: "brand-strategy", label: "品牌策略", href: "/about.html", position: "top" },
+        { key: "visual-design", label: "視覺設計", href: "/solutions.html", position: "left" },
+        { key: "growth-cases", label: "成長案例", href: "/case.html#case-group-brand-digital", position: "right" },
+        { key: "growth-consulting", label: "合作諮詢", href: "/contact.html", position: "bottom" },
+      ],
+    },
+  },
+  en: {
+    digital: {
+      label: "Digital Solutions",
+      items: [
+        { key: "system-planning", label: "Planning", href: "/solutions.html", position: "top" },
+        { key: "custom-development", label: "Custom Dev", href: "/solutions.html", position: "left" },
+        { key: "system-cases", label: "System Work", href: "/case.html#case-group-operations-management", position: "right" },
+        { key: "project-consulting", label: "Consult", href: "/contact.html", position: "bottom" },
+      ],
+    },
+    growth: {
+      label: "Business Consulting",
+      items: [
+        { key: "brand-strategy", label: "Strategy", href: "/about.html", position: "top" },
+        { key: "visual-design", label: "Design", href: "/solutions.html", position: "left" },
+        { key: "growth-cases", label: "Growth Work", href: "/case.html#case-group-brand-digital", position: "right" },
+        { key: "growth-consulting", label: "Contact", href: "/contact.html", position: "bottom" },
+      ],
+    },
+  },
+  ja: {
+    digital: {
+      label: "デジタルソリューション",
+      items: [
+        { key: "system-planning", label: "システム設計", href: "/solutions.html", position: "top" },
+        { key: "custom-development", label: "開発", href: "/solutions.html", position: "left" },
+        { key: "system-cases", label: "導入事例", href: "/case.html#case-group-operations-management", position: "right" },
+        { key: "project-consulting", label: "相談", href: "/contact.html", position: "bottom" },
+      ],
+    },
+    growth: {
+      label: "ビジネスコンサルティング",
+      items: [
+        { key: "brand-strategy", label: "戦略", href: "/about.html", position: "top" },
+        { key: "visual-design", label: "デザイン", href: "/solutions.html", position: "left" },
+        { key: "growth-cases", label: "成長事例", href: "/case.html#case-group-brand-digital", position: "right" },
+        { key: "growth-consulting", label: "相談", href: "/contact.html", position: "bottom" },
+      ],
+    },
+  },
+};
+
 const numbers = [
   {
     idx: "永續性",
@@ -1721,12 +1784,19 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
 }
 
 function MobileNav({ locale, fontControls }) {
-  const items = getMenuItems(locale);
+  const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
+  const mobileMenuGroups = mobileMenuGroupsByLocale[locale] || mobileMenuGroupsByLocale.zh;
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
   const [selectingKey, setSelectingKey] = useState(null);
+  const [activeGroup, setActiveGroup] = useState("digital");
   const previousScrollYRef = useRef(0);
   const directionTravelRef = useRef(0);
+  const activeGroupCopy = mobileMenuGroups[activeGroup];
+  const items = [
+    { key: "home", label: localizedMenuLabels.home, href: "/", position: "center" },
+    ...activeGroupCopy.items,
+  ];
 
   useEffect(() => {
     previousScrollYRef.current = window.scrollY;
@@ -1777,6 +1847,7 @@ function MobileNav({ locale, fontControls }) {
             if (nextOpen) {
               setCompact(false);
               setSelectingKey(null);
+              setActiveGroup("digital");
               directionTravelRef.current = 0;
             }
             return nextOpen;
@@ -1791,7 +1862,7 @@ function MobileNav({ locale, fontControls }) {
         </button>
 
         <div className="mobile-nav-diamond">
-          <div className="mobile-nav-diamond-core">
+          <div className="mobile-nav-diamond-core" key={activeGroup}>
             {items.map((item, index) => (
               <a
                 key={item.key}
@@ -1804,6 +1875,22 @@ function MobileNav({ locale, fontControls }) {
               </a>
             ))}
           </div>
+        </div>
+        <div className="mobile-nav-category-switch" role="group" aria-label="Service category">
+          {Object.entries(mobileMenuGroups).map(([groupKey, group]) => (
+            <button
+              key={groupKey}
+              className={`mobile-nav-category-button ${groupKey}`}
+              type="button"
+              aria-pressed={activeGroup === groupKey}
+              onClick={() => {
+                setActiveGroup(groupKey);
+                setSelectingKey(null);
+              }}
+            >
+              <span>{group.label}</span>
+            </button>
+          ))}
         </div>
         <FontSizeControls {...fontControls} />
       </div>
