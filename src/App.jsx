@@ -755,7 +755,7 @@ function MobileHomeLanguagePrompt({ locale, onSelect, destinationRef, onComplete
         setPhase("flying");
       });
     });
-    finishPrompt(660);
+    finishPrompt(960);
   };
 
   const isTransitioning = phase !== "idle";

@@ -2733,7 +2733,7 @@ ul, ol  { margin: 0; }
     transform: translate3d(0, 0, 0) scale(1, 1);
     transform-origin: top left;
     will-change: transform, opacity;
-    transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease;
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease;
   }
   .language-prompt-flight.is-moving {
     transform:

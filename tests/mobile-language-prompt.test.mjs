@@ -54,6 +54,13 @@ test("language prompt CSS provides blur, safe-area placement, flight, and reduce
   assert.match(cssSource, /prefers-reduced-motion:\s*reduce[\s\S]*language-prompt/);
 });
 
+test("language prompt uses the approved slower flight and synchronized handoff", () => {
+  const promptSource = appSource.match(/function MobileHomeLanguagePrompt[\s\S]*?function Header/)?.[0] || "";
+
+  assert.match(cssSource, /\.language-prompt-flight\s*\{[\s\S]*?transition:\s*transform 900ms cubic-bezier\(0\.22, 1, 0\.36, 1\)/);
+  assert.match(promptSource, /finishPrompt\(960\)/);
+});
+
 test("closed mobile navigation does not release another overlay's scroll lock", () => {
   const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
   assert.match(mobileNavSource, /if \(!open\)\s*\{\s*return undefined;\s*\}/);
