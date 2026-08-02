@@ -30,6 +30,7 @@ This adjustment refines two existing mobile interactions without changing layout
 - Animate the visual scale with the site's existing soft easing over 320ms.
 - Scale both the triangle and hamburger icon to 50% so they remain visually synchronized.
 - Scale the icon's 22px bottom offset to 11px in compact state so its visual center remains aligned with the scaled triangle.
+- On mobile, align the visible Go to top arrow and triangular menu to the same `max(18px, safe-area)` bottom edge.
 - Respect `prefers-reduced-motion` by removing the scroll-driven scale transition while still applying the correct final size.
 
 ## Testing and acceptance

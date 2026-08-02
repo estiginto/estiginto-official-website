@@ -2629,7 +2629,14 @@ ul, ol  { margin: 0; }
 
   .go-to-top {
     right: 14px;
-    bottom: 72px;
+    bottom: max(18px, env(safe-area-inset-bottom, 0px));
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .go-to-top span {
+    margin: 0;
   }
 
   .page-header {

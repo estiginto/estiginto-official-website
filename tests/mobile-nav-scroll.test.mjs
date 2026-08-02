@@ -65,3 +65,8 @@ test("mobile navigation connects scroll state without shrinking its touch target
   assert.match(cssSource, /\.mobile-nav-trigger-icon\s*\{[\s\S]*?transition:\s*transform 320ms var\(--ease-soft\), bottom 320ms var\(--ease-soft\)/);
   assert.match(cssSource, /transition:\s*transform 320ms var\(--ease-soft\)/);
 });
+
+test("mobile go-to-top arrow shares the menu trigger bottom edge", () => {
+  assert.match(cssSource, /\.go-to-top\s*\{[\s\S]*?right:\s*14px;[\s\S]*?bottom:\s*max\(18px, env\(safe-area-inset-bottom, 0px\)\);[\s\S]*?display:\s*flex;[\s\S]*?align-items:\s*flex-end;/);
+  assert.match(cssSource, /\.go-to-top span\s*\{[\s\S]*?margin:\s*0;/);
+});
