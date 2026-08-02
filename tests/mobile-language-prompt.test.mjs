@@ -9,6 +9,7 @@ import {
 } from "../src/mobileLanguagePrompt.js";
 
 const appSource = readFileSync(resolve(import.meta.dirname, "../src/App.jsx"), "utf8");
+const cssSource = readFileSync(resolve(import.meta.dirname, "../src/App.css"), "utf8");
 
 test("browser locale maps to the three supported locales", () => {
   assert.equal(resolveBrowserLocale("zh-TW"), "zh");
@@ -43,4 +44,12 @@ test("prompt is gated by route and mobile eligibility without persisted dismissa
   assert.match(appSource, /shouldShowMobileHomeLanguagePrompt/);
   assert.match(appSource, /showLanguagePrompt/);
   assert.doesNotMatch(appSource, /language-prompt-(dismissed|completed)/);
+});
+
+test("language prompt CSS provides blur, safe-area placement, flight, and reduced motion", () => {
+  assert.match(cssSource, /\.mobile-language-prompt\s*\{/);
+  assert.match(cssSource, /backdrop-filter:\s*blur/);
+  assert.match(cssSource, /env\(safe-area-inset-bottom\)/);
+  assert.match(cssSource, /\.language-prompt-flight/);
+  assert.match(cssSource, /prefers-reduced-motion:\s*reduce[\s\S]*language-prompt/);
 });
