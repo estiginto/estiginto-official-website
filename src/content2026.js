@@ -163,6 +163,27 @@ export const caseStudiesByLocale = Object.fromEntries(
   ]),
 );
 
+const caseGroupKeywordsByLocale = {
+  zh: {
+    "operations-management": ["ERP", "WMS", "SCM", "SSO", "權限管理", "生產履歷", "成本管理", "數據儀表板"],
+    "iot-visibility": ["IoT", "即時監控", "感測器整合", "派工管理", "設備管理", "戰情室", "Beacon"],
+    "commerce-members": ["電子商務", "會員系統", "線上預約", "金流串接", "電子發票", "冷鏈物流", "CRM"],
+    "brand-digital": ["品牌官網", "UI/UX", "行動應用", "數位典藏", "互動體驗", "社群功能", "數位產品"],
+  },
+  en: {
+    "operations-management": ["ERP", "WMS", "SCM", "SSO", "Access Control", "Production Traceability", "Cost Management", "Data Dashboards"],
+    "iot-visibility": ["IoT", "Real-time Monitoring", "Sensor Integration", "Dispatch Management", "Equipment Management", "Command Dashboard", "Beacon"],
+    "commerce-members": ["E-commerce", "Membership Systems", "Online Booking", "Payment Integration", "E-invoicing", "Cold-chain Logistics", "CRM"],
+    "brand-digital": ["Brand Websites", "UI/UX", "Mobile Apps", "Digital Archives", "Interactive Experiences", "Community Features", "Digital Products"],
+  },
+  ja: {
+    "operations-management": ["ERP", "WMS", "SCM", "SSO", "権限管理", "生産履歴", "原価管理", "データダッシュボード"],
+    "iot-visibility": ["IoT", "リアルタイム監視", "センサー連携", "作業指示管理", "設備管理", "統合ダッシュボード", "Beacon"],
+    "commerce-members": ["ECサイト", "会員システム", "オンライン予約", "決済連携", "電子インボイス", "コールドチェーン物流", "CRM"],
+    "brand-digital": ["ブランドサイト", "UI/UX", "モバイルアプリ", "デジタルアーカイブ", "インタラクティブ体験", "コミュニティ機能", "デジタルプロダクト"],
+  },
+};
+
 export const caseStudyGroupsByLocale = {
   zh: [
     { id: "operations-management", number: "01", title: "營運整合與管理", summary: "把分散的人員、資料、權限與作業流程，整理成一套可追蹤、可管理的營運系統。", caseIds: ["pharma-management", "government-administration", "production-quality", "manufacturing-management"] },
@@ -183,3 +204,10 @@ export const caseStudyGroupsByLocale = {
     { id: "brand-digital", number: "04", title: "ブランド体験・デジタルプロダクト", summary: "コンテンツ、体験、サービスを使えるデジタルプロダクトへ落とし込み、ブランドの展開を支えます。", caseIds: ["art-collection", "travel-discovery"] },
   ],
 };
+
+for (const [locale, groups] of Object.entries(caseStudyGroupsByLocale)) {
+  caseStudyGroupsByLocale[locale] = groups.map((group) => ({
+    ...group,
+    keywords: caseGroupKeywordsByLocale[locale][group.id],
+  }));
+}

@@ -140,6 +140,8 @@ test("case page groups selected work by client value", () => {
   assert.match(app, /caseStudiesByLocale\[copy\.locale\]/);
   assert.match(app, /caseStudyGroupsByLocale\[copy\.locale\]/);
   assert.match(app, /className="case-portfolio-group"/);
+  assert.match(app, /className="case-portfolio-keywords"/);
+  assert.match(app, /group\.keywords\.map/);
   assert.match(app, /caseStudy\.outcome/);
   assert.doesNotMatch(app, /caseStudy\.industry/);
   assert.match(app, /aria-expanded=\{isActive\}/);
@@ -149,6 +151,8 @@ test("case page groups selected work by client value", () => {
   assert.doesNotMatch(app, /14 個匿名案例|跨產業匿名案例|14 anonymized cases|匿名事例 14件/);
   assert.match(css, /\.case-portfolio-group\s*\{/);
   assert.match(css, /\.case-portfolio-group-header\s*\{/);
+  assert.match(css, /\.case-portfolio-keywords\s*\{/);
+  assert.match(css, /\.case-portfolio-keywords li\s*\{/);
   assert.match(css, /\.case-portfolio-outcome/);
   assert.doesNotMatch(app, /3\.2%/);
   assert.doesNotMatch(app, /D\+0\.7/);
@@ -157,6 +161,13 @@ test("case page groups selected work by client value", () => {
 
 test("case metadata presents selected capabilities without anonymity framing", () => {
   const html = read("case.html");
+
+  const keywordMeta = html.match(/<meta name="keywords" content="([^"]+)"\s*\/?>/g) || [];
+  assert.equal(keywordMeta.length, 1, "case page must have one keywords meta tag");
+  assert.match(keywordMeta[0], /客製化系統開發/);
+  assert.match(keywordMeta[0], /ERP/);
+  assert.match(keywordMeta[0], /IoT/);
+  assert.match(keywordMeta[0], /UI\/UX/);
 
   assert.match(html, /精選實績｜ESTIGINTO 造物者科技/);
   assert.match(html, /營運整合、IoT、電商會員與數位產品/);

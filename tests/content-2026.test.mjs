@@ -103,6 +103,16 @@ test("2026 content provides complete, matching locale inventories", async () => 
     );
     assertCompleteStrings(groups, `${locale}.caseStudyGroups`);
 
+    for (const group of groups) {
+      assert.ok(group.keywords.length >= 5, `${locale}.${group.id} minimum keywords`);
+      assert.ok(group.keywords.length <= 8, `${locale}.${group.id} maximum keywords`);
+      assert.equal(new Set(group.keywords).size, group.keywords.length, `${locale}.${group.id} keywords must be unique`);
+      group.keywords.forEach((keyword) => {
+        assert.equal(typeof keyword, "string", `${locale}.${group.id} keyword type`);
+        assert.notEqual(keyword.trim(), "", `${locale}.${group.id} keyword must not be blank`);
+      });
+    }
+
     for (const service of serviceFamiliesByLocale[locale]) {
       assert.equal(service.image.endsWith(".webp"), true, `${locale}.${service.id} image must use WebP`);
       assert.ok(service.capabilities.length >= 4, `${locale}.${service.id} capabilities`);
@@ -117,6 +127,10 @@ test("2026 content provides complete, matching locale inventories", async () => 
       assert.equal("logo" in caseStudy, false, `${locale}.${caseStudy.id} must not expose a logo`);
     }
   }
+
+  assert.ok(caseStudyGroupsByLocale.zh[0].keywords.includes("ERP"));
+  assert.ok(caseStudyGroupsByLocale.en[1].keywords.includes("Real-time Monitoring"));
+  assert.ok(caseStudyGroupsByLocale.ja[2].keywords.includes("会員システム"));
 });
 
 test("2026 public content excludes unsupported global proof claims", async () => {

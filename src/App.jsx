@@ -1259,6 +1259,9 @@ function CasePortfolio({ copy }) {
                   <p>{group.summary}</p>
                 </div>
               </header>
+              <ul className="case-portfolio-keywords" aria-label={`${group.title} keywords`}>
+                {group.keywords.map((keyword) => <li key={keyword}>{keyword}</li>)}
+              </ul>
               <div className="case-portfolio-group-list">
                 {group.caseIds.map((caseId) => {
                   const caseStudy = casesById.get(caseId);

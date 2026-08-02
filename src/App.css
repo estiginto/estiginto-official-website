@@ -3693,6 +3693,27 @@ ul, ol  { margin: 0; }
   line-height: var(--lh-relaxed);
 }
 
+.case-portfolio-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 860px;
+  margin: 0 0 28px 88px;
+  padding: 0;
+  list-style: none;
+}
+
+.case-portfolio-keywords li {
+  padding: 7px 10px;
+  border: 1px solid var(--ink-line);
+  color: var(--ink-soft);
+  background: rgba(255, 255, 255, 0.42);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
 .case-portfolio-group-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -3838,6 +3859,11 @@ ul, ol  { margin: 0; }
   .case-portfolio-group-header {
     grid-template-columns: 40px minmax(0, 1fr);
     gap: 12px;
+  }
+
+  .case-portfolio-keywords {
+    margin-left: 52px;
+    margin-bottom: 24px;
   }
 
   .case-portfolio-trigger {
