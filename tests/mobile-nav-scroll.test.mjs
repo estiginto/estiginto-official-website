@@ -66,6 +66,16 @@ test("mobile navigation connects scroll state without shrinking its touch target
   assert.match(cssSource, /transition:\s*transform 320ms var\(--ease-soft\)/);
 });
 
+test("mobile menu stages its geometric open and close motion", () => {
+  assert.match(appSource, /--menu-item-index/);
+  assert.match(appSource, /is-selecting/);
+  assert.match(cssSource, /\.mobile-nav-scrim\s*\{[\s\S]*?backdrop-filter:\s*blur\(10px\)/);
+  assert.match(cssSource, /\.mobile-nav-diamond\s*\{[\s\S]*?transform 520ms var\(--ease-soft\)/);
+  assert.match(cssSource, /\.mobile-nav\.open \.mobile-nav-link\s*\{[\s\S]*?calc\(var\(--menu-item-index\) \* 60ms \+ 120ms\)/);
+  assert.match(cssSource, /\.mobile-nav:not\(\.open\) \.mobile-nav-link\s*\{[\s\S]*?calc\(\(4 - var\(--menu-item-index\)\) \* 60ms\)/);
+  assert.match(cssSource, /\.mobile-nav-link\.is-selecting/);
+});
+
 test("mobile go-to-top arrow shares the menu trigger bottom edge", () => {
   assert.match(cssSource, /\.go-to-top\s*\{[\s\S]*?right:\s*14px;[\s\S]*?bottom:\s*max\(18px, env\(safe-area-inset-bottom, 0px\)\);[\s\S]*?display:\s*flex;[\s\S]*?align-items:\s*flex-end;/);
   assert.match(cssSource, /\.go-to-top span\s*\{[\s\S]*?margin:\s*0;/);

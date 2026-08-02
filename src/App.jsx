@@ -1643,6 +1643,7 @@ function MobileNav({ locale, fontControls }) {
   const items = getMenuItems(locale);
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
+  const [selectingKey, setSelectingKey] = useState(null);
   const previousScrollYRef = useRef(0);
   const directionTravelRef = useRef(0);
 
@@ -1694,6 +1695,7 @@ function MobileNav({ locale, fontControls }) {
             const nextOpen = !value;
             if (nextOpen) {
               setCompact(false);
+              setSelectingKey(null);
               directionTravelRef.current = 0;
             }
             return nextOpen;
@@ -1709,8 +1711,14 @@ function MobileNav({ locale, fontControls }) {
 
         <div className="mobile-nav-diamond">
           <div className="mobile-nav-diamond-core">
-            {items.map((item) => (
-              <a key={item.key} className={`mobile-nav-link ${item.position}`} href={item.href}>
+            {items.map((item, index) => (
+              <a
+                key={item.key}
+                className={`mobile-nav-link ${item.position} ${selectingKey === item.key ? "is-selecting" : ""}`.trim()}
+                href={item.href}
+                style={{ "--menu-item-index": index }}
+                onClick={() => setSelectingKey(item.key)}
+              >
                 <span>{item.label}</span>
               </a>
             ))}
