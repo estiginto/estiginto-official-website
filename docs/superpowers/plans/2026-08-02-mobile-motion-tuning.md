@@ -12,6 +12,7 @@
 
 - The language-switch transform duration is exactly 900ms and prompt completion is exactly 960ms.
 - The compact triangle and icon scales are both exactly 50%.
+- The compact icon bottom offset is exactly 11px, half of its full-size 22px offset.
 - The compact transition duration is exactly 320ms using the existing soft easing.
 - The trigger keeps its existing 120x92px touch target.
 - Opening the menu or reaching the top restores full visual size.

@@ -2810,7 +2810,7 @@ ul, ol  { margin: 0; }
     gap: 5px;
     transform: translateX(-50%);
     transform-origin: center bottom;
-    transition: transform 320ms var(--ease-soft);
+    transition: transform 320ms var(--ease-soft), bottom 320ms var(--ease-soft);
   }
   .mobile-nav-trigger-icon span {
     display: block;
@@ -2823,6 +2823,7 @@ ul, ol  { margin: 0; }
     transform: scale(0.5);
   }
   .mobile-nav.compact:not(.open) .mobile-nav-trigger-icon {
+    bottom: 11px;
     transform: translateX(-50%) scale(0.5);
   }
   .mobile-nav.open .mobile-nav-trigger-shape {
