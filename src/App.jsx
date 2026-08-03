@@ -552,8 +552,8 @@ const localizedCopy = {
     faqGroups,
     hero: {
       kicker: "將你的願景，建構在磐石上",
-      title: ["有靈魂的設計", "長久的", "數位基礎"],
-      lede: ["從商業目標與真實流程出發", "打造直接、有效、永續且彈性的解決方案", "讓系統持續推動品牌成長"],
+      title: ["致力於打造", "有靈魂的設計"],
+      lede: ["打造直達目標、永續且彈性的解決方案", "改善企業及社會榮景"],
       scrolldown: "往下滾動",
     },
     marquee: [
@@ -659,7 +659,7 @@ const localizedCopy = {
       ["06", "Operations and optimization", "Incident response, performance, security, feature optimization, and reporting additions.", "Ongoing"],
     ],
     faqGroups,
-    hero: { kicker: "Build your vision on solid ground", title: ["Thoughtful design", "A lasting", "digital foundation"], lede: ["Starting from business goals and real workflows", "we create direct, effective, sustainable, and flexible solutions", "that keep driving brand growth"], scrolldown: "Scroll down" },
+    hero: { kicker: "Build your vision on solid ground", title: ["Driven to create", "design with soul"], lede: ["We build focused, sustainable, and adaptable solutions", "that advance business and social prosperity."], scrolldown: "Scroll down" },
     marquee: ["Adaptive decision systems", "Software system planning and implementation", "Software, hardware, and IoT integration", "ERP / WMS / CRM", "Business websites / e-commerce / payments / invoices", "Custom app development", "War-room dashboards", "Automation execution support systems"],
     achievements: { label: "We build designs with a soul, turning systems into engines for brand growth and lasting impact.", meta: "Since 2011" },
     manifesto: { label: "Our Edge", prelude: "Hard-to-use systems are usually not caused by technology or budget", headlinePrefix: "They fail because", headlineHighlight: "the design direction is wrong", points: ["1. Engineering logic is used to design human behavior", "2. Processes replace decisions instead of supporting them", "3. Standard templates are forced onto non-standard business scenarios"], quote: "\"The depth of planning and mechanism design determines a system's product life.\"", paragraphs: [["With agile development and flexible architecture", "we work like architects drawing before construction", "validating structure, flow, and user experience before anything is built."], ["A well-designed system plan can be executed by any capable team", "while still preserving the original intent and goals", "because it is designed to serve users, not merely to be delivered."]], signoff: "- This is the key to sustainable systems." },
@@ -711,7 +711,7 @@ const localizedCopy = {
       ["06", "運用と改善", "障害対応、性能、セキュリティ、機能改善、レポート追加を継続します。", "継続"],
     ],
     faqGroups,
-    hero: { kicker: "ビジョンを、揺るぎない基盤の上に", title: ["想いのある設計", "長く使える", "デジタル基盤"], lede: ["事業目標と実際の業務フローを起点に", "直接的で効果的、持続可能かつ柔軟なソリューションを構築し", "ブランドの成長を継続的に支えます"], scrolldown: "下へスクロール" },
+    hero: { kicker: "ビジョンを、揺るぎない基盤の上に", title: ["私たちが目指すのは", "魂のあるデザイン"], lede: ["目標へ直結する、持続可能で柔軟なソリューションを構築し", "企業と社会の豊かさに貢献します。"], scrolldown: "下へスクロール" },
     marquee: ["能動型意思決定システム", "ソフトウェアシステムの設計と構築", "ソフト・ハード・IoT 統合", "ERP / WMS / CRM", "ビジネスサイト / EC / 決済 / 請求書", "カスタム APP", "戦情室ダッシュボード", "自動化実行支援システム"],
     achievements: { label: "魂のあるデザインを作り、システムをブランド成長と持続的な影響力の推進力にします。", meta: "2011 年から" },
     manifesto: { label: "独自の競争力", prelude: "使いにくいシステムの多くは、技術や予算の問題ではありません", headlinePrefix: "本質は", headlineHighlight: "設計方向の誤りです", points: ["1. 人の行動を工学的な論理だけで設計している", "2. 意思決定を支援せず、流程で置き換えている", "3. 非標準の業務に標準テンプレートを当てはめている"], quote: "「計画と仕組み設計の深さが、システムの寿命を決めます。」", paragraphs: [["アジャイル開発と柔軟なアーキテクチャを用い", "建築家の設計図のように", "施工前に構造、動線、体験を検証します。"], ["適切に設計されたシステム計画は、誰が実行しても", "設計意図と目標を保てます", "単なる納品ではなく、利用者に本当に役立つための設計です。"]], signoff: "- これが、持続するシステムの鍵です。" },
@@ -957,10 +957,11 @@ function SectionEyebrow({ index, label, meta, className = "" }) {
       <span className="index">{index}</span>
       <span className="rule" aria-hidden="true" />
       <span className="meta">{meta}</span>
-      <span className="section-eyebrow-label" style={{ gridColumn: "1 / -1", marginTop: 8, color: "inherit" }}>
-        <span style={{ marginRight: 14, opacity: 0.5 }}></span>
-        {label}
-      </span>
+      {label ? (
+        <span className="section-eyebrow-label" style={{ gridColumn: "1 / -1", marginTop: 8, color: "inherit" }}>
+          {label}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -1078,16 +1079,13 @@ function Hero({ copy }) {
 
           <h1 className="hero-title">
             <span className="row1">{copy.hero.title[0]}</span>
-            <span className="row2">{copy.hero.title[1]}</span>
-            <span className="row3 accent">{copy.hero.title[2]}</span>
+            <span className="row2 accent">{copy.hero.title[1]}</span>
           </h1>
 
           <p className="hero-lede">
             {copy.hero.lede[0]}
             <br />
             {copy.hero.lede[1]}
-            <br />
-            {copy.hero.lede[2]}
           </p>
         </div>
       </div>
@@ -1188,7 +1186,6 @@ function Numbers({ copy }) {
         <SectionEyebrow
           className="achievements-eyebrow"
           index="§ Achievements"
-          label={copy.achievements.label}
           meta={copy.achievements.meta}
         />
         <div className="numbers">
@@ -1775,6 +1772,58 @@ function FAQ({ copy }) {
   );
 }
 
+function ContactIcon({ type }) {
+  let geometry;
+
+  switch (type) {
+    case "email":
+      geometry = (
+        <>
+          <rect x="3" y="5" width="18" height="14" rx="2" />
+          <path d="m4 7 8 6 8-6" />
+        </>
+      );
+      break;
+    case "phone":
+      geometry = <path d="M7.2 3.5 10 7.8 7.9 10a14.2 14.2 0 0 0 6.1 6.1l2.2-2.1 4.3 2.8-.8 3a2.4 2.4 0 0 1-2.4 1.7C9.1 20.7 3.3 14.9 2.5 6.7a2.4 2.4 0 0 1 1.7-2.4l3-.8Z" />;
+      break;
+    case "mobile":
+      geometry = (
+        <>
+          <rect x="6.5" y="2.5" width="11" height="19" rx="2.2" />
+          <path d="M10 5h4M11 18.5h2" />
+        </>
+      );
+      break;
+    case "line":
+      geometry = (
+        <>
+          <path d="M20.5 11.4c0 4.2-4 7.6-8.9 7.6-.8 0-1.6-.1-2.3-.3L4 21l1.5-4.1A7 7 0 0 1 2.7 11c0-4.2 4-7.6 8.9-7.6s8.9 3.4 8.9 8Z" />
+          <path d="M7.5 11.2h.1m3.9 0h.1m3.9 0h.1" />
+        </>
+      );
+      break;
+    default:
+      return null;
+  }
+
+  return (
+    <svg
+      className="contact-channel-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {geometry}
+    </svg>
+  );
+}
+
 function Contact({ copy }) {
   const contact = copy.contact;
   return (
@@ -1795,19 +1844,19 @@ function Contact({ copy }) {
           <div className="contact-card">
             <div className="contact-row">
               <span className="k">Email</span>
-              <span className="v"><a href="mailto:contact@estiginto.com">contact@estiginto.com</a></span>
+              <span className="v"><a className="contact-channel-link" href="mailto:contact@estiginto.com"><ContactIcon type="email" /><span>contact@estiginto.com</span></a></span>
             </div>
             <div className="contact-row">
               <span className="k">Phone</span>
-              <span className="v"><a href="tel:+886224315362">+886 2 2431 5362</a></span>
+              <span className="v"><a className="contact-channel-link" href="tel:+886224315362"><ContactIcon type="phone" /><span>+886 2 2431 5362</span></a></span>
             </div>
             <div className="contact-row">
               <span className="k">Sales</span>
-              <span className="v"><a href="tel:+886972118427">+886 972 118 427</a></span>
+              <span className="v"><a className="contact-channel-link" href="tel:+886972118427"><ContactIcon type="mobile" /><span>+886 972 118 427</span></a></span>
             </div>
             <div className="contact-row">
               <span className="k">LINE@</span>
-              <span className="v"><a href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">@dbn3379w</a></span>
+              <span className="v"><a className="contact-channel-link" href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer"><ContactIcon type="line" /><span>@dbn3379w</span></a></span>
             </div>
             <div className="contact-cta">
               <a className="btn btn-primary" href="mailto:contact@estiginto.com?subject=Project%20Brief%20%7C%20ESTIGINTO">
@@ -1834,7 +1883,7 @@ function Footer({ copy }) {
         <div className="footer-top">
           <div className="footer-brand">
             <p className="footer-wordmark">ESTIGINTO</p>
-            <p>{footer.company}<br />統一編號: 42752468</p>
+            <p>{footer.company}</p>
           </div>
           <nav className="footer-links" aria-label={footer.navLabel}>
             <h5>Explore</h5>
@@ -1846,10 +1895,10 @@ function Footer({ copy }) {
           </nav>
           <div className="footer-links">
             <h5>Contact</h5>
-            <a href="mailto:contact@estiginto.com">contact@estiginto.com</a>
-            <a href="tel:+886224315362">+886 2 2431 5362</a>
-            <a href="tel:+886972118427">+886 972 118 427</a>
-            <a href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">{footer.line}</a>
+            <a className="contact-channel-link" href="mailto:contact@estiginto.com"><ContactIcon type="email" /><span>contact@estiginto.com</span></a>
+            <a className="contact-channel-link" href="tel:+886224315362"><ContactIcon type="phone" /><span>+886 2 2431 5362</span></a>
+            <a className="contact-channel-link" href="tel:+886972118427"><ContactIcon type="mobile" /><span>+886 972 118 427</span></a>
+            <a className="contact-channel-link" href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer"><ContactIcon type="line" /><span>{footer.line}</span></a>
           </div>
         </div>
         <div className="footer-bottom">
