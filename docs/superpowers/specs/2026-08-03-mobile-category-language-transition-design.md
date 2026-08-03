@@ -13,6 +13,14 @@ Refine the two mobile-menu category controls and add a dedicated transition when
 - Replace the heavy selected gold fill with a light warm greige (`#d8d0c2`) and graphite text. Use a restrained gold-grey border only as a secondary selection cue.
 - Keep the inactive control warm ivory. Selection must remain understandable without relying on color alone through `aria-pressed`, border treatment, and state change.
 
+## Mobile home control
+
+- Replace the visible localized `Home` / `首頁` / Japanese home label in the center navigation control with one shared minimal outline-house icon.
+- Draw the icon with CSS or inline presentation markup so it inherits the menu color and does not introduce a new image asset or emoji style.
+- Reduce the visible center diamond footprint by approximately 35% so it clears the four surrounding labels more comfortably.
+- Preserve the current home URL, center alignment, selection animation, keyboard behavior, and practical touch target. Only the visible diamond shrinks; the interactive hit area remains accessible.
+- Keep the localized home label as an accessible name for screen readers while hiding it visually.
+
 ## Language-change transition
 
 - Run a dedicated transition only when an explicit language option changes the locale.
@@ -27,6 +35,7 @@ Refine the two mobile-menu category controls and add a dedicated transition when
 ## Accessibility and resilience
 
 - Language controls remain native buttons with their existing pressed state.
+- The icon-only home control retains a localized accessible name and visible keyboard focus treatment.
 - The decorative scan is hidden from assistive technology and never receives pointer events.
 - Content remains readable at the start and end states; no permanent blur or opacity state may survive an interrupted/unmounted transition.
 - English and Japanese category labels are capped at two lines with safe overflow handling at 320px and 390px widths.
@@ -35,6 +44,7 @@ Refine the two mobile-menu category controls and add a dedicated transition when
 
 - Add regression tests for the new localized labels, responsive font sizing, two-line English/Japanese rule, and softened selected palette.
 - Add behavioral tests for active-locale no-op, midpoint locale update, overlap prevention, and reduced-motion behavior where the current test architecture supports it.
+- Add regression coverage for the icon-only home presentation, smaller visible center diamond, preserved home link, and preserved accessible name.
 - Run the complete test/build/dist verification command.
 - Use the in-app Browser at 320px and 390px to exercise opening the mobile menu, switching both category groups, and changing Traditional Chinese to English and Japanese. Check DOM state, console health, screenshots, wrapping, clipping, and layout stability.
 
