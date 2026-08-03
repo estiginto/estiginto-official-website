@@ -155,6 +155,18 @@ test("all internal pages share the geometric transition overlay", () => {
   assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*page-transition/);
 });
 
+test("geometric transitions use the approved graphite ivory and champagne palette", () => {
+  const css = read("src/App.css");
+  const transitionCss = css.match(/\.page-transition\s*\{[\s\S]*?\n\.section\s*\{/)?.[0] || "";
+
+  assert.match(transitionCss, /--transition-graphite:\s*#171817;/);
+  assert.match(transitionCss, /--transition-graphite-soft:\s*#242522;/);
+  assert.match(transitionCss, /--transition-ivory:\s*#eee8dc;/);
+  assert.match(transitionCss, /--transition-champagne:\s*#b89a62;/);
+  assert.match(transitionCss, /\.page-transition-scan\s*\{[\s\S]*?var\(--transition-champagne\)/);
+  assert.doesNotMatch(transitionCss, /#4f9dff|rgba\(79,\s*157,\s*255/);
+});
+
 test("homepage hero provides an accessible mechanical background", () => {
   const app = read("src/App.jsx");
   const css = read("src/App.css");

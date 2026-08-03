@@ -58,7 +58,7 @@ test("mobile navigation connects scroll state without shrinking its touch target
   assert.match(appSource, /import \{ advanceMobileNavScrollState \} from "\.\/mobileNavScroll\.js"/);
   assert.match(mobileNavSource, /advanceMobileNavScrollState\(/);
   assert.match(mobileNavSource, /compact \? "compact" : ""/);
-  assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?width:\s*120px;[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
+  assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?width:\s*var\(--mobile-trigger-width\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
   assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-shape\s*\{[\s\S]*?scale\(0\.5\)/);
   assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-icon\s*\{[\s\S]*?scale\(0\.5\)/);
   assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-icon\s*\{[\s\S]*?bottom:\s*11px;/);
@@ -102,18 +102,17 @@ test("business consulting menu links to the four approved consulting sections in
 });
 
 test("mobile category controls extend from both viewport edges", () => {
-  assert.match(cssSource, /\.mobile-nav\s*\{[\s\S]*?--mobile-trigger-bottom:\s*max\(18px, env\(safe-area-inset-bottom, 0px\)\);[\s\S]*?--mobile-trigger-height:\s*92px;[\s\S]*?--mobile-trigger-seam:\s*1px;/);
-  assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?left:\s*0;[\s\S]*?right:\s*0;[\s\S]*?grid-template-columns:\s*1fr 1fr;/);
-  assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?bottom:\s*var\(--mobile-trigger-bottom\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
-  assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?bottom:\s*calc\(var\(--mobile-trigger-bottom\) \+ var\(--mobile-trigger-height\) - var\(--mobile-trigger-seam\)\);/);
-  assert.match(cssSource, /\.mobile-nav-category-button\.digital\s*\{[\s\S]*?clip-path:\s*polygon\(0 0, 92% 0, 100% 100%, 0 100%\)/);
-  assert.match(cssSource, /\.mobile-nav-category-button\.growth\s*\{[\s\S]*?clip-path:\s*polygon\(8% 0, 100% 0, 100% 100%, 0 100%\)/);
+  assert.match(cssSource, /\.mobile-nav\s*\{[\s\S]*?--mobile-trigger-bottom:\s*max\(18px, env\(safe-area-inset-bottom, 0px\)\);[\s\S]*?--mobile-trigger-height:\s*92px;[\s\S]*?--mobile-trigger-width:\s*120px;[\s\S]*?--mobile-trigger-seam:\s*1px;/);
+  assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?bottom:\s*var\(--mobile-trigger-bottom\);[\s\S]*?width:\s*var\(--mobile-trigger-width\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
+  assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?left:\s*0;[\s\S]*?right:\s*0;[\s\S]*?bottom:\s*var\(--mobile-trigger-bottom\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
+  assert.match(cssSource, /\.mobile-nav-category-button\.digital\s*\{[\s\S]*?left:\s*0;[\s\S]*?width:\s*calc\(50% \+ var\(--mobile-trigger-seam\)\);[\s\S]*?clip-path:\s*polygon\(0 0, 100% 0, calc\(100% - 60px\) 100%, 0 100%\)/);
+  assert.match(cssSource, /\.mobile-nav-category-button\.growth\s*\{[\s\S]*?right:\s*0;[\s\S]*?width:\s*calc\(50% \+ var\(--mobile-trigger-seam\)\);[\s\S]*?clip-path:\s*polygon\(0 0, 100% 0, 100% 100%, 60px 100%\)/);
 });
 
 test("short mobile viewports separate the diamond, font controls, categories, and trigger", () => {
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)\s*\{[\s\S]*?\.mobile-nav-diamond\s*\{[\s\S]*?top:\s*43%;/);
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav \.menu-font-controls\s*\{[\s\S]*?top:\s*calc\(43% \+ min\(44vw, 178px\)\);/);
-  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav-category-switch\s*\{[\s\S]*?height:\s*52px;/);
+  assert.doesNotMatch(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav-category-switch\s*\{[\s\S]*?height:\s*52px;/);
 });
 
 test("mobile trigger suppresses the native full-button tap highlight", () => {
