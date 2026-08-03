@@ -12,6 +12,7 @@ const pages = [
   ["about.html", "https://estiginto.com/about.html"],
   ["case.html", "https://estiginto.com/case.html"],
   ["solutions.html", "https://estiginto.com/solutions.html"],
+  ["consulting.html", "https://estiginto.com/consulting.html"],
   ["faq.html", "https://estiginto.com/faq.html"],
   ["contact.html", "https://estiginto.com/contact.html"],
 ];
@@ -97,11 +98,52 @@ test("public pages consume the verified localized 2026 content model", () => {
   assert.doesNotMatch(app, /val:\s*"70"/);
 });
 
+test("consulting page presents the four approved advisory services", () => {
+  const app = read("src/App.jsx");
+  const html = read("consulting.html");
+
+  assert.match(html, /data-target-section="consulting"/);
+  assert.match(app, /function ConsultingServices\(\{ copy \}\)/);
+  assert.match(app, /const consultingServicesByLocale\s*=\s*\{/);
+  for (const id of ["systems-consulting", "digital-integration", "visual-design", "international-marketing"]) {
+    assert.match(app, new RegExp(`id: "${id}"`));
+  }
+  assert.match(app, /現況盤點/);
+  assert.match(app, /目標確認/);
+  assert.match(app, /策略規劃/);
+  assert.match(app, /執行協作/);
+  assert.match(app, /成效檢視/);
+  assert.match(app, /initialSection === "consulting"/);
+});
+
+test("consulting page is included in the production bundle", () => {
+  const viteConfig = readFileSync(resolve(import.meta.dirname, "../vite.config.js"), "utf8");
+  const distVerifier = readFileSync(resolve(import.meta.dirname, "../scripts/verify-dist.mjs"), "utf8");
+
+  assert.match(viteConfig, /consulting:\s*htmlEntry\("\.\/consulting\.html"\)/);
+  assert.match(distVerifier, /"consulting\.html"/);
+});
+
+test("page entry restores late-rendered hash destinations", () => {
+  const app = read("src/App.jsx");
+  const css = read("src/App.css");
+
+  assert.match(app, /decodeURIComponent\(window\.location\.hash\.slice\(1\)\)/);
+  assert.match(app, /hashTarget\?\.scrollIntoView\(\{ block: "start" \}\)/);
+  assert.match(css, /\.consulting-service\s*\{[\s\S]*?scroll-margin-top:\s*96px;/);
+});
+
 test("all internal pages share the geometric transition overlay", () => {
   const app = read("src/App.jsx");
   const css = read("src/App.css");
 
   assert.match(app, /function PageTransition\(\)/);
+  assert.match(app, /transition-\$\{variant\}/);
+  assert.match(app, /data-variant=\{variant\}/);
+  assert.match(app, /page-transition-grille/);
+  assert.match(app, /page-transition-matrix/);
+  assert.match(app, /page-transition-aperture/);
+  assert.match(app, /page-transition-axis/);
   assert.match(app, /getTransitionDestination/);
   assert.match(app, /document\.addEventListener\("click"/);
   assert.match(app, /page-transition-panel-top/);

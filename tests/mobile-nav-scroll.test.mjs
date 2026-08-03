@@ -58,7 +58,7 @@ test("mobile navigation connects scroll state without shrinking its touch target
   assert.match(appSource, /import \{ advanceMobileNavScrollState \} from "\.\/mobileNavScroll\.js"/);
   assert.match(mobileNavSource, /advanceMobileNavScrollState\(/);
   assert.match(mobileNavSource, /compact \? "compact" : ""/);
-  assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?width:\s*120px;[\s\S]*?height:\s*92px;/);
+  assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?width:\s*120px;[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
   assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-shape\s*\{[\s\S]*?scale\(0\.5\)/);
   assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-icon\s*\{[\s\S]*?scale\(0\.5\)/);
   assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-icon\s*\{[\s\S]*?bottom:\s*11px;/);
@@ -90,9 +90,22 @@ test("mobile menu switches between two localized service link groups", () => {
   assert.match(mobileNavSource, /items\.map/);
 });
 
+test("business consulting menu links to the four approved consulting sections in every locale", () => {
+  for (const id of ["systems-consulting", "digital-integration", "visual-design", "international-marketing"]) {
+    const matches = appSource.match(new RegExp(`/consulting\\.html#${id}`, "g")) || [];
+    assert.equal(matches.length, 3, `${id} must exist once per locale`);
+  }
+
+  for (const label of ["系統顧問", "數位整合", "視覺設計", "國際行銷"]) {
+    assert.match(appSource, new RegExp(`label: "${label}"`));
+  }
+});
+
 test("mobile category controls extend from both viewport edges", () => {
+  assert.match(cssSource, /\.mobile-nav\s*\{[\s\S]*?--mobile-trigger-bottom:\s*max\(18px, env\(safe-area-inset-bottom, 0px\)\);[\s\S]*?--mobile-trigger-height:\s*92px;[\s\S]*?--mobile-trigger-seam:\s*1px;/);
   assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?left:\s*0;[\s\S]*?right:\s*0;[\s\S]*?grid-template-columns:\s*1fr 1fr;/);
-  assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?bottom:\s*calc\(max\(18px, env\(safe-area-inset-bottom, 0px\)\) \+ 92px\);/);
+  assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?bottom:\s*var\(--mobile-trigger-bottom\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
+  assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?bottom:\s*calc\(var\(--mobile-trigger-bottom\) \+ var\(--mobile-trigger-height\) - var\(--mobile-trigger-seam\)\);/);
   assert.match(cssSource, /\.mobile-nav-category-button\.digital\s*\{[\s\S]*?clip-path:\s*polygon\(0 0, 92% 0, 100% 100%, 0 100%\)/);
   assert.match(cssSource, /\.mobile-nav-category-button\.growth\s*\{[\s\S]*?clip-path:\s*polygon\(8% 0, 100% 0, 100% 100%, 0 100%\)/);
 });

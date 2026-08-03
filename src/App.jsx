@@ -12,7 +12,14 @@ import {
   shouldShowMobileHomeLanguagePrompt,
 } from "./mobileLanguagePrompt.js";
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
-import { getTransitionDestination } from "./pageTransition.js";
+import {
+  INITIAL_PAGE_ENTER_DURATION,
+  PAGE_ENTER_DURATION,
+  PAGE_LEAVE_DURATION,
+  REDUCED_PAGE_TRANSITION_DURATION,
+  getPageTransitionVariant,
+  getTransitionDestination,
+} from "./pageTransition.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -72,10 +79,10 @@ const mobileMenuGroupsByLocale = {
     growth: {
       label: "商業顧問服務",
       items: [
-        { key: "brand-strategy", label: "品牌策略", href: "/about.html", position: "top" },
-        { key: "visual-design", label: "視覺設計", href: "/solutions.html", position: "left" },
-        { key: "growth-cases", label: "成長案例", href: "/case.html#case-group-brand-digital", position: "right" },
-        { key: "growth-consulting", label: "合作諮詢", href: "/contact.html", position: "bottom" },
+        { key: "systems-consulting", label: "系統顧問", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "digital-integration", label: "數位整合", href: "/consulting.html#digital-integration", position: "left" },
+        { key: "visual-design", label: "視覺設計", href: "/consulting.html#visual-design", position: "right" },
+        { key: "international-marketing", label: "國際行銷", href: "/consulting.html#international-marketing", position: "bottom" },
       ],
     },
   },
@@ -92,10 +99,10 @@ const mobileMenuGroupsByLocale = {
     growth: {
       label: "Business Consulting",
       items: [
-        { key: "brand-strategy", label: "Strategy", href: "/about.html", position: "top" },
-        { key: "visual-design", label: "Design", href: "/solutions.html", position: "left" },
-        { key: "growth-cases", label: "Growth Work", href: "/case.html#case-group-brand-digital", position: "right" },
-        { key: "growth-consulting", label: "Contact", href: "/contact.html", position: "bottom" },
+        { key: "systems-consulting", label: "Systems", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "digital-integration", label: "Integration", href: "/consulting.html#digital-integration", position: "left" },
+        { key: "visual-design", label: "Visual", href: "/consulting.html#visual-design", position: "right" },
+        { key: "international-marketing", label: "Global", href: "/consulting.html#international-marketing", position: "bottom" },
       ],
     },
   },
@@ -112,12 +119,49 @@ const mobileMenuGroupsByLocale = {
     growth: {
       label: "ビジネスコンサルティング",
       items: [
-        { key: "brand-strategy", label: "戦略", href: "/about.html", position: "top" },
-        { key: "visual-design", label: "デザイン", href: "/solutions.html", position: "left" },
-        { key: "growth-cases", label: "成長事例", href: "/case.html#case-group-brand-digital", position: "right" },
-        { key: "growth-consulting", label: "相談", href: "/contact.html", position: "bottom" },
+        { key: "systems-consulting", label: "システム", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "digital-integration", label: "デジタル統合", href: "/consulting.html#digital-integration", position: "left" },
+        { key: "visual-design", label: "ビジュアル", href: "/consulting.html#visual-design", position: "right" },
+        { key: "international-marketing", label: "海外展開", href: "/consulting.html#international-marketing", position: "bottom" },
       ],
     },
+  },
+};
+
+const consultingServicesByLocale = {
+  zh: {
+    sectionLabel: "商業顧問服務",
+    sectionMeta: "四個專業方向",
+    intro: "從真實問題出發，協助企業看清優先順序、整合資源，並把策略接到可執行的工作。",
+    labels: { situations: "適合情境", scope: "顧問範圍", deliverables: "可交付內容", execution: "可銜接服務", consult: "預約諮詢" },
+    processTitle: "顧問合作流程",
+    process: ["現況盤點", "目標確認", "策略規劃", "執行協作", "成效檢視"],
+    services: [
+      { id: "systems-consulting", shortLabel: "系統顧問", title: "系統顧問服務", summary: "把營運流程、權限與資料關係整理成能落地的系統藍圖。", situations: ["準備導入或汰換 ERP、CRM、WMS", "既有系統分散，流程與資料難以串接"], scope: ["需求與流程盤點", "功能、權限與資料架構", "導入順序與專案風險"], deliverables: ["需求分析", "系統架構圖", "導入藍圖"], execution: "可銜接客製系統開發、既有系統整合與專案協作。" },
+      { id: "digital-integration", shortLabel: "數位整合", title: "數位整合顧問", summary: "把網站、電商、會員與第三方服務整合成一致的數位流程。", situations: ["數位工具很多，但資料仍靠人工搬運", "網站、金流、物流與內部系統各自運作"], scope: ["數位服務盤點", "資料流與 API 串接", "自動化與階段建置"], deliverables: ["整合架構圖", "串接清單", "執行優先序"], execution: "可銜接網站、電商、會員、金流、物流及自動化建置。" },
+      { id: "visual-design", shortLabel: "視覺設計", title: "視覺設計顧問", summary: "讓品牌、介面與行銷素材使用同一套清楚且可延續的視覺語言。", situations: ["品牌視覺缺乏一致性", "數位介面資訊層級不清楚"], scope: ["品牌視覺檢視", "UI 與資訊層級", "設計規範與素材管理"], deliverables: ["視覺方向", "設計規範", "改善清單"], execution: "可銜接品牌識別、UI、網站視覺及行銷素材設計。" },
+      { id: "international-marketing", shortLabel: "國際行銷", title: "國際行銷顧問", summary: "依市場與決策路徑規劃海外溝通，不把國際化簡化成翻譯。", situations: ["準備進入海外市場", "已有多語內容但缺少轉換路徑"], scope: ["市場與受眾定位", "多語內容與國際 SEO", "廣告、通路與在地化"], deliverables: ["市場進入策略", "內容方向", "執行計畫"], execution: "可銜接多語網站、SEO、廣告素材與海外行銷執行。" },
+    ],
+  },
+  en: {
+    sectionLabel: "Business Consulting", sectionMeta: "Four advisory practices", intro: "We clarify priorities, connect resources, and turn strategy into executable work.",
+    labels: { situations: "Best for", scope: "Advisory scope", deliverables: "Deliverables", execution: "Execution support", consult: "Book a consultation" }, processTitle: "How we work", process: ["Current state", "Goals", "Strategy", "Execution", "Review"],
+    services: [
+      { id: "systems-consulting", shortLabel: "Systems", title: "Systems Consulting", summary: "Turn workflows, permissions, and data relationships into an implementable system blueprint.", situations: ["Planning an ERP, CRM, or WMS rollout", "Disconnected systems and manual handoffs"], scope: ["Workflow discovery", "Functional and data architecture", "Implementation sequence and risk"], deliverables: ["Requirements analysis", "Architecture map", "Adoption roadmap"], execution: "Connects to custom development, integration, and delivery support." },
+      { id: "digital-integration", shortLabel: "Integration", title: "Digital Integration Consulting", summary: "Connect websites, commerce, membership, and third-party services into one operating flow.", situations: ["Teams manually move data between tools", "Web, payment, logistics, and internal systems operate separately"], scope: ["Digital service audit", "Data flow and API integration", "Automation roadmap"], deliverables: ["Integration map", "Connection inventory", "Prioritized plan"], execution: "Connects to web, commerce, membership, payments, logistics, and automation." },
+      { id: "visual-design", shortLabel: "Visual", title: "Visual Design Consulting", summary: "Create a consistent visual language across brand, interface, and marketing materials.", situations: ["Brand applications feel inconsistent", "Digital interfaces lack visual hierarchy"], scope: ["Brand review", "UI and information hierarchy", "Design governance"], deliverables: ["Visual direction", "Design guidelines", "Improvement list"], execution: "Connects to identity, UI, web visuals, and campaign assets." },
+      { id: "international-marketing", shortLabel: "Global", title: "International Marketing Consulting", summary: "Plan overseas communication around market context and buyer decisions, not translation alone.", situations: ["Preparing to enter overseas markets", "Multilingual content exists without a conversion path"], scope: ["Market and audience position", "Multilingual content and SEO", "Ads, channels, and localization"], deliverables: ["Market-entry strategy", "Content direction", "Execution plan"], execution: "Connects to multilingual websites, SEO, advertising, and market execution." },
+    ],
+  },
+  ja: {
+    sectionLabel: "ビジネスコンサルティング", sectionMeta: "4つの専門領域", intro: "現状と優先順位を整理し、戦略を実行可能な仕事へつなげます。",
+    labels: { situations: "適した状況", scope: "支援範囲", deliverables: "成果物", execution: "実行支援", consult: "相談を予約" }, processTitle: "支援の流れ", process: ["現状整理", "目標確認", "戦略設計", "実行連携", "効果検証"],
+    services: [
+      { id: "systems-consulting", shortLabel: "システム", title: "システムコンサルティング", summary: "業務、権限、データを導入可能なシステム設計へ整理します。", situations: ["ERP・CRM・WMS の導入や刷新", "システムと業務が分断している"], scope: ["業務と要件の整理", "機能・権限・データ設計", "導入順序とリスク"], deliverables: ["要件分析", "構成図", "導入ロードマップ"], execution: "カスタム開発、既存連携、プロジェクト支援へ接続できます。" },
+      { id: "digital-integration", shortLabel: "デジタル統合", title: "デジタル統合コンサルティング", summary: "Web、EC、会員、外部サービスを一つの運用フローへ統合します。", situations: ["ツール間の手作業が多い", "決済・物流・社内システムが分断している"], scope: ["サービス棚卸し", "データと API 連携", "自動化計画"], deliverables: ["統合構成図", "連携一覧", "優先順位"], execution: "Web、EC、会員、決済、物流、自動化の構築へ接続できます。" },
+      { id: "visual-design", shortLabel: "ビジュアル", title: "ビジュアルデザインコンサルティング", summary: "ブランド、UI、販促物に一貫した視覚言語を設計します。", situations: ["ブランド表現が統一されていない", "画面の情報階層が分かりにくい"], scope: ["ブランド診断", "UI と情報階層", "デザイン運用"], deliverables: ["ビジュアル方針", "デザイン規定", "改善一覧"], execution: "ブランド、UI、Web、マーケティング素材制作へ接続できます。" },
+      { id: "international-marketing", shortLabel: "海外展開", title: "国際マーケティングコンサルティング", summary: "翻訳だけでなく、市場と購買判断に沿った海外展開を設計します。", situations: ["海外市場への進出を検討している", "多言語コンテンツに成果導線がない"], scope: ["市場・顧客定位", "多言語コンテンツと SEO", "広告・チャネル・現地化"], deliverables: ["市場参入戦略", "コンテンツ方針", "実行計画"], execution: "多言語サイト、SEO、広告、海外施策へ接続できます。" },
+    ],
   },
 };
 
@@ -476,6 +520,11 @@ const pageTitles = {
     title: "解決方案",
     lede: "網站、客製系統、品牌設計與數位行銷，從需求規劃到長期運作一次整合。",
   },
+  consulting: {
+    kicker: "Business Consulting",
+    title: "商業顧問服務",
+    lede: "從系統、數位整合、視覺設計到國際行銷，先釐清問題，再把策略接到可執行的工作。",
+  },
   faq: {
     kicker: "FAQ",
     title: "常見問題",
@@ -571,6 +620,7 @@ const localizedCopy = {
       about: { kicker: "About", title: "About Us", lede: "Since 2011, we have combined planning, design, and engineering into solutions built to last." },
       case: { kicker: "Selected Work", title: "Selected Work", lede: "We turn complex operating needs into systems teams can rely on and keep using." },
       solutions: { kicker: "Solutions", title: "Solutions", lede: "Websites, custom systems, brand design, and digital marketing - connected from planning through long-term operation." },
+      consulting: { kicker: "Business Consulting", title: "Business Consulting", lede: "Systems, digital integration, visual design, and international marketing advice connected to practical execution." },
       faq: { kicker: "FAQ", title: "FAQ", lede: "Questions clients most often ask before working with us, covering pricing, systems, design, AI, contracts, risk, and payment." },
       contact: { kicker: "Contact", title: "Contact Us", lede: "Tell us where you are, what you want to achieve, and where you are stuck. We will help clarify the direction first." },
     },
@@ -622,6 +672,7 @@ const localizedCopy = {
       about: { kicker: "About", title: "私たちについて", lede: "2011年の創業以来、企画・デザイン・開発を、長く運用できるソリューションとして提供しています。" },
       case: { kicker: "Selected Work", title: "実績紹介", lede: "複雑な業務要件を整理し、現場で長く使える仕組みへ。" },
       solutions: { kicker: "Solutions", title: "ソリューション", lede: "Webサイト、業務システム、ブランドデザイン、デジタルマーケティングを企画から長期運用まで一貫して支援します。" },
+      consulting: { kicker: "Business Consulting", title: "ビジネスコンサルティング", lede: "システム、デジタル統合、ビジュアル、国際マーケティングを実行可能な計画へ整理します。" },
       faq: { kicker: "FAQ", title: "よくある質問", lede: "価格、システム、機能、設計、AI、契約、リスク、支払いなど、相談前によくある質問をまとめました。" },
       contact: { kicker: "Contact", title: "お問い合わせ", lede: "現状、目標、課題をお聞かせください。まず方向性の整理からお手伝いします。" },
     },
@@ -1043,15 +1094,24 @@ function Hero({ copy }) {
 
 function PageTransition() {
   const [phase, setPhase] = useState("entering");
+  const [variant, setVariant] = useState(() => getPageTransitionVariant(window.location.pathname));
   const leavingRef = useRef(false);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const enterDuration = reducedMotion ? 120 : 400;
-    const leaveDuration = reducedMotion ? 120 : 500;
+    const isHomepage = window.location.pathname === "/" || window.location.pathname.endsWith("/index.html");
+    const enterDuration = reducedMotion
+      ? REDUCED_PAGE_TRANSITION_DURATION
+      : isHomepage ? INITIAL_PAGE_ENTER_DURATION : PAGE_ENTER_DURATION;
+    const leaveDuration = reducedMotion ? REDUCED_PAGE_TRANSITION_DURATION : PAGE_LEAVE_DURATION;
     const enteredTimer = window.setTimeout(() => {
       setPhase("idle");
       window.dispatchEvent(new CustomEvent("estiginto:page-entered"));
+      window.requestAnimationFrame(() => {
+        const hashId = decodeURIComponent(window.location.hash.slice(1));
+        const hashTarget = hashId ? document.getElementById(hashId) : null;
+        hashTarget?.scrollIntoView({ block: "start" });
+      });
     }, enterDuration);
 
     const onClick = (event) => {
@@ -1065,6 +1125,7 @@ function PageTransition() {
 
       event.preventDefault();
       leavingRef.current = true;
+      setVariant(getPageTransitionVariant(new URL(destination).pathname));
       setPhase("leaving");
       window.setTimeout(() => {
         window.location.href = destination;
@@ -1079,7 +1140,15 @@ function PageTransition() {
   }, []);
 
   return (
-    <div className={`page-transition is-${phase}`} aria-hidden="true">
+    <div className={`page-transition transition-${variant} is-${phase}`} data-variant={variant} aria-hidden="true">
+      <span className="page-transition-grille">
+        {Array.from({ length: 7 }, (_, index) => <i key={`grille-${index}`} />)}
+      </span>
+      <span className="page-transition-matrix">
+        {Array.from({ length: 12 }, (_, index) => <i key={`matrix-${index}`} />)}
+      </span>
+      <span className="page-transition-aperture"><i /></span>
+      <span className="page-transition-axis"><i /><i /></span>
       <span className="page-transition-panel-top" />
       <span className="page-transition-panel-bottom" />
       <span className="page-transition-scan" />
@@ -1254,6 +1323,62 @@ function ApplicationScenarioTeaser() {
             <span className="arrow" aria-hidden="true" />
           </a>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function ConsultingServices({ copy }) {
+  const content = consultingServicesByLocale[copy.locale] || consultingServicesByLocale.zh;
+
+  return (
+    <section className="section consulting-services reveal" aria-label={content.sectionLabel}>
+      <div className="wrap">
+        <SectionEyebrow index="§ Consulting" label={content.sectionLabel} meta={content.sectionMeta} />
+        <p className="consulting-intro">{content.intro}</p>
+        <nav className="consulting-nav" aria-label={content.sectionLabel}>
+          {content.services.map((service, index) => (
+            <a href={`#${service.id}`} key={service.id}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              {service.shortLabel}
+            </a>
+          ))}
+        </nav>
+        <div className="consulting-service-list">
+          {content.services.map((service, index) => (
+            <article className="consulting-service" id={service.id} key={service.id}>
+              <header>
+                <span className="consulting-service-number">{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <h2>{service.title}</h2>
+                  <p>{service.summary}</p>
+                </div>
+              </header>
+              <div className="consulting-service-grid">
+                <section>
+                  <h3>{content.labels.situations}</h3>
+                  <ul>{service.situations.map((item) => <li key={item}>{item}</li>)}</ul>
+                </section>
+                <section>
+                  <h3>{content.labels.scope}</h3>
+                  <ul>{service.scope.map((item) => <li key={item}>{item}</li>)}</ul>
+                </section>
+                <section className="consulting-deliverables">
+                  <h3>{content.labels.deliverables}</h3>
+                  <ul>{service.deliverables.map((item) => <li key={item}>{item}</li>)}</ul>
+                </section>
+              </div>
+              <div className="consulting-execution">
+                <div><strong>{content.labels.execution}</strong><p>{service.execution}</p></div>
+                <a className="btn" href="/contact.html"><span>{content.labels.consult}</span><span className="arrow" aria-hidden="true" /></a>
+              </div>
+            </article>
+          ))}
+        </div>
+        <section className="consulting-process" aria-labelledby="consulting-process-title">
+          <h2 id="consulting-process-title">{content.processTitle}</h2>
+          <ol>{content.process.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, "0")}</span>{step}</li>)}</ol>
+        </section>
       </div>
     </section>
   );
@@ -2264,6 +2389,7 @@ export default function App() {
               </>
             ) : null}
             {initialSection === "solutions" ? <Solutions copy={copy} /> : null}
+            {initialSection === "consulting" ? <><ConsultingServices copy={copy} /><Contact copy={copy} /></> : null}
             {isFAQPage ? <FAQ copy={copy} /> : null}
             {initialSection === "contact" ? <Contact copy={copy} /> : null}
           </>

@@ -16,6 +16,7 @@ export default defineConfig({
         about: htmlEntry("./about.html"),
         case: htmlEntry("./case.html"),
         contact: htmlEntry("./contact.html"),
+        consulting: htmlEntry("./consulting.html"),
         faq: htmlEntry("./faq.html"),
         solutions: htmlEntry("./solutions.html"),
       },

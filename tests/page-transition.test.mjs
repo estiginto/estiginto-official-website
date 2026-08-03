@@ -1,7 +1,14 @@
-import test from "node:test";
 import assert from "node:assert/strict";
+import test from "node:test";
 
-import { getTransitionDestination } from "../src/pageTransition.js";
+import {
+  INITIAL_PAGE_ENTER_DURATION,
+  PAGE_ENTER_DURATION,
+  PAGE_LEAVE_DURATION,
+  REDUCED_PAGE_TRANSITION_DURATION,
+  getPageTransitionVariant,
+  getTransitionDestination,
+} from "../src/pageTransition.js";
 
 const currentUrl = "https://estiginto.com/case.html";
 
@@ -25,6 +32,35 @@ function click(overrides = {}) {
     ...overrides,
   };
 }
+
+test("page transitions use deliberate premium timings", () => {
+  assert.equal(INITIAL_PAGE_ENTER_DURATION, 1250);
+  assert.equal(PAGE_ENTER_DURATION, 1050);
+  assert.equal(PAGE_LEAVE_DURATION, 760);
+  assert.equal(REDUCED_PAGE_TRANSITION_DURATION, 120);
+});
+
+test("routes deterministically select varied geometric transitions", () => {
+  const routes = new Map([
+    ["/", "grille"],
+    ["/index.html", "grille"],
+    ["/solutions.html", "matrix"],
+    ["/consulting.html", "matrix"],
+    ["/case.html", "aperture"],
+    ["/about.html", "axis"],
+    ["/faq.html", "axis"],
+    ["/contact.html", "axis"],
+  ]);
+
+  for (const [pathname, expected] of routes) {
+    assert.equal(getPageTransitionVariant(pathname), expected);
+    assert.equal(getPageTransitionVariant(pathname), expected);
+  }
+});
+
+test("unknown routes use the restrained axis transition", () => {
+  assert.equal(getPageTransitionVariant("/unknown.html"), "axis");
+});
 
 test("returns an absolute destination for a same-origin page link", () => {
   assert.equal(

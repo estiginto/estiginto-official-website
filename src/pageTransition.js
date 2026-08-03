@@ -1,3 +1,17 @@
+export const INITIAL_PAGE_ENTER_DURATION = 1250;
+export const PAGE_ENTER_DURATION = 1050;
+export const PAGE_LEAVE_DURATION = 760;
+export const REDUCED_PAGE_TRANSITION_DURATION = 120;
+
+export function getPageTransitionVariant(pathname = "/") {
+  const normalizedPath = pathname.toLowerCase();
+
+  if (normalizedPath === "/" || normalizedPath.endsWith("/index.html")) return "grille";
+  if (normalizedPath.endsWith("/solutions.html") || normalizedPath.endsWith("/consulting.html")) return "matrix";
+  if (normalizedPath.endsWith("/case.html")) return "aperture";
+  return "axis";
+}
+
 export function getTransitionDestination({ anchor, event, currentUrl }) {
   if (
     !anchor
