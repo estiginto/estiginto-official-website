@@ -3220,18 +3220,38 @@ ul, ol  { margin: 0; }
     top: 0;
     bottom: 0;
     min-width: 0;
-    border: 1px solid rgba(10, 31, 68, 0.16);
-    background: rgba(255, 255, 255, 0.92);
-    color: #0a1f44;
+    border: 1px solid rgba(159, 128, 77, 0.28);
+    background: rgba(238, 232, 220, 0.96);
+    color: #171817;
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: clamp(0.68rem, 2.8vw, 0.76rem);
     font-weight: 700;
-    letter-spacing: 0.08em;
+    line-height: 1.2;
+    letter-spacing: 0.06em;
     cursor: pointer;
     opacity: 0;
     pointer-events: auto;
     -webkit-tap-highlight-color: transparent;
     transition: transform 520ms var(--ease-soft), opacity 320ms ease, background 220ms ease, color 220ms ease;
+  }
+  .mobile-nav-category-button span {
+    position: relative;
+    z-index: 1;
+    display: block;
+    max-width: 100%;
+  }
+  html:lang(zh-Hant) .mobile-nav-category-button span {
+    white-space: nowrap;
+  }
+  html:lang(en) .mobile-nav-category-button span,
+  html:lang(ja) .mobile-nav-category-button span {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    white-space: normal;
+    text-wrap: balance;
+    letter-spacing: 0.02em;
   }
   .mobile-nav-category-button.digital {
     left: 0;
@@ -3253,9 +3273,9 @@ ul, ol  { margin: 0; }
     transition-delay: 160ms;
   }
   .mobile-nav-category-button[aria-pressed="true"] {
-    border-color: var(--signal);
-    background: var(--signal);
-    color: #ffffff;
+    border-color: #9f804d;
+    background: #b89a62;
+    color: #171817;
   }
   .mobile-nav-category-button:focus-visible {
     outline: 2px solid #ffffff;
@@ -3277,6 +3297,9 @@ ul, ol  { margin: 0; }
     width: 50px;
     height: 50px;
   }
+  .mobile-nav .menu-font-button::before {
+    border-radius: 5px;
+  }
   .mobile-nav-diamond::before {
     content: "";
     position: absolute;
@@ -3287,6 +3310,7 @@ ul, ol  { margin: 0; }
     box-shadow:
       0 24px 60px -30px rgba(10, 31, 68, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.78);
+    border-radius: 10px;
   }
   .mobile-nav-diamond-core {
     position: absolute;
@@ -3343,6 +3367,7 @@ ul, ol  { margin: 0; }
     inset: 0;
     background: rgba(255, 255, 255, 0.9);
     border: 1px solid rgba(10, 31, 68, 0.12);
+    border-radius: 6px;
     transform: rotate(45deg);
     transition: background 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
   }
@@ -3399,6 +3424,7 @@ ul, ol  { margin: 0; }
   .mobile-nav-link.center::before {
     background: #ffffff; /* solid white */
     border-color: var(--signal);
+    border-radius: 5px;
     box-shadow: 0 12px 34px -14px rgba(59,130,246,0.12), inset 0 1px 0 rgba(0,0,0,0.02);
     transform: rotate(45deg);
     opacity: 1;

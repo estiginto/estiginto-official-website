@@ -109,6 +109,25 @@ test("mobile category controls extend from both viewport edges", () => {
   assert.match(cssSource, /\.mobile-nav-category-button\.growth\s*\{[\s\S]*?right:\s*0;[\s\S]*?width:\s*calc\(50% \+ var\(--mobile-trigger-seam\)\);[\s\S]*?clip-path:\s*polygon\(0 0, 100% 0, 100% 100%, 60px 100%\)/);
 });
 
+test("mobile menu uses the approved warm category palette and rounded diamonds", () => {
+  const selectedCategory = cssSource.match(/\.mobile-nav-category-button\[aria-pressed="true"\]\s*\{[\s\S]*?\}/)?.[0] || "";
+
+  assert.match(selectedCategory, /border-color:\s*#9f804d;/);
+  assert.match(selectedCategory, /background:\s*#b89a62;/);
+  assert.match(selectedCategory, /color:\s*#171817;/);
+  assert.doesNotMatch(selectedCategory, /var\(--signal\)|#3b82f6/);
+  assert.match(cssSource, /\.mobile-nav-diamond::before\s*\{[\s\S]*?border-radius:\s*10px;/);
+  assert.match(cssSource, /\.mobile-nav-link::before\s*\{[\s\S]*?border-radius:\s*6px;/);
+  assert.match(cssSource, /\.mobile-nav-link\.center::before\s*\{[\s\S]*?border-radius:\s*5px;/);
+  assert.match(cssSource, /\.mobile-nav \.menu-font-button::before\s*\{[\s\S]*?border-radius:\s*5px;/);
+});
+
+test("mobile category labels adapt safely across supported locales", () => {
+  assert.match(cssSource, /\.mobile-nav-category-button span\s*\{[\s\S]*?max-width:\s*100%;/);
+  assert.match(cssSource, /html:lang\(zh-Hant\) \.mobile-nav-category-button span\s*\{[\s\S]*?white-space:\s*nowrap;/);
+  assert.match(cssSource, /html:lang\(en\) \.mobile-nav-category-button span,[\s\S]*?html:lang\(ja\) \.mobile-nav-category-button span\s*\{[\s\S]*?-webkit-line-clamp:\s*2;[\s\S]*?letter-spacing:\s*0\.02em;/);
+});
+
 test("short mobile viewports separate the diamond, font controls, categories, and trigger", () => {
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)\s*\{[\s\S]*?\.mobile-nav-diamond\s*\{[\s\S]*?top:\s*43%;/);
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav \.menu-font-controls\s*\{[\s\S]*?top:\s*calc\(43% \+ min\(44vw, 178px\)\);/);
