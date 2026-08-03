@@ -116,3 +116,42 @@ At 320×667 and 390×844, open the menu and verify: both category buttons and tr
 - [ ] **Step 3: Commit and push**
 
 Stage only the CSS, tests, and this plan/spec work. Commit with `fix: refine transition palette and mobile category rail`, push `master`, then verify the new production asset and formal page behavior.
+
+### Task 5: Refine category color, localized labels, and diamond corners
+
+**Files:**
+- Modify: `src/App.css`
+- Modify: `src/App.jsx` only if a locale needs a shorter mobile-only category label.
+- Modify: `tests/mobile-nav-scroll.test.mjs`
+
+**Interfaces:**
+- Consumes: `.mobile-nav-category-button[aria-pressed="true"]`, `.mobile-nav-diamond::before`, `.mobile-nav-link::before`, `.mobile-nav-link.center::before`, and `.menu-font-button::before`.
+- Produces: the approved champagne selected state, locale-aware category typography, and the 10/6/5 px rounded-diamond hierarchy.
+
+- [ ] **Step 1: Write failing source contracts**
+
+Assert that the selected category uses `#b89a62` with `#171817` text and does not consume `var(--signal)`. Assert outer/item/center/font-control radii of 10/6/5/5 px. Assert category labels use a Chinese single-line rule plus English and Japanese two-line locale rules.
+
+- [ ] **Step 2: Run the focused test and confirm RED**
+
+Run: `node --test tests/mobile-nav-scroll.test.mjs`
+
+Expected: failures identify the existing blue selected state, absent diamond radii, and absent locale-specific label constraints.
+
+- [ ] **Step 3: Implement the minimal CSS and localized copy adjustment**
+
+Use champagne `#b89a62`, graphite `#171817`, warm ivory for the inactive state, and border radii applied before each square rotation. Set the Chinese category label to a restrained single line; allow English and Japanese up to two balanced lines with smaller tracking. If Japanese text cannot fit at 320 px after CSS sizing, use concise mobile labels `デジタル支援` and `ビジネス顧問` while retaining the full consulting page names elsewhere.
+
+- [ ] **Step 4: Verify focused tests GREEN**
+
+Run: `node --test tests/mobile-nav-scroll.test.mjs`
+
+Expected: all mobile navigation tests pass.
+
+- [ ] **Step 5: Run multilingual responsive QA**
+
+At 320×667 and 390×844, select zh, en, and ja in turn. Verify category labels remain inside the visible side-button areas, use no more than two lines, do not overlap the triangle, and every diamond has the approved restrained rounding.
+
+- [ ] **Step 6: Run full verification and publish**
+
+Run `npm.cmd run check`, stage only the intended implementation and tests, commit with `fix: polish multilingual mobile menu styling`, push `master`, and verify the formal CSS asset and rendered states.
