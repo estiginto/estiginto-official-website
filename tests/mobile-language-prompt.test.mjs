@@ -68,7 +68,7 @@ test("only explicit language selection writes and refreshes the language cookie"
   assert.match(appSource, /const languageCookie = serializeLanguageCookie/);
   assert.match(appSource, /document\.cookie = languageCookie/);
   assert.match(appSource, /onToggleLocale=\{selectLocale\}/);
-  assert.match(appSource, /onSelect=\{selectLocale\}/);
+  assert.match(appSource, /onSelect=\{commitLocale\}/);
 
   const localeEffect = appSource.match(
     /useEffect\(\(\) => \{\s*document\.documentElement\.lang[\s\S]*?\}, \[locale\]\);/,

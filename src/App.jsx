@@ -13,6 +13,11 @@ import {
 } from "./mobileLanguagePrompt.js";
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
 import {
+  LANGUAGE_TRANSITION_DURATION,
+  LANGUAGE_TRANSITION_SWAP_DELAY,
+  shouldAnimateLanguageChange,
+} from "./languageTransition.js";
+import {
   INITIAL_PAGE_ENTER_DURATION,
   PAGE_ENTER_DURATION,
   PAGE_LEAVE_DURATION,
@@ -68,7 +73,7 @@ const menuTargets = [
 const mobileMenuGroupsByLocale = {
   zh: {
     digital: {
-      label: "數位解決方案",
+      label: "解決方案",
       items: [
         { key: "system-planning", label: "系統規劃", href: "/solutions.html", position: "top" },
         { key: "custom-development", label: "客製開發", href: "/solutions.html", position: "left" },
@@ -77,7 +82,7 @@ const mobileMenuGroupsByLocale = {
       ],
     },
     growth: {
-      label: "商業顧問服務",
+      label: "顧問服務",
       items: [
         { key: "systems-consulting", label: "系統顧問", href: "/consulting.html#systems-consulting", position: "top" },
         { key: "digital-integration", label: "數位整合", href: "/consulting.html#digital-integration", position: "left" },
@@ -88,7 +93,7 @@ const mobileMenuGroupsByLocale = {
   },
   en: {
     digital: {
-      label: "Digital Solutions",
+      label: "Solutions",
       items: [
         { key: "system-planning", label: "Planning", href: "/solutions.html", position: "top" },
         { key: "custom-development", label: "Custom Dev", href: "/solutions.html", position: "left" },
@@ -97,7 +102,7 @@ const mobileMenuGroupsByLocale = {
       ],
     },
     growth: {
-      label: "Business Consulting",
+      label: "Consulting",
       items: [
         { key: "systems-consulting", label: "Systems", href: "/consulting.html#systems-consulting", position: "top" },
         { key: "digital-integration", label: "Integration", href: "/consulting.html#digital-integration", position: "left" },
@@ -108,7 +113,7 @@ const mobileMenuGroupsByLocale = {
   },
   ja: {
     digital: {
-      label: "デジタルソリューション",
+      label: "ソリューション",
       items: [
         { key: "system-planning", label: "システム設計", href: "/solutions.html", position: "top" },
         { key: "custom-development", label: "開発", href: "/solutions.html", position: "left" },
@@ -117,7 +122,7 @@ const mobileMenuGroupsByLocale = {
       ],
     },
     growth: {
-      label: "ビジネスコンサルティング",
+      label: "コンサルティング",
       items: [
         { key: "systems-consulting", label: "システム", href: "/consulting.html#systems-consulting", position: "top" },
         { key: "digital-integration", label: "デジタル統合", href: "/consulting.html#digital-integration", position: "left" },
@@ -1845,7 +1850,6 @@ function Footer({ copy }) {
             <a href="tel:+886224315362">+886 2 2431 5362</a>
             <a href="tel:+886972118427">+886 972 118 427</a>
             <a href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">{footer.line}</a>
-            <a href="https://www.facebook.com/Estiginto/" target="_blank" rel="noopener noreferrer">Facebook</a>
           </div>
         </div>
         <div className="footer-bottom">
@@ -1993,10 +1997,13 @@ function MobileNav({ locale, fontControls }) {
                 key={item.key}
                 className={`mobile-nav-link ${item.position} ${selectingKey === item.key ? "is-selecting" : ""}`.trim()}
                 href={item.href}
+                aria-label={item.position === "center" ? item.label : undefined}
                 style={{ "--menu-item-index": index }}
                 onClick={() => setSelectingKey(item.key)}
               >
-                <span>{item.label}</span>
+                {item.position === "center" ? (
+                  <span className="mobile-nav-home-icon" aria-hidden="true"><i /></span>
+                ) : <span>{item.label}</span>}
               </a>
             ))}
           </div>
@@ -2224,6 +2231,9 @@ export default function App() {
     const cookieLocale = readLanguageCookie(document.cookie);
     return getInitialLocale(savedLocale, window.navigator.language, cookieLocale);
   });
+  const [languageTransitionPhase, setLanguageTransitionPhase] = useState("idle");
+  const languageTransitionBusyRef = useRef(false);
+  const languageTransitionTimersRef = useRef([]);
   const [fontScale, setFontScale] = useState(() => {
     if (typeof window === "undefined") {
       return 100;
@@ -2282,17 +2292,55 @@ export default function App() {
     },
   };
 
-  const selectLocale = (nextLocale) => {
+  const commitLocale = (nextLocale) => {
     const languageCookie = serializeLanguageCookie(
       nextLocale,
       window.location.protocol === "https:",
     );
-    if (!languageCookie) return;
+    if (!languageCookie) return false;
 
     setLocale(nextLocale);
     window.localStorage.setItem("estiginto-locale", nextLocale);
     document.cookie = languageCookie;
+    return true;
   };
+
+  const selectLocale = (nextLocale) => {
+    if (nextLocale === locale || languageTransitionBusyRef.current) return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const shouldAnimate = shouldAnimateLanguageChange({
+      currentLocale: locale,
+      nextLocale,
+      busy: languageTransitionBusyRef.current,
+      reducedMotion,
+    });
+
+    if (!shouldAnimate) {
+      commitLocale(nextLocale);
+      return;
+    }
+
+    languageTransitionBusyRef.current = true;
+    setLanguageTransitionPhase("covering");
+
+    const swapTimer = window.setTimeout(() => {
+      commitLocale(nextLocale);
+      setLanguageTransitionPhase("revealing");
+    }, LANGUAGE_TRANSITION_SWAP_DELAY);
+    const completionTimer = window.setTimeout(() => {
+      languageTransitionBusyRef.current = false;
+      setLanguageTransitionPhase("idle");
+      languageTransitionTimersRef.current = [];
+    }, LANGUAGE_TRANSITION_DURATION);
+
+    languageTransitionTimersRef.current = [swapTimer, completionTimer];
+  };
+
+  useEffect(() => () => {
+    languageTransitionTimersRef.current.forEach((timer) => window.clearTimeout(timer));
+    languageTransitionBusyRef.current = false;
+  }, []);
 
   useEffect(() => {
     document.documentElement.lang = locale === "en" ? "en" : locale === "ja" ? "ja" : "zh-Hant";
@@ -2357,22 +2405,23 @@ export default function App() {
   return (
     <>
       <PageTransition />
-      <Header
-        locale={locale}
-        onToggleLocale={selectLocale}
-        languageSwitchRef={headerLanguageSwitchRef}
-        promptActive={showLanguagePrompt}
-      />
-      {showLanguagePrompt ? (
-        <MobileHomeLanguagePrompt
+      <div className={`site-shell ${languageTransitionPhase === "idle" ? "" : `language-transition-active language-transition-${languageTransitionPhase}`}`.trim()}>
+        <Header
           locale={locale}
-          onSelect={selectLocale}
-          destinationRef={headerLanguageSwitchRef}
-          onComplete={() => setShowLanguagePrompt(false)}
+          onToggleLocale={selectLocale}
+          languageSwitchRef={headerLanguageSwitchRef}
+          promptActive={showLanguagePrompt}
         />
-      ) : null}
-      {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
-      <main className="page-main" id="mainpage">
+        {showLanguagePrompt ? (
+          <MobileHomeLanguagePrompt
+            locale={locale}
+            onSelect={commitLocale}
+            destinationRef={headerLanguageSwitchRef}
+            onComplete={() => setShowLanguagePrompt(false)}
+          />
+        ) : null}
+        {shouldUseMobileNav ? <MobileNav locale={locale} fontControls={fontControls} /> : <DesktopCursorMenu locale={locale} fontControls={fontControls} />}
+        <main className="page-main" id="mainpage">
         {isStandalonePage ? (
           <>
             <PageTitle page={pageTitle} />
@@ -2408,9 +2457,13 @@ export default function App() {
             <Contact copy={copy} />
           </>
         )}
-      </main>
-      {isFAQPage ? null : <Footer copy={copy} />}
-      <GoToTop />
+        </main>
+        {isFAQPage ? null : <Footer copy={copy} />}
+        <GoToTop />
+      </div>
+      <div className={`language-transition language-transition-${languageTransitionPhase}`} aria-hidden="true">
+        <span className="language-transition-scan" aria-hidden="true" />
+      </div>
     </>
   );
 }

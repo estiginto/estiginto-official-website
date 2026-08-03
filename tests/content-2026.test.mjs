@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import test from "node:test";
+
+const appSource = readFileSync(resolve(import.meta.dirname, "../src/App.jsx"), "utf8");
 
 const expectedCaseIds = [
   "senior-care-iot",
@@ -142,4 +146,9 @@ test("2026 public content excludes unsupported global proof claims", async () =>
   assert.match(serialized, /325/);
   assert.match(serialized, /2011/);
   assert.match(serialized, /12/);
+});
+
+test("shared footer keeps LINE and removes Facebook", () => {
+  assert.match(appSource, /https:\/\/lin\.ee\/vFdwfVg/);
+  assert.doesNotMatch(appSource, /facebook\.com|>Facebook</i);
 });

@@ -80,8 +80,12 @@ test("mobile menu switches between two localized service link groups", () => {
   const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
 
   assert.match(appSource, /const mobileMenuGroupsByLocale\s*=\s*\{/);
-  assert.match(appSource, /digital:\s*\{[\s\S]*?label:\s*"數位解決方案"/);
-  assert.match(appSource, /growth:\s*\{[\s\S]*?label:\s*"商業顧問服務"/);
+  assert.match(appSource, /digital:\s*\{[\s\S]*?label:\s*"解決方案"/);
+  assert.match(appSource, /growth:\s*\{[\s\S]*?label:\s*"顧問服務"/);
+  assert.match(appSource, /digital:\s*\{[\s\S]*?label:\s*"Solutions"/);
+  assert.match(appSource, /growth:\s*\{[\s\S]*?label:\s*"Consulting"/);
+  assert.match(appSource, /digital:\s*\{[\s\S]*?label:\s*"ソリューション"/);
+  assert.match(appSource, /growth:\s*\{[\s\S]*?label:\s*"コンサルティング"/);
   assert.match(mobileNavSource, /useState\("digital"\)/);
   assert.match(mobileNavSource, /className="mobile-nav-category-switch"/);
   assert.match(mobileNavSource, /aria-pressed=\{activeGroup === groupKey\}/);
@@ -112,8 +116,8 @@ test("mobile category controls extend from both viewport edges", () => {
 test("mobile menu uses the approved warm category palette and rounded diamonds", () => {
   const selectedCategory = cssSource.match(/\.mobile-nav-category-button\[aria-pressed="true"\]\s*\{[\s\S]*?\}/)?.[0] || "";
 
-  assert.match(selectedCategory, /border-color:\s*#9f804d;/);
-  assert.match(selectedCategory, /background:\s*#b89a62;/);
+  assert.match(selectedCategory, /border-color:\s*#b7a98f;/);
+  assert.match(selectedCategory, /background:\s*#d8d0c2;/);
   assert.match(selectedCategory, /color:\s*#171817;/);
   assert.doesNotMatch(selectedCategory, /var\(--signal\)|#3b82f6/);
   assert.match(cssSource, /\.mobile-nav-diamond::before\s*\{[\s\S]*?border-radius:\s*10px;/);
@@ -123,6 +127,8 @@ test("mobile menu uses the approved warm category palette and rounded diamonds",
 });
 
 test("mobile category labels adapt safely across supported locales", () => {
+  assert.match(cssSource, /\.mobile-nav-category-button\s*\{[\s\S]*?font-size:\s*clamp\(1\.1rem, 5vw, 1\.25rem\);/);
+  assert.match(cssSource, /html:lang\(en\) \.mobile-nav-category-button\s*\{[\s\S]*?font-family:\s*var\(--font-body\);[\s\S]*?font-size:\s*clamp\(0\.95rem, 4vw, 1rem\);[\s\S]*?letter-spacing:\s*0\.02em;/);
   assert.match(cssSource, /\.mobile-nav-category-button span\s*\{[\s\S]*?max-width:\s*100%;/);
   assert.match(cssSource, /html:lang\(zh-Hant\) \.mobile-nav-category-button span\s*\{[\s\S]*?white-space:\s*nowrap;/);
   assert.match(cssSource, /html:lang\(en\) \.mobile-nav-category-button span,[\s\S]*?html:lang\(ja\) \.mobile-nav-category-button span\s*\{[\s\S]*?-webkit-line-clamp:\s*2;[\s\S]*?letter-spacing:\s*0\.02em;/);
@@ -163,6 +169,16 @@ test("mobile home link uses a balanced footprint that clears adjacent labels", (
     cssSource,
     /\.mobile-nav-link\.center\s*\{[\s\S]*?width:\s*21%;[\s\S]*?height:\s*21%;/,
   );
+});
+
+test("mobile home uses a compact visual icon without shrinking its touch target", () => {
+  const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
+
+  assert.match(mobileNavSource, /aria-label=\{item\.position === "center" \? item\.label : undefined\}/);
+  assert.match(mobileNavSource, /className="mobile-nav-home-icon" aria-hidden="true"/);
+  assert.match(cssSource, /\.mobile-nav-link\.center\s*\{[\s\S]*?width:\s*21%;[\s\S]*?height:\s*21%;/);
+  assert.match(cssSource, /\.mobile-nav-link\.center::before\s*\{[\s\S]*?inset:\s*17\.5%;/);
+  assert.match(cssSource, /\.mobile-nav-home-icon\s*\{[\s\S]*?width:\s*18px;[\s\S]*?height:\s*16px;/);
 });
 
 test("mobile go-to-top arrow shares the menu trigger bottom edge", () => {
