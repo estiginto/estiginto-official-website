@@ -21,6 +21,12 @@ Refine the two mobile-menu category controls and add a dedicated transition when
 - Preserve the current home URL, center alignment, selection animation, keyboard behavior, and practical touch target. Only the visible diamond shrinks; the interactive hit area remains accessible.
 - Keep the localized home label as an accessible name for screen readers while hiding it visually.
 
+## Footer social links
+
+- Remove the public Facebook link from the shared site footer on every page.
+- Preserve LINE, email, telephone, and all other footer navigation and contact details.
+- This change only removes the website link; it does not perform any action against the external Facebook account.
+
 ## Language-change transition
 
 - Run a dedicated transition only when an explicit language option changes the locale.
@@ -45,6 +51,7 @@ Refine the two mobile-menu category controls and add a dedicated transition when
 - Add regression tests for the new localized labels, responsive font sizing, two-line English/Japanese rule, and softened selected palette.
 - Add behavioral tests for active-locale no-op, midpoint locale update, overlap prevention, and reduced-motion behavior where the current test architecture supports it.
 - Add regression coverage for the icon-only home presentation, smaller visible center diamond, preserved home link, and preserved accessible name.
+- Add regression coverage confirming the shared footer no longer renders a Facebook URL or label while the LINE link remains available.
 - Run the complete test/build/dist verification command.
 - Use the in-app Browser at 320px and 390px to exercise opening the mobile menu, switching both category groups, and changing Traditional Chinese to English and Japanese. Check DOM state, console health, screenshots, wrapping, clipping, and layout stability.
 
