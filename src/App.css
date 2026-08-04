@@ -1722,6 +1722,12 @@ ul, ol  { margin: 0; }
 .hero-tech-axis { opacity: 0.18; }
 .hero-tech-ring { opacity: 0.32; transform-box: view-box; transform-origin: 75.83% 47.78%; }
 .hero-tech-ring-dashed { stroke-dasharray: 3 12; opacity: 0.7; }
+.hero-tech-calibration { opacity: 0.46; animation: hero-calibration-breathe 12s ease-in-out infinite; }
+.hero-tech-calibration-minor { stroke-width: 0.7 !important; stroke-dasharray: 1 9; opacity: 0.72; }
+.hero-tech-calibration-inner { stroke-dasharray: 1 7; opacity: 0.38; }
+.hero-tech-calibration-major { stroke-width: 1.2 !important; opacity: 0.78; }
+.hero-tech-calibration-arc { stroke: #397fc7 !important; stroke-width: 1.2 !important; stroke-dasharray: 16 9; opacity: 0.58; animation: hero-calibration-sweep 18s linear infinite; }
+.hero-tech-calibration-label { fill: currentColor !important; font-size: 8px !important; letter-spacing: 0.16em !important; opacity: 0.62; }
 .hero-tech-reticle { opacity: 0.46; }
 .hero-tech-markers { opacity: 0.4; }
 .hero-tech-glitch { opacity: 0.22; }
@@ -1766,6 +1772,15 @@ ul, ol  { margin: 0; }
 @keyframes hero-marker-drift {
   from { transform: translateY(-4px); }
   to { transform: translateY(8px); }
+}
+
+@keyframes hero-calibration-breathe {
+  0%, 100% { opacity: 0.36; }
+  48%, 58% { opacity: 0.62; }
+}
+
+@keyframes hero-calibration-sweep {
+  to { stroke-dashoffset: -160; }
 }
 
 @keyframes hero-tech-scan {
