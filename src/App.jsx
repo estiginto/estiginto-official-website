@@ -12,6 +12,7 @@ import {
   shouldShowMobileHomeLanguagePrompt,
 } from "./mobileLanguagePrompt.js";
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
+import { getServiceMenuGroups } from "./navigationMenu.js";
 import {
   LANGUAGE_TRANSITION_DURATION,
   LANGUAGE_TRANSITION_SWAP_DELAY,
@@ -45,6 +46,7 @@ const menuLabels = {
     solutions: "解決方案",
     case: "參考案例",
     contact: "聯繫我們",
+    servicesMenu: "服務導覽",
   },
   en: {
     home: "Home",
@@ -52,6 +54,7 @@ const menuLabels = {
     solutions: "Solutions",
     case: "Case Studies",
     contact: "Contact",
+    servicesMenu: "Service navigation",
   },
   ja: {
     home: "ホーム",
@@ -59,77 +62,7 @@ const menuLabels = {
     solutions: "ソリューション",
     case: "事例紹介",
     contact: "お問い合わせ",
-  },
-};
-
-const menuTargets = [
-  { key: "home", href: "/", section: "home", position: "center" },
-  { key: "about", href: "/about.html", section: "about", position: "top" },
-  { key: "solutions", href: "/solutions.html", section: "solutions", position: "left" },
-  { key: "case", href: "/case.html", section: "case", position: "right" },
-  { key: "contact", href: "/contact.html", section: "contact", position: "bottom" },
-];
-
-const mobileMenuGroupsByLocale = {
-  zh: {
-    digital: {
-      label: "解決方案",
-      items: [
-        { key: "system-planning", label: "系統規劃", href: "/solutions.html", position: "top" },
-        { key: "custom-development", label: "客製開發", href: "/solutions.html", position: "left" },
-        { key: "system-cases", label: "系統案例", href: "/case.html#case-group-operations-management", position: "right" },
-        { key: "project-consulting", label: "專案諮詢", href: "/contact.html", position: "bottom" },
-      ],
-    },
-    growth: {
-      label: "顧問服務",
-      items: [
-        { key: "systems-consulting", label: "系統顧問", href: "/consulting.html#systems-consulting", position: "top" },
-        { key: "digital-integration", label: "數位整合", href: "/consulting.html#digital-integration", position: "left" },
-        { key: "visual-design", label: "視覺設計", href: "/consulting.html#visual-design", position: "right" },
-        { key: "international-marketing", label: "國際行銷", href: "/consulting.html#international-marketing", position: "bottom" },
-      ],
-    },
-  },
-  en: {
-    digital: {
-      label: "Solutions",
-      items: [
-        { key: "system-planning", label: "Planning", href: "/solutions.html", position: "top" },
-        { key: "custom-development", label: "Custom Dev", href: "/solutions.html", position: "left" },
-        { key: "system-cases", label: "System Work", href: "/case.html#case-group-operations-management", position: "right" },
-        { key: "project-consulting", label: "Consult", href: "/contact.html", position: "bottom" },
-      ],
-    },
-    growth: {
-      label: "Consulting",
-      items: [
-        { key: "systems-consulting", label: "Systems", href: "/consulting.html#systems-consulting", position: "top" },
-        { key: "digital-integration", label: "Integration", href: "/consulting.html#digital-integration", position: "left" },
-        { key: "visual-design", label: "Visual", href: "/consulting.html#visual-design", position: "right" },
-        { key: "international-marketing", label: "Global", href: "/consulting.html#international-marketing", position: "bottom" },
-      ],
-    },
-  },
-  ja: {
-    digital: {
-      label: "ソリューション",
-      items: [
-        { key: "system-planning", label: "システム設計", href: "/solutions.html", position: "top" },
-        { key: "custom-development", label: "開発", href: "/solutions.html", position: "left" },
-        { key: "system-cases", label: "導入事例", href: "/case.html#case-group-operations-management", position: "right" },
-        { key: "project-consulting", label: "相談", href: "/contact.html", position: "bottom" },
-      ],
-    },
-    growth: {
-      label: "コンサルティング",
-      items: [
-        { key: "systems-consulting", label: "システム", href: "/consulting.html#systems-consulting", position: "top" },
-        { key: "digital-integration", label: "デジタル統合", href: "/consulting.html#digital-integration", position: "left" },
-        { key: "visual-design", label: "ビジュアル", href: "/consulting.html#visual-design", position: "right" },
-        { key: "international-marketing", label: "海外展開", href: "/consulting.html#international-marketing", position: "bottom" },
-      ],
-    },
+    servicesMenu: "サービスナビゲーション",
   },
 };
 
@@ -791,14 +724,6 @@ function getCopy(locale) {
     };
   }
   return copy;
-}
-
-function getMenuItems(locale) {
-  const labels = menuLabels[locale] || menuLabels.zh;
-  return menuTargets.map((item) => ({
-    ...item,
-    label: labels[item.key],
-  }));
 }
 
 function LanguageSwitch({ locale, onSelect, switchRef, activeOptionRef, className = "" }) {
@@ -1948,7 +1873,7 @@ function ConstructionScreen({ copy }) {
   );
 }
 
-function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDecrease, isDefault, labels }) {
+function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDecrease, isDefault, labels, tabIndex }) {
   return (
     <div className="menu-font-controls" aria-label={labels.label}>
       <button
@@ -1958,6 +1883,7 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
         title={labels.increase}
         onClick={onIncrease}
         disabled={!canIncrease}
+        tabIndex={tabIndex}
       >
         <span aria-hidden="true">A+</span>
       </button>
@@ -1968,6 +1894,7 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
         title={labels.reset}
         onClick={onReset}
         disabled={isDefault}
+        tabIndex={tabIndex}
       >
         <span aria-hidden="true">A</span>
       </button>
@@ -1978,6 +1905,7 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
         title={labels.decrease}
         onClick={onDecrease}
         disabled={!canDecrease}
+        tabIndex={tabIndex}
       >
         <span aria-hidden="true">A-</span>
       </button>
@@ -1987,7 +1915,7 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
 
 function MobileNav({ locale, fontControls }) {
   const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
-  const mobileMenuGroups = mobileMenuGroupsByLocale[locale] || mobileMenuGroupsByLocale.zh;
+  const mobileMenuGroups = getServiceMenuGroups(locale);
   const [open, setOpen] = useState(false);
   const [compact, setCompact] = useState(false);
   const [selectingKey, setSelectingKey] = useState(null);
@@ -2097,18 +2025,21 @@ function MobileNav({ locale, fontControls }) {
             </button>
           ))}
         </div>
-        <FontSizeControls {...fontControls} />
+        <FontSizeControls {...fontControls} tabIndex={open ? 0 : -1} />
       </div>
     </div>
   );
 }
 
 function DesktopCursorMenu({ locale, fontControls }) {
-  const items = getMenuItems(locale);
+  const desktopMenuGroups = getServiceMenuGroups(locale);
+  const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
   const [position, setPosition] = useState({ x: 160, y: 160 });
+  const triggerRef = useRef(null);
+  const menuRef = useRef(null);
   const positionRef = useRef(position);
   const pendingPositionRef = useRef(position);
   const frameRef = useRef(null);
@@ -2203,6 +2134,48 @@ function DesktopCursorMenu({ locale, fontControls }) {
     return undefined;
   }, [hoveringTrigger, open]);
 
+  useEffect(() => {
+    if (!open) {
+      return undefined;
+    }
+
+    const menu = menuRef.current;
+    const focusable = Array.from(menu?.querySelectorAll('a[href], button:not(:disabled)') || [])
+      .filter((element) => element.tabIndex >= 0);
+    const firstControl = focusable[0];
+    const lastControl = focusable[focusable.length - 1];
+    firstControl?.focus();
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        window.requestAnimationFrame(() => triggerRef.current?.focus());
+        return;
+      }
+
+      if (event.key !== "Tab" || !firstControl || !lastControl) {
+        return;
+      }
+
+      if (event.shiftKey && document.activeElement === firstControl) {
+        event.preventDefault();
+        lastControl.focus();
+      } else if (!event.shiftKey && document.activeElement === lastControl) {
+        event.preventDefault();
+        firstControl.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
+
+  const closeMenu = () => {
+    setOpen(false);
+    window.requestAnimationFrame(() => triggerRef.current?.focus());
+  };
+
   const handleTriggerLeave = () => {
     setHoveringTrigger(false);
     if (open) {
@@ -2218,9 +2191,10 @@ function DesktopCursorMenu({ locale, fontControls }) {
 
   return (
     <div className={`desktop-cursor-menu ${open ? "open" : ""} ${hoveringTrigger ? "hovering" : ""}`}>
-      <button className="desktop-menu-scrim" type="button" aria-label="Close desktop menu" onClick={() => setOpen(false)} />
+      <button className="desktop-menu-scrim" type="button" aria-label="Close desktop menu" onClick={closeMenu} />
 
       <button
+        ref={triggerRef}
         className={`desktop-menu-trigger ${visible ? "visible" : ""}`}
         type="button"
         style={{ "--cursor-x": `${position.x}px`, "--cursor-y": `${position.y}px` }}
@@ -2239,26 +2213,37 @@ function DesktopCursorMenu({ locale, fontControls }) {
         </span>
       </button>
 
-      <div
-        className="desktop-menu-diamond"
+      <nav
+        ref={menuRef}
+        className="desktop-service-menu"
+        aria-label={localizedMenuLabels.servicesMenu}
         aria-hidden={!open}
-        onMouseEnter={() => setHoveringTrigger(true)}
-        onMouseLeave={handleTriggerLeave}
       >
-        <div className="desktop-menu-diamond-core">
-          {items.map((item) => (
-            <a
-              key={item.key}
-              className={`desktop-menu-link ${item.position}`}
-              href={item.href}
-              tabIndex={open ? 0 : -1}
-            >
-              <span>{item.label}</span>
-            </a>
-          ))}
+        <p className="desktop-service-eyebrow">Services · Estiginto</p>
+        <div className="desktop-service-columns">
+          {Object.entries(desktopMenuGroups).map(([groupKey, group]) => {
+            const headingId = `desktop-service-${groupKey}`;
+            return (
+              <section className={`desktop-service-group ${groupKey}`} aria-labelledby={headingId} key={groupKey}>
+                <h2 className="desktop-service-title" id={headingId}>
+                  <span className="desktop-service-marker" aria-hidden="true" />
+                  {group.label}
+                </h2>
+                <div className="desktop-service-links">
+                  {group.items.map((item, index) => (
+                    <a className="desktop-service-link" href={item.href} key={item.key} tabIndex={open ? 0 : -1}>
+                      <span className="desktop-service-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                      <span>{item.label}</span>
+                      <span className="desktop-service-rule" aria-hidden="true" />
+                    </a>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
-      </div>
-      <FontSizeControls {...fontControls} />
+        <FontSizeControls {...fontControls} tabIndex={open ? 0 : -1} />
+      </nav>
     </div>
   );
 }

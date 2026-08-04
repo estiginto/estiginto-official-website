@@ -6,6 +6,7 @@ import {
   advanceMobileNavScrollState,
   resolveMobileNavCompactState,
 } from "../src/mobileNavScroll.js";
+import { getServiceMenuGroups } from "../src/navigationMenu.js";
 
 const appSource = readFileSync(resolve(import.meta.dirname, "../src/App.jsx"), "utf8");
 const cssSource = readFileSync(resolve(import.meta.dirname, "../src/App.css"), "utf8");
@@ -78,14 +79,17 @@ test("mobile menu stages its geometric open and close motion", () => {
 
 test("mobile menu switches between two localized service link groups", () => {
   const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
+  const expectedGroupLabels = {
+    zh: ["解決方案", "顧問服務"],
+    en: ["Solutions", "Consulting"],
+    ja: ["ソリューション", "コンサルティング"],
+  };
 
-  assert.match(appSource, /const mobileMenuGroupsByLocale\s*=\s*\{/);
-  assert.match(appSource, /digital:\s*\{[\s\S]*?label:\s*"解決方案"/);
-  assert.match(appSource, /growth:\s*\{[\s\S]*?label:\s*"顧問服務"/);
-  assert.match(appSource, /digital:\s*\{[\s\S]*?label:\s*"Solutions"/);
-  assert.match(appSource, /growth:\s*\{[\s\S]*?label:\s*"Consulting"/);
-  assert.match(appSource, /digital:\s*\{[\s\S]*?label:\s*"ソリューション"/);
-  assert.match(appSource, /growth:\s*\{[\s\S]*?label:\s*"コンサルティング"/);
+  for (const locale of ["zh", "en", "ja"]) {
+    assert.deepEqual(Object.values(getServiceMenuGroups(locale)).map((group) => group.label), expectedGroupLabels[locale]);
+  }
+
+  assert.match(mobileNavSource, /getServiceMenuGroups\(locale\)/);
   assert.match(mobileNavSource, /useState\("digital"\)/);
   assert.match(mobileNavSource, /className="mobile-nav-category-switch"/);
   assert.match(mobileNavSource, /aria-pressed=\{activeGroup === groupKey\}/);
@@ -95,14 +99,14 @@ test("mobile menu switches between two localized service link groups", () => {
 });
 
 test("business consulting menu links to the four approved consulting sections in every locale", () => {
-  for (const id of ["systems-consulting", "digital-integration", "visual-design", "international-marketing"]) {
-    const matches = appSource.match(new RegExp(`/consulting\\.html#${id}`, "g")) || [];
-    assert.equal(matches.length, 3, `${id} must exist once per locale`);
+  const expectedIds = ["systems-consulting", "digital-integration", "visual-design", "international-marketing"];
+
+  for (const locale of ["zh", "en", "ja"]) {
+    const links = getServiceMenuGroups(locale).growth.items.map((item) => item.href);
+    assert.deepEqual(links, expectedIds.map((id) => `/consulting.html#${id}`));
   }
 
-  for (const label of ["系統顧問", "數位整合", "視覺設計", "國際行銷"]) {
-    assert.match(appSource, new RegExp(`label: "${label}"`));
-  }
+  assert.deepEqual(getServiceMenuGroups("zh").growth.items.map((item) => item.label), ["系統顧問", "數位整合", "視覺設計", "國際行銷"]);
 });
 
 test("mobile category controls extend from both viewport edges", () => {

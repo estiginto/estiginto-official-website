@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
+import { getServiceMenuGroups } from "../src/navigationMenu.js";
 
 const root = resolve(import.meta.dirname, "..");
 const read = (path) => readFileSync(resolve(root, path), "utf8");
@@ -44,12 +45,13 @@ test("every public page declares the existing brand favicon", () => {
 });
 
 test("primary navigation gives solutions and case studies distinct destinations", () => {
-  const app = read("src/App.jsx");
+  const items = getServiceMenuGroups("zh").digital.items;
+  const solutions = items.find((item) => item.key === "system-planning");
+  const cases = items.find((item) => item.key === "system-cases");
 
-  assert.match(app, /key: "solutions", href: "\/solutions\.html"/);
-  assert.match(app, /key: "case", href: "\/case\.html"/);
-  assert.match(app, /solutions: "解決方案"/);
-  assert.match(app, /case: "參考案例"/);
+  assert.equal(solutions?.href, "/solutions.html");
+  assert.equal(cases?.href, "/case.html#case-group-operations-management");
+  assert.notEqual(solutions?.href, cases?.href);
 });
 
 test("footer navigation preserves solutions, case studies, and FAQ destinations", () => {
