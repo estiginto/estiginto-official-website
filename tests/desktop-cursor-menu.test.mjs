@@ -32,6 +32,13 @@ test("desktop service menu recomputes its enabled focus boundary on every Tab pr
   assert.match(desktopMenuSource, /if \(!menu\?\.contains\(document\.activeElement\)\)/);
 });
 
+test("desktop service links use the shared mobile service destinations", () => {
+  assert.match(desktopMenuSource, /const desktopMenuGroups = getServiceMenuGroups\(locale\);/);
+  assert.match(desktopMenuSource, /Object\.entries\(desktopMenuGroups\)\.map/);
+  assert.match(desktopMenuSource, /href=\{item\.href\}/);
+  assert.match(cssSource, /\.desktop-service-menu\s*\{[\s\S]*?border-radius:\s*18px;/);
+});
+
 test("desktop service grid breathes with a restrained two-beat pulse", () => {
   assert.match(cssSource, /\.desktop-service-menu::before[\s\S]*?background-size:\s*40px 40px/);
   assert.match(cssSource, /\.desktop-service-menu::after[\s\S]*?radial-gradient/);

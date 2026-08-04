@@ -983,6 +983,7 @@ ul, ol  { margin: 0; }
   padding: clamp(28px, 4vw, 52px) clamp(28px, 5vw, 68px) 30px;
   overflow: auto;
   border: 1px solid rgba(10, 31, 68, 0.12);
+  border-radius: 18px;
   background: rgba(250, 251, 253, 0.98);
   box-shadow: 0 32px 90px -38px rgba(10, 31, 68, 0.48);
   transform: translate(-50%, -46%) scale(0.985);
