@@ -3686,7 +3686,8 @@ ul, ol  { margin: 0; }
     height: 19px;
     max-width: none;
     border: 0;
-    transform: translateY(1px);
+    /* The diamond core is rotated -45deg; counter-rotate the house so it stays upright. */
+    transform: translateY(1px) rotate(45deg);
   }
   .mobile-nav-home-icon::before {
     content: "";
