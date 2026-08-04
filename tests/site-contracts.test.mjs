@@ -165,6 +165,8 @@ test("geometric transitions use the approved graphite ivory and champagne palett
   assert.match(transitionCss, /--transition-graphite-soft:\s*#242522;/);
   assert.match(transitionCss, /--transition-ivory:\s*#eee8dc;/);
   assert.match(transitionCss, /--transition-champagne:\s*#b89a62;/);
+  assert.match(transitionCss, /\.transition-axis \.page-transition-axis::before\s*\{[\s\S]*?left:\s*50%;[\s\S]*?var\(--transition-ivory\)/);
+  assert.match(transitionCss, /@keyframes page-axis-cross-vertical/);
   assert.match(transitionCss, /\.page-transition-scan\s*\{[\s\S]*?var\(--transition-champagne\)/);
   assert.doesNotMatch(transitionCss, /#4f9dff|rgba\(79,\s*157,\s*255/);
 });
