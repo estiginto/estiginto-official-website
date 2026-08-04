@@ -553,7 +553,11 @@ const localizedCopy = {
     hero: {
       kicker: "將你的願景，建構在磐石上",
       title: ["致力於打造", "有靈魂的設計"],
-      lede: ["打造直達目標、永續且彈性的解決方案", "改善企業及社會榮景"],
+      lede: [
+        "透過技術，改變人與世界互動的方式",
+        "我們以思緒縝密的設計著名",
+        "讓企業的運作，成為能夠長久運作的現實",
+      ],
       scrolldown: "往下滾動",
     },
     marquee: [
@@ -659,7 +663,16 @@ const localizedCopy = {
       ["06", "Operations and optimization", "Incident response, performance, security, feature optimization, and reporting additions.", "Ongoing"],
     ],
     faqGroups,
-    hero: { kicker: "Build your vision on solid ground", title: ["Driven to create", "design with soul"], lede: ["We build focused, sustainable, and adaptable solutions", "that advance business and social prosperity."], scrolldown: "Scroll down" },
+    hero: {
+      kicker: "Build your vision on solid ground",
+      title: ["Driven to create", "design with soul"],
+      lede: [
+        "Through technology, we reshape how people interact with the world.",
+        "We are known for thoughtful, meticulously considered design.",
+        "We turn business operations into enduring, workable realities.",
+      ],
+      scrolldown: "Scroll down",
+    },
     marquee: ["Adaptive decision systems", "Software system planning and implementation", "Software, hardware, and IoT integration", "ERP / WMS / CRM", "Business websites / e-commerce / payments / invoices", "Custom app development", "War-room dashboards", "Automation execution support systems"],
     achievements: { label: "We build designs with a soul, turning systems into engines for brand growth and lasting impact.", meta: "Since 2011" },
     manifesto: { label: "Our Edge", prelude: "Hard-to-use systems are usually not caused by technology or budget", headlinePrefix: "They fail because", headlineHighlight: "the design direction is wrong", points: ["1. Engineering logic is used to design human behavior", "2. Processes replace decisions instead of supporting them", "3. Standard templates are forced onto non-standard business scenarios"], quote: "\"The depth of planning and mechanism design determines a system's product life.\"", paragraphs: [["With agile development and flexible architecture", "we work like architects drawing before construction", "validating structure, flow, and user experience before anything is built."], ["A well-designed system plan can be executed by any capable team", "while still preserving the original intent and goals", "because it is designed to serve users, not merely to be delivered."]], signoff: "- This is the key to sustainable systems." },
@@ -711,7 +724,16 @@ const localizedCopy = {
       ["06", "運用と改善", "障害対応、性能、セキュリティ、機能改善、レポート追加を継続します。", "継続"],
     ],
     faqGroups,
-    hero: { kicker: "ビジョンを、揺るぎない基盤の上に", title: ["私たちが目指すのは", "魂のあるデザイン"], lede: ["目標へ直結する、持続可能で柔軟なソリューションを構築し", "企業と社会の豊かさに貢献します。"], scrolldown: "下へスクロール" },
+    hero: {
+      kicker: "ビジョンを、揺るぎない基盤の上に",
+      title: ["私たちが目指すのは", "魂のあるデザイン"],
+      lede: [
+        "テクノロジーを通じて、人と世界の関わり方を変える。",
+        "私たちは、緻密に思考されたデザインで知られています。",
+        "企業の仕組みを、持続的に機能する現実へと変えていきます。",
+      ],
+      scrolldown: "下へスクロール",
+    },
     marquee: ["能動型意思決定システム", "ソフトウェアシステムの設計と構築", "ソフト・ハード・IoT 統合", "ERP / WMS / CRM", "ビジネスサイト / EC / 決済 / 請求書", "カスタム APP", "戦情室ダッシュボード", "自動化実行支援システム"],
     achievements: { label: "魂のあるデザインを作り、システムをブランド成長と持続的な影響力の推進力にします。", meta: "2011 年から" },
     manifesto: { label: "独自の競争力", prelude: "使いにくいシステムの多くは、技術や予算の問題ではありません", headlinePrefix: "本質は", headlineHighlight: "設計方向の誤りです", points: ["1. 人の行動を工学的な論理だけで設計している", "2. 意思決定を支援せず、流程で置き換えている", "3. 非標準の業務に標準テンプレートを当てはめている"], quote: "「計画と仕組み設計の深さが、システムの寿命を決めます。」", paragraphs: [["アジャイル開発と柔軟なアーキテクチャを用い", "建築家の設計図のように", "施工前に構造、動線、体験を検証します。"], ["適切に設計されたシステム計画は、誰が実行しても", "設計意図と目標を保てます", "単なる納品ではなく、利用者に本当に役立つための設計です。"]], signoff: "- これが、持続するシステムの鍵です。" },
@@ -1086,6 +1108,8 @@ function Hero({ copy }) {
             {copy.hero.lede[0]}
             <br />
             {copy.hero.lede[1]}
+            <br />
+            {copy.hero.lede[2]}
           </p>
         </div>
       </div>

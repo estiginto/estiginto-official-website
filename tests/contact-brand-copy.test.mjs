@@ -14,25 +14,28 @@ function functionSource(name, nextName) {
   return appSource.slice(start, end);
 }
 
-test("homepage hero uses the approved two-line brand statement in every locale", () => {
+test("homepage hero uses the approved three-line description in every locale", () => {
   const approvedHeroCopy = {
     zh: [
       "致力於打造",
       "有靈魂的設計",
-      "打造直達目標、永續且彈性的解決方案",
-      "改善企業及社會榮景",
+      "透過技術，改變人與世界互動的方式",
+      "我們以思緒縝密的設計著名",
+      "讓企業的運作，成為能夠長久運作的現實",
     ],
     en: [
       "Driven to create",
       "design with soul",
-      "We build focused, sustainable, and adaptable solutions",
-      "that advance business and social prosperity.",
+      "Through technology, we reshape how people interact with the world.",
+      "We are known for thoughtful, meticulously considered design.",
+      "We turn business operations into enduring, workable realities.",
     ],
     ja: [
       "私たちが目指すのは",
       "魂のあるデザイン",
-      "目標へ直結する、持続可能で柔軟なソリューションを構築し",
-      "企業と社会の豊かさに貢献します。",
+      "テクノロジーを通じて、人と世界の関わり方を変える。",
+      "私たちは、緻密に思考されたデザインで知られています。",
+      "企業の仕組みを、持続的に機能する現実へと変えていきます。",
     ],
   };
 
@@ -48,7 +51,7 @@ test("homepage hero uses the approved two-line brand statement in every locale",
   assert.doesNotMatch(heroSource, /copy\.hero\.title\[2\]/);
   assert.match(heroSource, /copy\.hero\.lede\[0\]/);
   assert.match(heroSource, /copy\.hero\.lede\[1\]/);
-  assert.doesNotMatch(heroSource, /copy\.hero\.lede\[2\]/);
+  assert.match(heroSource, /copy\.hero\.lede\[2\]/);
 });
 
 test("achievements and footer omit the retired introduction and business ID", () => {
