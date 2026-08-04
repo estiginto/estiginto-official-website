@@ -3439,6 +3439,9 @@ ul, ol  { margin: 0; }
     position: absolute;
     top: 0;
     bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     min-width: 0;
     border: 1px solid rgba(159, 128, 77, 0.28);
     background: rgba(238, 232, 220, 0.96);
@@ -3500,14 +3503,14 @@ ul, ol  { margin: 0; }
   .mobile-nav-category-button.digital {
     left: 0;
     width: calc(50% + var(--mobile-trigger-seam));
-    padding: 0 54px 0 14px;
+    padding: 0 34px;
     clip-path: polygon(0 0, 100% 0, calc(100% - 60px) 100%, 0 100%);
     transform: translateX(-105%);
   }
   .mobile-nav-category-button.growth {
     right: 0;
     width: calc(50% + var(--mobile-trigger-seam));
-    padding: 0 14px 0 54px;
+    padding: 0 34px;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 60px 100%);
     transform: translateX(105%);
   }

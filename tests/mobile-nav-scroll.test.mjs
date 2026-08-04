@@ -126,6 +126,9 @@ test("mobile category controls extend from both viewport edges", () => {
   assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?left:\s*0;[\s\S]*?right:\s*0;[\s\S]*?bottom:\s*var\(--mobile-trigger-bottom\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
   assert.match(cssSource, /\.mobile-nav-category-button\.digital\s*\{[\s\S]*?left:\s*0;[\s\S]*?width:\s*calc\(50% \+ var\(--mobile-trigger-seam\)\);[\s\S]*?clip-path:\s*polygon\(0 0, 100% 0, calc\(100% - 60px\) 100%, 0 100%\)/);
   assert.match(cssSource, /\.mobile-nav-category-button\.growth\s*\{[\s\S]*?right:\s*0;[\s\S]*?width:\s*calc\(50% \+ var\(--mobile-trigger-seam\)\);[\s\S]*?clip-path:\s*polygon\(0 0, 100% 0, 100% 100%, 60px 100%\)/);
+  assert.match(cssSource, /\.mobile-nav-category-button\s*\{[\s\S]*?display:\s*flex;[\s\S]*?align-items:\s*center;[\s\S]*?justify-content:\s*center;/);
+  assert.match(cssSource, /\.mobile-nav-category-button\.digital\s*\{[\s\S]*?padding:\s*0 34px;/);
+  assert.match(cssSource, /\.mobile-nav-category-button\.growth\s*\{[\s\S]*?padding:\s*0 34px;/);
 });
 
 test("mobile menu uses the approved warm category palette and rounded diamonds", () => {
