@@ -28,7 +28,7 @@
 - Consumes: `.desktop-cursor-menu.open` and `.desktop-service-menu` from the existing desktop navigation.
 - Produces: `desktop-grid-breathe` and `desktop-grid-heartbeat` keyframes applied only to decorative pseudo-elements.
 
-- [ ] **Step 1: Write the failing CSS contract test**
+- [x] **Step 1: Write the failing CSS contract test**
 
 Add a test that asserts the menu defines `::before` and `::after` decorative layers, open-state animations named `desktop-grid-breathe` and `desktop-grid-heartbeat`, two closely spaced pulse keyframe peaks, and a reduced-motion rule that sets their animations to `none`.
 
@@ -43,19 +43,19 @@ test("desktop service grid breathes with a restrained two-beat pulse", () => {
 });
 ```
 
-- [ ] **Step 2: Run the targeted test and verify RED**
+- [x] **Step 2: Run the targeted test and verify RED**
 
 Run: `node --test tests/desktop-cursor-menu.test.mjs`
 
 Expected: FAIL because the pseudo-elements, keyframes, and reduced-motion override do not exist.
 
-- [ ] **Step 3: Implement the decorative layers**
+- [x] **Step 3: Implement the decorative layers**
 
 Move the grid out of the panel's main `background` into `.desktop-service-menu::before`; add a radial glow in `::after`; give both `position: absolute`, `inset: 0`, `pointer-events: none`, and place them behind existing `z-index: 1` content. Keep the menu's existing `overflow: auto` behavior unchanged so short-viewport scrolling continues to work.
 
 Use an eight-second cycle. Keep the grid opacity approximately `0.58–0.9`, move its position by no more than 10 px per cycle, and keep the glow opacity below `0.22`. Encode two short peaks around `48%` and `52%`, returning close to baseline between them.
 
-- [ ] **Step 4: Add open-state and reduced-motion rules**
+- [x] **Step 4: Add open-state and reduced-motion rules**
 
 Apply animations only through:
 
@@ -66,7 +66,7 @@ Apply animations only through:
 
 Inside the existing reduced-motion media query, set both pseudo-element animations to `none !important` and retain visible static opacity.
 
-- [ ] **Step 5: Run targeted tests and commit**
+- [x] **Step 5: Run targeted tests and commit**
 
 Run: `node --test tests/desktop-cursor-menu.test.mjs`
 
@@ -88,25 +88,25 @@ git commit -m "feat: animate desktop service grid"
 - Consumes: production build and local preview.
 - Produces: verified desktop animation with no regressions.
 
-- [ ] **Step 1: Run repository verification**
+- [x] **Step 1: Run repository verification**
 
 Run: `npm run check`
 
 Expected: all tests pass, Vite production build succeeds, and `verify:dist` succeeds.
 
-- [ ] **Step 2: Validate desktop rendering**
+- [x] **Step 2: Validate desktop rendering**
 
 Open the local production preview at `http://127.0.0.1:4303/`, open the desktop service menu, and verify at `1440x900` and `1440x650` that the animated layers exist, have running animations, remain behind the content, and create no horizontal overflow.
 
-- [ ] **Step 3: Validate interaction and console health**
+- [x] **Step 3: Validate interaction and console health**
 
 Verify all eight service links remain present, the first link receives focus when opened, Escape closes the menu and restores focus to the trigger, and no relevant console warnings or errors are logged.
 
-- [ ] **Step 4: Validate reduced motion**
+- [x] **Step 4: Validate reduced motion**
 
 Emulate or inspect the reduced-motion media rule and confirm both decorative layers resolve to `animation-name: none` while the static grid remains visible.
 
-- [ ] **Step 5: Final repository checks**
+- [x] **Step 5: Final repository checks**
 
 Run:
 
