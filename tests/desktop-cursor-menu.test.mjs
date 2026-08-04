@@ -31,3 +31,21 @@ test("desktop service menu recomputes its enabled focus boundary on every Tab pr
   );
   assert.match(desktopMenuSource, /if \(!menu\?\.contains\(document\.activeElement\)\)/);
 });
+
+test("desktop service grid breathes with a restrained two-beat pulse", () => {
+  assert.match(cssSource, /\.desktop-service-menu::before[\s\S]*?background-size:\s*40px 40px/);
+  assert.match(cssSource, /\.desktop-service-menu::after[\s\S]*?radial-gradient/);
+  assert.match(
+    cssSource,
+    /\.desktop-cursor-menu\.open \.desktop-service-menu::before[\s\S]*?animation:\s*desktop-grid-breathe 8s/,
+  );
+  assert.match(
+    cssSource,
+    /\.desktop-cursor-menu\.open \.desktop-service-menu::after[\s\S]*?animation:\s*desktop-grid-heartbeat 8s/,
+  );
+  assert.match(cssSource, /@keyframes desktop-grid-heartbeat[\s\S]*?48%[\s\S]*?52%/);
+  assert.match(
+    cssSource,
+    /prefers-reduced-motion:\s*reduce[\s\S]*?\.desktop-service-menu::before,[\s\S]*?\.desktop-service-menu::after\s*\{[\s\S]*?animation:\s*none\s*!important/,
+  );
+});

@@ -983,11 +983,7 @@ ul, ol  { margin: 0; }
   padding: clamp(28px, 4vw, 52px) clamp(28px, 5vw, 68px) 30px;
   overflow: auto;
   border: 1px solid rgba(10, 31, 68, 0.12);
-  background:
-    linear-gradient(rgba(10, 31, 68, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10, 31, 68, 0.035) 1px, transparent 1px),
-    rgba(250, 251, 253, 0.98);
-  background-size: 40px 40px;
+  background: rgba(250, 251, 253, 0.98);
   box-shadow: 0 32px 90px -38px rgba(10, 31, 68, 0.48);
   transform: translate(-50%, -46%) scale(0.985);
   opacity: 0;
@@ -995,10 +991,77 @@ ul, ol  { margin: 0; }
   transition: transform 320ms var(--ease-soft), opacity 220ms ease;
 }
 
+.desktop-service-menu::before,
+.desktop-service-menu::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.desktop-service-menu::before {
+  background:
+    linear-gradient(rgba(10, 31, 68, 0.048) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(10, 31, 68, 0.048) 1px, transparent 1px);
+  background-position: 0 0;
+  background-size: 40px 40px;
+  opacity: 0.66;
+  will-change: background-position, opacity;
+}
+
+.desktop-service-menu::after {
+  background: radial-gradient(circle at 50% 46%, rgba(59, 130, 246, 0.18), rgba(59, 130, 246, 0.045) 34%, transparent 68%);
+  opacity: 0.04;
+  will-change: opacity;
+}
+
 .desktop-cursor-menu.open .desktop-service-menu {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
+}
+
+.desktop-cursor-menu.open .desktop-service-menu::before {
+  animation: desktop-grid-breathe 8s ease-in-out infinite;
+}
+
+.desktop-cursor-menu.open .desktop-service-menu::after {
+  animation: desktop-grid-heartbeat 8s ease-in-out infinite;
+}
+
+@keyframes desktop-grid-breathe {
+  0%, 100% {
+    background-position: 0 0;
+    opacity: 0.58;
+  }
+  46% {
+    background-position: 8px 6px;
+    opacity: 0.82;
+  }
+  54% {
+    background-position: 9px 7px;
+    opacity: 0.9;
+  }
+  72% {
+    background-position: 6px 9px;
+    opacity: 0.68;
+  }
+}
+
+@keyframes desktop-grid-heartbeat {
+  0%, 42%, 56%, 100% {
+    opacity: 0.04;
+  }
+  48% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.075;
+  }
+  52% {
+    opacity: 0.16;
+  }
 }
 
 .desktop-cursor-menu:not(.open) .desktop-service-menu,
@@ -3725,6 +3788,10 @@ ul, ol  { margin: 0; }
   .desktop-service-link,
   .desktop-service-rule {
     transition: none !important;
+  }
+  .desktop-service-menu::before,
+  .desktop-service-menu::after {
+    animation: none !important;
   }
   .page-transition.is-entering .page-transition-grille i,
   .page-transition.is-entering .page-transition-matrix i,
