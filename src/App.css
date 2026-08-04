@@ -3337,7 +3337,7 @@ ul, ol  { margin: 0; }
     letter-spacing: 0.06em;
     cursor: pointer;
     opacity: 0;
-    pointer-events: auto;
+    pointer-events: none;
     -webkit-tap-highlight-color: transparent;
     transition: transform 520ms var(--ease-soft), opacity 320ms ease, background 220ms ease, color 220ms ease;
   }
@@ -3381,6 +3381,7 @@ ul, ol  { margin: 0; }
   }
   .mobile-nav.open .mobile-nav-category-button {
     opacity: 1;
+    pointer-events: auto;
     transform: translateX(0);
     transition-delay: 160ms;
   }

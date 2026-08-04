@@ -1965,7 +1965,7 @@ function MobileNav({ locale, fontControls }) {
 
   return (
     <div className={`mobile-nav ${open ? "open" : ""} ${compact ? "compact" : ""}`.trim()}>
-      <button className="mobile-nav-scrim" type="button" aria-label="Close mobile menu" onClick={() => setOpen(false)} />
+      <button className="mobile-nav-scrim" type="button" aria-label="Close mobile menu" tabIndex={-1} onClick={() => setOpen(false)} />
       <div className="mobile-nav-dialog" aria-hidden={!open}>
         <button
           className="mobile-nav-trigger"
@@ -1999,6 +1999,7 @@ function MobileNav({ locale, fontControls }) {
                 className={`mobile-nav-link ${item.position} ${selectingKey === item.key ? "is-selecting" : ""}`.trim()}
                 href={item.href}
                 aria-label={item.position === "center" ? item.label : undefined}
+                tabIndex={open ? 0 : -1}
                 style={{ "--menu-item-index": index }}
                 onClick={() => setSelectingKey(item.key)}
               >
@@ -2016,6 +2017,7 @@ function MobileNav({ locale, fontControls }) {
               className={`mobile-nav-category-button ${groupKey}`}
               type="button"
               aria-pressed={activeGroup === groupKey}
+              tabIndex={open ? 0 : -1}
               onClick={() => {
                 setActiveGroup(groupKey);
                 setSelectingKey(null);
@@ -2140,11 +2142,9 @@ function DesktopCursorMenu({ locale, fontControls }) {
     }
 
     const menu = menuRef.current;
-    const focusable = Array.from(menu?.querySelectorAll('a[href], button:not(:disabled)') || [])
+    const getFocusableControls = () => Array.from(menu?.querySelectorAll('a[href], button:not(:disabled)') || [])
       .filter((element) => element.tabIndex >= 0);
-    const firstControl = focusable[0];
-    const lastControl = focusable[focusable.length - 1];
-    firstControl?.focus();
+    getFocusableControls()[0]?.focus();
 
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -2154,7 +2154,20 @@ function DesktopCursorMenu({ locale, fontControls }) {
         return;
       }
 
-      if (event.key !== "Tab" || !firstControl || !lastControl) {
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const focusable = getFocusableControls();
+      const firstControl = focusable[0];
+      const lastControl = focusable[focusable.length - 1];
+      if (!firstControl || !lastControl) {
+        return;
+      }
+
+      if (!menu?.contains(document.activeElement)) {
+        event.preventDefault();
+        (event.shiftKey ? lastControl : firstControl).focus();
         return;
       }
 
@@ -2191,7 +2204,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
 
   return (
     <div className={`desktop-cursor-menu ${open ? "open" : ""} ${hoveringTrigger ? "hovering" : ""}`}>
-      <button className="desktop-menu-scrim" type="button" aria-label="Close desktop menu" onClick={closeMenu} />
+      <button className="desktop-menu-scrim" type="button" aria-label="Close desktop menu" tabIndex={-1} onClick={closeMenu} />
 
       <button
         ref={triggerRef}
@@ -2199,6 +2212,8 @@ function DesktopCursorMenu({ locale, fontControls }) {
         type="button"
         style={{ "--cursor-x": `${position.x}px`, "--cursor-y": `${position.y}px` }}
         aria-label="Open desktop menu"
+        aria-controls="desktop-service-navigation"
+        aria-expanded={open}
         onClick={() => setOpen(true)}
         onMouseEnter={() => setHoveringTrigger(true)}
         onMouseLeave={handleTriggerLeave}
@@ -2215,6 +2230,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
 
       <nav
         ref={menuRef}
+        id="desktop-service-navigation"
         className="desktop-service-menu"
         aria-label={localizedMenuLabels.servicesMenu}
         aria-hidden={!open}
@@ -2315,11 +2331,18 @@ export default function App() {
     return import.meta.env.DEV || localHosts.has(window.location.hostname);
   }, []);
 
-  const shouldUseMobileNav = useMemo(() => {
+  const [shouldUseMobileNav, setShouldUseMobileNav] = useState(() => {
     if (typeof window === "undefined") {
       return false;
     }
     return window.matchMedia("(max-width: 640px), (pointer: coarse)").matches;
+  });
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 640px), (pointer: coarse)");
+    const onChange = (event) => setShouldUseMobileNav(event.matches);
+    setShouldUseMobileNav(mediaQuery.matches);
+    mediaQuery.addEventListener("change", onChange);
+    return () => mediaQuery.removeEventListener("change", onChange);
   }, []);
   const hasLanguageCookie = useMemo(() => {
     if (typeof document === "undefined") {

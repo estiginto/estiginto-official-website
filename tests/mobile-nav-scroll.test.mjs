@@ -10,6 +10,7 @@ import { getServiceMenuGroups } from "../src/navigationMenu.js";
 
 const appSource = readFileSync(resolve(import.meta.dirname, "../src/App.jsx"), "utf8");
 const cssSource = readFileSync(resolve(import.meta.dirname, "../src/App.css"), "utf8");
+const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
 
 const resolveState = (overrides = {}) => resolveMobileNavCompactState({
   scrollY: 120,
@@ -54,8 +55,6 @@ test("small consecutive scroll events accumulate until direction is meaningful",
 });
 
 test("mobile navigation connects scroll state without shrinking its touch target", () => {
-  const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
-
   assert.match(appSource, /import \{ advanceMobileNavScrollState \} from "\.\/mobileNavScroll\.js"/);
   assert.match(mobileNavSource, /advanceMobileNavScrollState\(/);
   assert.match(mobileNavSource, /compact \? "compact" : ""/);
@@ -78,7 +77,6 @@ test("mobile menu stages its geometric open and close motion", () => {
 });
 
 test("mobile menu switches between two localized service link groups", () => {
-  const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
   const expectedGroupLabels = {
     zh: ["解決方案", "顧問服務"],
     en: ["Solutions", "Consulting"],
@@ -96,6 +94,19 @@ test("mobile menu switches between two localized service link groups", () => {
   assert.match(mobileNavSource, /setActiveGroup\(groupKey\)/);
   assert.match(mobileNavSource, /\.\.\.activeGroupCopy\.items/);
   assert.match(mobileNavSource, /items\.map/);
+});
+
+test("closed mobile navigation removes hidden controls from pointer and keyboard navigation", () => {
+  assert.match(mobileNavSource, /className="mobile-nav-scrim"[\s\S]*?tabIndex=\{-1\}/);
+  assert.equal((mobileNavSource.match(/tabIndex=\{open \? 0 : -1\}/g) || []).length, 3);
+  assert.match(cssSource, /\.mobile-nav-category-button\s*\{[\s\S]*?pointer-events:\s*none;/);
+  assert.match(cssSource, /\.mobile-nav\.open \.mobile-nav-category-button\s*\{[\s\S]*?pointer-events:\s*auto;/);
+});
+
+test("navigation component follows responsive media-query changes without a reload", () => {
+  assert.match(appSource, /const \[shouldUseMobileNav, setShouldUseMobileNav\] = useState/);
+  assert.match(appSource, /mediaQuery\.addEventListener\("change", onChange\)/);
+  assert.match(appSource, /mediaQuery\.removeEventListener\("change", onChange\)/);
 });
 
 test("business consulting menu links to the four approved consulting sections in every locale", () => {
