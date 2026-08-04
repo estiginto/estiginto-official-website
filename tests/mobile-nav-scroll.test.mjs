@@ -141,6 +141,35 @@ test("mobile menu uses the approved warm category palette and rounded diamonds",
   assert.match(cssSource, /\.mobile-nav \.menu-font-button::before\s*\{[\s\S]*?border-radius:\s*5px;/);
 });
 
+test("mobile home icon uses an architectural entrance instead of a pitched roof", () => {
+  const outerFrame = cssSource.match(/\.mobile-nav-home-icon::before\s*\{[^}]*\}/)?.[0] || "";
+  const threshold = cssSource.match(/\.mobile-nav-home-icon::after\s*\{[^}]*\}/)?.[0] || "";
+  const innerFrame = cssSource.match(/\.mobile-nav-home-icon i\s*\{[^}]*\}/)?.[0] || "";
+
+  assert.match(outerFrame, /border:\s*2px solid currentColor;/);
+  assert.match(outerFrame, /border-bottom:\s*0;/);
+  assert.doesNotMatch(outerFrame, /rotate\(45deg\)/);
+  assert.match(threshold, /background:\s*currentColor;/);
+  assert.match(innerFrame, /border:\s*2px solid currentColor;/);
+  assert.match(innerFrame, /border-bottom:\s*0;/);
+});
+
+test("selected mobile category uses a navy and champagne dual underline", () => {
+  const underline = cssSource.match(/\.mobile-nav-category-button span::after\s*\{[^}]*\}/)?.[0] || "";
+  const selectedUnderline = cssSource.match(/\.mobile-nav-category-button\[aria-pressed="true"\] span::after\s*\{[^}]*\}/)?.[0] || "";
+
+  assert.match(underline, /#0a1f44/);
+  assert.match(underline, /rgba\(159,\s*128,\s*77/);
+  assert.match(underline, /scaleX\(0\)/);
+  assert.match(underline, /opacity:\s*0;/);
+  assert.match(selectedUnderline, /scaleX\(1\)/);
+  assert.match(selectedUnderline, /opacity:\s*1;/);
+  assert.match(
+    cssSource,
+    /prefers-reduced-motion:\s*reduce[\s\S]*?\.mobile-nav-category-button span::after\s*\{[\s\S]*?transition:\s*none\s*!important/,
+  );
+});
+
 test("mobile category labels adapt safely across supported locales", () => {
   assert.match(cssSource, /\.mobile-nav-category-button\s*\{[\s\S]*?font-size:\s*clamp\(1\.1rem, 5vw, 1\.25rem\);/);
   assert.match(cssSource, /html:lang\(en\) \.mobile-nav-category-button\s*\{[\s\S]*?font-family:\s*var\(--font-body\);[\s\S]*?font-size:\s*clamp\(0\.95rem, 4vw, 1rem\);[\s\S]*?letter-spacing:\s*0\.02em;/);
