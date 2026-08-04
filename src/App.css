@@ -992,6 +992,11 @@ ul, ol  { margin: 0; }
   pointer-events: auto;
 }
 
+.desktop-cursor-menu:not(.open) .desktop-menu-diamond,
+.desktop-cursor-menu:not(.open) .desktop-menu-link {
+  pointer-events: none;
+}
+
 .menu-font-controls {
   position: fixed;
   left: 50%;
@@ -1068,13 +1073,6 @@ ul, ol  { margin: 0; }
   background: rgba(245, 247, 250, 0.92);
   border-color: rgba(107, 114, 128, 0.16);
   box-shadow: none;
-}
-
-/* Only allow pointer events on the diamond when the user is actively hovering the trigger (or when menu is open). This prevents an invisible hotspot in the page center. */
-/* Allow pointer events on the diamond while the user is actively hovering the trigger (JS sets .hovering). */
-.desktop-cursor-menu.hovering .desktop-menu-diamond,
-.desktop-cursor-menu .desktop-menu-trigger.visible:focus-visible ~ .desktop-menu-diamond {
-  pointer-events: auto;
 }
 
 .desktop-menu-diamond::before {

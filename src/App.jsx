@@ -2223,7 +2223,12 @@ function DesktopCursorMenu({ locale, fontControls }) {
       >
         <div className="desktop-menu-diamond-core">
           {items.map((item) => (
-            <a key={item.key} className={`desktop-menu-link ${item.position}`} href={item.href}>
+            <a
+              key={item.key}
+              className={`desktop-menu-link ${item.position}`}
+              href={item.href}
+              tabIndex={open ? 0 : -1}
+            >
               <span>{item.label}</span>
             </a>
           ))}
