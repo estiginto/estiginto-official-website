@@ -1730,7 +1730,24 @@ ul, ol  { margin: 0; }
 }
 
 .hero::after {
-  content: none;
+  content: "";
+  position: absolute;
+  inset: -28% 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 28%,
+    rgba(57, 127, 199, 0.015) 40%,
+    rgba(57, 127, 199, 0.16) 50%,
+    rgba(57, 127, 199, 0.02) 60%,
+    transparent 72%
+  );
+  filter: blur(9px);
+  opacity: 0;
+  transform: translateY(-18%);
+  will-change: transform, opacity;
+  animation: hero-grid-scan 10s ease-in-out infinite;
 }
 
 /* Background grid lines */
@@ -1745,6 +1762,19 @@ ul, ol  { margin: 0; }
   pointer-events: none;
   z-index: -2;
   opacity: 0.42;
+  animation: hero-grid-breathe 12s ease-in-out infinite;
+}
+
+@keyframes hero-grid-scan {
+  0%, 12%, 100% { opacity: 0; transform: translateY(-18%); }
+  24% { opacity: 0.34; }
+  50% { opacity: 0.64; transform: translateY(18%); }
+  76% { opacity: 0.22; }
+}
+
+@keyframes hero-grid-breathe {
+  0%, 100% { opacity: 0.34; background-position: 0 0, 0 0; }
+  50% { opacity: 0.5; background-position: 10px 4px, 4px 10px; }
 }
 
 .hero .wrap {

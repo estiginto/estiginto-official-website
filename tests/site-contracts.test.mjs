@@ -187,6 +187,10 @@ test("homepage hero provides an accessible mechanical background", () => {
   assert.match(css, /\.hero-tech-ring-outer\s*\{[\s\S]*?28s linear infinite/);
   assert.match(css, /\.hero-tech-ring-inner\s*\{[\s\S]*?22s linear infinite/);
   assert.match(css, /\.hero-tech-scan\s*\{[\s\S]*?9s/);
+  assert.match(css, /\.hero::after\s*\{[\s\S]*?linear-gradient\([\s\S]*?rgba\(57,\s*127,\s*199/);
+  assert.match(css, /\.hero::after\s*\{[\s\S]*?animation:\s*hero-grid-scan 10s/);
+  assert.match(css, /@keyframes hero-grid-scan[\s\S]*?translateY\(18%\)/);
+  assert.match(css, /@keyframes hero-grid-breathe[\s\S]*?background-position/);
   assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*hero-tech-background/);
 });
 
