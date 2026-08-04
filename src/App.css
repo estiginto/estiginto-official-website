@@ -313,6 +313,44 @@ ul, ol  { margin: 0; }
 .language-transition-covering .language-transition-scan {
   animation: language-scan 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+.language-transition-decoder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  min-width: min(300px, 78vw);
+  transform: translate(-50%, -50%);
+  color: rgba(238, 232, 220, 0.9);
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 1.2vw, 0.78rem);
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0 18px rgba(184, 154, 98, 0.34);
+}
+.language-transition-noise,
+.language-transition-copy {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+.language-transition-noise {
+  color: rgba(184, 154, 98, 0.88);
+  opacity: 0;
+  filter: blur(0.2px);
+}
+.language-transition-copy {
+  opacity: 0;
+}
+.language-transition-covering .language-transition-noise {
+  animation: language-decode-noise 650ms steps(5, end) both;
+}
+.language-transition-revealing .language-transition-noise {
+  animation: language-decode-noise-out 370ms steps(3, end) both;
+}
+.language-transition-revealing .language-transition-copy {
+  animation: language-decode-copy-in 370ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 .site-shell .page-main,
 .site-shell footer {
   transition: filter 280ms ease, opacity 280ms ease;
@@ -333,6 +371,19 @@ ul, ol  { margin: 0; }
   14% { opacity: 0.8; }
   78% { opacity: 0.42; }
   100% { transform: translateY(930%); opacity: 0; }
+}
+@keyframes language-decode-noise {
+  0% { opacity: 0; transform: translateX(-10px); }
+  18%, 70% { opacity: 0.92; transform: translateX(0); }
+  100% { opacity: 0.18; transform: translateX(8px); }
+}
+@keyframes language-decode-noise-out {
+  0% { opacity: 0.72; filter: blur(0); }
+  100% { opacity: 0; filter: blur(4px); }
+}
+@keyframes language-decode-copy-in {
+  0% { opacity: 0; transform: translateY(5px); filter: blur(5px); }
+  100% { opacity: 0.92; transform: translateY(0); filter: blur(0); }
 }
 
 .preview-toggle {

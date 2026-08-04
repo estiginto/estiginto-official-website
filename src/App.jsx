@@ -39,6 +39,12 @@ const languagePromptCopy = {
   ja: { eyebrow: "LANGUAGE", title: "言語を選択してください" },
 };
 
+const languageTransitionCopy = {
+  zh: "語言切換／正在解碼",
+  en: "LANGUAGE SHIFT / DECODING",
+  ja: "言語切替／デコード中",
+};
+
 const menuLabels = {
   zh: {
     home: "首頁",
@@ -2311,6 +2317,7 @@ export default function App() {
     return getInitialLocale(savedLocale, window.navigator.language, cookieLocale);
   });
   const [languageTransitionPhase, setLanguageTransitionPhase] = useState("idle");
+  const [languageTransitionTarget, setLanguageTransitionTarget] = useState(locale);
   const languageTransitionBusyRef = useRef(false);
   const languageTransitionTimersRef = useRef([]);
   const [fontScale, setFontScale] = useState(() => {
@@ -2408,6 +2415,7 @@ export default function App() {
     }
 
     languageTransitionBusyRef.current = true;
+    setLanguageTransitionTarget(nextLocale);
     setLanguageTransitionPhase("covering");
 
     const swapTimer = window.setTimeout(() => {
@@ -2547,8 +2555,12 @@ export default function App() {
         {isFAQPage ? null : <Footer copy={copy} />}
         <GoToTop />
       </div>
-      <div className={`language-transition language-transition-${languageTransitionPhase}`} aria-hidden="true">
+      <div className={`language-transition language-transition-${languageTransitionPhase}`} aria-hidden="true" data-target-locale={languageTransitionTarget}>
         <span className="language-transition-scan" aria-hidden="true" />
+        <span className="language-transition-decoder" aria-hidden="true">
+          <span className="language-transition-noise">X7 / ▒░▓ / 0x4E7A / // 1010</span>
+          <span className="language-transition-copy">{languageTransitionCopy[languageTransitionTarget] || languageTransitionCopy.zh}</span>
+        </span>
       </div>
     </>
   );

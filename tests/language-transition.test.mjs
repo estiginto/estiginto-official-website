@@ -33,11 +33,16 @@ test("App stages the visible locale swap and leaves the prompt flight independen
   assert.match(appSource, /onSelect=\{commitLocale\}/);
   assert.match(appSource, /className=\{`language-transition language-transition-\$\{languageTransitionPhase\}`\}/);
   assert.match(appSource, /className="language-transition-scan" aria-hidden="true"/);
+  assert.match(appSource, /language-transition-noise/);
+  assert.match(appSource, /languageTransitionCopy\[languageTransitionTarget\]/);
 });
 
 test("language transition CSS provides restrained blur, scan, and reduced motion", () => {
   assert.match(cssSource, /\.language-transition\s*\{[\s\S]*?pointer-events:\s*none;/);
   assert.match(cssSource, /\.language-transition-covering \.language-transition-scan[\s\S]*?animation:\s*language-scan 650ms/);
   assert.match(cssSource, /\.site-shell\.language-transition-covering \.page-main,[\s\S]*?filter:\s*blur\(3px\);/);
+  assert.match(cssSource, /\.language-transition-covering \.language-transition-noise[\s\S]*?animation:\s*language-decode-noise 650ms/);
+  assert.match(cssSource, /\.language-transition-revealing \.language-transition-copy[\s\S]*?animation:\s*language-decode-copy-in 370ms/);
+  assert.match(cssSource, /@keyframes language-decode-noise-out/);
   assert.match(cssSource, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*?\.language-transition[\s\S]*?display:\s*none;/);
 });
