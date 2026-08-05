@@ -1209,6 +1209,28 @@ function Manifesto({ copy }) {
   );
 }
 
+function ServiceOverview({ copy }) {
+  const items = serviceFamiliesByLocale[copy.locale] || serviceFamiliesByLocale.zh;
+
+  return (
+    <section className="section service-overview reveal" id="services" aria-label={copy.solutionsUi.label}>
+      <div className="wrap">
+        <SectionEyebrow index={copy.solutionsUi.index} label={copy.solutionsUi.label} meta={`${items.length} directions`} />
+        <div className="service-overview-grid">
+          {items.map((service) => (
+            <a className="service-overview-card" href="/solutions.html" key={service.id}>
+              <span className="service-overview-number">{service.number}</span>
+              <span className="service-overview-eyebrow">{service.eyebrow}</span>
+              <h2>{service.title}</h2>
+              <span className="service-overview-arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Solutions({ copy }) {
   const [active, setActive] = useState(0);
   const items = serviceFamiliesByLocale[copy.locale] || serviceFamiliesByLocale.zh;
@@ -2545,7 +2567,7 @@ export default function App() {
           <>
             <Hero copy={copy} />
             <Marquee copy={copy} />
-            <Solutions copy={copy} />
+            <ServiceOverview copy={copy} />
             <Insights />
             <Contact copy={copy} />
           </>

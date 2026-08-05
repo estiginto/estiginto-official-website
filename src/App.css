@@ -2281,6 +2281,61 @@ ul, ol  { margin: 0; }
 /* ============================================================
    SOLUTIONS — index list with hover preview
    ============================================================ */
+.service-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-block: 1px solid var(--ink-line);
+}
+.service-overview-card {
+  position: relative;
+  min-height: 220px;
+  padding: 24px 22px 28px;
+  border-right: 1px solid var(--ink-line);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+}
+.service-overview-card:last-child { border-right: 0; }
+.service-overview-card:hover,
+.service-overview-card:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-4px);
+}
+.service-overview-number {
+  color: var(--signal);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-mono);
+}
+.service-overview-eyebrow {
+  margin-top: auto;
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.service-overview-card:hover .service-overview-eyebrow,
+.service-overview-card:focus-visible .service-overview-eyebrow { color: var(--paper-muted); }
+.service-overview-card h2 {
+  max-width: 11ch;
+  margin: 10px 0 0;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+.service-overview-arrow {
+  position: absolute;
+  right: 22px;
+  bottom: 24px;
+  color: var(--signal);
+  font-size: 1.25rem;
+}
+.service-overview-card:hover .service-overview-arrow,
+.service-overview-card:focus-visible .service-overview-arrow { color: var(--amber); }
+
 .solutions {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
@@ -3131,6 +3186,10 @@ ul, ol  { margin: 0; }
   .hero .wrap { grid-template-columns: 1fr; }
   .hero-title .row2 { padding-left: 0; }
 
+  .service-overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .service-overview-card:nth-child(2) { border-right: 0; }
+  .service-overview-card:nth-child(-n + 2) { border-bottom: 1px solid var(--ink-line); }
+
   .solutions { grid-template-columns: 1fr; }
   .sol-preview { display: none; }
 
@@ -3214,6 +3273,10 @@ ul, ol  { margin: 0; }
 
 @media (max-width: 640px), (pointer: coarse) {
   :root { --rail: 20px; }
+  .service-overview-grid { grid-template-columns: 1fr; }
+  .service-overview-card,
+  .service-overview-card:nth-child(2) { min-height: 156px; border-right: 0; border-bottom: 1px solid var(--ink-line); }
+  .service-overview-card:last-child { border-bottom: 0; }
   .consulting-service > header { grid-template-columns: 36px minmax(0, 1fr); }
   .consulting-execution { align-items: flex-start; flex-direction: column; }
 

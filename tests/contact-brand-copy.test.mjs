@@ -57,10 +57,18 @@ test("homepage hero uses the approved three-line description in every locale", (
 test("homepage prioritizes services and articles over systems methodology", () => {
   const homepageSource = appSource.match(/\) : \(\s*<>[\s\S]*?<Hero copy=\{copy\} \/>[\s\S]*?<\/>\s*\)\}/)?.[0] || "";
 
-  assert.match(homepageSource, /<Solutions copy=\{copy\} \/>/);
+  assert.match(homepageSource, /<ServiceOverview copy=\{copy\} \/>/);
   assert.match(homepageSource, /<Insights \/>/);
   assert.doesNotMatch(homepageSource, /<Numbers copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<Manifesto copy=\{copy\} \/>/);
+});
+
+test("service overview keeps the homepage service list compact and linked", () => {
+  const serviceOverviewSource = functionSource("ServiceOverview", "Solutions");
+
+  assert.match(serviceOverviewSource, /serviceFamiliesByLocale/);
+  assert.match(serviceOverviewSource, /service-overview-grid/);
+  assert.match(serviceOverviewSource, /href="\/solutions\.html"/);
 });
 
 test("achievements and footer omit the retired introduction and business ID", () => {
