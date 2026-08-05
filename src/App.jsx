@@ -995,24 +995,11 @@ function HeroTechBackground() {
           <circle cx="1092" cy="430" r="218" className="hero-tech-calibration-minor hero-tech-calibration-inner" />
           <path className="hero-tech-calibration-major" d="M1092 106v30M1092 724v30M768 430h30M1386 430h30M863 201l21 21M1300 638l21 21M1321 201l-21 21M884 638l-21 21" />
           <path className="hero-tech-calibration-arc" d="M1092 108a322 322 0 0 1 316 262M776 430a322 322 0 0 1 160-279" />
-          <text className="hero-tech-calibration-label" x="1080" y="92">CAL / 24</text>
-          <text className="hero-tech-calibration-label" x="1412" y="438">R 286</text>
         </g>
         <g className="hero-tech-reticle">
           <circle cx="1092" cy="430" r="42" />
           <path d="M1028 430h128M1092 366v128" />
           <rect x="1087" y="425" width="10" height="10" />
-        </g>
-        <g className="hero-tech-markers">
-          <text x="844" y="112">SYS / 011</text>
-          <text x="1204" y="188">LAT 25.03</text>
-          <text x="1260" y="744">E-CORE 72</text>
-          <text x="860" y="704">EST // SIGNAL</text>
-          <path d="M822 127h154M1204 204h108M1158 760h164M860 720h127" />
-        </g>
-        <g className="hero-tech-glitch">
-          <path d="M916 242h126M1250 338h94M864 592h148" />
-          <text x="1230" y="324">03:14:26</text>
         </g>
         <line className="hero-tech-scan" x1="760" y1="0" x2="760" y2="900" />
       </svg>

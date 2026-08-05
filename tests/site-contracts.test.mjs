@@ -182,7 +182,6 @@ test("homepage hero provides an accessible mechanical background", () => {
   assert.match(app, /hero-tech-calibration/);
   assert.match(app, /hero-tech-calibration-minor/);
   assert.match(app, /hero-tech-calibration-major/);
-  assert.match(app, /hero-tech-markers/);
   assert.match(app, /hero-tech-scan/);
   assert.match(app, /matchMedia\("\(pointer: fine\)"\)/);
   assert.match(app, /requestAnimationFrame/);
@@ -193,8 +192,8 @@ test("homepage hero provides an accessible mechanical background", () => {
   assert.match(css, /\.hero-tech-calibration-arc\s*\{[\s\S]*?16 9[\s\S]*?hero-calibration-sweep 18s/);
   assert.match(css, /@keyframes hero-calibration-breathe[\s\S]*?opacity:\s*0\.62/);
   assert.match(css, /\.hero-tech-scan\s*\{[\s\S]*?9s/);
-  assert.match(css, /\.hero::after\s*\{[\s\S]*?linear-gradient\([\s\S]*?rgba\(184,\s*154,\s*98/);
-  assert.match(css, /\.hero::after\s*\{[\s\S]*?animation:\s*hero-grid-scan 7s/);
+  assert.match(css, /\.hero::after\s*\{[\s\S]*?linear-gradient\([\s\S]*?rgba\(143,\s*121,\s*86/);
+  assert.match(css, /\.hero::after\s*\{[\s\S]*?animation:\s*hero-grid-scan 14s/);
   assert.match(css, /@keyframes hero-grid-scan[\s\S]*?translateY\(18%\)/);
   assert.match(css, /@keyframes hero-grid-breathe[\s\S]*?background-position/);
   assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*hero-tech-background/);
