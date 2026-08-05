@@ -54,6 +54,15 @@ test("homepage hero uses the approved three-line description in every locale", (
   assert.match(heroSource, /copy\.hero\.lede\[2\]/);
 });
 
+test("homepage prioritizes services and articles over systems methodology", () => {
+  const homepageSource = appSource.match(/\) : \(\s*<>[\s\S]*?<Hero copy=\{copy\} \/>[\s\S]*?<\/>\s*\)\}/)?.[0] || "";
+
+  assert.match(homepageSource, /<Solutions copy=\{copy\} \/>/);
+  assert.match(homepageSource, /<Insights \/>/);
+  assert.doesNotMatch(homepageSource, /<Numbers copy=\{copy\} \/>/);
+  assert.doesNotMatch(homepageSource, /<Manifesto copy=\{copy\} \/>/);
+});
+
 test("achievements and footer omit the retired introduction and business ID", () => {
   const numbersSource = functionSource("Numbers", "Manifesto");
   const footerSource = functionSource("Footer", "ConstructionScreen");

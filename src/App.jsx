@@ -2545,14 +2545,8 @@ export default function App() {
           <>
             <Hero copy={copy} />
             <Marquee copy={copy} />
-            <Numbers copy={copy} />
-            <Manifesto copy={copy} />
             <Solutions copy={copy} />
             <Insights />
-            {initialSection === "solutions" ? <Solutions copy={copy} /> : null}
-            {initialSection === "case" ? <CasePortfolio copy={copy} /> : null}
-            {initialSection === "case" ? <Solutions copy={copy} /> : null}
-            {initialSection === "about" ? <TechStack /> : null}
             <Contact copy={copy} />
           </>
         )}
