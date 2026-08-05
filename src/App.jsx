@@ -72,6 +72,12 @@ const menuLabels = {
   },
 };
 
+const desktopPrimaryMenuCopy = {
+  zh: { faq: "常見問題", articles: "文章", siteMenu: "網站導覽" },
+  en: { faq: "FAQ", articles: "Articles", siteMenu: "Site navigation" },
+  ja: { faq: "よくある質問", articles: "記事", siteMenu: "サイトナビゲーション" },
+};
+
 const consultingServicesByLocale = {
   zh: {
     sectionLabel: "商業顧問服務",
@@ -2035,8 +2041,20 @@ function MobileNav({ locale, fontControls }) {
 }
 
 function DesktopCursorMenu({ locale, fontControls }) {
-  const desktopMenuGroups = getServiceMenuGroups(locale);
   const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
+  const primaryLabels = desktopPrimaryMenuCopy[locale] || desktopPrimaryMenuCopy.zh;
+  const primaryMenuItems = [
+    { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
+    { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
+    { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
+    { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
+    { key: "articles", label: primaryLabels.articles, href: "/#insights" },
+    { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
+  ];
+  const desktopMenuGroups = {
+    primary: { label: primaryLabels.siteMenu, items: primaryMenuItems },
+    growth: getServiceMenuGroups(locale).growth,
+  };
   const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
@@ -2325,14 +2343,6 @@ export default function App() {
   });
   const copy = useMemo(() => ({ ...getCopy(locale), locale }), [locale]);
 
-  const isLocalPreview = useMemo(() => {
-    if (typeof window === "undefined") {
-      return false;
-    }
-    const localHosts = new Set(["localhost", "127.0.0.1", "::1"]);
-    return import.meta.env.DEV || localHosts.has(window.location.hostname);
-  }, []);
-
   const [shouldUseMobileNav, setShouldUseMobileNav] = useState(() => {
     if (typeof window === "undefined") {
       return false;
@@ -2538,7 +2548,7 @@ export default function App() {
             <Numbers copy={copy} />
             <Manifesto copy={copy} />
             <Solutions copy={copy} />
-            {isLocalPreview ? <Insights /> : null}
+            <Insights />
             {initialSection === "solutions" ? <Solutions copy={copy} /> : null}
             {initialSection === "case" ? <CasePortfolio copy={copy} /> : null}
             {initialSection === "case" ? <Solutions copy={copy} /> : null}

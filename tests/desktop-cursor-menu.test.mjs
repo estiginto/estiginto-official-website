@@ -32,8 +32,12 @@ test("desktop service menu recomputes its enabled focus boundary on every Tab pr
   assert.match(desktopMenuSource, /if \(!menu\?\.contains\(document\.activeElement\)\)/);
 });
 
-test("desktop service links use the shared mobile service destinations", () => {
-  assert.match(desktopMenuSource, /const desktopMenuGroups = getServiceMenuGroups\(locale\);/);
+test("desktop navigation restores site destinations and keeps consulting services", () => {
+  assert.match(desktopMenuSource, /const primaryMenuItems = \[/);
+  assert.match(desktopMenuSource, /href: "\/faq\.html"/);
+  assert.match(desktopMenuSource, /href: "\/\#insights"/);
+  assert.match(desktopMenuSource, /href: "\/contact\.html"/);
+  assert.match(desktopMenuSource, /growth: getServiceMenuGroups\(locale\)\.growth/);
   assert.match(desktopMenuSource, /Object\.entries\(desktopMenuGroups\)\.map/);
   assert.match(desktopMenuSource, /href=\{item\.href\}/);
   assert.match(cssSource, /\.desktop-service-menu\s*\{[\s\S]*?border-radius:\s*18px;/);
