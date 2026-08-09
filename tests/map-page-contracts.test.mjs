@@ -58,3 +58,15 @@ test("map HUD provides reduced motion and truthful status regions", () => {
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.match(css, /\.hud-decoration[\s\S]*pointer-events:\s*none/);
 });
+
+test("mobile map HUD provides a safe-area bottom sheet without stealing map gestures", () => {
+  const app = read("src/map/MapExperience.jsx");
+  const css = read("src/map/map.css");
+  assert.match(css, /@media\s*\(max-width:\s*760px\)/);
+  assert.match(css, /\.map-mobile-sheet/);
+  assert.match(css, /env\(safe-area-inset-bottom\)/);
+  assert.match(css, /touch-action:\s*pan-x pan-y/);
+  assert.match(app, /mobilePanel/);
+  assert.match(app, />搜尋結果</);
+  assert.match(app, />目標資料</);
+});

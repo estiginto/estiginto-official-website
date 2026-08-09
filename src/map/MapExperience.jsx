@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import WorldMap from "./WorldMap.jsx";
 import { TAIWAN_CAMERA } from "./mapConfig.js";
 import usePlaceSearch from "./usePlaceSearch.js";
@@ -27,6 +27,7 @@ export default function MapExperience() {
   const [mapStatus, setMapStatus] = useState("loading");
   const [mapNotice, setMapNotice] = useState("");
   const [mapInstanceKey, setMapInstanceKey] = useState(0);
+  const [mobilePanel, setMobilePanel] = useState("closed");
   const reducedMotion = useReducedMotion();
   const search = usePlaceSearch({ apiKey: MAPTILER_KEY, proximity: camera.center });
   const threeDUnavailable = mapStatus === "three-d-unavailable";
@@ -49,6 +50,12 @@ export default function MapExperience() {
     return mapNotice || "地圖已就緒。";
   }, [failureKind, focusStatus, mapNotice, mapStatus, search.state, selectedPlace, threeDUnavailable]);
 
+  useEffect(() => {
+    if (search.state.status === "success" && search.state.results.length) {
+      setMobilePanel("results");
+    }
+  }, [search.state.results.length, search.state.status]);
+
   const handleMapStatus = (status, detail = {}) => {
     if (status === "map-error" && detail.usable) {
       setMapNotice("部分圖磚暫時無法載入，地圖仍可操作。");
@@ -63,6 +70,7 @@ export default function MapExperience() {
     search.selectResult(result);
     setSelectedPlace(result);
     setFocusStatus("focusing");
+    setMobilePanel("target");
   };
 
   const handleSelectActive = () => {
@@ -70,6 +78,7 @@ export default function MapExperience() {
     if (result) {
       setSelectedPlace(result);
       setFocusStatus("focusing");
+      setMobilePanel("target");
     }
   };
 
@@ -80,12 +89,18 @@ export default function MapExperience() {
   const clearTarget = () => {
     setSelectedPlace(null);
     setFocusStatus("idle");
+    setMobilePanel(search.state.results.length ? "results" : "closed");
   };
 
   const retryMap = () => {
     setMapStatus("loading");
     setMapNotice("");
     setMapInstanceKey((key) => key + 1);
+  };
+
+  const closeSearchResults = () => {
+    search.closeResults();
+    setMobilePanel("closed");
   };
 
   return (
@@ -131,12 +146,41 @@ export default function MapExperience() {
           onQueryChange={search.setQuery}
           onMoveActive={search.moveActive}
           onSelectActive={handleSelectActive}
-          onCloseResults={search.closeResults}
+          onCloseResults={closeSearchResults}
           onRetry={search.retry}
         />
       </div>
 
-      <div className="map-panel-deck hud-interactive">
+      <div
+        className="map-panel-deck map-mobile-sheet hud-interactive"
+        data-mobile-panel={mobilePanel}
+      >
+        <div className="mobile-sheet-handle" aria-hidden="true" />
+        <div className="mobile-sheet-tabs" role="tablist" aria-label="地圖資料面板">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={mobilePanel === "results"}
+            onClick={() => setMobilePanel("results")}
+          >搜尋結果</button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={mobilePanel === "target"}
+            disabled={!selectedPlace}
+            onClick={() => setMobilePanel("target")}
+          >目標資料</button>
+        </div>
+        <button
+          className="mobile-sheet-close icon-button"
+          type="button"
+          aria-label="關閉資料面板"
+          onClick={() => setMobilePanel("closed")}
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
+        </button>
         <aside className="results-panel angular-frame" aria-labelledby="search-results-heading">
           <div className="panel-heading" id="search-results-heading">
             <span>SEARCH RESULTS</span>
@@ -167,6 +211,14 @@ export default function MapExperience() {
           <TargetProfile place={selectedPlace} focusStatus={focusStatus} onClose={clearTarget} />
         </aside>
       </div>
+
+      {mobilePanel === "closed" && (selectedPlace || search.state.results.length > 0) && (
+        <button
+          className="mobile-sheet-reopen hud-interactive"
+          type="button"
+          onClick={() => setMobilePanel(selectedPlace ? "target" : "results")}
+        >開啟資料面板</button>
+      )}
 
       <div className="hud-decoration target-reticle" aria-hidden="true">
         <span className="reticle-ring reticle-ring-outer" />
