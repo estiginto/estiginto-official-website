@@ -49,7 +49,13 @@ export default function WorldMap({
   const threeDReadyRef = useRef(false);
   const focusListenerRef = useRef(null);
   const callbacksRef = useRef({ onCameraChange, onFocusSettled, onStatusChange });
+  const modeRef = useRef(mode);
+  const selectedPlaceRef = useRef(selectedPlace);
+  const reducedMotionRef = useRef(reducedMotion);
   callbacksRef.current = { onCameraChange, onFocusSettled, onStatusChange };
+  modeRef.current = mode;
+  selectedPlaceRef.current = selectedPlace;
+  reducedMotionRef.current = reducedMotion;
 
   useEffect(() => {
     if (!apiKey || !containerRef.current) return undefined;
@@ -111,6 +117,15 @@ export default function WorldMap({
         map.setTerrain(null);
         threeDReadyRef.current = true;
         callbacksRef.current.onStatusChange?.("ready");
+        if (modeRef.current === "3d") {
+          map.setTerrain({ source: TERRAIN_SOURCE_ID, exaggeration: 1.08 });
+          map.setLayoutProperty(BUILDING_LAYER_ID, "visibility", "visible");
+          map.easeTo({
+            ...cameraForMode("3d", readCamera(map), selectedPlaceRef.current),
+            duration: reducedMotionRef.current ? 0 : 700,
+            essential: false,
+          });
+        }
       } catch (error) {
         threeDReadyRef.current = false;
         callbacksRef.current.onStatusChange?.("three-d-unavailable", { error, usable: true });
@@ -148,13 +163,23 @@ export default function WorldMap({
       }
     }
 
-    const camera = cameraForMode(mode, readCamera(map), selectedPlace);
+    const camera = cameraForMode(mode, readCamera(map), selectedPlaceRef.current);
     map.easeTo({ ...camera, duration: reducedMotion ? 0 : 700, essential: false });
-  }, [mode, reducedMotion, selectedPlace]);
+  }, [mode, reducedMotion]);
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !loadedRef.current || !selectedPlace) return;
+    if (!map || !loadedRef.current) return undefined;
+
+    if (!selectedPlace) {
+      markerRef.current?.remove();
+      markerRef.current = null;
+      if (focusListenerRef.current) {
+        map.off("moveend", focusListenerRef.current);
+        focusListenerRef.current = null;
+      }
+      return undefined;
+    }
 
     if (!markerRef.current) {
       markerRef.current = new maplibregl.Marker({

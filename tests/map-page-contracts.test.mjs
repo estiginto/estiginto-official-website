@@ -37,3 +37,24 @@ test("map search controls expose combobox and listbox semantics", () => {
   assert.match(results, /role="listbox"/);
   assert.match(results, /aria-selected/);
 });
+
+test("map scope excludes directions and geolocation", () => {
+  const files = [
+    read("src/map/MapExperience.jsx"),
+    read("src/map/WorldMap.jsx"),
+    read("src/map/mapConfig.js"),
+  ].join("\n");
+  assert.doesNotMatch(
+    files,
+    /MapboxDirections|directions\/v|routeLayer|route-line|navigator\.geolocation|GeolocateControl/,
+  );
+});
+
+test("map HUD provides reduced motion and truthful status regions", () => {
+  const app = read("src/map/MapExperience.jsx");
+  const css = read("src/map/map.css");
+  assert.match(app, /aria-live="polite"/);
+  assert.match(app, /useReducedMotion/);
+  assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
+  assert.match(css, /\.hud-decoration[\s\S]*pointer-events:\s*none/);
+});
