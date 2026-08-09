@@ -5,12 +5,18 @@ import {
   buildingLayer,
   cameraForMode,
   findVectorSourceId,
+  mapStyleUrl,
 } from "../src/map/mapConfig.js";
 
 test("Taiwan camera is the stable initial view", () => {
   assert.deepEqual(TAIWAN_CAMERA.center, [120.96, 23.7]);
   assert.equal(TAIWAN_CAMERA.zoom, 7);
   assert.equal(TAIWAN_CAMERA.pitch, 0);
+});
+
+test("map style is an OpenFreeMap keyless vector style", () => {
+  assert.equal(mapStyleUrl(), "https://tiles.openfreemap.org/styles/dark");
+  assert.doesNotMatch(mapStyleUrl(), /key=|maptiler/i);
 });
 
 test("mode cameras preserve center and selected target", () => {
@@ -44,4 +50,3 @@ test("vector source discovery ignores raster and terrain sources", () => {
   } }), "openmaptiles");
   assert.equal(findVectorSourceId({ sources: {} }), null);
 });
-

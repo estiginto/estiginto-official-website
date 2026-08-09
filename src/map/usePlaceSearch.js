@@ -9,7 +9,6 @@ import {
 const SEARCH_FAILURE_MESSAGE = "搜尋服務暫時無法使用，請稍後重試。";
 
 export default function usePlaceSearch({
-  apiKey,
   proximity,
   debounceMs = 300,
 }) {
@@ -17,7 +16,7 @@ export default function usePlaceSearch({
   const [retryVersion, setRetryVersion] = useState(0);
   const gateRef = useRef(createRequestGate());
   const abortRef = useRef(null);
-  const service = useMemo(() => createPlaceSearchService({ apiKey }), [apiKey]);
+  const service = useMemo(() => createPlaceSearchService(), []);
   const longitude = proximity?.[0];
   const latitude = proximity?.[1];
 
@@ -26,7 +25,7 @@ export default function usePlaceSearch({
     abortRef.current?.abort();
     abortRef.current = null;
 
-    if (query.length < 2 || !apiKey) return undefined;
+    if (query.length < 2) return undefined;
 
     const timer = window.setTimeout(async () => {
       const requestId = gateRef.current.next();
@@ -39,7 +38,7 @@ export default function usePlaceSearch({
           proximity: Number.isFinite(longitude) && Number.isFinite(latitude)
             ? [longitude, latitude]
             : undefined,
-          language: "zh",
+          language: "default",
           signal: controller.signal,
         });
 
@@ -57,7 +56,7 @@ export default function usePlaceSearch({
       window.clearTimeout(timer);
       abortRef.current?.abort();
     };
-  }, [apiKey, debounceMs, latitude, longitude, retryVersion, service, state.query]);
+  }, [debounceMs, latitude, longitude, retryVersion, service, state.query]);
 
   useEffect(() => () => abortRef.current?.abort(), []);
 

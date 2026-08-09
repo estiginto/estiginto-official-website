@@ -5,13 +5,7 @@ export const TAIWAN_CAMERA = Object.freeze({
   bearing: 0,
 });
 
-export const mapStyleUrl = (apiKey) =>
-  "https://api.maptiler.com/maps/dataviz-dark/style.json?key="
-  + encodeURIComponent(apiKey);
-
-export const terrainSourceUrl = (apiKey) =>
-  "https://api.maptiler.com/tiles/terrain-rgb-v2/tiles.json?key="
-  + encodeURIComponent(apiKey);
+export const mapStyleUrl = () => "https://tiles.openfreemap.org/styles/dark";
 
 export function cameraForMode(mode, camera, selectedPlace) {
   const selectedCenter = selectedPlace?.coordinates;

@@ -6,10 +6,8 @@ import {
   cameraForMode,
   findVectorSourceId,
   mapStyleUrl,
-  terrainSourceUrl,
 } from "./mapConfig.js";
 
-const TERRAIN_SOURCE_ID = "estiginto-terrain";
 const BUILDING_LAYER_ID = "estiginto-3d-buildings";
 
 function readCamera(map) {
@@ -33,7 +31,6 @@ function createTargetElement() {
 }
 
 export default function WorldMap({
-  apiKey,
   mode,
   selectedPlace,
   reducedMotion,
@@ -58,7 +55,7 @@ export default function WorldMap({
   reducedMotionRef.current = reducedMotion;
 
   useEffect(() => {
-    if (!apiKey || !containerRef.current) return undefined;
+    if (!containerRef.current) return undefined;
 
     callbacksRef.current.onStatusChange?.("loading");
     let map;
@@ -66,7 +63,7 @@ export default function WorldMap({
     try {
       map = new maplibregl.Map({
         container: containerRef.current,
-        style: mapStyleUrl(apiKey),
+        style: mapStyleUrl(),
         ...TAIWAN_CAMERA,
         antialias: true,
         attributionControl: true,
@@ -97,16 +94,6 @@ export default function WorldMap({
       reportCamera();
 
       try {
-        if (!map.getSource(TERRAIN_SOURCE_ID)) {
-          map.addSource(TERRAIN_SOURCE_ID, {
-            type: "raster-dem",
-            url: terrainSourceUrl(apiKey),
-            tileSize: 512,
-            maxzoom: 14,
-            encoding: "mapbox",
-          });
-        }
-
         const sourceId = findVectorSourceId(map.getStyle());
         if (!sourceId) throw new Error("Map style has no vector source for buildings.");
         const firstSymbol = map.getStyle().layers?.find((layer) => layer.type === "symbol")?.id;
@@ -114,11 +101,9 @@ export default function WorldMap({
           map.addLayer(buildingLayer(sourceId), firstSymbol);
         }
         map.setLayoutProperty(BUILDING_LAYER_ID, "visibility", "none");
-        map.setTerrain(null);
         threeDReadyRef.current = true;
         callbacksRef.current.onStatusChange?.("ready");
         if (modeRef.current === "3d") {
-          map.setTerrain({ source: TERRAIN_SOURCE_ID, exaggeration: 1.08 });
           map.setLayoutProperty(BUILDING_LAYER_ID, "visibility", "visible");
           map.easeTo({
             ...cameraForMode("3d", readCamera(map), selectedPlaceRef.current),
@@ -147,17 +132,15 @@ export default function WorldMap({
       usableRef.current = false;
       threeDReadyRef.current = false;
     };
-  }, [apiKey]);
+  }, []);
 
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !loadedRef.current) return;
 
     if (mode === "3d" && threeDReadyRef.current) {
-      map.setTerrain({ source: TERRAIN_SOURCE_ID, exaggeration: 1.08 });
       map.setLayoutProperty(BUILDING_LAYER_ID, "visibility", "visible");
     } else {
-      map.setTerrain(null);
       if (map.getLayer(BUILDING_LAYER_ID)) {
         map.setLayoutProperty(BUILDING_LAYER_ID, "visibility", "none");
       }

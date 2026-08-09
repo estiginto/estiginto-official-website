@@ -9,8 +9,6 @@ import SearchResults from "./components/SearchResults.jsx";
 import SystemFailure from "./components/SystemFailure.jsx";
 import TargetProfile from "./components/TargetProfile.jsx";
 
-const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY?.trim() ?? "";
-
 function searchStatusMessage(searchState) {
   if (searchState.status === "searching") return "正在搜尋真實世界地點。";
   if (searchState.status === "success") return `找到 ${searchState.results.length} 個地點。`;
@@ -29,18 +27,16 @@ export default function MapExperience() {
   const [mapInstanceKey, setMapInstanceKey] = useState(0);
   const [mobilePanel, setMobilePanel] = useState("closed");
   const reducedMotion = useReducedMotion();
-  const search = usePlaceSearch({ apiKey: MAPTILER_KEY, proximity: camera.center });
+  const search = usePlaceSearch({ proximity: camera.center });
   const threeDUnavailable = mapStatus === "three-d-unavailable";
-  const failureKind = !MAPTILER_KEY
-    ? "missing-key"
-    : mapStatus === "unsupported"
+  const failureKind = mapStatus === "unsupported"
       ? "unsupported"
       : mapStatus === "map-error"
         ? "map-error"
         : null;
 
   const liveMessage = useMemo(() => {
-    if (failureKind) return failureKind === "missing-key" ? "地圖服務尚未設定。" : "地圖無法載入。";
+    if (failureKind) return "地圖無法載入。";
     const searchMessage = searchStatusMessage(search.state);
     if (searchMessage) return searchMessage;
     if (focusStatus === "focusing") return `正在鎖定 ${selectedPlace?.name ?? "目標"}。`;
@@ -51,10 +47,10 @@ export default function MapExperience() {
   }, [failureKind, focusStatus, mapNotice, mapStatus, search.state, selectedPlace, threeDUnavailable]);
 
   useEffect(() => {
-    if (search.state.status === "success" && search.state.results.length) {
+    if (search.state.status === "success" && search.state.results.length && !selectedPlace) {
       setMobilePanel("results");
     }
-  }, [search.state.results.length, search.state.status]);
+  }, [search.state.results.length, search.state.status, selectedPlace]);
 
   const handleMapStatus = (status, detail = {}) => {
     if (status === "map-error" && detail.usable) {
@@ -117,7 +113,6 @@ export default function MapExperience() {
         ) : (
           <WorldMap
             key={mapInstanceKey}
-            apiKey={MAPTILER_KEY}
             mode={mode}
             selectedPlace={selectedPlace}
             reducedMotion={reducedMotion}

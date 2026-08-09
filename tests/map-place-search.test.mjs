@@ -4,98 +4,90 @@ import {
   PlaceSearchError,
   buildPlaceSearchUrl,
   createPlaceSearchService,
-  normalizeMapTilerFeature,
+  normalizePhotonFeature,
 } from "../src/map/placeSearch.js";
 
 const feature = {
-  id: "poi.101",
-  text: "台北 101",
-  place_name: "台北 101, 信義區, 臺北市, 臺灣",
-  place_type: ["poi"],
-  place_type_name: ["地標"],
-  center: [121.5645, 25.0339],
-  bbox: [121.563, 25.032, 121.566, 25.036],
-  properties: { categories: ["attraction"] },
+  type: "Feature",
+  geometry: { type: "Point", coordinates: [121.5645, 25.0339] },
+  properties: {
+    name: "台北 101",
+    osm_key: "tourism",
+    osm_value: "attraction",
+    osm_type: "W",
+    osm_id: 293782783,
+    street: "市府路",
+    housenumber: "45",
+    district: "信義區",
+    city: "臺北市",
+    country: "臺灣",
+    extent: [121.563, 25.036, 121.566, 25.032],
+  },
 };
 
-test("search URL enables POIs and biases without restricting to Taiwan", () => {
+test("Photon URL biases to the map center without restricting global search", () => {
   const url = buildPlaceSearchUrl({
     query: "台北 101",
-    apiKey: "public-test-key",
     proximity: [121.56, 25.03],
-    language: "zh",
+    language: "default",
   });
 
-  assert.equal(url.pathname, "/geocoding/%E5%8F%B0%E5%8C%97%20101.json");
-  assert.equal(url.searchParams.get("types"), "address,road,place,locality,municipality,poi");
-  assert.equal(url.searchParams.get("proximity"), "121.56,25.03");
-  assert.equal(url.searchParams.get("language"), "zh");
+  assert.equal(url.origin, "https://photon.komoot.io");
+  assert.equal(url.pathname, "/api/");
+  assert.equal(url.searchParams.get("q"), "台北 101");
+  assert.equal(url.searchParams.get("lon"), "121.56");
+  assert.equal(url.searchParams.get("lat"), "25.03");
+  assert.equal(url.searchParams.get("lang"), "default");
   assert.equal(url.searchParams.get("limit"), "8");
-  assert.equal(url.searchParams.has("country"), false);
+  assert.equal(url.searchParams.has("countrycode"), false);
+  assert.equal(url.searchParams.has("key"), false);
 });
 
-test("feature normalization returns the stable local contract", () => {
-  assert.deepEqual(normalizeMapTilerFeature(feature, "© MapTiler"), {
-    id: "poi.101",
+test("Photon normalization returns the stable local place contract", () => {
+  assert.deepEqual(normalizePhotonFeature(feature), {
+    id: "W.293782783",
     name: "台北 101",
-    fullName: "台北 101, 信義區, 臺北市, 臺灣",
-    address: "信義區, 臺北市, 臺灣",
-    kind: "地標",
+    fullName: "台北 101, 市府路 45, 信義區, 臺北市, 臺灣",
+    address: "市府路 45, 信義區, 臺北市, 臺灣",
+    kind: "attraction",
     coordinates: [121.5645, 25.0339],
     bbox: [121.563, 25.032, 121.566, 25.036],
-    attribution: "© MapTiler",
+    attribution: "© OpenStreetMap contributors · Photon",
   });
 });
 
-test("normalization rejects features without finite coordinates", () => {
-  assert.equal(normalizeMapTilerFeature({ ...feature, center: undefined }, "source"), null);
-  assert.equal(normalizeMapTilerFeature({ ...feature, center: [NaN, 25] }, "source"), null);
+test("normalization rejects features without finite point coordinates", () => {
+  assert.equal(normalizePhotonFeature({ ...feature, geometry: undefined }), null);
+  assert.equal(normalizePhotonFeature({ ...feature, geometry: { coordinates: [NaN, 25] } }), null);
 });
 
-test("search passes the AbortSignal and filters invalid features", async () => {
+test("search passes AbortSignal and filters invalid features", async () => {
   const controller = new AbortController();
   let capturedOptions;
   const service = createPlaceSearchService({
-    apiKey: "public-test-key",
     fetchImpl: async (_url, options) => {
       capturedOptions = options;
-      return {
-        ok: true,
-        json: async () => ({ attribution: "© MapTiler", features: [feature, { id: "bad" }] }),
-      };
+      return { ok: true, json: async () => ({ features: [feature, { type: "Feature" }] }) };
     },
   });
 
   const results = await service.search("台北 101", { signal: controller.signal });
   assert.equal(capturedOptions.signal, controller.signal);
   assert.equal(results.length, 1);
-  assert.equal(results[0].id, "poi.101");
+  assert.equal(results[0].id, "W.293782783");
 });
 
-test("empty feature collections return an empty result", async () => {
-  const service = createPlaceSearchService({
-    apiKey: "public-test-key",
+test("empty collections return an empty result and failed requests stay typed", async () => {
+  const emptyService = createPlaceSearchService({
     fetchImpl: async () => ({ ok: true, json: async () => ({ features: [] }) }),
   });
-  assert.deepEqual(await service.search("nothing"), []);
-});
+  assert.deepEqual(await emptyService.search("nothing"), []);
 
-test("non-success responses become typed request errors", async () => {
-  const service = createPlaceSearchService({
-    apiKey: "public-test-key",
+  const failedService = createPlaceSearchService({
     fetchImpl: async () => ({ ok: false, status: 429 }),
   });
-
   await assert.rejects(
-    () => service.search("台北"),
+    () => failedService.search("台北"),
     (error) => error instanceof PlaceSearchError && error.code === "request-failed",
   );
 });
-
-test("a missing API key fails before a request is built", () => {
-  assert.throws(
-    () => buildPlaceSearchUrl({ query: "台北", apiKey: "" }),
-    (error) => error instanceof PlaceSearchError && error.code === "missing-key",
-  );
-});
-

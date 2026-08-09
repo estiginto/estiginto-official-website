@@ -29,6 +29,14 @@ test("the existing marketing app does not absorb the map feature", () => {
   assert.doesNotMatch(read("src/App.jsx"), /MapExperience|maplibre-gl|VITE_MAPTILER_KEY/);
 });
 
+test("map experience is keyless and has no environment setup contract", () => {
+  const app = read("src/map/MapExperience.jsx");
+  const map = read("src/map/WorldMap.jsx");
+  const search = read("src/map/placeSearch.js");
+  assert.doesNotMatch([app, map, search].join("\n"), /VITE_MAPTILER_KEY|missing-key|apiKey/);
+  assert.doesNotMatch(read("map.html"), /MapTiler/);
+});
+
 test("map search controls expose combobox and listbox semantics", () => {
   const command = read("src/map/components/SearchCommand.jsx");
   const results = read("src/map/components/SearchResults.jsx");
@@ -57,6 +65,11 @@ test("map HUD provides reduced motion and truthful status regions", () => {
   assert.match(app, /useReducedMotion/);
   assert.match(css, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.match(css, /\.hud-decoration[\s\S]*pointer-events:\s*none/);
+});
+
+test("mobile target lock is not replaced by a refreshed result list", () => {
+  const app = read("src/map/MapExperience.jsx");
+  assert.match(app, /search\.state\.results\.length && !selectedPlace/);
 });
 
 test("mobile map HUD provides a safe-area bottom sheet without stealing map gestures", () => {

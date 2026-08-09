@@ -74,8 +74,8 @@ export default function HudChrome({
         </div>
         <div><span>MODE</span><output>{mode === "3d" ? "3D 城市" : "2D 戰術"}</output></div>
         <div className="provider-credit">
-          <a href="https://www.maptiler.com/copyright/" target="_blank" rel="noreferrer">
-            MAPTILER
+          <a href="https://openfreemap.org/" target="_blank" rel="noreferrer">
+            OPENFREEMAP
           </a>
           <b>·</b>
           <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">

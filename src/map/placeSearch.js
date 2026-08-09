@@ -1,5 +1,5 @@
-const SEARCH_TYPES = "address,road,place,locality,municipality,poi";
 const SEARCH_LIMIT = "8";
+const PHOTON_ATTRIBUTION = "© OpenStreetMap contributors · Photon";
 
 export class PlaceSearchError extends Error {
   constructor(code, message, options) {
@@ -9,42 +9,47 @@ export class PlaceSearchError extends Error {
   }
 }
 
-export function buildPlaceSearchUrl({
-  query,
-  apiKey,
-  proximity,
-  language = "zh",
-}) {
-  if (!apiKey) {
-    throw new PlaceSearchError("missing-key", "MapTiler API key is missing.");
-  }
-
-  const normalizedQuery = String(query ?? "").trim();
-  const url = new URL(
-    "https://api.maptiler.com/geocoding/" + encodeURIComponent(normalizedQuery) + ".json",
-  );
-  url.searchParams.set("key", apiKey);
-  url.searchParams.set("types", SEARCH_TYPES);
+export function buildPlaceSearchUrl({ query, proximity, language = "default" }) {
+  const url = new URL("https://photon.komoot.io/api/");
+  url.searchParams.set("q", String(query ?? "").trim());
   url.searchParams.set("limit", SEARCH_LIMIT);
-  url.searchParams.set("autocomplete", "true");
-  url.searchParams.set("fuzzyMatch", "true");
-  url.searchParams.set("language", language);
+  url.searchParams.set("lang", language);
 
   if (
     Array.isArray(proximity)
     && proximity.length === 2
     && proximity.every(Number.isFinite)
   ) {
-    url.searchParams.set("proximity", proximity.join(","));
+    url.searchParams.set("lon", String(proximity[0]));
+    url.searchParams.set("lat", String(proximity[1]));
+    url.searchParams.set("zoom", "12");
+    url.searchParams.set("location_bias_scale", "0.4");
   }
 
   return url;
 }
 
-export function normalizeMapTilerFeature(feature, attribution = "© MapTiler") {
-  const coordinates = feature?.center;
+function compact(values) {
+  return values.filter((value, index) => value && values.indexOf(value) === index);
+}
+
+function normalizeBbox(extent) {
+  if (!Array.isArray(extent) || extent.length !== 4 || !extent.every(Number.isFinite)) {
+    return null;
+  }
+  return [
+    Math.min(extent[0], extent[2]),
+    Math.min(extent[1], extent[3]),
+    Math.max(extent[0], extent[2]),
+    Math.max(extent[1], extent[3]),
+  ];
+}
+
+export function normalizePhotonFeature(feature) {
+  const coordinates = feature?.geometry?.coordinates;
   if (
-    !Array.isArray(coordinates)
+    feature?.geometry?.type !== "Point"
+    || !Array.isArray(coordinates)
     || coordinates.length < 2
     || !Number.isFinite(coordinates[0])
     || !Number.isFinite(coordinates[1])
@@ -52,39 +57,49 @@ export function normalizeMapTilerFeature(feature, attribution = "© MapTiler") {
     return null;
   }
 
-  const name = String(feature.text ?? feature.place_name ?? "未命名地點").trim();
-  const fullName = String(feature.place_name ?? name).trim();
-  const prefix = `${name}, `;
-  const address = fullName.startsWith(prefix) ? fullName.slice(prefix.length) : fullName;
-  const kind = feature.place_type_name?.[0]
-    ?? feature.properties?.categories?.[0]
-    ?? feature.place_type?.[0]
-    ?? "地點";
+  const properties = feature.properties ?? {};
+  const name = String(properties.name ?? properties.city ?? properties.country ?? "未命名地點").trim();
+  const streetAddress = compact([
+    properties.street,
+    properties.housenumber,
+  ]).join(" ");
+  const addressParts = compact([
+    streetAddress,
+    properties.district,
+    properties.locality,
+    properties.city,
+    properties.county,
+    properties.state,
+    properties.country,
+  ]);
+  const address = addressParts.join(", ");
+  const identity = properties.osm_type && properties.osm_id
+    ? `${properties.osm_type}.${properties.osm_id}`
+    : `${coordinates[0]},${coordinates[1]}`;
 
   return {
-    id: String(feature.id ?? `${coordinates[0]},${coordinates[1]}`),
+    id: String(identity),
     name,
-    fullName,
+    fullName: compact([name, ...addressParts]).join(", "),
     address,
-    kind: String(kind),
+    kind: String(properties.type ?? properties.osm_value ?? properties.osm_key ?? "地點"),
     coordinates: [coordinates[0], coordinates[1]],
-    bbox: Array.isArray(feature.bbox) && feature.bbox.length === 4
-      ? [...feature.bbox]
-      : null,
-    attribution: String(attribution || "© MapTiler"),
+    bbox: normalizeBbox(properties.extent),
+    attribution: PHOTON_ATTRIBUTION,
   };
 }
 
-export function createPlaceSearchService({ apiKey, fetchImpl = fetch }) {
+export function createPlaceSearchService({ fetchImpl = fetch } = {}) {
   return {
-    async search(query, { proximity, language = "zh", signal } = {}) {
+    async search(query, { proximity, language = "default", signal } = {}) {
       if (!String(query ?? "").trim()) return [];
 
-      const url = buildPlaceSearchUrl({ query, apiKey, proximity, language });
       let response;
-
       try {
-        response = await fetchImpl(url, { signal });
+        response = await fetchImpl(
+          buildPlaceSearchUrl({ query, proximity, language }),
+          { signal, headers: { Accept: "application/json" } },
+        );
       } catch (error) {
         if (error?.name === "AbortError") throw error;
         throw new PlaceSearchError(
@@ -97,17 +112,14 @@ export function createPlaceSearchService({ apiKey, fetchImpl = fetch }) {
       if (!response.ok) {
         throw new PlaceSearchError(
           "request-failed",
-          `MapTiler search request failed (${response.status ?? "unknown"}).`,
+          `Photon search request failed (${response.status ?? "unknown"}).`,
         );
       }
 
       try {
         const payload = await response.json();
-        const attribution = payload.attribution || "© MapTiler";
         const features = Array.isArray(payload.features) ? payload.features : [];
-        return features
-          .map((feature) => normalizeMapTilerFeature(feature, attribution))
-          .filter(Boolean);
+        return features.map(normalizePhotonFeature).filter(Boolean);
       } catch (error) {
         throw new PlaceSearchError(
           "request-failed",
@@ -118,4 +130,3 @@ export function createPlaceSearchService({ apiKey, fetchImpl = fetch }) {
     },
   };
 }
-

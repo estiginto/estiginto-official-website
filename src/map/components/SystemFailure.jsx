@@ -1,9 +1,4 @@
 const failureCopy = {
-  "missing-key": {
-    code: "CONFIGURATION REQUIRED",
-    title: "地圖服務尚未設定",
-    message: "請在本機環境設定 MapTiler 瀏覽器金鑰後重新開啟此頁。",
-  },
   unsupported: {
     code: "WEBGL UNAVAILABLE",
     title: "此裝置無法顯示互動地圖",

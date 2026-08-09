@@ -1,5 +1,7 @@
 # Cinematic Real-World Map HUD Implementation Plan
 
+> **Keyless provider amendment (2026-08-09):** The delivered implementation uses OpenFreeMap for the vector basemap and Photon/OpenStreetMap for real-place search. It reads no environment variable or API key. The 3D mode uses real vector-building extrusion and cinematic camera motion without keyed terrain data. Provider-specific steps below remain as the original implementation record.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a standalone `/map.html` experience that searches real MapTiler places, renders them on an interactive MapLibre map, and preserves the selected target while switching between cinematic 2D and 3D HUD modes.

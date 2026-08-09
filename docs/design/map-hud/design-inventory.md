@@ -24,9 +24,9 @@ These concepts translate the user's approved combined HUD direction into a produ
 - ZOOM
 - CENTER
 - MODE
-- MAPTILER · OPENSTREETMAP
+- OPENFREEMAP · OPENSTREETMAP
 
-Selected-place names, types, addresses, coordinates, and provider attribution come from the live MapTiler response and map state. They are not fixed product copy.
+Selected-place names, types, addresses, coordinates, and provider attribution come from live Photon/OpenStreetMap responses and the OpenFreeMap map state. They are not fixed product copy.
 
 ## Color tokens
 
@@ -109,4 +109,3 @@ Icons are code-native SVGs using `currentColor`; they have 1.5 px strokes, squar
 - The search command and mode switch remain above the map.
 - The selected target and attribution remain visible while the sheet is open.
 - Search results and target profile share one tabbed sheet; selecting a result switches to the target tab on compact screens.
-
