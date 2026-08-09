@@ -18,6 +18,7 @@ export default defineConfig({
         contact: htmlEntry("./contact.html"),
         consulting: htmlEntry("./consulting.html"),
         faq: htmlEntry("./faq.html"),
+        map: htmlEntry("./map.html"),
         solutions: htmlEntry("./solutions.html"),
       },
     },

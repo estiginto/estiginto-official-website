@@ -4,3 +4,6 @@ dist/
 .vercel/
 old/
 .worktrees/
+.env.local
+.env.*.local
+.superpowers/

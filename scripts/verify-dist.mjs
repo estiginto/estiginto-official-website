@@ -11,6 +11,7 @@ const requiredFiles = [
   "faq.html",
   "contact.html",
   "consulting.html",
+  "map.html",
   "robots.txt",
   "sitemap.xml",
 ];
