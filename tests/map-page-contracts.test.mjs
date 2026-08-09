@@ -29,3 +29,11 @@ test("the existing marketing app does not absorb the map feature", () => {
   assert.doesNotMatch(read("src/App.jsx"), /MapExperience|maplibre-gl|VITE_MAPTILER_KEY/);
 });
 
+test("map search controls expose combobox and listbox semantics", () => {
+  const command = read("src/map/components/SearchCommand.jsx");
+  const results = read("src/map/components/SearchResults.jsx");
+  assert.match(command, /role="combobox"/);
+  assert.match(command, /aria-activedescendant/);
+  assert.match(results, /role="listbox"/);
+  assert.match(results, /aria-selected/);
+});
