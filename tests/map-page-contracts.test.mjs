@@ -19,7 +19,7 @@ test("map page is an isolated Vite entry", () => {
 
 test("map page has a unique title, description, canonical, and favicon", () => {
   const html = read("map.html");
-  assert.match(html, /<title>[^<]*地圖[^<]*<\/title>/);
+  assert.match(html, /<title>地圖特效展示<\/title>/);
   assert.match(html, /<meta name="description" content="[^"]+"/);
   assert.match(html, /<link rel="canonical" href="https:\/\/estiginto\.com\/map\.html"/);
   assert.match(html, /<link rel="icon" href="\/img\/logo_estiginto\.png"/);
