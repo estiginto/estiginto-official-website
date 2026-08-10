@@ -7,6 +7,11 @@ const SUPPORTED_GEOMETRIES = new Set([
   "MultiPolygon",
 ]);
 
+export const ROAD_GEOMETRY_ENDPOINTS = [
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.private.coffee/api/interpreter",
+];
+
 function hasFiniteCoordinates(value) {
   if (!Array.isArray(value) || value.length === 0) return false;
   if (value.every((item) => typeof item === "number")) {
@@ -44,15 +49,15 @@ function roadNameForPlace(place) {
   return "";
 }
 
-export function buildRoadGeometryUrl(place) {
+export function buildRoadGeometryUrl(place, endpoint = ROAD_GEOMETRY_ENDPOINTS[0]) {
   const [longitude, latitude] = place?.coordinates ?? [];
   const roadName = roadNameForPlace(place);
   const query = [
-    "[out:json][timeout:15];",
+    "[out:json][timeout:8];",
     `way(around:1800,${latitude},${longitude})["highway"]["name"="${escapeOverpassString(roadName)}"];`,
     "out geom;",
   ].join("");
-  const url = new URL("https://overpass-api.de/api/interpreter");
+  const url = new URL(endpoint);
   url.searchParams.set("data", query);
   return url;
 }
@@ -88,31 +93,31 @@ export function createPlaceGeometryService({ fetchImpl = fetch } = {}) {
       if (!roadName && !/^[NWR]\d+$/.test(osmKey)) return null;
       if (cache.has(cacheKey)) return cache.get(cacheKey);
 
-      let response;
-      try {
-        response = await fetchImpl(
-          roadName ? buildRoadGeometryUrl(place) : buildGeometryLookupUrl(place),
-          {
-          signal,
-          headers: { Accept: "application/geo+json, application/json" },
-          },
-        );
-      } catch (error) {
-        if (error?.name === "AbortError") throw error;
-        return null;
-      }
-      if (!response.ok) return null;
+      const urls = roadName
+        ? ROAD_GEOMETRY_ENDPOINTS.map((endpoint) => buildRoadGeometryUrl(place, endpoint))
+        : [buildGeometryLookupUrl(place)];
 
-      try {
-        const payload = await response.json();
-        const feature = roadName
-          ? normalizeRoadGeometry(payload, roadName)
-          : normalizeGeometryFeature(payload?.features?.[0]);
-        if (feature) cache.set(cacheKey, feature);
-        return feature;
-      } catch {
-        return null;
+      for (const url of urls) {
+        try {
+          const response = await fetchImpl(url, {
+            signal,
+            headers: { Accept: "application/geo+json, application/json" },
+          });
+          if (!response.ok) continue;
+
+          const payload = await response.json();
+          const feature = roadName
+            ? normalizeRoadGeometry(payload, roadName)
+            : normalizeGeometryFeature(payload?.features?.[0]);
+          if (!feature) continue;
+
+          cache.set(cacheKey, feature);
+          return feature;
+        } catch (error) {
+          if (signal?.aborted || error?.name === "AbortError") throw error;
+        }
       }
+      return null;
     },
   };
 }

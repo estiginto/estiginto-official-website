@@ -6,6 +6,7 @@ import {
   createPlaceGeometryService,
   normalizeGeometryFeature,
   normalizeRoadGeometry,
+  ROAD_GEOMETRY_ENDPOINTS,
 } from "../src/map/placeGeometry.js";
 
 const place = {
@@ -94,8 +95,22 @@ test("road lookup collects nearby segments with the selected street name", () =>
   const query = url.searchParams.get("data");
 
   assert.equal(url.origin, "https://overpass-api.de");
+  assert.match(query, /timeout:8/);
   assert.match(query, /around:1800,25\.001,121\.443/);
   assert.match(query, /\["name"="大觀路二段156巷"\]/);
+});
+
+test("road lookup supports a second free Overpass endpoint", () => {
+  const roadPlace = {
+    osmType: "N",
+    osmId: "123",
+    street: "大觀路二段156巷",
+    coordinates: [121.443, 25.001],
+  };
+  const url = buildRoadGeometryUrl(roadPlace, ROAD_GEOMETRY_ENDPOINTS[1]);
+
+  assert.equal(url.origin, "https://overpass.private.coffee");
+  assert.equal(url.pathname, "/api/interpreter");
 });
 
 test("road geometry joins valid OSM ways into one highlighted feature", () => {
@@ -137,4 +152,30 @@ test("address nodes prefer their named road geometry and cache it", async () => 
   assert.equal((await service.resolve(roadPlace)).geometry.type, "LineString");
   assert.equal((await service.resolve(roadPlace)).geometry.type, "LineString");
   assert.equal(requests, 1);
+});
+
+test("road geometry retries the free fallback endpoint after a failed primary", async () => {
+  const origins = [];
+  const roadPlace = {
+    osmType: "N",
+    osmId: "123",
+    osmKey: "place",
+    street: "大觀路二段156巷",
+    coordinates: [121.443, 25.001],
+  };
+  const service = createPlaceGeometryService({
+    fetchImpl: async (url) => {
+      origins.push(url.origin);
+      if (url.origin === "https://overpass-api.de") return { ok: false, status: 504 };
+      return {
+        ok: true,
+        json: async () => ({
+          elements: [{ type: "way", id: 1, geometry: [{ lat: 25, lon: 121 }, { lat: 25.01, lon: 121.01 }] }],
+        }),
+      };
+    },
+  });
+
+  assert.equal((await service.resolve(roadPlace)).geometry.type, "LineString");
+  assert.deepEqual(origins, ["https://overpass-api.de", "https://overpass.private.coffee"]);
 });
