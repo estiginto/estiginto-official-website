@@ -186,8 +186,8 @@ export default function WorldMap({
     const pulseLayers = {
       "estiginto-target-area-glow": 0.42,
       "estiginto-target-area-core": 0.95,
-      "estiginto-target-road-glow": 0.48,
-      "estiginto-target-road-core": 0.98,
+      "estiginto-target-road-glow": 0.78,
+      "estiginto-target-road-core": 1,
     };
     const restorePulse = () => {
       Object.entries(pulseLayers).forEach(([layerId, opacity]) => {
@@ -198,7 +198,7 @@ export default function WorldMap({
     const animatePulse = (now) => {
       if (!mapRef.current) return;
       const progress = Math.min((now - startedAt) / 900, 1);
-      const pulse = 0.74 + Math.sin(progress * Math.PI) * 0.26;
+      const pulse = 0.88 + Math.sin(progress * Math.PI) * 0.12;
       Object.entries(pulseLayers).forEach(([layerId, opacity]) => {
         if (map.getLayer(layerId)) map.setPaintProperty(layerId, "line-opacity", opacity * pulse);
       });

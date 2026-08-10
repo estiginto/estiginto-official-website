@@ -99,6 +99,22 @@ export function targetGeometryLayers() {
       },
     },
     {
+      id: "estiginto-target-road-backdrop",
+      type: "line",
+      source: TARGET_GEOMETRY_SOURCE_ID,
+      filter: lineFilter,
+      layout: {
+        "line-cap": "round",
+        "line-join": "round",
+      },
+      paint: {
+        "line-color": "#001116",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 16, 17, 34],
+        "line-blur": 2,
+        "line-opacity": 0.82,
+      },
+    },
+    {
       id: "estiginto-target-road-glow",
       type: "line",
       source: TARGET_GEOMETRY_SOURCE_ID,
@@ -109,9 +125,9 @@ export function targetGeometryLayers() {
       },
       paint: {
         "line-color": "#4ce8ff",
-        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 8, 17, 20],
-        "line-blur": 7,
-        "line-opacity": 0.48,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 12, 17, 28],
+        "line-blur": 9,
+        "line-opacity": 0.78,
       },
     },
     {
@@ -125,8 +141,8 @@ export function targetGeometryLayers() {
       },
       paint: {
         "line-color": "#baf8ff",
-        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 2, 17, 5],
-        "line-opacity": 0.98,
+        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 3, 17, 7],
+        "line-opacity": 1,
       },
     },
   ];

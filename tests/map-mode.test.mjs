@@ -58,12 +58,21 @@ test("vector source discovery ignores raster and terrain sources", () => {
 
 test("target geometry layers render roads and areas without becoming routes", () => {
   const layers = targetGeometryLayers();
+  const roadBackdrop = layers.find((layer) => layer.id === "estiginto-target-road-backdrop");
+  const roadGlow = layers.find((layer) => layer.id === "estiginto-target-road-glow");
+  const roadCore = layers.find((layer) => layer.id === "estiginto-target-road-core");
 
-  assert.equal(layers.length, 5);
-  assert.deepEqual(layers.map((layer) => layer.type), ["fill", "line", "line", "line", "line"]);
+  assert.equal(layers.length, 6);
+  assert.deepEqual(layers.map((layer) => layer.type), ["fill", "line", "line", "line", "line", "line"]);
   assert.ok(layers.every((layer) => layer.source === TARGET_GEOMETRY_SOURCE_ID));
   assert.ok(layers.some((layer) => layer.paint?.["fill-color"] === "#0c9ab1"));
   assert.ok(layers.some((layer) => layer.paint?.["line-color"] === "#baf8ff"));
+  assert.equal(roadBackdrop.paint["line-color"], "#001116");
+  assert.equal(roadBackdrop.paint["line-width"].at(-1), 34);
+  assert.equal(roadGlow.paint["line-opacity"], 0.78);
+  assert.equal(roadGlow.paint["line-width"].at(-1), 28);
+  assert.equal(roadCore.paint["line-opacity"], 1);
+  assert.equal(roadCore.paint["line-width"].at(-1), 7);
   assert.doesNotMatch(JSON.stringify(layers), /route|direction|navigation/i);
 });
 
