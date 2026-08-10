@@ -69,6 +69,10 @@ test("Photon normalization returns the stable local place contract", () => {
     kind: "attraction",
     coordinates: [121.5645, 25.0339],
     bbox: [121.563, 25.032, 121.566, 25.036],
+    osmType: "W",
+    osmId: "293782783",
+    osmKey: "tourism",
+    street: "市府路",
     attribution: "© OpenStreetMap contributors · Photon",
   });
 });

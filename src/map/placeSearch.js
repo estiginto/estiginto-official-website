@@ -106,6 +106,10 @@ export function normalizePhotonFeature(feature) {
     kind: String(properties.type ?? properties.osm_value ?? properties.osm_key ?? "地點"),
     coordinates: [coordinates[0], coordinates[1]],
     bbox: normalizeBbox(properties.extent),
+    osmType: ["N", "W", "R"].includes(properties.osm_type) ? properties.osm_type : null,
+    osmId: properties.osm_id == null ? null : String(properties.osm_id),
+    osmKey: properties.osm_key == null ? null : String(properties.osm_key),
+    street: properties.street == null ? "" : String(properties.street).trim(),
     attribution: PHOTON_ATTRIBUTION,
   };
 }
