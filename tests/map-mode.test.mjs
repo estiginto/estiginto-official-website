@@ -6,9 +6,11 @@ import {
   buildingLayer,
   cameraForMode,
   findVectorSourceId,
+  geometryCameraOptions,
   geometryBounds,
   mapStyleUrl,
   targetGeometryLayers,
+  targetFeatureCollection,
 } from "../src/map/mapConfig.js";
 
 test("Taiwan camera is the stable initial view", () => {
@@ -81,4 +83,31 @@ test("geometry bounds cover line and polygon extents but leave points to the mar
     type: "Feature",
     geometry: { type: "Point", coordinates: [121, 24] },
   }), null);
+});
+
+test("target feature collections replace stale geometry with one current feature", () => {
+  const feature = {
+    type: "Feature",
+    properties: { name: "測試區域" },
+    geometry: { type: "Polygon", coordinates: [[[121, 24], [122, 24], [121, 25], [121, 24]]] },
+  };
+
+  assert.deepEqual(targetFeatureCollection(null), { type: "FeatureCollection", features: [] });
+  assert.deepEqual(targetFeatureCollection(feature), { type: "FeatureCollection", features: [feature] });
+});
+
+test("geometry camera padding clears desktop panels and the mobile bottom sheet", () => {
+  const feature = {
+    type: "Feature",
+    geometry: { type: "LineString", coordinates: [[121, 24], [122, 25]] },
+  };
+
+  assert.deepEqual(geometryCameraOptions(feature, { width: 1200, reducedMotion: false }), {
+    bounds: [[121, 24], [122, 25]],
+    options: { padding: { top: 150, right: 260, bottom: 110, left: 260 }, duration: 900, maxZoom: 17 },
+  });
+  assert.deepEqual(geometryCameraOptions(feature, { width: 390, reducedMotion: true }), {
+    bounds: [[121, 24], [122, 25]],
+    options: { padding: { top: 190, right: 24, bottom: 350, left: 24 }, duration: 0, maxZoom: 17 },
+  });
 });

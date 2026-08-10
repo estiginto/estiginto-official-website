@@ -159,3 +159,28 @@ export function geometryBounds(feature) {
   visit(geometry.coordinates);
   return Number.isFinite(west) ? [west, south, east, north] : null;
 }
+
+export function targetFeatureCollection(feature) {
+  return {
+    type: "FeatureCollection",
+    features: feature ? [feature] : [],
+  };
+}
+
+export function geometryCameraOptions(feature, { width, reducedMotion }) {
+  const bounds = geometryBounds(feature);
+  if (!bounds) return null;
+  const [west, south, east, north] = bounds;
+  const mobile = width <= 760;
+
+  return {
+    bounds: [[west, south], [east, north]],
+    options: {
+      padding: mobile
+        ? { top: 190, right: 24, bottom: 350, left: 24 }
+        : { top: 150, right: 260, bottom: 110, left: 260 },
+      duration: reducedMotion ? 0 : 900,
+      maxZoom: 17,
+    },
+  };
+}

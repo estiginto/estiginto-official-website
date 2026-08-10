@@ -2,10 +2,14 @@ import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import {
   TAIWAN_CAMERA,
+  TARGET_GEOMETRY_SOURCE_ID,
   buildingLayer,
   cameraForMode,
   findVectorSourceId,
+  geometryCameraOptions,
   mapStyleUrl,
+  targetFeatureCollection,
+  targetGeometryLayers,
 } from "./mapConfig.js";
 
 const BUILDING_LAYER_ID = "estiginto-3d-buildings";
@@ -33,6 +37,7 @@ function createTargetElement() {
 export default function WorldMap({
   mode,
   selectedPlace,
+  selectedGeometry,
   reducedMotion,
   onCameraChange,
   onFocusSettled,
@@ -44,14 +49,18 @@ export default function WorldMap({
   const loadedRef = useRef(false);
   const usableRef = useRef(false);
   const threeDReadyRef = useRef(false);
+  const geometryReadyRef = useRef(false);
+  const geometryPulseRef = useRef(0);
   const focusListenerRef = useRef(null);
   const callbacksRef = useRef({ onCameraChange, onFocusSettled, onStatusChange });
   const modeRef = useRef(mode);
   const selectedPlaceRef = useRef(selectedPlace);
+  const selectedGeometryRef = useRef(selectedGeometry);
   const reducedMotionRef = useRef(reducedMotion);
   callbacksRef.current = { onCameraChange, onFocusSettled, onStatusChange };
   modeRef.current = mode;
   selectedPlaceRef.current = selectedPlace;
+  selectedGeometryRef.current = selectedGeometry;
   reducedMotionRef.current = reducedMotion;
 
   useEffect(() => {
@@ -97,6 +106,19 @@ export default function WorldMap({
         const sourceId = findVectorSourceId(map.getStyle());
         if (!sourceId) throw new Error("Map style has no vector source for buildings.");
         const firstSymbol = map.getStyle().layers?.find((layer) => layer.type === "symbol")?.id;
+        if (!map.getSource(TARGET_GEOMETRY_SOURCE_ID)) {
+          map.addSource(TARGET_GEOMETRY_SOURCE_ID, {
+            type: "geojson",
+            data: targetFeatureCollection(null),
+          });
+        }
+        map.getSource(TARGET_GEOMETRY_SOURCE_ID)?.setData(
+          targetFeatureCollection(selectedGeometryRef.current),
+        );
+        targetGeometryLayers().forEach((layer) => {
+          if (!map.getLayer(layer.id)) map.addLayer(layer, firstSymbol);
+        });
+        geometryReadyRef.current = true;
         if (!map.getLayer(BUILDING_LAYER_ID)) {
           map.addLayer(buildingLayer(sourceId), firstSymbol);
         }
@@ -123,6 +145,7 @@ export default function WorldMap({
         focusListenerRef.current = null;
       }
       markerRef.current?.remove();
+      if (geometryPulseRef.current) cancelAnimationFrame(geometryPulseRef.current);
       markerRef.current = null;
       map.off("moveend", reportCamera);
       map.off("error", handleError);
@@ -131,8 +154,60 @@ export default function WorldMap({
       loadedRef.current = false;
       usableRef.current = false;
       threeDReadyRef.current = false;
+      geometryReadyRef.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current || !geometryReadyRef.current) return undefined;
+
+    const source = map.getSource(TARGET_GEOMETRY_SOURCE_ID);
+    source?.setData(targetFeatureCollection(selectedGeometry));
+    if (geometryPulseRef.current) cancelAnimationFrame(geometryPulseRef.current);
+
+    if (!selectedGeometry) return undefined;
+
+    const camera = geometryCameraOptions(selectedGeometry, {
+      width: containerRef.current?.clientWidth ?? window.innerWidth,
+      reducedMotion,
+    });
+    if (camera) map.fitBounds(camera.bounds, camera.options);
+
+    if (reducedMotion) return undefined;
+    const pulseLayers = {
+      "estiginto-target-area-glow": 0.42,
+      "estiginto-target-area-core": 0.95,
+      "estiginto-target-road-glow": 0.48,
+      "estiginto-target-road-core": 0.98,
+    };
+    const restorePulse = () => {
+      Object.entries(pulseLayers).forEach(([layerId, opacity]) => {
+        if (map.getLayer(layerId)) map.setPaintProperty(layerId, "line-opacity", opacity);
+      });
+    };
+    const startedAt = performance.now();
+    const animatePulse = (now) => {
+      if (!mapRef.current) return;
+      const progress = Math.min((now - startedAt) / 900, 1);
+      const pulse = 0.74 + Math.sin(progress * Math.PI) * 0.26;
+      Object.entries(pulseLayers).forEach(([layerId, opacity]) => {
+        if (map.getLayer(layerId)) map.setPaintProperty(layerId, "line-opacity", opacity * pulse);
+      });
+      if (progress < 1) geometryPulseRef.current = requestAnimationFrame(animatePulse);
+      else {
+        restorePulse();
+        geometryPulseRef.current = 0;
+      }
+    };
+    geometryPulseRef.current = requestAnimationFrame(animatePulse);
+
+    return () => {
+      if (geometryPulseRef.current) cancelAnimationFrame(geometryPulseRef.current);
+      restorePulse();
+      geometryPulseRef.current = 0;
+    };
+  }, [reducedMotion, selectedGeometry]);
 
   useEffect(() => {
     const map = mapRef.current;

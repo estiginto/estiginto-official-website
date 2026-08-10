@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import WorldMap from "./WorldMap.jsx";
 import { TAIWAN_CAMERA } from "./mapConfig.js";
+import { createPlaceGeometryService } from "./placeGeometry.js";
 import usePlaceSearch from "./usePlaceSearch.js";
 import useReducedMotion from "./useReducedMotion.js";
 import HudChrome from "./components/HudChrome.jsx";
@@ -8,6 +9,8 @@ import SearchCommand from "./components/SearchCommand.jsx";
 import SearchResults from "./components/SearchResults.jsx";
 import SystemFailure from "./components/SystemFailure.jsx";
 import TargetProfile from "./components/TargetProfile.jsx";
+
+const placeGeometryService = createPlaceGeometryService();
 
 function searchStatusMessage(searchState) {
   if (searchState.status === "searching") return "正在搜尋真實世界地點。";
@@ -26,6 +29,8 @@ export default function MapExperience() {
   const [mapNotice, setMapNotice] = useState("");
   const [mapInstanceKey, setMapInstanceKey] = useState(0);
   const [mobilePanel, setMobilePanel] = useState("closed");
+  const [selectedGeometry, setSelectedGeometry] = useState(null);
+  const [geometryStatus, setGeometryStatus] = useState("idle");
   const reducedMotion = useReducedMotion();
   const search = usePlaceSearch({ proximity: camera.center });
   const threeDUnavailable = mapStatus === "three-d-unavailable";
@@ -51,6 +56,32 @@ export default function MapExperience() {
       setMobilePanel("results");
     }
   }, [search.state.results.length, search.state.status, selectedPlace]);
+
+  useEffect(() => {
+    if (!selectedPlace) {
+      setSelectedGeometry(null);
+      setGeometryStatus("idle");
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    setSelectedGeometry(null);
+    setGeometryStatus("loading");
+    placeGeometryService.resolve(selectedPlace, { signal: controller.signal })
+      .then((feature) => {
+        if (controller.signal.aborted) return;
+        const isRenderable = feature && !["Point", "MultiPoint"].includes(feature.geometry.type);
+        setSelectedGeometry(isRenderable ? feature : null);
+        setGeometryStatus(isRenderable ? "ready" : "unavailable");
+      })
+      .catch((error) => {
+        if (error?.name === "AbortError") return;
+        setSelectedGeometry(null);
+        setGeometryStatus("unavailable");
+      });
+
+    return () => controller.abort();
+  }, [selectedPlace]);
 
   const handleMapStatus = (status, detail = {}) => {
     if (status === "map-error" && detail.usable) {
@@ -106,6 +137,7 @@ export default function MapExperience() {
       data-map-status={mapStatus}
       data-search-status={search.state.status}
       data-focus-status={focusStatus}
+      data-geometry-status={geometryStatus}
     >
       <div className="map-canvas">
         {failureKind ? (
@@ -115,6 +147,7 @@ export default function MapExperience() {
             key={mapInstanceKey}
             mode={mode}
             selectedPlace={selectedPlace}
+            selectedGeometry={selectedGeometry}
             reducedMotion={reducedMotion}
             onCameraChange={setCamera}
             onFocusSettled={handleFocusSettled}
