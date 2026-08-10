@@ -45,6 +45,24 @@ function normalizeBbox(extent) {
   ];
 }
 
+function searchCandidates(query) {
+  const original = String(query ?? "").trim();
+  if (!original) return [];
+
+  let tokenized = original.replace(/\s+/g, "");
+  tokenized = tokenized.replace(
+    /^([\u3400-\u9fff]{2,4}?)([\u3400-\u9fff]{2,}(?:路|街|大道).*)$/u,
+    "$1 $2",
+  );
+  tokenized = tokenized
+    .replace(/([縣市區鄉鎮村里])(?=\S)/gu, "$1 ")
+    .replace(/(\d+(?:之\d+)?(?:巷|弄|號|樓))/gu, " $1")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  return tokenized === original ? [original] : [original, tokenized];
+}
+
 export function normalizePhotonFeature(feature) {
   const coordinates = feature?.geometry?.coordinates;
   if (
@@ -58,15 +76,18 @@ export function normalizePhotonFeature(feature) {
   }
 
   const properties = feature.properties ?? {};
-  const name = String(properties.name ?? properties.city ?? properties.country ?? "未命名地點").trim();
   const streetAddress = compact([
     properties.street,
     properties.housenumber,
   ]).join(" ");
+  const name = String(
+    (properties.name ?? streetAddress) || properties.city || properties.country || "未命名地點",
+  ).trim();
+  const locality = String(properties.locality ?? "").trim();
   const addressParts = compact([
     streetAddress,
     properties.district,
-    properties.locality,
+    /^\d+$/.test(locality) ? null : locality,
     properties.city,
     properties.county,
     properties.state,
@@ -94,39 +115,44 @@ export function createPlaceSearchService({ fetchImpl = fetch } = {}) {
     async search(query, { proximity, language = "default", signal } = {}) {
       if (!String(query ?? "").trim()) return [];
 
-      let response;
-      try {
-        response = await fetchImpl(
-          buildPlaceSearchUrl({ query, proximity, language }),
-          { signal, headers: { Accept: "application/json" } },
-        );
-      } catch (error) {
-        if (error?.name === "AbortError") throw error;
-        throw new PlaceSearchError(
-          "request-failed",
-          "搜尋服務暫時無法使用。",
-          { cause: error },
-        );
+      for (const candidate of searchCandidates(query)) {
+        let response;
+        try {
+          response = await fetchImpl(
+            buildPlaceSearchUrl({ query: candidate, proximity, language }),
+            { signal, headers: { Accept: "application/json" } },
+          );
+        } catch (error) {
+          if (error?.name === "AbortError") throw error;
+          throw new PlaceSearchError(
+            "request-failed",
+            "搜尋服務暫時無法使用。",
+            { cause: error },
+          );
+        }
+
+        if (!response.ok) {
+          throw new PlaceSearchError(
+            "request-failed",
+            `Photon search request failed (${response.status ?? "unknown"}).`,
+          );
+        }
+
+        try {
+          const payload = await response.json();
+          const features = Array.isArray(payload.features) ? payload.features : [];
+          const results = features.map(normalizePhotonFeature).filter(Boolean);
+          if (results.length) return results;
+        } catch (error) {
+          throw new PlaceSearchError(
+            "request-failed",
+            "搜尋服務回傳了無法讀取的資料。",
+            { cause: error },
+          );
+        }
       }
 
-      if (!response.ok) {
-        throw new PlaceSearchError(
-          "request-failed",
-          `Photon search request failed (${response.status ?? "unknown"}).`,
-        );
-      }
-
-      try {
-        const payload = await response.json();
-        const features = Array.isArray(payload.features) ? payload.features : [];
-        return features.map(normalizePhotonFeature).filter(Boolean);
-      } catch (error) {
-        throw new PlaceSearchError(
-          "request-failed",
-          "搜尋服務回傳了無法讀取的資料。",
-          { cause: error },
-        );
-      }
+      return [];
     },
   };
 }

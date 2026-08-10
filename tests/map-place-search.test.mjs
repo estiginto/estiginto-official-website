@@ -25,6 +25,23 @@ const feature = {
   },
 };
 
+const houseFeature = {
+  type: "Feature",
+  geometry: { type: "Point", coordinates: [121.441262, 24.9999432] },
+  properties: {
+    osm_key: "place",
+    osm_value: "house",
+    osm_type: "N",
+    osm_id: 123456,
+    street: "大觀路二段156巷",
+    housenumber: "45號",
+    district: "板橋區",
+    city: "新北市",
+    country: "臺灣",
+    type: "house",
+  },
+};
+
 test("Photon URL biases to the map center without restricting global search", () => {
   const url = buildPlaceSearchUrl({
     query: "台北 101",
@@ -54,6 +71,47 @@ test("Photon normalization returns the stable local place contract", () => {
     bbox: [121.563, 25.032, 121.566, 25.036],
     attribution: "© OpenStreetMap contributors · Photon",
   });
+});
+
+test("nameless Photon house uses its street and number as the result title", () => {
+  const result = normalizePhotonFeature(houseFeature);
+
+  assert.equal(result.name, "大觀路二段156巷 45號");
+  assert.equal(result.address, "大觀路二段156巷 45號, 板橋區, 新北市, 臺灣");
+});
+
+test("numeric Photon locality metadata is omitted from the displayed address", () => {
+  const result = normalizePhotonFeature({
+    ...houseFeature,
+    properties: { ...houseFeature.properties, locality: "015" },
+  });
+
+  assert.equal(result.address, "大觀路二段156巷 45號, 板橋區, 新北市, 臺灣");
+});
+
+test("compact Taiwan address retries with tokenized address when direct lookup is empty", async () => {
+  const requestedQueries = [];
+  const service = createPlaceSearchService({
+    fetchImpl: async (url) => {
+      requestedQueries.push(url.searchParams.get("q"));
+      return {
+        ok: true,
+        json: async () => ({
+          features: requestedQueries.length === 1
+            ? []
+            : [{ ...houseFeature, properties: { ...houseFeature.properties, name: "測試門牌" } }],
+        }),
+      };
+    },
+  });
+
+  const results = await service.search("板橋大觀路二段156巷45號");
+
+  assert.equal(results[0].name, "測試門牌");
+  assert.deepEqual(requestedQueries, [
+    "板橋大觀路二段156巷45號",
+    "板橋 大觀路二段 156巷 45號",
+  ]);
 });
 
 test("normalization rejects features without finite point coordinates", () => {
