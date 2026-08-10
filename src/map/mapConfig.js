@@ -5,6 +5,8 @@ export const TAIWAN_CAMERA = Object.freeze({
   bearing: 0,
 });
 
+export const TARGET_GEOMETRY_SOURCE_ID = "estiginto-target-geometry";
+
 export const mapStyleUrl = () => "https://tiles.openfreemap.org/styles/dark";
 
 export function cameraForMode(mode, camera, selectedPlace) {
@@ -56,4 +58,104 @@ export function buildingLayer(sourceId) {
       "fill-extrusion-opacity": 0.78,
     },
   };
+}
+
+export function targetGeometryLayers() {
+  const polygonFilter = ["==", ["geometry-type"], "Polygon"];
+  const lineFilter = ["==", ["geometry-type"], "LineString"];
+
+  return [
+    {
+      id: "estiginto-target-area-fill",
+      type: "fill",
+      source: TARGET_GEOMETRY_SOURCE_ID,
+      filter: polygonFilter,
+      paint: {
+        "fill-color": "#0c9ab1",
+        "fill-opacity": 0.2,
+      },
+    },
+    {
+      id: "estiginto-target-area-glow",
+      type: "line",
+      source: TARGET_GEOMETRY_SOURCE_ID,
+      filter: polygonFilter,
+      paint: {
+        "line-color": "#4ce8ff",
+        "line-width": 8,
+        "line-blur": 6,
+        "line-opacity": 0.42,
+      },
+    },
+    {
+      id: "estiginto-target-area-core",
+      type: "line",
+      source: TARGET_GEOMETRY_SOURCE_ID,
+      filter: polygonFilter,
+      paint: {
+        "line-color": "#baf8ff",
+        "line-width": 2,
+        "line-opacity": 0.95,
+      },
+    },
+    {
+      id: "estiginto-target-road-glow",
+      type: "line",
+      source: TARGET_GEOMETRY_SOURCE_ID,
+      filter: lineFilter,
+      layout: {
+        "line-cap": "round",
+        "line-join": "round",
+      },
+      paint: {
+        "line-color": "#4ce8ff",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 8, 17, 20],
+        "line-blur": 7,
+        "line-opacity": 0.48,
+      },
+    },
+    {
+      id: "estiginto-target-road-core",
+      type: "line",
+      source: TARGET_GEOMETRY_SOURCE_ID,
+      filter: lineFilter,
+      layout: {
+        "line-cap": "round",
+        "line-join": "round",
+      },
+      paint: {
+        "line-color": "#baf8ff",
+        "line-width": ["interpolate", ["linear"], ["zoom"], 10, 2, 17, 5],
+        "line-opacity": 0.98,
+      },
+    },
+  ];
+}
+
+export function geometryBounds(feature) {
+  const geometry = feature?.geometry;
+  if (!geometry || ["Point", "MultiPoint"].includes(geometry.type)) return null;
+
+  let west = Infinity;
+  let south = Infinity;
+  let east = -Infinity;
+  let north = -Infinity;
+
+  const visit = (coordinates) => {
+    if (!Array.isArray(coordinates)) return;
+    if (coordinates.length >= 2 && coordinates.every((value) => typeof value === "number")) {
+      const [longitude, latitude] = coordinates;
+      if (Number.isFinite(longitude) && Number.isFinite(latitude)) {
+        west = Math.min(west, longitude);
+        south = Math.min(south, latitude);
+        east = Math.max(east, longitude);
+        north = Math.max(north, latitude);
+      }
+      return;
+    }
+    coordinates.forEach(visit);
+  };
+
+  visit(geometry.coordinates);
+  return Number.isFinite(west) ? [west, south, east, north] : null;
 }

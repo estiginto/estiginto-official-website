@@ -2,10 +2,13 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   TAIWAN_CAMERA,
+  TARGET_GEOMETRY_SOURCE_ID,
   buildingLayer,
   cameraForMode,
   findVectorSourceId,
+  geometryBounds,
   mapStyleUrl,
+  targetGeometryLayers,
 } from "../src/map/mapConfig.js";
 
 test("Taiwan camera is the stable initial view", () => {
@@ -49,4 +52,33 @@ test("vector source discovery ignores raster and terrain sources", () => {
     openmaptiles: { type: "vector" },
   } }), "openmaptiles");
   assert.equal(findVectorSourceId({ sources: {} }), null);
+});
+
+test("target geometry layers render roads and areas without becoming routes", () => {
+  const layers = targetGeometryLayers();
+
+  assert.equal(layers.length, 5);
+  assert.deepEqual(layers.map((layer) => layer.type), ["fill", "line", "line", "line", "line"]);
+  assert.ok(layers.every((layer) => layer.source === TARGET_GEOMETRY_SOURCE_ID));
+  assert.ok(layers.some((layer) => layer.paint?.["fill-color"] === "#0c9ab1"));
+  assert.ok(layers.some((layer) => layer.paint?.["line-color"] === "#baf8ff"));
+  assert.doesNotMatch(JSON.stringify(layers), /route|direction|navigation/i);
+});
+
+test("geometry bounds cover line and polygon extents but leave points to the marker camera", () => {
+  assert.deepEqual(geometryBounds({
+    type: "Feature",
+    geometry: {
+      type: "Polygon",
+      coordinates: [[[121.52, 25.02], [121.5, 25], [121.51, 25.04], [121.52, 25.02]]],
+    },
+  }), [121.5, 25, 121.52, 25.04]);
+  assert.deepEqual(geometryBounds({
+    type: "Feature",
+    geometry: { type: "MultiLineString", coordinates: [[[121, 24], [122, 25]], [[120.5, 23.5], [121.5, 24.5]]] },
+  }), [120.5, 23.5, 122, 25]);
+  assert.equal(geometryBounds({
+    type: "Feature",
+    geometry: { type: "Point", coordinates: [121, 24] },
+  }), null);
 });
