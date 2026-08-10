@@ -79,6 +79,14 @@ export default function WorldMap({
         maxPitch: 70,
       });
       mapRef.current = map;
+      map.addControl(new maplibregl.NavigationControl({
+        showZoom: false,
+        showCompass: true,
+        visualizePitch: false,
+      }), "top-right");
+      const compassButton = containerRef.current.querySelector(".maplibregl-ctrl-compass");
+      compassButton?.setAttribute("aria-label", "將地圖轉回正北");
+      compassButton?.setAttribute("title", "將地圖轉回正北");
     } catch (error) {
       callbacksRef.current.onStatusChange?.("unsupported", { error });
       return undefined;

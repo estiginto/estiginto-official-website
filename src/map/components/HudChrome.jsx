@@ -46,7 +46,7 @@ export default function HudChrome({
             onClick={() => onModeChange("2d")}
           >
             <MapLayersIcon />
-            <span>2D 戰術</span>
+            <span>2D</span>
           </button>
           <button
             type="button"
@@ -55,7 +55,7 @@ export default function HudChrome({
             onClick={() => onModeChange("3d")}
           >
             <BuildingsIcon />
-            <span>3D 城市</span>
+            <span>3D</span>
           </button>
         </div>
         <div className="system-status" data-status={threeDUnavailable ? "limited" : mapStatus}>
@@ -72,7 +72,7 @@ export default function HudChrome({
             {formatCoordinate(camera.center[1])}, {formatCoordinate(camera.center[0])}
           </output>
         </div>
-        <div><span>MODE</span><output>{mode === "3d" ? "3D 城市" : "2D 戰術"}</output></div>
+        <div><span>MODE</span><output>{mode === "3d" ? "3D" : "2D"}</output></div>
         <div className="provider-credit">
           <a href="https://openfreemap.org/" target="_blank" rel="noreferrer">
             OPENFREEMAP

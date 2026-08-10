@@ -88,3 +88,20 @@ test("mobile map HUD provides a safe-area bottom sheet without stealing map gest
   assert.match(app, />搜尋結果</);
   assert.match(app, />目標資料</);
 });
+
+test("map HUD exposes a compass-only north reset and concise mode labels", () => {
+  const map = read("src/map/WorldMap.jsx");
+  const hud = read("src/map/components/HudChrome.jsx");
+  const css = read("src/map/map.css");
+
+  assert.match(map, /new maplibregl\.NavigationControl/);
+  assert.match(map, /showZoom:\s*false/);
+  assert.match(map, /showCompass:\s*true/);
+  assert.match(map, /visualizePitch:\s*false/);
+  assert.match(map, /將地圖轉回正北/);
+  assert.match(hud, /<span>2D<\/span>/);
+  assert.match(hud, /<span>3D<\/span>/);
+  assert.doesNotMatch(hud, />2D 戰術<|>3D 城市</);
+  assert.match(css, /\.maplibregl-ctrl-top-right/);
+  assert.match(css, /\.maplibregl-ctrl-compass:focus-visible/);
+});
