@@ -67,6 +67,11 @@ test("map HUD provides reduced motion and truthful status regions", () => {
   assert.match(css, /\.hud-decoration[\s\S]*pointer-events:\s*none/);
 });
 
+test("search field delegates its visible keyboard focus ring to the HUD wrapper", () => {
+  const css = read("src/map/map.css");
+  assert.match(css, /\.search-command input:focus-visible\s*\{[^}]*outline:\s*0/);
+});
+
 test("mobile target lock is not replaced by a refreshed result list", () => {
   const app = read("src/map/MapExperience.jsx");
   assert.match(app, /search\.state\.results\.length && !selectedPlace/);
