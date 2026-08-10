@@ -1,16 +1,27 @@
 import { useEffect, useMemo, useState } from "react";
 import WorldMap from "./WorldMap.jsx";
 import { TAIWAN_CAMERA } from "./mapConfig.js";
+import { haversineDistance } from "./measurementGeometry.js";
 import { createPlaceGeometryService } from "./placeGeometry.js";
+import { createTravelDistanceService } from "./travelDistance.js";
 import usePlaceSearch from "./usePlaceSearch.js";
 import useReducedMotion from "./useReducedMotion.js";
 import HudChrome from "./components/HudChrome.jsx";
+import MeasurementTools from "./components/MeasurementTools.jsx";
 import SearchCommand from "./components/SearchCommand.jsx";
 import SearchResults from "./components/SearchResults.jsx";
 import SystemFailure from "./components/SystemFailure.jsx";
 import TargetProfile from "./components/TargetProfile.jsx";
 
 const placeGeometryService = createPlaceGeometryService();
+const travelDistanceService = createTravelDistanceService();
+const EMPTY_TRAVEL = Object.freeze({
+  status: "idle",
+  geometry: null,
+  distance: null,
+  duration: null,
+  message: "",
+});
 
 function searchStatusMessage(searchState) {
   if (searchState.status === "searching") return "正在搜尋真實世界地點。";
@@ -31,6 +42,11 @@ export default function MapExperience() {
   const [mobilePanel, setMobilePanel] = useState("closed");
   const [selectedGeometry, setSelectedGeometry] = useState(null);
   const [geometryStatus, setGeometryStatus] = useState("idle");
+  const [measurementMode, setMeasurementMode] = useState(null);
+  const [circleMeasurement, setCircleMeasurement] = useState(null);
+  const [distancePoints, setDistancePoints] = useState([]);
+  const [travelState, setTravelState] = useState(EMPTY_TRAVEL);
+  const [travelRetry, setTravelRetry] = useState(0);
   const reducedMotion = useReducedMotion();
   const search = usePlaceSearch({ proximity: camera.center });
   const threeDUnavailable = mapStatus === "three-d-unavailable";
@@ -39,6 +55,12 @@ export default function MapExperience() {
       : mapStatus === "map-error"
         ? "map-error"
         : null;
+  const straightDistance = useMemo(
+    () => distancePoints.length === 2
+      ? haversineDistance(distancePoints[0], distancePoints[1])
+      : 0,
+    [distancePoints],
+  );
 
   const liveMessage = useMemo(() => {
     if (failureKind) return "地圖無法載入。";
@@ -82,6 +104,31 @@ export default function MapExperience() {
 
     return () => controller.abort();
   }, [selectedPlace]);
+
+  useEffect(() => {
+    if (distancePoints.length !== 2) {
+      setTravelState(EMPTY_TRAVEL);
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    setTravelState({ ...EMPTY_TRAVEL, status: "loading" });
+    travelDistanceService.resolve(distancePoints, { signal: controller.signal })
+      .then((result) => {
+        if (controller.signal.aborted) return;
+        setTravelState({ status: "ready", message: "", ...result });
+      })
+      .catch((error) => {
+        if (error?.name === "AbortError") return;
+        setTravelState({
+          ...EMPTY_TRAVEL,
+          status: "error",
+          message: error?.message || "暫時無法取得行徑距離",
+        });
+      });
+
+    return () => controller.abort(new DOMException("superseded", "AbortError"));
+  }, [distancePoints, travelRetry]);
 
   const handleMapStatus = (status, detail = {}) => {
     if (status === "map-error" && detail.usable) {
@@ -130,6 +177,30 @@ export default function MapExperience() {
     setMobilePanel("closed");
   };
 
+  const handleMeasurementPoint = (coordinates) => {
+    if (measurementMode === "radius") {
+      setCircleMeasurement({ center: coordinates, radius: 500 });
+      return;
+    }
+    if (measurementMode === "distance") {
+      setDistancePoints((current) => (
+        current.length < 2 ? [...current, coordinates] : [current[0], coordinates]
+      ));
+    }
+  };
+
+  const clearMeasurements = () => {
+    setCircleMeasurement(null);
+    setDistancePoints([]);
+    setTravelState(EMPTY_TRAVEL);
+  };
+
+  const updateDistancePoint = (index, coordinates) => {
+    setDistancePoints((current) => current.map((point, pointIndex) => (
+      pointIndex === index ? coordinates : point
+    )));
+  };
+
   return (
     <main
       className="map-experience"
@@ -138,6 +209,7 @@ export default function MapExperience() {
       data-search-status={search.state.status}
       data-focus-status={focusStatus}
       data-geometry-status={geometryStatus}
+      data-mobile-panel={mobilePanel}
     >
       <div className="map-canvas">
         {failureKind ? (
@@ -148,10 +220,22 @@ export default function MapExperience() {
             mode={mode}
             selectedPlace={selectedPlace}
             selectedGeometry={selectedGeometry}
+            measurementMode={measurementMode}
+            circleMeasurement={circleMeasurement}
+            distancePoints={distancePoints}
+            travelGeometry={travelState.geometry}
             reducedMotion={reducedMotion}
             onCameraChange={setCamera}
             onFocusSettled={handleFocusSettled}
             onStatusChange={handleMapStatus}
+            onMeasurementPoint={handleMeasurementPoint}
+            onCircleCenterChange={(center) => setCircleMeasurement((current) => (
+              current ? { ...current, center } : current
+            ))}
+            onCircleRadiusChange={(radius) => setCircleMeasurement((current) => (
+              current ? { ...current, radius: Math.max(10, Math.min(radius, 500000)) } : current
+            ))}
+            onDistancePointChange={updateDistancePoint}
           />
         )}
       </div>
@@ -178,6 +262,17 @@ export default function MapExperience() {
           onRetry={search.retry}
         />
       </div>
+
+      <MeasurementTools
+        mode={measurementMode}
+        circle={circleMeasurement}
+        points={distancePoints}
+        straightDistance={straightDistance}
+        travelState={travelState}
+        onModeChange={setMeasurementMode}
+        onClear={clearMeasurements}
+        onRetry={() => setTravelRetry((value) => value + 1)}
+      />
 
       <div
         className="map-panel-deck map-mobile-sheet hud-interactive"

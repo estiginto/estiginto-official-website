@@ -16,7 +16,7 @@ const validPayload = {
       coordinates: [[121.5, 25], [121.51, 25.012], [121.52, 25.02]],
     },
   }],
-  waypoints: [],
+  waypoints: [{ location: points[0] }, { location: points[1] }],
 };
 
 test("travel URL requests a full driving GeoJSON path without directions", () => {
@@ -27,6 +27,27 @@ test("travel URL requests a full driving GeoJSON path without directions", () =>
   assert.equal(url.searchParams.get("overview"), "full");
   assert.equal(url.searchParams.get("geometries"), "geojson");
   assert.equal(url.searchParams.get("steps"), "false");
+});
+
+test("travel service includes access from clicked points to snapped road points", async () => {
+  const requested = [[0, 0], [0, 1]];
+  const payload = {
+    code: "Ok",
+    routes: [{
+      distance: 50,
+      duration: 20,
+      geometry: { type: "LineString", coordinates: [[0, 0.5], [0.0001, 0.5]] },
+    }],
+    waypoints: [{ location: [0, 0.5] }, { location: [0, 0.5] }],
+  };
+  const service = createTravelDistanceService({
+    fetchImpl: async () => ({ ok: true, json: async () => payload }),
+  });
+  const result = await service.resolve(requested);
+
+  assert.ok(result.distance > 111195);
+  assert.deepEqual(result.geometry.coordinates[0], requested[0]);
+  assert.deepEqual(result.geometry.coordinates.at(-1), requested[1]);
 });
 
 test("travel service returns validated geometry, distance, and duration", async () => {

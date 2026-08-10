@@ -1,3 +1,5 @@
+import { haversineDistance } from "./measurementGeometry.js";
+
 const TRAVEL_ENDPOINT = "https://router.project-osrm.org";
 
 function validPoints(points) {
@@ -20,7 +22,11 @@ export function buildTravelDistanceUrl(points) {
   return url;
 }
 
-function normalizeTravel(payload) {
+function validCoordinate(point) {
+  return Array.isArray(point) && point.length >= 2 && point.slice(0, 2).every(Number.isFinite);
+}
+
+function normalizeTravel(payload, requestedPoints) {
   if (payload?.code === "NoRoute") throw new Error("找不到可行駛路徑");
   const route = payload?.code === "Ok" ? payload.routes?.[0] : null;
   const coordinates = route?.geometry?.coordinates;
@@ -33,9 +39,21 @@ function normalizeTravel(payload) {
   if (!validGeometry || !Number.isFinite(route.distance) || !Number.isFinite(route.duration)) {
     throw new Error("暫時無法取得行徑距離");
   }
+  const snappedStart = validCoordinate(payload.waypoints?.[0]?.location)
+    ? payload.waypoints[0].location
+    : coordinates[0];
+  const snappedEnd = validCoordinate(payload.waypoints?.[1]?.location)
+    ? payload.waypoints[1].location
+    : coordinates.at(-1);
+  const startAccess = haversineDistance(requestedPoints[0], snappedStart);
+  const endAccess = haversineDistance(requestedPoints[1], snappedEnd);
+  const extendedCoordinates = [...coordinates];
+  if (startAccess > 1) extendedCoordinates.unshift([...requestedPoints[0]]);
+  if (endAccess > 1) extendedCoordinates.push([...requestedPoints[1]]);
+
   return {
-    geometry: route.geometry,
-    distance: route.distance,
+    geometry: { type: "LineString", coordinates: extendedCoordinates },
+    distance: route.distance + startAccess + endAccess,
     duration: route.duration,
   };
 }
@@ -59,7 +77,7 @@ export function createTravelDistanceService({ fetchImpl = fetch, timeoutMs = 120
           headers: { Accept: "application/json" },
         });
         if (!response.ok) throw new Error("暫時無法取得行徑距離");
-        return normalizeTravel(await response.json());
+        return normalizeTravel(await response.json(), points);
       } catch (error) {
         if (signal?.aborted) throw signal.reason ?? error;
         if (controller.signal.aborted && controller.signal.reason?.name === "TimeoutError") {

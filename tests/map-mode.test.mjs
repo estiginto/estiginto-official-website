@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  MEASUREMENT_SOURCE_ID,
   TAIWAN_CAMERA,
   TARGET_GEOMETRY_SOURCE_ID,
   buildingLayer,
@@ -9,6 +10,7 @@ import {
   geometryCameraOptions,
   geometryBounds,
   mapStyleUrl,
+  measurementLayers,
   targetGeometryLayers,
   targetFeatureCollection,
 } from "../src/map/mapConfig.js";
@@ -74,6 +76,22 @@ test("target geometry layers render roads and areas without becoming routes", ()
   assert.equal(roadCore.paint["line-opacity"], 1);
   assert.equal(roadCore.paint["line-width"].at(-1), 7);
   assert.doesNotMatch(JSON.stringify(layers), /route|direction|navigation/i);
+});
+
+test("measurement layers separate radius, straight distance, and highlighted travel distance", () => {
+  const layers = measurementLayers();
+  const straight = layers.find((layer) => layer.id === "estiginto-measurement-straight");
+  const travelGlow = layers.find((layer) => layer.id === "estiginto-measurement-travel-glow");
+  const travelCore = layers.find((layer) => layer.id === "estiginto-measurement-travel-core");
+
+  assert.equal(layers.length, 7);
+  assert.ok(layers.every((layer) => layer.source === MEASUREMENT_SOURCE_ID));
+  assert.deepEqual(straight.paint["line-dasharray"], [2, 2]);
+  assert.equal(straight.paint["line-width"], 2);
+  assert.equal(travelGlow.paint["line-color"], "#4ce8ff");
+  assert.ok(travelGlow.paint["line-width"] > straight.paint["line-width"]);
+  assert.equal(travelCore.paint["line-color"], "#ffb15c");
+  assert.equal(travelCore.paint["line-opacity"], 1);
 });
 
 test("geometry bounds cover line and polygon extents but leave points to the marker camera", () => {

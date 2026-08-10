@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import {
+  MEASUREMENT_SOURCE_ID,
   TAIWAN_CAMERA,
   TARGET_GEOMETRY_SOURCE_ID,
   buildingLayer,
@@ -8,9 +9,15 @@ import {
   findVectorSourceId,
   geometryCameraOptions,
   mapStyleUrl,
+  measurementLayers,
   targetFeatureCollection,
   targetGeometryLayers,
 } from "./mapConfig.js";
+import {
+  destinationPoint,
+  haversineDistance,
+  measurementFeatureCollection,
+} from "./measurementGeometry.js";
 
 const BUILDING_LAYER_ID = "estiginto-3d-buildings";
 
@@ -34,14 +41,32 @@ function createTargetElement() {
   return element;
 }
 
+function createMeasurementElement(label, kind) {
+  const element = document.createElement("button");
+  element.type = "button";
+  element.className = `measurement-marker measurement-marker-${kind}`;
+  element.setAttribute("aria-label", label);
+  element.textContent = kind === "radius" ? "R" : label.slice(0, 1);
+  element.addEventListener("click", (event) => event.stopPropagation());
+  return element;
+}
+
 export default function WorldMap({
   mode,
   selectedPlace,
   selectedGeometry,
+  measurementMode,
+  circleMeasurement,
+  distancePoints,
+  travelGeometry,
   reducedMotion,
   onCameraChange,
   onFocusSettled,
   onStatusChange,
+  onMeasurementPoint,
+  onCircleCenterChange,
+  onCircleRadiusChange,
+  onDistancePointChange,
 }) {
   const containerRef = useRef(null);
   const mapRef = useRef(null);
@@ -50,17 +75,44 @@ export default function WorldMap({
   const usableRef = useRef(false);
   const threeDReadyRef = useRef(false);
   const geometryReadyRef = useRef(false);
+  const measurementReadyRef = useRef(false);
   const geometryPulseRef = useRef(0);
+  const measurementMarkersRef = useRef({ center: null, radius: null, points: [] });
+  const radiusDraggingRef = useRef(false);
   const focusListenerRef = useRef(null);
-  const callbacksRef = useRef({ onCameraChange, onFocusSettled, onStatusChange });
+  const callbacksRef = useRef({
+    onCameraChange,
+    onFocusSettled,
+    onStatusChange,
+    onMeasurementPoint,
+    onCircleCenterChange,
+    onCircleRadiusChange,
+    onDistancePointChange,
+  });
   const modeRef = useRef(mode);
   const selectedPlaceRef = useRef(selectedPlace);
   const selectedGeometryRef = useRef(selectedGeometry);
+  const measurementModeRef = useRef(measurementMode);
+  const circleMeasurementRef = useRef(circleMeasurement);
+  const distancePointsRef = useRef(distancePoints);
+  const travelGeometryRef = useRef(travelGeometry);
   const reducedMotionRef = useRef(reducedMotion);
-  callbacksRef.current = { onCameraChange, onFocusSettled, onStatusChange };
+  callbacksRef.current = {
+    onCameraChange,
+    onFocusSettled,
+    onStatusChange,
+    onMeasurementPoint,
+    onCircleCenterChange,
+    onCircleRadiusChange,
+    onDistancePointChange,
+  };
   modeRef.current = mode;
   selectedPlaceRef.current = selectedPlace;
   selectedGeometryRef.current = selectedGeometry;
+  measurementModeRef.current = measurementMode;
+  circleMeasurementRef.current = circleMeasurement;
+  distancePointsRef.current = distancePoints;
+  travelGeometryRef.current = travelGeometry;
   reducedMotionRef.current = reducedMotion;
 
   useEffect(() => {
@@ -103,8 +155,23 @@ export default function WorldMap({
       });
     };
 
+    const handleMeasurementClick = (event) => {
+      if (!measurementModeRef.current) return;
+      const coordinates = [event.lngLat.lng, event.lngLat.lat];
+      callbacksRef.current.onMeasurementPoint?.(coordinates);
+      if (measurementModeRef.current === "radius" && Math.abs(map.getZoom() - 14) > 0.1) {
+        map.easeTo({
+          center: coordinates,
+          zoom: 14,
+          duration: reducedMotionRef.current ? 0 : 700,
+          essential: false,
+        });
+      }
+    };
+
     map.on("moveend", reportCamera);
     map.on("error", handleError);
+    map.on("click", handleMeasurementClick);
     map.on("load", () => {
       loadedRef.current = true;
       usableRef.current = true;
@@ -123,6 +190,16 @@ export default function WorldMap({
         map.getSource(TARGET_GEOMETRY_SOURCE_ID)?.setData(
           targetFeatureCollection(selectedGeometryRef.current),
         );
+        if (!map.getSource(MEASUREMENT_SOURCE_ID)) {
+          map.addSource(MEASUREMENT_SOURCE_ID, {
+            type: "geojson",
+            data: measurementFeatureCollection({
+              circle: circleMeasurementRef.current,
+              points: distancePointsRef.current,
+              travelGeometry: travelGeometryRef.current,
+            }),
+          });
+        }
         targetGeometryLayers().forEach((layer) => {
           if (!map.getLayer(layer.id)) map.addLayer(layer, firstSymbol);
         });
@@ -132,6 +209,10 @@ export default function WorldMap({
         }
         map.setLayoutProperty(BUILDING_LAYER_ID, "visibility", "none");
         threeDReadyRef.current = true;
+        measurementLayers().forEach((layer) => {
+          if (!map.getLayer(layer.id)) map.addLayer(layer, firstSymbol);
+        });
+        measurementReadyRef.current = true;
         callbacksRef.current.onStatusChange?.("ready");
         if (modeRef.current === "3d") {
           map.setLayoutProperty(BUILDING_LAYER_ID, "visibility", "visible");
@@ -153,18 +234,124 @@ export default function WorldMap({
         focusListenerRef.current = null;
       }
       markerRef.current?.remove();
+      measurementMarkersRef.current.center?.remove();
+      measurementMarkersRef.current.radius?.remove();
+      measurementMarkersRef.current.points.forEach((marker) => marker?.remove());
+      measurementMarkersRef.current = { center: null, radius: null, points: [] };
       if (geometryPulseRef.current) cancelAnimationFrame(geometryPulseRef.current);
       markerRef.current = null;
       map.off("moveend", reportCamera);
       map.off("error", handleError);
+      map.off("click", handleMeasurementClick);
       map.remove();
       mapRef.current = null;
       loadedRef.current = false;
       usableRef.current = false;
       threeDReadyRef.current = false;
       geometryReadyRef.current = false;
+      measurementReadyRef.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current || !measurementReadyRef.current) return;
+    map.getCanvas().style.cursor = measurementMode ? "crosshair" : "";
+  }, [measurementMode]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current || !measurementReadyRef.current) return;
+    map.getSource(MEASUREMENT_SOURCE_ID)?.setData(measurementFeatureCollection({
+      circle: circleMeasurement,
+      points: distancePoints,
+      travelGeometry,
+    }));
+  }, [circleMeasurement, distancePoints, travelGeometry]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !loadedRef.current) return undefined;
+    const markers = measurementMarkersRef.current;
+
+    if (circleMeasurement) {
+      if (!markers.center) {
+        const centerMarker = new maplibregl.Marker({
+          element: createMeasurementElement("範圍中心，可拖曳", "center"),
+          draggable: true,
+          anchor: "center",
+        });
+        centerMarker.on("dragend", () => {
+          const position = centerMarker.getLngLat();
+          callbacksRef.current.onCircleCenterChange?.([position.lng, position.lat]);
+        });
+        markers.center = centerMarker;
+      }
+      markers.center.setLngLat(circleMeasurement.center).addTo(map);
+
+      if (!markers.radius) {
+        const radiusMarker = new maplibregl.Marker({
+          element: createMeasurementElement("拖曳調整圓形範圍", "radius"),
+          draggable: true,
+          anchor: "center",
+        });
+        radiusMarker.on("dragstart", () => {
+          radiusDraggingRef.current = true;
+        });
+        radiusMarker.on("drag", () => {
+          const position = radiusMarker.getLngLat();
+          const center = circleMeasurementRef.current?.center;
+          if (center) {
+            callbacksRef.current.onCircleRadiusChange?.(
+              haversineDistance(center, [position.lng, position.lat]),
+            );
+          }
+        });
+        radiusMarker.on("dragend", () => {
+          radiusDraggingRef.current = false;
+          const current = circleMeasurementRef.current;
+          if (current) {
+            radiusMarker.setLngLat(destinationPoint(current.center, 90, current.radius));
+          }
+        });
+        markers.radius = radiusMarker;
+      }
+      if (!radiusDraggingRef.current) {
+        markers.radius.setLngLat(
+          destinationPoint(circleMeasurement.center, 90, circleMeasurement.radius),
+        );
+      }
+      markers.radius.addTo(map);
+    } else {
+      markers.center?.remove();
+      markers.radius?.remove();
+      markers.center = null;
+      markers.radius = null;
+    }
+
+    distancePoints.forEach((point, index) => {
+      if (!markers.points[index]) {
+        const label = index === 0 ? "A 點，可拖曳" : "B 點，可拖曳";
+        const pointMarker = new maplibregl.Marker({
+          element: createMeasurementElement(label, index === 0 ? "point-a" : "point-b"),
+          draggable: true,
+          anchor: "center",
+        });
+        pointMarker.on("dragend", () => {
+          const position = pointMarker.getLngLat();
+          callbacksRef.current.onDistancePointChange?.(index, [position.lng, position.lat]);
+        });
+        markers.points[index] = pointMarker;
+      }
+      markers.points[index].setLngLat(point).addTo(map);
+    });
+    for (let index = distancePoints.length; index < markers.points.length; index += 1) {
+      markers.points[index]?.remove();
+      markers.points[index] = null;
+    }
+
+    return undefined;
+  }, [circleMeasurement, distancePoints]);
 
   useEffect(() => {
     const map = mapRef.current;

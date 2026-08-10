@@ -6,6 +6,7 @@ export const TAIWAN_CAMERA = Object.freeze({
 });
 
 export const TARGET_GEOMETRY_SOURCE_ID = "estiginto-target-geometry";
+export const MEASUREMENT_SOURCE_ID = "estiginto-measurement";
 
 export const mapStyleUrl = () => "https://tiles.openfreemap.org/styles/dark";
 
@@ -142,6 +143,98 @@ export function targetGeometryLayers() {
       paint: {
         "line-color": "#baf8ff",
         "line-width": ["interpolate", ["linear"], ["zoom"], 10, 3, 17, 7],
+        "line-opacity": 1,
+      },
+    },
+  ];
+}
+
+export function measurementLayers() {
+  const kind = (value) => ["==", ["get", "measurementKind"], value];
+  const rounded = { "line-cap": "round", "line-join": "round" };
+
+  return [
+    {
+      id: "estiginto-measurement-circle-fill",
+      type: "fill",
+      source: MEASUREMENT_SOURCE_ID,
+      filter: kind("circle"),
+      paint: { "fill-color": "#19cce8", "fill-opacity": 0.16 },
+    },
+    {
+      id: "estiginto-measurement-circle-outline",
+      type: "line",
+      source: MEASUREMENT_SOURCE_ID,
+      filter: kind("circle"),
+      layout: rounded,
+      paint: {
+        "line-color": "#7df5ff",
+        "line-width": 3,
+        "line-blur": 1,
+        "line-opacity": 0.95,
+      },
+    },
+    {
+      id: "estiginto-measurement-circle-glow",
+      type: "line",
+      source: MEASUREMENT_SOURCE_ID,
+      filter: kind("circle"),
+      layout: rounded,
+      paint: {
+        "line-color": "#4ce8ff",
+        "line-width": 10,
+        "line-blur": 7,
+        "line-opacity": 0.6,
+      },
+    },
+    {
+      id: "estiginto-measurement-straight",
+      type: "line",
+      source: MEASUREMENT_SOURCE_ID,
+      filter: kind("straight"),
+      layout: rounded,
+      paint: {
+        "line-color": "#d8fbff",
+        "line-width": 2,
+        "line-dasharray": [2, 2],
+        "line-opacity": 0.82,
+      },
+    },
+    {
+      id: "estiginto-measurement-travel-backdrop",
+      type: "line",
+      source: MEASUREMENT_SOURCE_ID,
+      filter: kind("travel"),
+      layout: rounded,
+      paint: {
+        "line-color": "#001116",
+        "line-width": 18,
+        "line-blur": 2,
+        "line-opacity": 0.88,
+      },
+    },
+    {
+      id: "estiginto-measurement-travel-glow",
+      type: "line",
+      source: MEASUREMENT_SOURCE_ID,
+      filter: kind("travel"),
+      layout: rounded,
+      paint: {
+        "line-color": "#4ce8ff",
+        "line-width": 12,
+        "line-blur": 8,
+        "line-opacity": 0.82,
+      },
+    },
+    {
+      id: "estiginto-measurement-travel-core",
+      type: "line",
+      source: MEASUREMENT_SOURCE_ID,
+      filter: kind("travel"),
+      layout: rounded,
+      paint: {
+        "line-color": "#ffb15c",
+        "line-width": 5,
         "line-opacity": 1,
       },
     },

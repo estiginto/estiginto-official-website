@@ -46,7 +46,7 @@ test("map search controls expose combobox and listbox semantics", () => {
   assert.match(results, /aria-selected/);
 });
 
-test("map scope excludes directions and geolocation", () => {
+test("map measurement excludes turn-by-turn UI and geolocation", () => {
   const files = [
     read("src/map/MapExperience.jsx"),
     read("src/map/WorldMap.jsx"),
@@ -54,8 +54,29 @@ test("map scope excludes directions and geolocation", () => {
   ].join("\n");
   assert.doesNotMatch(
     files,
-    /MapboxDirections|directions\/v|routeLayer|route-line|navigator\.geolocation|GeolocateControl/,
+    /MapboxDirections|directions\/v|navigator\.geolocation|GeolocateControl/,
   );
+});
+
+test("map exposes accessible radius and two-point measurement controls", () => {
+  const app = read("src/map/MapExperience.jsx");
+  const map = read("src/map/WorldMap.jsx");
+  const tools = read("src/map/components/MeasurementTools.jsx");
+  const css = read("src/map/map.css");
+
+  assert.match(app, /MeasurementTools/);
+  assert.match(app, /measurementMode/);
+  assert.match(app, /travelState/);
+  assert.match(map, /onMeasurementPoint/);
+  assert.match(map, /draggable:\s*true/);
+  assert.match(tools, /aria-pressed/);
+  assert.match(tools, /aria-live="polite"/);
+  assert.match(tools, /範圍/);
+  assert.match(tools, /距離/);
+  assert.match(tools, /清除/);
+  assert.match(tools, /重試/);
+  assert.match(css, /\.measurement-tools/);
+  assert.match(css, /\.measurement-readout/);
 });
 
 test("map HUD provides reduced motion and truthful status regions", () => {
