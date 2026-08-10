@@ -105,3 +105,11 @@ test("map HUD exposes a compass-only north reset and concise mode labels", () =>
   assert.match(css, /\.maplibregl-ctrl-top-right/);
   assert.match(css, /\.maplibregl-ctrl-compass:focus-visible/);
 });
+
+test("map HUD styles load after MapLibre defaults so control placement is preserved", () => {
+  const entry = read("src/map/main.jsx");
+  assert.ok(
+    entry.indexOf('maplibre-gl/dist/maplibre-gl.css') < entry.indexOf('./map.css'),
+    "MapLibre defaults must load before the custom HUD stylesheet",
+  );
+});
