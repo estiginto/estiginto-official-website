@@ -5,3 +5,6 @@ dist/
 old/
 .worktrees/
 .superpowers/
+.playwright-cli/
+output/
+tmp/
