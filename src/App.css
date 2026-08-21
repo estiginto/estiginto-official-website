@@ -2320,6 +2320,7 @@ ul, ol  { margin: 0; }
 .service-overview-card:hover .service-overview-eyebrow,
 .service-overview-card:focus-visible .service-overview-eyebrow { color: var(--paper-muted); }
 .service-overview-card h2 {
+  color: inherit;
   max-width: 11ch;
   margin: 10px 0 0;
   font-size: clamp(1.35rem, 2.2vw, 2rem);

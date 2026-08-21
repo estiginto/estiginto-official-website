@@ -135,6 +135,12 @@ test("page entry restores late-rendered hash destinations", () => {
   assert.match(css, /\.consulting-service\s*\{[\s\S]*?scroll-margin-top:\s*96px;/);
 });
 
+test("service overview titles inherit the card hover color", () => {
+  const css = read("src/App.css");
+
+  assert.match(css, /\.service-overview-card h2\s*\{[\s\S]*?color:\s*inherit;/);
+});
+
 test("all internal pages share the geometric transition overlay", () => {
   const app = read("src/App.jsx");
   const css = read("src/App.css");
