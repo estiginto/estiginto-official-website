@@ -47,12 +47,14 @@ test("desktop navigation restores site destinations and keeps consulting service
   assert.match(cssSource, /\.desktop-service-menu\s*\{[\s\S]*?border-radius:\s*18px;/);
 });
 
-test("desktop service menu runs a continuous forward-moving information tunnel", () => {
-  assert.match(desktopMenuSource, /className="desktop-data-tunnel"/);
-  assert.match(desktopMenuSource, /dataStreams\.map/);
-  assert.match(cssSource, /\.desktop-data-stream\s*\{[\s\S]*?desktop-data-flight[\s\S]*?infinite;/);
-  assert.match(cssSource, /@keyframes desktop-data-flight[\s\S]*?translate3d\(var\(--stream-far-x\)[\s\S]*?translate3d\(var\(--stream-near-x\)/);
-  assert.match(cssSource, /\.desktop-data-tunnel::after[\s\S]*?radial-gradient/);
+test("desktop menu places a continuous fiber field behind the panel", () => {
+  assert.match(desktopMenuSource, /className="desktop-fiber-field"[\s\S]*?<nav/);
+  assert.match(desktopMenuSource, /fiberTracks\.map/);
+  assert.match(desktopMenuSource, /viewBox="0 0 100 100"[\s\S]*?preserveAspectRatio="none"/);
+  assert.match(cssSource, /\.desktop-fiber-field\s*\{[\s\S]*?position:\s*fixed;[\s\S]*?inset:\s*0;[\s\S]*?z-index:\s*2;/);
+  assert.match(cssSource, /\.desktop-fiber-pulse\s*\{[\s\S]*?desktop-fiber-pulse[\s\S]*?infinite;/);
+  assert.match(cssSource, /@keyframes desktop-fiber-pulse[\s\S]*?stroke-dashoffset:\s*100[\s\S]*?stroke-dashoffset:\s*-100/);
+  assert.match(cssSource, /\.desktop-cursor-menu\.stream-closing \.desktop-fiber-field/);
   assert.match(cssSource, /\.desktop-service-menu::before[\s\S]*?background-size:\s*40px 40px/);
   assert.match(cssSource, /\.desktop-service-menu::after[\s\S]*?radial-gradient/);
   assert.match(
