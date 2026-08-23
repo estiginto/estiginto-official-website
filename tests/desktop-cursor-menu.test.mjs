@@ -47,14 +47,16 @@ test("desktop navigation restores site destinations and keeps consulting service
   assert.match(cssSource, /\.desktop-service-menu\s*\{[\s\S]*?border-radius:\s*18px;/);
 });
 
-test("desktop menu places a continuous fiber field behind the panel", () => {
-  assert.match(desktopMenuSource, /className="desktop-fiber-field"[\s\S]*?<nav/);
-  assert.match(desktopMenuSource, /fiberTracks\.map/);
-  assert.match(desktopMenuSource, /viewBox="0 0 100 100"[\s\S]*?preserveAspectRatio="none"/);
-  assert.match(cssSource, /\.desktop-fiber-field\s*\{[\s\S]*?position:\s*fixed;[\s\S]*?inset:\s*0;[\s\S]*?z-index:\s*2;/);
-  assert.match(cssSource, /\.desktop-fiber-pulse\s*\{[\s\S]*?desktop-fiber-pulse[\s\S]*?infinite;/);
-  assert.match(cssSource, /@keyframes desktop-fiber-pulse[\s\S]*?stroke-dashoffset:\s*100[\s\S]*?stroke-dashoffset:\s*-100/);
-  assert.match(cssSource, /\.desktop-cursor-menu\.stream-closing \.desktop-fiber-field/);
+test("desktop menu places a continuous spatial light field behind the panel", () => {
+  assert.match(desktopMenuSource, /className="desktop-ambient-field"[\s\S]*?<nav/);
+  assert.match(desktopMenuSource, /className="desktop-ambient-layer cool"/);
+  assert.match(desktopMenuSource, /className="desktop-ambient-layer warm"/);
+  assert.match(desktopMenuSource, /className="desktop-ambient-layer depth"/);
+  assert.doesNotMatch(desktopMenuSource, /desktop-fiber|<svg|<path/);
+  assert.match(cssSource, /\.desktop-ambient-field\s*\{[\s\S]*?position:\s*fixed;[\s\S]*?inset:\s*0;[\s\S]*?z-index:\s*2;/);
+  assert.match(cssSource, /\.desktop-ambient-layer\s*\{[\s\S]*?desktop-ambient-drift[\s\S]*?infinite/);
+  assert.match(cssSource, /@keyframes desktop-ambient-drift[\s\S]*?translate3d[\s\S]*?scale/);
+  assert.match(cssSource, /\.desktop-cursor-menu\.stream-closing \.desktop-ambient-field/);
   assert.match(cssSource, /\.desktop-service-menu::before[\s\S]*?background-size:\s*40px 40px/);
   assert.match(cssSource, /\.desktop-service-menu::after[\s\S]*?radial-gradient/);
   assert.match(

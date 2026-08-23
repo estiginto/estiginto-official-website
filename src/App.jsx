@@ -13,7 +13,6 @@ import {
 } from "./mobileLanguagePrompt.js";
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
 import { getServiceMenuGroups } from "./navigationMenu.js";
-import { createDesktopMenuFiberTracks } from "./desktopMenuParticles.js";
 import {
   LANGUAGE_TRANSITION_DURATION,
   LANGUAGE_TRANSITION_SWAP_DELAY,
@@ -2083,7 +2082,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const [visible, setVisible] = useState(false);
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
   const [position, setPosition] = useState({ x: 160, y: 160 });
-  const fiberTracks = useMemo(() => createDesktopMenuFiberTracks(), []);
   const triggerRef = useRef(null);
   const menuRef = useRef(null);
   const positionRef = useRef(position);
@@ -2295,24 +2293,10 @@ function DesktopCursorMenu({ locale, fontControls }) {
         </span>
       </button>
 
-      <div className="desktop-fiber-field" aria-hidden="true">
-        <div className="desktop-fiber-vantage" />
-        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-          {fiberTracks.map((track) => (
-            <g className="desktop-fiber-track" key={track.id}>
-              <path className="desktop-fiber-rail" d={track.path} pathLength="100" />
-              <path
-                className="desktop-fiber-pulse"
-                d={track.path}
-                pathLength="100"
-                style={{
-                  "--fiber-duration": `${track.duration}ms`,
-                  "--fiber-delay": `${track.delay}ms`,
-                }}
-              />
-            </g>
-          ))}
-        </svg>
+      <div className="desktop-ambient-field" aria-hidden="true">
+        <span className="desktop-ambient-layer cool" />
+        <span className="desktop-ambient-layer warm" />
+        <span className="desktop-ambient-layer depth" />
       </div>
 
       <nav
