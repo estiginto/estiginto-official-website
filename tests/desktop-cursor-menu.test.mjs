@@ -14,13 +14,17 @@ test("closed desktop service menu cannot activate hidden navigation targets", ()
   );
   assert.match(
     cssSource,
-    /\.desktop-cursor-menu\.open \.desktop-service-menu\s*\{[\s\S]*?pointer-events:\s*auto;/,
+    /\.desktop-cursor-menu\.open:not\(\.particle-closing\) \.desktop-service-menu\s*\{[\s\S]*?pointer-events:\s*auto;/,
   );
-  assert.match(desktopMenuSource, /tabIndex=\{open \? 0 : -1\}/);
+  assert.match(
+    cssSource,
+    /\.desktop-cursor-menu\.particle-closing \.desktop-service-menu\s*\{[\s\S]*?pointer-events:\s*none;/,
+  );
+  assert.match(desktopMenuSource, /tabIndex=\{open && !closing \? 0 : -1\}/);
   assert.match(desktopMenuSource, /className="desktop-menu-scrim"[\s\S]*?tabIndex=\{-1\}/);
-  assert.match(desktopMenuSource, /aria-hidden=\{!open\}/);
+  assert.match(desktopMenuSource, /aria-hidden=\{!open \|\| closing\}/);
   assert.match(desktopMenuSource, /aria-controls="desktop-service-navigation"/);
-  assert.match(desktopMenuSource, /aria-expanded=\{open\}/);
+  assert.match(desktopMenuSource, /aria-expanded=\{open && !closing\}/);
 });
 
 test("desktop service menu recomputes its enabled focus boundary on every Tab press", () => {
@@ -48,11 +52,11 @@ test("desktop service grid breathes with a restrained two-beat pulse", () => {
   assert.match(cssSource, /\.desktop-service-menu::after[\s\S]*?radial-gradient/);
   assert.match(
     cssSource,
-    /\.desktop-cursor-menu\.open \.desktop-service-menu::before[\s\S]*?animation:\s*desktop-grid-breathe 8s/,
+    /\.desktop-cursor-menu\.open:not\(\.particle-closing\) \.desktop-service-menu::before[\s\S]*?desktop-grid-materialize 880ms[\s\S]*?desktop-grid-breathe 8s/,
   );
   assert.match(
     cssSource,
-    /\.desktop-cursor-menu\.open \.desktop-service-menu::after[\s\S]*?animation:\s*desktop-grid-heartbeat 8s/,
+    /\.desktop-cursor-menu\.open:not\(\.particle-closing\) \.desktop-service-menu::after[\s\S]*?desktop-signal-materialize 920ms[\s\S]*?desktop-grid-heartbeat 8s/,
   );
   assert.match(cssSource, /@keyframes desktop-grid-heartbeat[\s\S]*?48%[\s\S]*?52%/);
   assert.match(

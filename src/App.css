@@ -1079,65 +1079,195 @@ ul, ol  { margin: 0; }
 
 .desktop-menu-particle {
   position: absolute;
-  width: 3px;
-  height: 3px;
   border-radius: 50%;
-  background: rgba(59, 130, 246, 0.46);
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.08), 0 0 12px rgba(59, 130, 246, 0.18);
+  background: rgba(59, 130, 246, 0.82);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.12), 0 0 14px rgba(59, 130, 246, 0.32);
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.55);
-  transition:
-    left 560ms cubic-bezier(0.22, 0.8, 0.2, 1) var(--particle-delay),
-    top 560ms cubic-bezier(0.22, 0.8, 0.2, 1) var(--particle-delay),
-    opacity 240ms ease,
-    transform 320ms ease;
-  will-change: left, top, opacity, transform;
+  transform: translate(calc(-50% + var(--particle-dx)), calc(-50% + var(--particle-dy))) scale(0.08);
+  will-change: transform, opacity, filter;
 }
 
-.desktop-menu-particle:nth-child(5n + 1) {
-  width: 5px;
-  height: 5px;
+.desktop-menu-particle.frame {
   border-radius: 1px;
-  background: rgba(183, 134, 67, 0.68);
-  transform: translate(-50%, -50%) rotate(45deg) scale(0.55);
+  background: rgba(183, 134, 67, 0.92);
+  box-shadow: 0 0 0 1px rgba(183, 134, 67, 0.15), 0 0 16px rgba(183, 134, 67, 0.38);
 }
 
-.desktop-cursor-menu.open .desktop-menu-particle {
-  opacity: 0.3;
-  animation: desktop-particle-awaken 620ms var(--ease-soft) both;
-  animation-delay: calc(100ms + var(--particle-delay));
+.desktop-menu-particle.axis {
+  background: rgba(10, 31, 68, 0.82);
+  box-shadow: 0 0 0 1px rgba(10, 31, 68, 0.12), 0 0 12px rgba(10, 31, 68, 0.28);
 }
 
-.desktop-menu-particles[data-active="true"] .desktop-menu-particle {
-  opacity: 0.78;
-  transform: translate(-50%, -50%) scale(1);
+.desktop-menu-particle.grid {
+  background: rgba(59, 130, 246, 0.62);
 }
 
-.desktop-menu-particles[data-active="true"] .desktop-menu-particle:nth-child(5n + 1) {
-  transform: translate(-50%, -50%) rotate(45deg) scale(1);
+.desktop-cursor-menu.open:not(.particle-closing) .desktop-menu-particle {
+  animation: desktop-particle-assemble 560ms cubic-bezier(0.18, 0.78, 0.18, 1) both;
+  animation-delay: var(--particle-delay);
 }
 
-@keyframes desktop-particle-awaken {
+.desktop-cursor-menu.particle-closing .desktop-menu-particle {
+  animation: desktop-particle-disassemble 520ms cubic-bezier(0.42, 0, 0.8, 0.2) both;
+  animation-delay: var(--particle-close-delay);
+}
+
+@keyframes desktop-particle-assemble {
   0% {
-    filter: blur(2px);
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate(calc(-50% + var(--particle-dx)), calc(-50% + var(--particle-dy))) scale(0.08);
+  }
+  18% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 0.92;
+    filter: blur(0);
   }
   100% {
+    opacity: 0.44;
+    filter: blur(0);
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes desktop-particle-disassemble {
+  0% {
+    opacity: 0.44;
+    filter: blur(0);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  54% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate(calc(-50% + var(--particle-dx)), calc(-50% + var(--particle-dy))) scale(0.08);
+  }
+}
+
+.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-menu {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+  animation: desktop-menu-materialize 980ms cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+
+.desktop-cursor-menu.particle-closing .desktop-service-menu {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: none;
+  animation: desktop-menu-dematerialize 760ms cubic-bezier(0.42, 0, 0.8, 0.2) both;
+}
+
+.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-menu::before {
+  animation:
+    desktop-grid-materialize 880ms ease-out both,
+    desktop-grid-breathe 8s ease-in-out 880ms infinite;
+}
+
+.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-menu::after {
+  animation:
+    desktop-signal-materialize 920ms ease-out both,
+    desktop-grid-heartbeat 8s ease-in-out 920ms infinite;
+}
+
+.desktop-cursor-menu.particle-closing .desktop-service-menu::before,
+.desktop-cursor-menu.particle-closing .desktop-service-menu::after {
+  animation: desktop-grid-dematerialize 520ms ease-in both;
+}
+
+.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-eyebrow,
+.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-columns,
+.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-menu .menu-font-controls {
+  animation: desktop-menu-content-reveal 380ms var(--ease-soft) 540ms both;
+}
+
+.desktop-cursor-menu.particle-closing .desktop-service-eyebrow,
+.desktop-cursor-menu.particle-closing .desktop-service-columns,
+.desktop-cursor-menu.particle-closing .desktop-service-menu .menu-font-controls {
+  animation: desktop-menu-content-hide 180ms ease-in both;
+}
+
+@keyframes desktop-menu-materialize {
+  0%, 28% {
+    border-color: transparent;
+    background-color: rgba(250, 251, 253, 0);
+    box-shadow: 0 0 0 rgba(10, 31, 68, 0);
+    clip-path: inset(48% 48% 48% 48% round 18px);
+  }
+  52% {
+    border-color: rgba(183, 134, 67, 0.22);
+    background-color: rgba(250, 251, 253, 0.32);
+    clip-path: inset(4% 3% 4% 3% round 18px);
+  }
+  100% {
+    border-color: rgba(10, 31, 68, 0.12);
+    background-color: rgba(250, 251, 253, 0.98);
+    box-shadow: 0 32px 90px -38px rgba(10, 31, 68, 0.48);
+    clip-path: inset(0 round 18px);
+  }
+}
+
+@keyframes desktop-menu-dematerialize {
+  0% {
+    border-color: rgba(10, 31, 68, 0.12);
+    background-color: rgba(250, 251, 253, 0.98);
+    box-shadow: 0 32px 90px -38px rgba(10, 31, 68, 0.48);
+    clip-path: inset(0 round 18px);
+  }
+  45% {
+    border-color: rgba(183, 134, 67, 0.18);
+    background-color: rgba(250, 251, 253, 0.2);
+    box-shadow: 0 0 0 rgba(10, 31, 68, 0);
+  }
+  100% {
+    border-color: transparent;
+    background-color: rgba(250, 251, 253, 0);
+    box-shadow: 0 0 0 rgba(10, 31, 68, 0);
+    clip-path: inset(48% 48% 48% 48% round 18px);
+  }
+}
+
+@keyframes desktop-grid-materialize {
+  0%, 34% { opacity: 0; }
+  100% { opacity: 0.66; }
+}
+
+@keyframes desktop-signal-materialize {
+  0%, 48% { opacity: 0; }
+  100% { opacity: 0.04; }
+}
+
+@keyframes desktop-grid-dematerialize {
+  0% { opacity: 0.66; }
+  100% { opacity: 0; }
+}
+
+@keyframes desktop-menu-content-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
     filter: blur(0);
   }
 }
 
-.desktop-cursor-menu.open .desktop-service-menu {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-  pointer-events: auto;
-}
-
-.desktop-cursor-menu.open .desktop-service-menu::before {
-  animation: desktop-grid-breathe 8s ease-in-out infinite;
-}
-
-.desktop-cursor-menu.open .desktop-service-menu::after {
-  animation: desktop-grid-heartbeat 8s ease-in-out infinite;
+@keyframes desktop-menu-content-hide {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(4px);
+  }
 }
 
 @keyframes desktop-grid-breathe {

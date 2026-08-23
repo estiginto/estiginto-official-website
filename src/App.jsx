@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   caseStudyGroupsByLocale,
   caseStudiesByLocale,
@@ -14,8 +14,8 @@ import {
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
 import { getServiceMenuGroups } from "./navigationMenu.js";
 import {
-  createDesktopMenuParticles,
-  projectParticleTowardTarget,
+  createDesktopMenuAssemblyParticles,
+  getParticleAssemblyOffset,
 } from "./desktopMenuParticles.js";
 import {
   LANGUAGE_TRANSITION_DURATION,
@@ -2082,11 +2082,12 @@ function DesktopCursorMenu({ locale, fontControls }) {
     growth: getServiceMenuGroups(locale).growth,
   };
   const [open, setOpen] = useState(false);
+  const [closing, setClosing] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
   const [position, setPosition] = useState({ x: 160, y: 160 });
-  const [particleTarget, setParticleTarget] = useState(null);
-  const menuParticles = useMemo(() => createDesktopMenuParticles(), []);
+  const [assemblyGeometry, setAssemblyGeometry] = useState({ origin: null, dimensions: null });
+  const menuParticles = useMemo(() => createDesktopMenuAssemblyParticles(), []);
   const triggerRef = useRef(null);
   const menuRef = useRef(null);
   const positionRef = useRef(position);
@@ -2095,10 +2096,28 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const frozenRef = useRef(false);
   const hideTimerRef = useRef(null);
   const freezeTimerRef = useRef(null);
+  const closeTimerRef = useRef(null);
 
   useEffect(() => {
     positionRef.current = position;
   }, [position]);
+
+  useLayoutEffect(() => {
+    if (!open || !menuRef.current) {
+      return;
+    }
+
+    const bounds = menuRef.current.getBoundingClientRect();
+    setAssemblyGeometry({
+      origin: {
+        x: ((position.x - bounds.left) / bounds.width) * 100,
+        y: ((position.y - bounds.top) / bounds.height) * 100,
+      },
+      dimensions: { width: bounds.width, height: bounds.height },
+    });
+  }, [open, position.x, position.y]);
+
+  useEffect(() => () => window.clearTimeout(closeTimerRef.current), []);
 
   useEffect(() => {
     const clearTimers = () => {
@@ -2184,7 +2203,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
   }, [hoveringTrigger, open]);
 
   useEffect(() => {
-    if (!open) {
+    if (!open || closing) {
       return undefined;
     }
 
@@ -2196,9 +2215,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        setOpen(false);
-        setParticleTarget(null);
-        window.requestAnimationFrame(() => triggerRef.current?.focus());
+        closeMenu();
         return;
       }
 
@@ -2230,25 +2247,32 @@ function DesktopCursorMenu({ locale, fontControls }) {
 
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [open]);
+  }, [closing, open]);
 
   const closeMenu = () => {
-    setOpen(false);
-    setParticleTarget(null);
-    window.requestAnimationFrame(() => triggerRef.current?.focus());
-  };
-
-  const attractParticlesToItem = (event) => {
-    const menuBounds = menuRef.current?.getBoundingClientRect();
-    const itemBounds = event.currentTarget.getBoundingClientRect();
-    if (!menuBounds?.width || !menuBounds?.height) {
+    if (!open || closing) {
       return;
     }
 
-    setParticleTarget({
-      x: ((itemBounds.left + itemBounds.width * 0.72 - menuBounds.left) / menuBounds.width) * 100,
-      y: ((itemBounds.top + itemBounds.height / 2 - menuBounds.top) / menuBounds.height) * 100,
-    });
+    window.clearTimeout(closeTimerRef.current);
+    triggerRef.current?.focus();
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setOpen(false);
+      return;
+    }
+
+    setClosing(true);
+    closeTimerRef.current = window.setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+    }, 760);
+  };
+
+  const openMenu = () => {
+    window.clearTimeout(closeTimerRef.current);
+    setClosing(false);
+    setOpen(true);
   };
 
   const handleTriggerLeave = () => {
@@ -2265,7 +2289,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
   };
 
   return (
-    <div className={`desktop-cursor-menu ${open ? "open" : ""} ${hoveringTrigger ? "hovering" : ""}`}>
+    <div className={`desktop-cursor-menu ${open ? "open" : ""} ${closing ? "particle-closing" : ""} ${hoveringTrigger ? "hovering" : ""}`}>
       <button className="desktop-menu-scrim" type="button" aria-label="Close desktop menu" tabIndex={-1} onClick={closeMenu} />
 
       <button
@@ -2275,8 +2299,8 @@ function DesktopCursorMenu({ locale, fontControls }) {
         style={{ "--cursor-x": `${position.x}px`, "--cursor-y": `${position.y}px` }}
         aria-label="Open desktop menu"
         aria-controls="desktop-service-navigation"
-        aria-expanded={open}
-        onClick={() => setOpen(true)}
+        aria-expanded={open && !closing}
+        onClick={openMenu}
         onMouseEnter={() => setHoveringTrigger(true)}
         onMouseLeave={handleTriggerLeave}
         onFocus={() => setHoveringTrigger(true)}
@@ -2295,24 +2319,28 @@ function DesktopCursorMenu({ locale, fontControls }) {
         id="desktop-service-navigation"
         className="desktop-service-menu"
         aria-label={localizedMenuLabels.servicesMenu}
-        aria-hidden={!open}
-        onMouseLeave={() => setParticleTarget(null)}
+        aria-hidden={!open || closing}
       >
-        <div
-          className="desktop-menu-particles"
-          aria-hidden="true"
-          data-active={particleTarget ? "true" : "false"}
-        >
+        <div className="desktop-menu-particles" aria-hidden="true">
           {menuParticles.map((particle) => {
-            const projected = projectParticleTowardTarget(particle, particleTarget);
+            const offset = getParticleAssemblyOffset(
+              particle,
+              assemblyGeometry.origin,
+              assemblyGeometry.dimensions,
+            );
             return (
               <span
-                className="desktop-menu-particle"
+                className={`desktop-menu-particle ${particle.layer}`}
                 key={particle.id}
                 style={{
-                  left: `${projected.x}%`,
-                  top: `${projected.y}%`,
+                  left: `${particle.x}%`,
+                  top: `${particle.y}%`,
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
+                  "--particle-dx": `${offset.x}px`,
+                  "--particle-dy": `${offset.y}px`,
                   "--particle-delay": `${particle.delay}ms`,
+                  "--particle-close-delay": `${Math.max(0, Math.round((444 - particle.delay) * 0.45))}ms`,
                 }}
               />
             );
@@ -2334,10 +2362,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
                       className="desktop-service-link"
                       href={item.href}
                       key={item.key}
-                      tabIndex={open ? 0 : -1}
-                      onMouseEnter={attractParticlesToItem}
-                      onFocus={attractParticlesToItem}
-                      onBlur={() => setParticleTarget(null)}
+                      tabIndex={open && !closing ? 0 : -1}
                     >
                       <span className="desktop-service-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                       <span>{item.label}</span>
@@ -2349,7 +2374,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
             );
           })}
         </div>
-        <FontSizeControls {...fontControls} tabIndex={open ? 0 : -1} />
+        <FontSizeControls {...fontControls} tabIndex={open && !closing ? 0 : -1} />
       </nav>
     </div>
   );
