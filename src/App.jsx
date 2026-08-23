@@ -14,6 +14,10 @@ import {
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
 import { getServiceMenuGroups } from "./navigationMenu.js";
 import {
+  createDesktopMenuParticles,
+  projectParticleTowardTarget,
+} from "./desktopMenuParticles.js";
+import {
   LANGUAGE_TRANSITION_DURATION,
   LANGUAGE_TRANSITION_SWAP_DELAY,
   shouldAnimateLanguageChange,
@@ -2081,6 +2085,8 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const [visible, setVisible] = useState(false);
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
   const [position, setPosition] = useState({ x: 160, y: 160 });
+  const [particleTarget, setParticleTarget] = useState(null);
+  const menuParticles = useMemo(() => createDesktopMenuParticles(), []);
   const triggerRef = useRef(null);
   const menuRef = useRef(null);
   const positionRef = useRef(position);
@@ -2191,6 +2197,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
       if (event.key === "Escape") {
         event.preventDefault();
         setOpen(false);
+        setParticleTarget(null);
         window.requestAnimationFrame(() => triggerRef.current?.focus());
         return;
       }
@@ -2227,7 +2234,21 @@ function DesktopCursorMenu({ locale, fontControls }) {
 
   const closeMenu = () => {
     setOpen(false);
+    setParticleTarget(null);
     window.requestAnimationFrame(() => triggerRef.current?.focus());
+  };
+
+  const attractParticlesToItem = (event) => {
+    const menuBounds = menuRef.current?.getBoundingClientRect();
+    const itemBounds = event.currentTarget.getBoundingClientRect();
+    if (!menuBounds?.width || !menuBounds?.height) {
+      return;
+    }
+
+    setParticleTarget({
+      x: ((itemBounds.left + itemBounds.width * 0.72 - menuBounds.left) / menuBounds.width) * 100,
+      y: ((itemBounds.top + itemBounds.height / 2 - menuBounds.top) / menuBounds.height) * 100,
+    });
   };
 
   const handleTriggerLeave = () => {
@@ -2275,7 +2296,28 @@ function DesktopCursorMenu({ locale, fontControls }) {
         className="desktop-service-menu"
         aria-label={localizedMenuLabels.servicesMenu}
         aria-hidden={!open}
+        onMouseLeave={() => setParticleTarget(null)}
       >
+        <div
+          className="desktop-menu-particles"
+          aria-hidden="true"
+          data-active={particleTarget ? "true" : "false"}
+        >
+          {menuParticles.map((particle) => {
+            const projected = projectParticleTowardTarget(particle, particleTarget);
+            return (
+              <span
+                className="desktop-menu-particle"
+                key={particle.id}
+                style={{
+                  left: `${projected.x}%`,
+                  top: `${projected.y}%`,
+                  "--particle-delay": `${particle.delay}ms`,
+                }}
+              />
+            );
+          })}
+        </div>
         <p className="desktop-service-eyebrow">Services · Estiginto</p>
         <div className="desktop-service-columns">
           {Object.entries(desktopMenuGroups).map(([groupKey, group]) => {
@@ -2288,7 +2330,15 @@ function DesktopCursorMenu({ locale, fontControls }) {
                 </h2>
                 <div className="desktop-service-links">
                   {group.items.map((item, index) => (
-                    <a className="desktop-service-link" href={item.href} key={item.key} tabIndex={open ? 0 : -1}>
+                    <a
+                      className="desktop-service-link"
+                      href={item.href}
+                      key={item.key}
+                      tabIndex={open ? 0 : -1}
+                      onMouseEnter={attractParticlesToItem}
+                      onFocus={attractParticlesToItem}
+                      onBlur={() => setParticleTarget(null)}
+                    >
                       <span className="desktop-service-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                       <span>{item.label}</span>
                       <span className="desktop-service-rule" aria-hidden="true" />
