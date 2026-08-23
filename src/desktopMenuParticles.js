@@ -1,57 +1,24 @@
-const FRAME_STEPS = 16;
-const FRAME_MIN = 5;
-const FRAME_MAX = 95;
+const STREAM_COUNT = 48;
+const GOLDEN_ANGLE = 137.5;
+const GLYPHS = ["01", "SYS", "API", "DATA", "TX", "RX", "//", "↗"];
 
-function frameCoordinate(index) {
-  return FRAME_MIN + ((FRAME_MAX - FRAME_MIN) * index) / (FRAME_STEPS - 1);
-}
+export function createDesktopMenuDataStreams() {
+  return Array.from({ length: STREAM_COUNT }, (_, id) => {
+    const angle = ((id * GOLDEN_ANGLE) % 360) * (Math.PI / 180);
+    const radius = 0.34 + ((id * 29) % 66) / 100;
+    const duration = 1800 + ((id * 173) % 1400);
+    const typeIndex = id % 4;
+    const type = typeIndex === 0 ? "glyph" : typeIndex === 2 ? "node" : "streak";
 
-export function createDesktopMenuAssemblyParticles() {
-  const frame = Array.from({ length: FRAME_STEPS }, (_, index) => ({ x: frameCoordinate(index), y: FRAME_MIN }))
-    .concat(Array.from({ length: FRAME_STEPS }, (_, index) => ({ x: FRAME_MAX, y: frameCoordinate(index) })))
-    .concat(Array.from({ length: FRAME_STEPS }, (_, index) => ({ x: frameCoordinate(FRAME_STEPS - 1 - index), y: FRAME_MAX })))
-    .concat(Array.from({ length: FRAME_STEPS }, (_, index) => ({ x: FRAME_MIN, y: frameCoordinate(FRAME_STEPS - 1 - index) })))
-    .map((point, id) => ({
-      id,
-      ...point,
-      layer: "frame",
-      delay: id * 3,
-      size: id % 8 === 0 ? 4 : 3,
-    }));
-
-  const axis = Array.from({ length: 16 }, (_, index) => ({
-    id: frame.length + index,
-    x: 50,
-    y: 8 + (84 * index) / 15,
-    layer: "axis",
-    delay: 220 + index * 5,
-    size: index % 5 === 0 ? 4 : 3,
-  }));
-
-  const gridColumns = [10, 22, 34, 46, 58, 70, 82, 94];
-  const gridRows = [22, 42, 62, 82];
-  const grid = gridRows.flatMap((y, rowIndex) => gridColumns.map((x, columnIndex) => {
-    const gridIndex = rowIndex * gridColumns.length + columnIndex;
     return {
-      id: frame.length + axis.length + gridIndex,
-      x,
-      y,
-      layer: "grid",
-      delay: 320 + gridIndex * 4,
-      size: (rowIndex + columnIndex) % 7 === 0 ? 3 : 2,
+      id,
+      type,
+      glyph: type === "glyph" ? GLYPHS[(id / 4) % GLYPHS.length] : "",
+      laneX: Number((Math.cos(angle) * radius).toFixed(4)),
+      laneY: Number((Math.sin(angle) * radius * 0.72).toFixed(4)),
+      duration,
+      delay: -Math.floor(((id + 1) / (STREAM_COUNT + 1)) * duration),
+      size: 2 + ((id * 7) % 4),
     };
-  }));
-
-  return [...frame, ...axis, ...grid];
-}
-
-export function getParticleAssemblyOffset(particle, origin, dimensions) {
-  if (!origin || !dimensions || !Number.isFinite(dimensions.width) || !Number.isFinite(dimensions.height)) {
-    return { x: 0, y: 0 };
-  }
-
-  return {
-    x: ((origin.x - particle.x) / 100) * dimensions.width,
-    y: ((origin.y - particle.y) / 100) * dimensions.height,
-  };
+  });
 }

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   caseStudyGroupsByLocale,
   caseStudiesByLocale,
@@ -13,10 +13,7 @@ import {
 } from "./mobileLanguagePrompt.js";
 import { advanceMobileNavScrollState } from "./mobileNavScroll.js";
 import { getServiceMenuGroups } from "./navigationMenu.js";
-import {
-  createDesktopMenuAssemblyParticles,
-  getParticleAssemblyOffset,
-} from "./desktopMenuParticles.js";
+import { createDesktopMenuDataStreams } from "./desktopMenuParticles.js";
 import {
   LANGUAGE_TRANSITION_DURATION,
   LANGUAGE_TRANSITION_SWAP_DELAY,
@@ -2086,8 +2083,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const [visible, setVisible] = useState(false);
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
   const [position, setPosition] = useState({ x: 160, y: 160 });
-  const [assemblyGeometry, setAssemblyGeometry] = useState({ origin: null, dimensions: null });
-  const menuParticles = useMemo(() => createDesktopMenuAssemblyParticles(), []);
+  const dataStreams = useMemo(() => createDesktopMenuDataStreams(), []);
   const triggerRef = useRef(null);
   const menuRef = useRef(null);
   const positionRef = useRef(position);
@@ -2101,21 +2097,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
   useEffect(() => {
     positionRef.current = position;
   }, [position]);
-
-  useLayoutEffect(() => {
-    if (!open || !menuRef.current) {
-      return;
-    }
-
-    const bounds = menuRef.current.getBoundingClientRect();
-    setAssemblyGeometry({
-      origin: {
-        x: ((position.x - bounds.left) / bounds.width) * 100,
-        y: ((position.y - bounds.top) / bounds.height) * 100,
-      },
-      dimensions: { width: bounds.width, height: bounds.height },
-    });
-  }, [open, position.x, position.y]);
 
   useEffect(() => () => window.clearTimeout(closeTimerRef.current), []);
 
@@ -2266,7 +2247,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
     closeTimerRef.current = window.setTimeout(() => {
       setOpen(false);
       setClosing(false);
-    }, 760);
+    }, 420);
   };
 
   const openMenu = () => {
@@ -2289,7 +2270,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
   };
 
   return (
-    <div className={`desktop-cursor-menu ${open ? "open" : ""} ${closing ? "particle-closing" : ""} ${hoveringTrigger ? "hovering" : ""}`}>
+    <div className={`desktop-cursor-menu ${open ? "open" : ""} ${closing ? "stream-closing" : ""} ${hoveringTrigger ? "hovering" : ""}`}>
       <button className="desktop-menu-scrim" type="button" aria-label="Close desktop menu" tabIndex={-1} onClick={closeMenu} />
 
       <button
@@ -2321,30 +2302,27 @@ function DesktopCursorMenu({ locale, fontControls }) {
         aria-label={localizedMenuLabels.servicesMenu}
         aria-hidden={!open || closing}
       >
-        <div className="desktop-menu-particles" aria-hidden="true">
-          {menuParticles.map((particle) => {
-            const offset = getParticleAssemblyOffset(
-              particle,
-              assemblyGeometry.origin,
-              assemblyGeometry.dimensions,
-            );
-            return (
-              <span
-                className={`desktop-menu-particle ${particle.layer}`}
-                key={particle.id}
-                style={{
-                  left: `${particle.x}%`,
-                  top: `${particle.y}%`,
-                  width: `${particle.size}px`,
-                  height: `${particle.size}px`,
-                  "--particle-dx": `${offset.x}px`,
-                  "--particle-dy": `${offset.y}px`,
-                  "--particle-delay": `${particle.delay}ms`,
-                  "--particle-close-delay": `${Math.max(0, Math.round((444 - particle.delay) * 0.45))}ms`,
-                }}
-              />
-            );
-          })}
+        <div className="desktop-data-tunnel" aria-hidden="true">
+          {dataStreams.map((stream) => (
+            <span
+              className={`desktop-data-stream ${stream.type}`}
+              key={stream.id}
+              style={{
+                "--stream-far-x": `${stream.laneX * 4}vw`,
+                "--stream-far-y": `${stream.laneY * 4}vh`,
+                "--stream-near-x": `${stream.laneX * 54}vw`,
+                "--stream-near-y": `${stream.laneY * 46}vh`,
+                "--stream-duration": `${stream.duration}ms`,
+                "--stream-delay": `${stream.delay}ms`,
+                "--stream-size": `${stream.size}px`,
+                "--stream-rotation": stream.type === "streak"
+                  ? `${Math.atan2(stream.laneY, stream.laneX) * (180 / Math.PI)}deg`
+                  : "0deg",
+              }}
+            >
+              {stream.glyph}
+            </span>
+          ))}
         </div>
         <p className="desktop-service-eyebrow">Services · Estiginto</p>
         <div className="desktop-service-columns">

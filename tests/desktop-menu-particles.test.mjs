@@ -1,37 +1,37 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import {
-  createDesktopMenuAssemblyParticles,
-  getParticleAssemblyOffset,
-} from "../src/desktopMenuParticles.js";
+import { createDesktopMenuDataStreams } from "../src/desktopMenuParticles.js";
 
-test("desktop menu assembly particles define the panel frame before its internal structure", () => {
-  const particles = createDesktopMenuAssemblyParticles();
-  const layerCounts = particles.reduce((counts, particle) => ({
+test("desktop menu data streams form a varied, deterministic information tunnel", () => {
+  const streams = createDesktopMenuDataStreams();
+  const typeCounts = streams.reduce((counts, stream) => ({
     ...counts,
-    [particle.layer]: (counts[particle.layer] || 0) + 1,
+    [stream.type]: (counts[stream.type] || 0) + 1,
   }), {});
 
-  assert.equal(particles.length, 112);
-  assert.deepEqual(layerCounts, { frame: 64, axis: 16, grid: 32 });
-  assert.deepEqual(particles[0], { id: 0, x: 5, y: 5, layer: "frame", delay: 0, size: 4 });
-  assert.ok(particles.every(({ x, y }) => x >= 5 && x <= 95 && y >= 5 && y <= 95));
-  assert.ok(Math.max(...particles.filter(({ layer }) => layer === "frame").map(({ delay }) => delay))
-    < Math.min(...particles.filter(({ layer }) => layer === "grid").map(({ delay }) => delay)));
+  assert.equal(streams.length, 48);
+  assert.deepEqual(typeCounts, { glyph: 12, streak: 24, node: 12 });
+  assert.deepEqual(createDesktopMenuDataStreams(), streams);
 });
 
-test("panel particles begin at the menu trigger and settle at their assigned structure point", () => {
-  const particle = { id: 3, x: 25, y: 40, layer: "frame", delay: 9, size: 3 };
+test("data streams are already distributed through time when the menu opens", () => {
+  const streams = createDesktopMenuDataStreams();
 
-  assert.deepEqual(
-    getParticleAssemblyOffset(particle, { x: 75, y: 80 }, { width: 800, height: 500 }),
-    { x: 400, y: 200 },
-  );
+  assert.ok(streams.every(({ duration }) => duration >= 1800 && duration < 3200));
+  assert.ok(streams.every(({ delay }) => delay <= 0));
+  assert.ok(streams.every(({ delay, duration }) => delay > -duration));
+  assert.ok(new Set(streams.map(({ delay }) => delay)).size > 40);
 });
 
-test("panel particle offsets stay finite while the menu has not been measured", () => {
-  const particle = { id: 6, x: 65, y: 48, layer: "grid", delay: 260, size: 2 };
+test("data stream lanes preserve a readable central corridor", () => {
+  const streams = createDesktopMenuDataStreams();
 
-  assert.deepEqual(getParticleAssemblyOffset(particle, null, null), { x: 0, y: 0 });
+  assert.ok(streams.every(({ laneX, laneY }) => (
+    Math.abs(laneX) >= 0.25 || Math.abs(laneY) >= 0.18
+  )));
+  assert.ok(streams.some(({ laneX }) => laneX < 0));
+  assert.ok(streams.some(({ laneX }) => laneX > 0));
+  assert.ok(streams.some(({ laneY }) => laneY < 0));
+  assert.ok(streams.some(({ laneY }) => laneY > 0));
 });

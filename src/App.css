@@ -1068,198 +1068,118 @@ ul, ol  { margin: 0; }
   will-change: opacity;
 }
 
-.desktop-menu-particles {
+.desktop-data-tunnel {
   position: absolute;
   inset: 0;
   z-index: 1;
   overflow: hidden;
   border-radius: inherit;
+  perspective: 560px;
+  perspective-origin: 50% 46%;
+  transform-style: preserve-3d;
   pointer-events: none;
+  transition: opacity 360ms ease, filter 360ms ease, transform 420ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.desktop-menu-particle {
+.desktop-data-tunnel::after {
+  content: "";
   position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(ellipse at 50% 47%, rgba(250, 251, 253, 0.97) 0 12%, rgba(250, 251, 253, 0.7) 25%, rgba(250, 251, 253, 0) 46%);
+}
+
+.desktop-data-stream {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: 1;
+  display: block;
+  width: var(--stream-size);
+  height: var(--stream-size);
   border-radius: 50%;
-  background: rgba(59, 130, 246, 0.82);
-  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.12), 0 0 14px rgba(59, 130, 246, 0.32);
+  color: rgba(28, 91, 196, 0.86);
+  background: rgba(59, 130, 246, 0.88);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.42);
   opacity: 0;
-  transform: translate(calc(-50% + var(--particle-dx)), calc(-50% + var(--particle-dy))) scale(0.08);
-  will-change: transform, opacity, filter;
+  animation: desktop-data-flight var(--stream-duration) linear var(--stream-delay) infinite;
+  will-change: transform, opacity;
 }
 
-.desktop-menu-particle.frame {
+.desktop-data-stream.streak {
+  width: clamp(18px, calc(var(--stream-size) * 8), 42px);
+  height: 1px;
   border-radius: 1px;
-  background: rgba(183, 134, 67, 0.92);
-  box-shadow: 0 0 0 1px rgba(183, 134, 67, 0.15), 0 0 16px rgba(183, 134, 67, 0.38);
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.94));
+  transform-origin: right center;
 }
 
-.desktop-menu-particle.axis {
-  background: rgba(10, 31, 68, 0.82);
-  box-shadow: 0 0 0 1px rgba(10, 31, 68, 0.12), 0 0 12px rgba(10, 31, 68, 0.28);
+.desktop-data-stream.node:nth-child(6n + 2) {
+  background: rgba(183, 134, 67, 0.82);
+  box-shadow: 0 0 12px rgba(183, 134, 67, 0.38);
 }
 
-.desktop-menu-particle.grid {
-  background: rgba(59, 130, 246, 0.62);
+.desktop-data-stream.glyph {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
 }
 
-.desktop-cursor-menu.open:not(.particle-closing) .desktop-menu-particle {
-  animation: desktop-particle-assemble 560ms cubic-bezier(0.18, 0.78, 0.18, 1) both;
-  animation-delay: var(--particle-delay);
+.desktop-cursor-menu.stream-closing .desktop-data-tunnel {
+  opacity: 0;
+  filter: blur(3px);
+  transform: scale(1.18);
 }
 
-.desktop-cursor-menu.particle-closing .desktop-menu-particle {
-  animation: desktop-particle-disassemble 520ms cubic-bezier(0.42, 0, 0.8, 0.2) both;
-  animation-delay: var(--particle-close-delay);
-}
-
-@keyframes desktop-particle-assemble {
+@keyframes desktop-data-flight {
   0% {
     opacity: 0;
-    filter: blur(3px);
-    transform: translate(calc(-50% + var(--particle-dx)), calc(-50% + var(--particle-dy))) scale(0.08);
+    transform: translate3d(var(--stream-far-x), var(--stream-far-y), -760px) rotate(var(--stream-rotation)) scale(0.12);
   }
-  18% {
-    opacity: 1;
+  12% {
+    opacity: 0.22;
   }
-  68% {
-    opacity: 0.92;
-    filter: blur(0);
+  74% {
+    opacity: 0.86;
   }
-  100% {
-    opacity: 0.44;
-    filter: blur(0);
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-@keyframes desktop-particle-disassemble {
-  0% {
-    opacity: 0.44;
-    filter: blur(0);
-    transform: translate(-50%, -50%) scale(1);
-  }
-  54% {
+  92% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    filter: blur(3px);
-    transform: translate(calc(-50% + var(--particle-dx)), calc(-50% + var(--particle-dy))) scale(0.08);
+    transform: translate3d(var(--stream-near-x), var(--stream-near-y), 180px) rotate(var(--stream-rotation)) scale(1.7);
   }
 }
 
-.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-menu {
+.desktop-cursor-menu.open:not(.stream-closing) .desktop-service-menu {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
   pointer-events: auto;
-  animation: desktop-menu-materialize 980ms cubic-bezier(0.2, 0.75, 0.2, 1) both;
 }
 
-.desktop-cursor-menu.particle-closing .desktop-service-menu {
+.desktop-cursor-menu.stream-closing .desktop-service-menu {
   opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1.025);
   pointer-events: none;
-  animation: desktop-menu-dematerialize 760ms cubic-bezier(0.42, 0, 0.8, 0.2) both;
+  animation: desktop-menu-stream-close 420ms ease-in both;
 }
 
-.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-menu::before {
-  animation:
-    desktop-grid-materialize 880ms ease-out both,
-    desktop-grid-breathe 8s ease-in-out 880ms infinite;
+.desktop-cursor-menu.open:not(.stream-closing) .desktop-service-menu::before {
+  animation: desktop-grid-breathe 8s ease-in-out infinite;
 }
 
-.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-menu::after {
-  animation:
-    desktop-signal-materialize 920ms ease-out both,
-    desktop-grid-heartbeat 8s ease-in-out 920ms infinite;
+.desktop-cursor-menu.open:not(.stream-closing) .desktop-service-menu::after {
+  animation: desktop-grid-heartbeat 8s ease-in-out infinite;
 }
 
-.desktop-cursor-menu.particle-closing .desktop-service-menu::before,
-.desktop-cursor-menu.particle-closing .desktop-service-menu::after {
-  animation: desktop-grid-dematerialize 520ms ease-in both;
-}
-
-.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-eyebrow,
-.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-columns,
-.desktop-cursor-menu.open:not(.particle-closing) .desktop-service-menu .menu-font-controls {
-  animation: desktop-menu-content-reveal 380ms var(--ease-soft) 540ms both;
-}
-
-.desktop-cursor-menu.particle-closing .desktop-service-eyebrow,
-.desktop-cursor-menu.particle-closing .desktop-service-columns,
-.desktop-cursor-menu.particle-closing .desktop-service-menu .menu-font-controls {
-  animation: desktop-menu-content-hide 180ms ease-in both;
-}
-
-@keyframes desktop-menu-materialize {
-  0%, 28% {
-    border-color: transparent;
-    background-color: rgba(250, 251, 253, 0);
-    box-shadow: 0 0 0 rgba(10, 31, 68, 0);
-    clip-path: inset(48% 48% 48% 48% round 18px);
-  }
-  52% {
-    border-color: rgba(183, 134, 67, 0.22);
-    background-color: rgba(250, 251, 253, 0.32);
-    clip-path: inset(4% 3% 4% 3% round 18px);
-  }
-  100% {
-    border-color: rgba(10, 31, 68, 0.12);
-    background-color: rgba(250, 251, 253, 0.98);
-    box-shadow: 0 32px 90px -38px rgba(10, 31, 68, 0.48);
-    clip-path: inset(0 round 18px);
-  }
-}
-
-@keyframes desktop-menu-dematerialize {
-  0% {
-    border-color: rgba(10, 31, 68, 0.12);
-    background-color: rgba(250, 251, 253, 0.98);
-    box-shadow: 0 32px 90px -38px rgba(10, 31, 68, 0.48);
-    clip-path: inset(0 round 18px);
-  }
-  45% {
-    border-color: rgba(183, 134, 67, 0.18);
-    background-color: rgba(250, 251, 253, 0.2);
-    box-shadow: 0 0 0 rgba(10, 31, 68, 0);
-  }
-  100% {
-    border-color: transparent;
-    background-color: rgba(250, 251, 253, 0);
-    box-shadow: 0 0 0 rgba(10, 31, 68, 0);
-    clip-path: inset(48% 48% 48% 48% round 18px);
-  }
-}
-
-@keyframes desktop-grid-materialize {
-  0%, 34% { opacity: 0; }
-  100% { opacity: 0.66; }
-}
-
-@keyframes desktop-signal-materialize {
-  0%, 48% { opacity: 0; }
-  100% { opacity: 0.04; }
-}
-
-@keyframes desktop-grid-dematerialize {
-  0% { opacity: 0.66; }
-  100% { opacity: 0; }
-}
-
-@keyframes desktop-menu-content-reveal {
-  0% {
-    opacity: 0;
-    transform: translateY(12px);
-    filter: blur(5px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes desktop-menu-content-hide {
+@keyframes desktop-menu-stream-close {
   0% {
     opacity: 1;
     filter: blur(0);
@@ -4214,7 +4134,7 @@ ul, ol  { margin: 0; }
   .desktop-service-menu::after {
     animation: none !important;
   }
-  .desktop-menu-particles {
+  .desktop-data-tunnel {
     display: none;
   }
   .mobile-nav-category-button span::after {

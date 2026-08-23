@@ -14,11 +14,11 @@ test("closed desktop service menu cannot activate hidden navigation targets", ()
   );
   assert.match(
     cssSource,
-    /\.desktop-cursor-menu\.open:not\(\.particle-closing\) \.desktop-service-menu\s*\{[\s\S]*?pointer-events:\s*auto;/,
+    /\.desktop-cursor-menu\.open:not\(\.stream-closing\) \.desktop-service-menu\s*\{[\s\S]*?pointer-events:\s*auto;/,
   );
   assert.match(
     cssSource,
-    /\.desktop-cursor-menu\.particle-closing \.desktop-service-menu\s*\{[\s\S]*?pointer-events:\s*none;/,
+    /\.desktop-cursor-menu\.stream-closing \.desktop-service-menu\s*\{[\s\S]*?pointer-events:\s*none;/,
   );
   assert.match(desktopMenuSource, /tabIndex=\{open && !closing \? 0 : -1\}/);
   assert.match(desktopMenuSource, /className="desktop-menu-scrim"[\s\S]*?tabIndex=\{-1\}/);
@@ -47,16 +47,21 @@ test("desktop navigation restores site destinations and keeps consulting service
   assert.match(cssSource, /\.desktop-service-menu\s*\{[\s\S]*?border-radius:\s*18px;/);
 });
 
-test("desktop service grid breathes with a restrained two-beat pulse", () => {
+test("desktop service menu runs a continuous forward-moving information tunnel", () => {
+  assert.match(desktopMenuSource, /className="desktop-data-tunnel"/);
+  assert.match(desktopMenuSource, /dataStreams\.map/);
+  assert.match(cssSource, /\.desktop-data-stream\s*\{[\s\S]*?desktop-data-flight[\s\S]*?infinite;/);
+  assert.match(cssSource, /@keyframes desktop-data-flight[\s\S]*?translate3d\(var\(--stream-far-x\)[\s\S]*?translate3d\(var\(--stream-near-x\)/);
+  assert.match(cssSource, /\.desktop-data-tunnel::after[\s\S]*?radial-gradient/);
   assert.match(cssSource, /\.desktop-service-menu::before[\s\S]*?background-size:\s*40px 40px/);
   assert.match(cssSource, /\.desktop-service-menu::after[\s\S]*?radial-gradient/);
   assert.match(
     cssSource,
-    /\.desktop-cursor-menu\.open:not\(\.particle-closing\) \.desktop-service-menu::before[\s\S]*?desktop-grid-materialize 880ms[\s\S]*?desktop-grid-breathe 8s/,
+    /\.desktop-cursor-menu\.open:not\(\.stream-closing\) \.desktop-service-menu::before[\s\S]*?desktop-grid-breathe 8s/,
   );
   assert.match(
     cssSource,
-    /\.desktop-cursor-menu\.open:not\(\.particle-closing\) \.desktop-service-menu::after[\s\S]*?desktop-signal-materialize 920ms[\s\S]*?desktop-grid-heartbeat 8s/,
+    /\.desktop-cursor-menu\.open:not\(\.stream-closing\) \.desktop-service-menu::after[\s\S]*?desktop-grid-heartbeat 8s/,
   );
   assert.match(cssSource, /@keyframes desktop-grid-heartbeat[\s\S]*?48%[\s\S]*?52%/);
   assert.match(
