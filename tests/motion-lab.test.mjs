@@ -4,6 +4,8 @@ import test from "node:test";
 
 import { createAudioEngine } from "../prototypes/motion-lab/audio.js";
 import { createPlaybackController } from "../prototypes/motion-lab/motion-core.js";
+import { getScenePhase, scenes } from "../prototypes/motion-lab/scenes.js";
+import { formatSequenceTime, getSceneMeta } from "../prototypes/motion-lab/motion-lab.js";
 
 const labRoot = new URL("../prototypes/motion-lab/", import.meta.url);
 
@@ -145,4 +147,77 @@ test("audio remains dormant until enabled and stops every active source", async 
 
   audio.stop();
   assert.ok(sources.every((source) => source.stopped));
+});
+
+test("each cinematic direction has deliberate timing and named phases", () => {
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(scenes).map(([id, scene]) => [id, scene.duration])),
+    { dune: 5600, vortex: 4600, hybrid: 6200 },
+  );
+  assert.deepEqual(
+    [0.1, 0.3, 0.62, 0.9].map((progress) => getScenePhase("dune", progress)),
+    ["void", "horizon", "monument", "reveal"],
+  );
+  assert.deepEqual(
+    [0.2, 0.64, 0.86].map((progress) => getScenePhase("vortex", progress)),
+    ["accelerate", "invert", "lock"],
+  );
+  assert.deepEqual(
+    [0.2, 0.56, 0.8, 0.96].map((progress) => getScenePhase("hybrid", progress)),
+    ["gravity", "fold", "collapse", "arrival"],
+  );
+});
+
+test("all three real scenes render into the provided canvas lifecycle", () => {
+  const drawCalls = [];
+  const gradient = { addColorStop() {} };
+  const drawingContext = new Proxy({
+    createLinearGradient: () => gradient,
+    createRadialGradient: () => gradient,
+    measureText: () => ({ width: 100 }),
+  }, {
+    get(target, property) {
+      if (property in target) return target[property];
+      return (...args) => drawCalls.push([property, ...args]);
+    },
+    set(target, property, value) {
+      target[property] = value;
+      return true;
+    },
+  });
+  const canvas = {
+    clientWidth: 800,
+    clientHeight: 450,
+    width: 0,
+    height: 0,
+    getContext: () => drawingContext,
+  };
+  const classNames = new Set();
+  const overlay = {
+    classList: {
+      add: (...names) => names.forEach((name) => classNames.add(name)),
+      remove: (...names) => names.forEach((name) => classNames.delete(name)),
+    },
+    style: { setProperty() {} },
+  };
+
+  for (const scene of Object.values(scenes)) {
+    const before = drawCalls.length;
+    scene.start({ canvas, overlay, reducedMotion: false, setStageState() {} });
+    scene.render(0.5, scene.duration / 2);
+    scene.stop();
+    assert.ok(drawCalls.length > before);
+  }
+  assert.equal(canvas.width, 800);
+  assert.equal(canvas.height, 450);
+});
+
+test("the control console formats sequence time and exposes distinct scene language", () => {
+  assert.equal(formatSequenceTime(0), "00:00:000");
+  assert.equal(formatSequenceTime(3721), "00:03:721");
+  assert.equal(formatSequenceTime(65001), "01:05:001");
+  assert.deepEqual(
+    ["dune", "vortex", "hybrid"].map((id) => getSceneMeta(id).kicker),
+    ["VAST / RITUAL / GRAVITY", "FLUX / VELOCITY / PARADOX", "GRAVITY / FOLD / ARRIVAL"],
+  );
 });
