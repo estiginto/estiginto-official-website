@@ -23,9 +23,11 @@ import {
   PAGE_ENTER_DURATION,
   PAGE_LEAVE_DURATION,
   REDUCED_PAGE_TRANSITION_DURATION,
+  getInitialPageTransitionVariant,
   getPageTransitionVariant,
   getTransitionDestination,
 } from "./pageTransition.js";
+import { createPageVortexTransition } from "./pageVortexTransition.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -1053,8 +1055,9 @@ function Hero({ copy }) {
 
 function PageTransition() {
   const [phase, setPhase] = useState("entering");
-  const [variant, setVariant] = useState(() => getPageTransitionVariant(window.location.pathname));
+  const [variant, setVariant] = useState(() => getInitialPageTransitionVariant(window.location.pathname));
   const leavingRef = useRef(false);
+  const vortexCanvasRef = useRef(null);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1063,6 +1066,10 @@ function PageTransition() {
       ? REDUCED_PAGE_TRANSITION_DURATION
       : isHomepage ? INITIAL_PAGE_ENTER_DURATION : PAGE_ENTER_DURATION;
     const leaveDuration = reducedMotion ? REDUCED_PAGE_TRANSITION_DURATION : PAGE_LEAVE_DURATION;
+    const vortexTransition = variant === "vortex" && vortexCanvasRef.current
+      ? createPageVortexTransition({ canvas: vortexCanvasRef.current, reducedMotion })
+      : null;
+    vortexTransition?.start();
     const enteredTimer = window.setTimeout(() => {
       setPhase("idle");
       window.dispatchEvent(new CustomEvent("estiginto:page-entered"));
@@ -1094,6 +1101,7 @@ function PageTransition() {
     document.addEventListener("click", onClick);
     return () => {
       window.clearTimeout(enteredTimer);
+      vortexTransition?.stop();
       document.removeEventListener("click", onClick);
     };
   }, []);
@@ -1108,6 +1116,20 @@ function PageTransition() {
       </span>
       <span className="page-transition-aperture"><i /></span>
       <span className="page-transition-axis"><i /><i /></span>
+      <span className="page-transition-vortex">
+        <canvas ref={vortexCanvasRef} className="page-transition-vortex-canvas" />
+        <span className="page-transition-vortex-hud page-transition-vortex-hud-top">
+          <i>TRANSIT / 02</i><i>CHRONO FIELD</i><i>TAIPEI / 25.0330° N</i>
+        </span>
+        <span className="page-transition-vortex-interface">
+          <i>EST / TEMPORAL COORDINATE LOCK</i>
+          <b data-text="ESTIGINTO">ESTIGINTO</b>
+          <em>DESIGNING SYSTEMS FOR THE NEXT REALITY</em>
+        </span>
+        <span className="page-transition-vortex-hud page-transition-vortex-hud-bottom">
+          <i>ESTIGINTO MOTION SYSTEM</i><i>ACCELERATE · INVERT · LOCK</i>
+        </span>
+      </span>
       <span className="page-transition-panel-top" />
       <span className="page-transition-panel-bottom" />
       <span className="page-transition-scan" />

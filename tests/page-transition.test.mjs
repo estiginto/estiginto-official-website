@@ -6,6 +6,7 @@ import {
   PAGE_ENTER_DURATION,
   PAGE_LEAVE_DURATION,
   REDUCED_PAGE_TRANSITION_DURATION,
+  getInitialPageTransitionVariant,
   getPageTransitionVariant,
   getTransitionDestination,
 } from "../src/pageTransition.js";
@@ -34,7 +35,7 @@ function click(overrides = {}) {
 }
 
 test("page transitions use deliberate premium timings", () => {
-  assert.equal(INITIAL_PAGE_ENTER_DURATION, 1250);
+  assert.equal(INITIAL_PAGE_ENTER_DURATION, 4600);
   assert.equal(PAGE_ENTER_DURATION, 1050);
   assert.equal(PAGE_LEAVE_DURATION, 760);
   assert.equal(REDUCED_PAGE_TRANSITION_DURATION, 120);
@@ -56,6 +57,13 @@ test("routes deterministically select varied geometric transitions", () => {
     assert.equal(getPageTransitionVariant(pathname), expected);
     assert.equal(getPageTransitionVariant(pathname), expected);
   }
+});
+
+test("only the initial homepage entry uses the temporal vortex", () => {
+  assert.equal(getInitialPageTransitionVariant("/"), "vortex");
+  assert.equal(getInitialPageTransitionVariant("/index.html"), "vortex");
+  assert.equal(getInitialPageTransitionVariant("/case.html"), "aperture");
+  assert.equal(getPageTransitionVariant("/"), "grille");
 });
 
 test("unknown routes use the restrained axis transition", () => {

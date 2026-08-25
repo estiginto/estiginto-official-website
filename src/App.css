@@ -1451,7 +1451,8 @@ ul, ol  { margin: 0; }
 .page-transition-grille,
 .page-transition-matrix,
 .page-transition-aperture,
-.page-transition-axis {
+.page-transition-axis,
+.page-transition-vortex {
   position: absolute;
   inset: 0;
   display: none;
@@ -1461,6 +1462,7 @@ ul, ol  { margin: 0; }
 .page-transition.is-idle .page-transition-matrix,
 .page-transition.is-idle .page-transition-aperture,
 .page-transition.is-idle .page-transition-axis,
+.page-transition.is-idle .page-transition-vortex,
 .page-transition.is-idle .page-transition-scan {
   visibility: hidden;
 }
@@ -1606,6 +1608,137 @@ ul, ol  { margin: 0; }
   animation: page-axis-cross-bloom 1050ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
+.transition-vortex .page-transition-vortex {
+  display: block;
+  background: #020405;
+}
+
+.transition-vortex .page-transition-scan { display: none; }
+.page-transition.is-idle .page-transition-vortex::after { animation: none; }
+.page-transition.is-idle .page-transition-vortex-interface b::before,
+.page-transition.is-idle .page-transition-vortex-interface b::after { animation: none; }
+
+.page-transition-vortex-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.page-transition-vortex::before,
+.page-transition-vortex::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.page-transition-vortex::before {
+  opacity: 0.18;
+  background: repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(255, 255, 255, 0.025) 4px);
+}
+
+.page-transition-vortex::after {
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.82'/%3E%3C/svg%3E");
+  mix-blend-mode: screen;
+  animation: page-vortex-noise 180ms steps(2, end) infinite;
+}
+
+.page-transition-vortex-interface {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  padding: 8vw;
+  color: var(--transition-ivory);
+  text-align: center;
+  opacity: 0;
+}
+
+.page-transition-vortex-interface i,
+.page-transition-vortex-interface em,
+.page-transition-vortex-hud i {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.page-transition-vortex-interface i {
+  color: var(--transition-champagne);
+  font-size: clamp(0.48rem, 0.72vw, 0.68rem);
+}
+
+.page-transition-vortex-interface b {
+  position: relative;
+  margin: clamp(18px, 3vh, 34px) 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 9.2vw, 9rem);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 0.86;
+  text-indent: 0.18em;
+  text-shadow: 8px 0 30px rgba(83, 208, 216, 0.22), -8px 0 30px rgba(201, 158, 98, 0.2);
+}
+
+.page-transition-vortex-interface b::before,
+.page-transition-vortex-interface b::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.32;
+  pointer-events: none;
+  animation: page-vortex-echo 420ms steps(2, end) infinite alternate;
+}
+
+.page-transition-vortex-interface b::before {
+  color: #76d7db;
+  clip-path: inset(8% 0 56%);
+}
+
+.page-transition-vortex-interface b::after {
+  color: #d27d47;
+  clip-path: inset(58% 0 8%);
+  animation-delay: -180ms;
+}
+
+.page-transition-vortex-interface em {
+  color: rgba(238, 232, 220, 0.58);
+  font-size: clamp(0.44rem, 0.78vw, 0.7rem);
+}
+
+.page-transition-vortex-hud {
+  position: absolute;
+  z-index: 4;
+  left: clamp(18px, 3vw, 48px);
+  right: clamp(18px, 3vw, 48px);
+  display: flex;
+  justify-content: space-between;
+  color: rgba(238, 232, 220, 0.48);
+  opacity: 0;
+}
+
+.page-transition-vortex-hud i {
+  font-size: clamp(0.42rem, 0.58vw, 0.56rem);
+}
+
+.page-transition-vortex-hud-top { top: clamp(18px, 3vw, 42px); }
+.page-transition-vortex-hud-bottom { bottom: clamp(18px, 3vw, 42px); }
+
+.page-transition.is-entering.transition-vortex .page-transition-vortex-interface {
+  animation: page-vortex-interface 4600ms cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+.page-transition.is-entering.transition-vortex .page-transition-vortex-hud {
+  animation: page-vortex-hud 4600ms ease both;
+}
+
 .page-transition-scan {
   position: absolute;
   top: 50%;
@@ -1651,6 +1784,30 @@ ul, ol  { margin: 0; }
 @keyframes page-scan {
   0%, 100% { opacity: 0; transform: translateY(-50%) scaleX(0.2); }
   42%, 68% { opacity: 1; transform: translateY(-50%) scaleX(1); }
+}
+
+@keyframes page-vortex-interface {
+  0%, 68% { opacity: 0; filter: blur(14px); transform: scale(0.88); }
+  76%, 91% { opacity: 1; filter: blur(0); transform: scale(1); }
+  100% { opacity: 0; filter: blur(2px); transform: scale(1.025); }
+}
+
+@keyframes page-vortex-hud {
+  0%, 16% { opacity: 0; }
+  24%, 91% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes page-vortex-echo {
+  0% { transform: translate(-7px, -1px) skewX(-1deg); }
+  55% { transform: translate(4px, 1px) skewX(1deg); }
+  100% { transform: translate(1px, 0); }
+}
+
+@keyframes page-vortex-noise {
+  0% { transform: translate(0); }
+  50% { transform: translate(-1.5%, 1%); }
+  100% { transform: translate(1%, -1.5%); }
 }
 
 .section {
@@ -4153,9 +4310,16 @@ ul, ol  { margin: 0; }
   .page-transition.is-entering.transition-axis .page-transition-axis::after,
   .page-transition.is-leaving.transition-axis .page-transition-axis::before,
   .page-transition.is-leaving.transition-axis .page-transition-axis::after,
+  .page-transition.is-entering.transition-vortex .page-transition-vortex-interface,
+  .page-transition.is-entering.transition-vortex .page-transition-vortex-hud,
   .page-transition.is-entering .page-transition-scan,
   .page-transition.is-leaving .page-transition-scan {
     animation-duration: 120ms !important;
+  }
+  .page-transition-vortex::after,
+  .page-transition-vortex-interface b::before,
+  .page-transition-vortex-interface b::after {
+    animation: none !important;
   }
   .hero-tech-background {
     transform: none !important;
