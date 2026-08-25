@@ -347,7 +347,8 @@ button:focus-visible, a:focus-visible { outline: 1px solid var(--champagne); out
   .arrival-title { font-size: clamp(2rem, 13vw, 4.2rem); letter-spacing:.1em; text-indent:.1em; }
   .arrival-rule { display:none; }
   .lab-console { grid-template-columns:1fr; gap:16px; }
-  .scene-selector { overflow-x:auto; }
+  .scene-selector { overflow-x:auto; scrollbar-width:none; }
+  .scene-selector::-webkit-scrollbar { display:none; }
   .scene-choice { min-width:190px; }
   .playback-controls { grid-template-columns:42px 1fr 42px; }
   .scene-description { grid-column:auto; border-left:0; border-top:1px solid var(--line); padding:16px 0 0; }
