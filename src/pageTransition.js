@@ -18,6 +18,14 @@ export function getInitialPageTransitionVariant(pathname = "/") {
   return getPageTransitionVariant(pathname);
 }
 
+export function getPageTransitionBrand(variant) {
+  if (variant !== "vortex") return null;
+  return {
+    src: "/img/logo_estiginto.png",
+    alt: "ESTIGINTO",
+  };
+}
+
 export function getTransitionDestination({ anchor, event, currentUrl }) {
   if (
     !anchor

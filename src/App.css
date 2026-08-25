@@ -1656,7 +1656,52 @@ ul, ol  { margin: 0; }
   padding: 8vw;
   color: var(--transition-ivory);
   text-align: center;
+}
+
+.page-transition-vortex-brand {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: clamp(260px, 34vw, 560px);
+  aspect-ratio: 1;
   opacity: 0;
+  pointer-events: none;
+}
+
+.page-transition-vortex-brand img,
+.page-transition-vortex-brand::before,
+.page-transition-vortex-brand::after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.page-transition-vortex-brand img {
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 0 28px rgba(184, 136, 72, 0.22));
+}
+
+.page-transition-vortex-brand::before,
+.page-transition-vortex-brand::after {
+  content: "";
+  background: center / contain no-repeat url("/img/logo_estiginto.png");
+  opacity: 0.42;
+  pointer-events: none;
+  animation: page-vortex-brand-echo 360ms steps(2, end) infinite alternate;
+}
+
+.page-transition-vortex-brand::before {
+  filter: sepia(1) saturate(2.2) hue-rotate(125deg) brightness(1.25);
+  clip-path: inset(8% 0 54%);
+}
+
+.page-transition-vortex-brand::after {
+  filter: sepia(1) saturate(2.6) hue-rotate(330deg) brightness(1.22);
+  clip-path: inset(57% 0 7%);
+  animation-delay: -170ms;
 }
 
 .page-transition-vortex-interface i,
@@ -1667,6 +1712,12 @@ ul, ol  { margin: 0; }
   font-weight: 400;
   letter-spacing: 0.22em;
   text-transform: uppercase;
+}
+
+.page-transition-vortex-interface > b,
+.page-transition-vortex-interface > em {
+  position: relative;
+  z-index: 1;
 }
 
 .page-transition-vortex-interface i {
@@ -1732,6 +1783,16 @@ ul, ol  { margin: 0; }
 .page-transition-vortex-hud-bottom { bottom: clamp(18px, 3vw, 42px); }
 
 .page-transition.is-entering.transition-vortex .page-transition-vortex-interface {
+  animation: none;
+}
+
+.page-transition.is-entering.transition-vortex .page-transition-vortex-brand {
+  animation: page-vortex-brand-lock 4600ms cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+
+.page-transition.is-entering.transition-vortex .page-transition-vortex-interface > i,
+.page-transition.is-entering.transition-vortex .page-transition-vortex-interface > b,
+.page-transition.is-entering.transition-vortex .page-transition-vortex-interface > em {
   animation: page-vortex-interface 4600ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
@@ -1790,6 +1851,19 @@ ul, ol  { margin: 0; }
   0%, 68% { opacity: 0; filter: blur(14px); transform: scale(0.88); }
   76%, 91% { opacity: 1; filter: blur(0); transform: scale(1); }
   100% { opacity: 0; filter: blur(2px); transform: scale(1.025); }
+}
+
+@keyframes page-vortex-brand-lock {
+  0%, 48% { opacity: 0; filter: blur(18px); transform: translate(-50%, -50%) scale(0.48) rotate(-9deg); }
+  57% { opacity: 0.08; filter: blur(7px); transform: translate(-50%, -50%) scale(1.16) rotate(2deg); }
+  64%, 91% { opacity: 0.2; filter: blur(0); transform: translate(-50%, -50%) scale(1) rotate(0); }
+  100% { opacity: 0; filter: blur(3px); transform: translate(-50%, -50%) scale(1.08); }
+}
+
+@keyframes page-vortex-brand-echo {
+  0% { transform: translate(-6px, -2px) scaleX(0.96); }
+  55% { transform: translate(5px, 1px) scaleX(1.03); }
+  100% { transform: translate(1px, 0); }
 }
 
 @keyframes page-vortex-hud {
@@ -4311,12 +4385,18 @@ ul, ol  { margin: 0; }
   .page-transition.is-leaving.transition-axis .page-transition-axis::before,
   .page-transition.is-leaving.transition-axis .page-transition-axis::after,
   .page-transition.is-entering.transition-vortex .page-transition-vortex-interface,
+  .page-transition.is-entering.transition-vortex .page-transition-vortex-brand,
+  .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > i,
+  .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > b,
+  .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > em,
   .page-transition.is-entering.transition-vortex .page-transition-vortex-hud,
   .page-transition.is-entering .page-transition-scan,
   .page-transition.is-leaving .page-transition-scan {
     animation-duration: 120ms !important;
   }
   .page-transition-vortex::after,
+  .page-transition-vortex-brand::before,
+  .page-transition-vortex-brand::after,
   .page-transition-vortex-interface b::before,
   .page-transition-vortex-interface b::after {
     animation: none !important;

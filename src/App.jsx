@@ -24,6 +24,7 @@ import {
   PAGE_LEAVE_DURATION,
   REDUCED_PAGE_TRANSITION_DURATION,
   getInitialPageTransitionVariant,
+  getPageTransitionBrand,
   getPageTransitionVariant,
   getTransitionDestination,
 } from "./pageTransition.js";
@@ -1058,6 +1059,7 @@ function PageTransition() {
   const [variant, setVariant] = useState(() => getInitialPageTransitionVariant(window.location.pathname));
   const leavingRef = useRef(false);
   const vortexCanvasRef = useRef(null);
+  const transitionBrand = getPageTransitionBrand(variant);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1122,7 +1124,11 @@ function PageTransition() {
           <i>TRANSIT / 02</i><i>CHRONO FIELD</i><i>TAIPEI / 25.0330° N</i>
         </span>
         <span className="page-transition-vortex-interface">
-          <i>EST / TEMPORAL COORDINATE LOCK</i>
+          {transitionBrand ? (
+            <span className="page-transition-vortex-brand">
+              <img src={transitionBrand.src} alt={transitionBrand.alt} />
+            </span>
+          ) : null}
           <b data-text="ESTIGINTO">ESTIGINTO</b>
           <em>DESIGNING SYSTEMS FOR THE NEXT REALITY</em>
         </span>

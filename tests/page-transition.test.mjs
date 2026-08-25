@@ -7,6 +7,7 @@ import {
   PAGE_LEAVE_DURATION,
   REDUCED_PAGE_TRANSITION_DURATION,
   getInitialPageTransitionVariant,
+  getPageTransitionBrand,
   getPageTransitionVariant,
   getTransitionDestination,
 } from "../src/pageTransition.js";
@@ -64,6 +65,14 @@ test("only the initial homepage entry uses the temporal vortex", () => {
   assert.equal(getInitialPageTransitionVariant("/index.html"), "vortex");
   assert.equal(getInitialPageTransitionVariant("/case.html"), "aperture");
   assert.equal(getPageTransitionVariant("/"), "grille");
+});
+
+test("the temporal vortex presents the official brand mark", () => {
+  assert.deepEqual(getPageTransitionBrand("vortex"), {
+    src: "/img/logo_estiginto.png",
+    alt: "ESTIGINTO",
+  });
+  assert.equal(getPageTransitionBrand("grille"), null);
 });
 
 test("unknown routes use the restrained axis transition", () => {
