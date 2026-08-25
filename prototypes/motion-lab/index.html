@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>ESTIGINTO — Motion Lab</title>
+    <link rel="stylesheet" href="./motion-lab.css" />
+  </head>
+  <body>
+    <main class="motion-lab" data-motion-lab data-current-scene="dune">
+      <header class="lab-header">
+        <a class="lab-brand" href="../../index.html" aria-label="返回 Estiginto 首頁">
+          <span class="lab-brand-mark" aria-hidden="true">E</span>
+          <span>ESTIGINTO</span>
+        </a>
+        <div class="lab-heading">
+          <p>Experimental Interface / 2026</p>
+          <h1>Temporal Entry Studies</h1>
+        </div>
+        <p class="lab-local"><span></span> Local prototype</p>
+      </header>
+
+      <section class="motion-stage" aria-label="入場動畫預覽舞台">
+        <canvas id="motion-canvas" aria-hidden="true"></canvas>
+        <div class="stage-ambient" aria-hidden="true"></div>
+        <div class="stage-grid" aria-hidden="true"></div>
+        <div class="stage-noise" aria-hidden="true"></div>
+        <div class="stage-scan" aria-hidden="true"></div>
+
+        <div id="motion-overlay" class="brand-arrival" aria-hidden="true">
+          <div class="arrival-rule arrival-rule-left"></div>
+          <div class="arrival-rule arrival-rule-right"></div>
+          <p class="arrival-index">EST / TAIPEI / 25.0330° N</p>
+          <div class="arrival-title" data-text="ESTIGINTO">ESTIGINTO</div>
+          <p class="arrival-subtitle">DESIGNING SYSTEMS FOR THE NEXT REALITY</p>
+          <div class="arrival-coordinate">
+            <span>121.5654° E</span>
+            <i></i>
+            <span>SYNC COMPLETE</span>
+          </div>
+        </div>
+
+        <div class="stage-hud stage-hud-top" aria-hidden="true">
+          <span data-stage-code>ARRIVAL / 01</span>
+          <span>CHRONO FIELD</span>
+          <span data-stage-time>00:00:000</span>
+        </div>
+        <div class="stage-hud stage-hud-bottom" aria-hidden="true">
+          <span>ESTIGINTO MOTION SYSTEM</span>
+          <span data-stage-state>STANDBY</span>
+        </div>
+
+        <div class="stage-progress" aria-hidden="true"><i data-progress></i></div>
+      </section>
+
+      <section class="lab-console" aria-label="動畫控制台">
+        <nav class="scene-selector" aria-label="選擇動畫概念">
+          <button class="scene-choice is-active" type="button" data-scene="dune" aria-pressed="true">
+            <span class="scene-number">01</span>
+            <span class="scene-copy"><strong>Monumental Arrival</strong><small>沙丘式降臨</small></span>
+            <span class="scene-duration">05.6s</span>
+          </button>
+          <button class="scene-choice" type="button" data-scene="vortex" aria-pressed="false">
+            <span class="scene-number">02</span>
+            <span class="scene-copy"><strong>Temporal Vortex</strong><small>時間漩渦</small></span>
+            <span class="scene-duration">04.6s</span>
+          </button>
+          <button class="scene-choice" type="button" data-scene="hybrid" aria-pressed="false">
+            <span class="scene-number">03</span>
+            <span class="scene-copy"><strong>The Fold</strong><small>混合式時空降臨</small></span>
+            <span class="scene-duration">06.2s</span>
+          </button>
+        </nav>
+
+        <div class="playback-controls">
+          <button type="button" data-action="previous" aria-label="上一款動畫">←</button>
+          <button class="replay-button" type="button" data-action="replay">
+            <span class="replay-icon" aria-hidden="true">↻</span>
+            <span>REPLAY SEQUENCE</span>
+          </button>
+          <button type="button" data-action="next" aria-label="下一款動畫">→</button>
+          <button class="sound-button" type="button" data-action="sound" aria-pressed="false">
+            <span class="sound-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span data-sound-label>SOUND OFF</span>
+          </button>
+        </div>
+
+        <div class="scene-description">
+          <p class="scene-kicker" data-scene-kicker>VAST / RITUAL / GRAVITY</p>
+          <p data-scene-description>巨大尺度先於科技感。光線、沙塵與低頻脈衝讓品牌像一座遠古文明的結構，從黑暗中緩慢抵達。</p>
+        </div>
+      </section>
+
+      <p class="sr-only" aria-live="polite" data-live-status>沙丘式降臨已選取</p>
+    </main>
+
+    <script type="module" src="./motion-lab.js"></script>
+  </body>
+</html>
