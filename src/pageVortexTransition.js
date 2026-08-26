@@ -50,12 +50,14 @@ function drawFrame(context, width, height, stars, progress, elapsed, { ambient =
   context.clearRect(0, 0, width, height);
   context.save();
   context.globalAlpha = fadeOut;
-  context.fillStyle = "#020405";
-  context.fillRect(0, 0, width, height);
+  if (!ambient) {
+    context.fillStyle = "#020405";
+    context.fillRect(0, 0, width, height);
+  }
 
   const ambientGlow = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, width * 0.62);
-  ambientGlow.addColorStop(0, "rgba(28,91,103,.22)");
-  ambientGlow.addColorStop(0.42, "rgba(11,26,31,.18)");
+  ambientGlow.addColorStop(0, ambient ? "rgba(177,129,71,.18)" : "rgba(28,91,103,.22)");
+  ambientGlow.addColorStop(0.42, ambient ? "rgba(91,72,51,.08)" : "rgba(11,26,31,.18)");
   ambientGlow.addColorStop(1, "rgba(0,0,0,0)");
   context.fillStyle = ambientGlow;
   context.fillRect(0, 0, width, height);
@@ -69,16 +71,20 @@ function drawFrame(context, width, height, stars, progress, elapsed, { ambient =
     const alpha = Math.sin(z * Math.PI) * (1 - lock * 0.68);
     context.beginPath();
     context.ellipse(0, 0, radius, radius * lerp(0.35, 0.68, z), index * 0.17, 0, TAU);
-    context.strokeStyle = index % 3 === 0
-      ? `rgba(118,215,219,${alpha * 0.42})`
-      : `rgba(201,158,98,${alpha * 0.27})`;
+    context.strokeStyle = ambient
+      ? index % 3 === 0
+        ? `rgba(36,32,27,${alpha * 0.52})`
+        : `rgba(82,69,54,${alpha * 0.48})`
+      : index % 3 === 0
+        ? `rgba(118,215,219,${alpha * 0.42})`
+        : `rgba(201,158,98,${alpha * 0.27})`;
     context.lineWidth = lerp(0.4, 2.1, z);
     context.stroke();
   }
   context.restore();
 
   context.save();
-  context.globalCompositeOperation = "screen";
+  context.globalCompositeOperation = ambient ? "multiply" : "screen";
   stars.forEach((star, index) => {
     const radial = ((star.depth + progress * speed * 0.8) % 1) ** 2;
     const angle = star.angle + elapsed * 0.00012 * star.drift;
@@ -88,15 +94,17 @@ function drawFrame(context, width, height, stars, progress, elapsed, { ambient =
     context.beginPath();
     context.moveTo(x, y);
     context.lineTo(x + Math.cos(angle) * length, y + Math.sin(angle) * length * 0.62);
-    context.strokeStyle = index % 4 === 0 ? "rgba(101,220,226,.54)" : "rgba(225,188,124,.37)";
+    context.strokeStyle = ambient
+      ? index % 4 === 0 ? "rgba(54,49,42,.50)" : "rgba(82,69,54,.42)"
+      : index % 4 === 0 ? "rgba(101,220,226,.54)" : "rgba(225,188,124,.37)";
     context.lineWidth = star.size;
     context.stroke();
   });
   context.restore();
 
   const core = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, width * lerp(0.015, 0.12, 1 - lock));
-  core.addColorStop(0, "rgba(244,238,215,.68)");
-  core.addColorStop(0.16, "rgba(107,211,218,.31)");
+  core.addColorStop(0, ambient ? "rgba(255,250,236,.86)" : "rgba(244,238,215,.68)");
+  core.addColorStop(0.16, ambient ? "rgba(177,129,71,.32)" : "rgba(107,211,218,.31)");
   core.addColorStop(1, "rgba(0,0,0,0)");
   context.fillStyle = core;
   context.fillRect(0, 0, width, height);

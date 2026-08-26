@@ -8,10 +8,20 @@ import {
 
 function createCanvas() {
   const calls = [];
-  const gradient = { addColorStop() {} };
+  const gradient = {
+    addColorStop(...args) {
+      calls.push(["addColorStop", ...args]);
+    },
+  };
   const context = new Proxy({
     createLinearGradient: () => gradient,
     createRadialGradient: () => gradient,
+    fillRect(...args) {
+      calls.push(["fillRect", ...args, this.fillStyle]);
+    },
+    stroke() {
+      calls.push(["stroke", this.strokeStyle]);
+    },
   }, {
     get(target, property) {
       if (property in target) return target[property];
@@ -111,6 +121,45 @@ test("hero vortex keeps the shared tunnel rendering beyond the entry duration", 
 
   background.stop();
   assert.deepEqual(cancelled, [3]);
+});
+
+test("hero vortex leaves the paper background visible while the entry vortex stays black", () => {
+  const entry = createCanvas();
+  const hero = createCanvas();
+  const entryTransition = createPageVortexTransition({
+    canvas: entry.canvas,
+    reducedMotion: true,
+  });
+  const heroBackground = createHeroVortexBackground({
+    canvas: hero.canvas,
+    reducedMotion: true,
+  });
+
+  entryTransition.start();
+  heroBackground.start();
+
+  assert.ok(entry.calls.some(([method, , , , , fillStyle]) => method === "fillRect" && fillStyle === "#020405"));
+  assert.ok(hero.calls.every(([method, , , , , fillStyle]) => method !== "fillRect" || fillStyle !== "#020405"));
+  assert.ok(hero.calls.some(([method, , color]) => method === "addColorStop" && color === "rgba(177,129,71,.18)"));
+
+  entryTransition.stop();
+  heroBackground.stop();
+});
+
+test("hero vortex uses dark ink for every orbit and streak", () => {
+  const { canvas, calls } = createCanvas();
+  const background = createHeroVortexBackground({
+    canvas,
+    reducedMotion: true,
+  });
+
+  background.start();
+
+  const strokes = calls.filter(([method]) => method === "stroke").map(([, color]) => color);
+  assert.ok(strokes.length > 100);
+  assert.ok(strokes.every((color) => color.startsWith("rgba(36,32,27,") || color.startsWith("rgba(54,49,42,") || color.startsWith("rgba(82,69,54,")));
+
+  background.stop();
 });
 
 test("reduced motion hero vortex paints one ambient frame without a loop", () => {
