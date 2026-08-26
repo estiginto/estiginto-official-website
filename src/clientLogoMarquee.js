@@ -46,6 +46,7 @@ const clientLogoDefinitions = [
   ["gb-biotech", "果寶生技 GB Biotech"],
   ["fvs", "FVS 黃金數位憑證"],
   ["yang-ming", "陽明海運 Yang Ming Marine Transport"],
+  ["you-ming-huei", "台詮科技 You Ming Huei Co., LTD"],
 ];
 
 export const clientLogos = clientLogoDefinitions.map(([id, alt]) => ({
