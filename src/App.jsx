@@ -1156,15 +1156,7 @@ function ClientLogoMarquee({ copy }) {
   const lanes = buildClientLogoLanes(clientLogos);
 
   return (
-    <section className="client-logo-marquee" id="clients" aria-labelledby="client-logo-marquee-title">
-      <header className="client-logo-marquee-header wrap">
-        <div>
-          <span className="client-logo-marquee-eyebrow">{copy.clientLogos.eyebrow}</span>
-          <h2 id="client-logo-marquee-title">{copy.clientLogos.title}</h2>
-        </div>
-        <span className="client-logo-marquee-status">{copy.clientLogos.status}</span>
-      </header>
-
+    <section className="client-logo-marquee" id="clients" aria-label={copy.clientLogos.title}>
       <div className="client-logo-marquee-field">
         {lanes.map((lane, laneIndex) => {
           return (

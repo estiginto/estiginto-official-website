@@ -51,6 +51,15 @@ test("homepage hero uses the approved two-line impact description in every local
   assert.doesNotMatch(heroSource, /copy\.hero\.lede\[2\]/);
 });
 
+test("client marquee keeps an accessible name without rendering archive labels", () => {
+  const marqueeSource = functionSource("ClientLogoMarquee", "Marquee");
+
+  assert.match(marqueeSource, /aria-label=\{copy\.clientLogos\.title\}/);
+  assert.doesNotMatch(marqueeSource, /client-logo-marquee-header/);
+  assert.doesNotMatch(marqueeSource, /copy\.clientLogos\.eyebrow/);
+  assert.doesNotMatch(marqueeSource, /copy\.clientLogos\.status/);
+});
+
 test("homepage prioritizes services and articles over systems methodology", () => {
   const homepageSource = appSource.match(/\) : \(\s*<>[\s\S]*?<Hero copy=\{copy\} \/>[\s\S]*?<\/>\s*\)\}/)?.[0] || "";
 
