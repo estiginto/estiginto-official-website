@@ -104,6 +104,7 @@ const teamMembers = [
     mark: "LL",
     role: "CEO",
     group: "leadership",
+    portrait: "/img/team/avatar_lanar.jpg",
     summary: "Structures complex work across systems, design, capital, and people, connecting strategy to durable execution.",
   },
   {
@@ -120,6 +121,7 @@ const teamMembers = [
     mark: "CW",
     role: "CMO",
     group: "leadership",
+    portrait: "/img/team/avatar_Cindy.jpg",
     summary: "Connects international market development, brand strategy, and cross-cultural communication.",
   },
   {
@@ -128,6 +130,7 @@ const teamMembers = [
     mark: "YC",
     role: "Director of International Business & Marketing Development",
     group: "advisory",
+    portrait: "/img/team/avatar_Yen.jpg",
     summary: "Brings brand strategy, packaging design, and international marketing experience across Europe, Asia, and the United States.",
   },
   {
@@ -136,6 +139,7 @@ const teamMembers = [
     mark: "WS",
     role: "International Education Coordinator & Curriculum Specialist",
     group: "advisory",
+    portrait: "/img/team/avatar_wayne.png",
     summary: "Brings 25 years of teaching experience to cross-cultural learning, education innovation, and experiential programs.",
   },
 ];

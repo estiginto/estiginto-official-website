@@ -11,6 +11,10 @@ const clientLogoAssetPaths = [
 export const marketingAssetPaths = [
   "Logo_ESTIGINTO.svg",
   "logo_estiginto.png",
+  "team/avatar_lanar.jpg",
+  "team/avatar_Cindy.jpg",
+  "team/avatar_Yen.jpg",
+  "team/avatar_wayne.png",
   "plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.webp",
   "plan/close-up-elegant-decoration-house.webp",
   "plan/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.webp",

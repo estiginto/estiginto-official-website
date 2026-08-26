@@ -1294,9 +1294,13 @@ function TeamSection({ copy }) {
         <div className="team-grid">
           {members.map((member, index) => (
             <article className={`team-member-card${index === 0 ? " team-member-card-primary" : ""}`} data-group={member.group} key={member.id}>
-              <div className="team-member-identity" aria-hidden="true">
-                <span>{member.mark}</span>
-                <i>{String(index + 1).padStart(2, "0")}</i>
+              <div className={`team-member-identity${member.portrait ? " team-member-identity-portrait" : ""}`}>
+                {member.portrait ? (
+                  <img className="team-member-portrait" src={member.portrait} alt={member.name} loading="lazy" decoding="async" />
+                ) : (
+                  <span aria-hidden="true">{member.mark}</span>
+                )}
+                <i aria-hidden="true">{String(index + 1).padStart(2, "0")}</i>
               </div>
               <div className="team-member-copy">
                 <span className="team-member-group">{member.group}</span>
