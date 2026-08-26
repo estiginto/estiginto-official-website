@@ -2182,6 +2182,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
   const primaryLabels = desktopPrimaryMenuCopy[locale] || desktopPrimaryMenuCopy.zh;
   const primaryMenuItems = [
+    { key: "home", label: localizedMenuLabels.home, href: "/" },
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
     { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
     { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
