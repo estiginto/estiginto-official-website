@@ -162,7 +162,7 @@ test("hero vortex uses dark ink for every orbit and streak", () => {
   background.stop();
 });
 
-test("hero vortex keeps one continuous clockwise rotation", () => {
+test("hero vortex keeps one continuous counterclockwise rotation", () => {
   const { canvas, calls } = createCanvas();
   const frames = new Map();
   let nextFrame = 0;
@@ -184,8 +184,8 @@ test("hero vortex keeps one continuous clockwise rotation", () => {
   frames.get(2)(30000);
 
   const rotations = calls.filter(([method]) => method === "rotate").map(([, angle]) => angle);
-  assert.ok(rotations[0] > 0);
-  assert.ok(rotations[1] > rotations[0]);
+  assert.ok(rotations[0] < 0);
+  assert.ok(rotations[1] < rotations[0]);
 
   background.stop();
 });

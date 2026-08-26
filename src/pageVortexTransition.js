@@ -64,7 +64,7 @@ function drawFrame(context, width, height, stars, progress, elapsed, { ambient =
 
   context.save();
   context.translate(centerX, centerY);
-  const rotationDirection = ambient ? 1 : invert > 0.5 ? -1 : 1;
+  const rotationDirection = ambient ? -1 : invert > 0.5 ? -1 : 1;
   const rotationSpeed = ambient ? 0.000055 : 0.00014;
   context.rotate(elapsed * rotationSpeed * rotationDirection);
   for (let index = 0; index < 34; index += 1) {

@@ -2041,7 +2041,7 @@ ul, ol  { margin: 0; }
   mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 100%);
 }
 
-.hero-vortex-background[data-ready="true"] { opacity: 0.9; }
+.hero-vortex-background[data-ready="true"] { opacity: 0.72; }
 
 .hero-vortex-background::before {
   content: "";
