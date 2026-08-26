@@ -60,11 +60,11 @@ test("client marquee keeps an accessible name without rendering archive labels",
   assert.doesNotMatch(marqueeSource, /copy\.clientLogos\.status/);
 });
 
-test("homepage prioritizes services and articles over systems methodology", () => {
+test("homepage continues from the client marquee to insights without application scenarios", () => {
   const homepageSource = appSource.match(/\) : \(\s*<>[\s\S]*?<Hero copy=\{copy\} \/>[\s\S]*?<\/>\s*\)\}/)?.[0] || "";
 
-  assert.match(homepageSource, /<ServiceOverview copy=\{copy\} \/>/);
   assert.match(homepageSource, /<Insights \/>/);
+  assert.doesNotMatch(homepageSource, /<ServiceOverview copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<Numbers copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<Manifesto copy=\{copy\} \/>/);
 });

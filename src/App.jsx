@@ -2728,7 +2728,6 @@ export default function App() {
             <Hero copy={copy} />
             <ClientLogoMarquee copy={copy} />
             <Marquee copy={copy} />
-            <ServiceOverview copy={copy} />
             <Insights />
             <Contact copy={copy} />
           </>
