@@ -2311,8 +2311,17 @@ function DesktopCursorMenu({ locale, fontControls }) {
       }
     };
 
+    const onContextMenu = (event) => {
+      event.preventDefault();
+      closeMenu();
+    };
+
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    document.addEventListener("contextmenu", onContextMenu);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("contextmenu", onContextMenu);
+    };
   }, [closing, open]);
 
   const closeMenu = () => {
@@ -2407,10 +2416,18 @@ function DesktopCursorMenu({ locale, fontControls }) {
         </header>
 
         <div className="desktop-channel-deck">
-          <div className="desktop-channel-axis" aria-hidden="true">
-            <span className="desktop-channel-axis-label">NOW / 00</span>
-            <span className="desktop-channel-core"><i /></span>
-            <span className="desktop-channel-axis-label">ROUTE / ∞</span>
+          <div className="desktop-channel-axis">
+            <span className="desktop-channel-axis-label" aria-hidden="true">NOW / 00</span>
+            <button
+              className="desktop-channel-core"
+              type="button"
+              aria-label="Close desktop menu"
+              tabIndex={open && !closing ? 0 : -1}
+              onClick={closeMenu}
+            >
+              <i aria-hidden="true" />
+            </button>
+            <span className="desktop-channel-axis-label" aria-hidden="true">ROUTE / ∞</span>
           </div>
 
           <div className="desktop-service-columns">

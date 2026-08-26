@@ -1538,9 +1538,26 @@ ul, ol  { margin: 0; }
   aspect-ratio: 1;
   place-items: center;
   border: 1px solid rgba(10, 31, 68, 0.36);
+  padding: 0;
   background: rgba(242, 241, 235, 0.88);
+  cursor: pointer;
+  pointer-events: auto;
   transform: translate(-50%, -50%) rotate(45deg);
   box-shadow: 0 0 0 12px rgba(242, 241, 235, 0.42), 0 0 50px rgba(59, 130, 246, 0.18);
+  transition: background 180ms ease, border-color 180ms ease, box-shadow 220ms ease, transform 220ms var(--ease-soft);
+}
+
+.desktop-channel-core:hover,
+.desktop-channel-core:focus-visible {
+  border-color: rgba(59, 130, 246, 0.72);
+  background: #ffffff;
+  box-shadow: 0 0 0 12px rgba(242, 241, 235, 0.5), 0 0 62px rgba(59, 130, 246, 0.3);
+  transform: translate(-50%, -50%) rotate(135deg) scale(1.06);
+}
+
+.desktop-channel-core:focus-visible {
+  outline: 2px solid rgba(59, 130, 246, 0.68);
+  outline-offset: 16px;
 }
 
 .desktop-channel-core::before,

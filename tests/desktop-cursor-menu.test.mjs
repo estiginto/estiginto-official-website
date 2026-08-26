@@ -36,6 +36,25 @@ test("desktop service menu recomputes its enabled focus boundary on every Tab pr
   assert.match(desktopMenuSource, /if \(!menu\?\.contains\(document\.activeElement\)\)/);
 });
 
+test("open desktop menu closes from the center core or a secondary click", () => {
+  assert.match(
+    desktopMenuSource,
+    /const onContextMenu = \(event\) =>[\s\S]*?event\.preventDefault\(\)[\s\S]*?closeMenu\(\)/,
+  );
+  assert.match(
+    desktopMenuSource,
+    /document\.addEventListener\("contextmenu", onContextMenu\)[\s\S]*?document\.removeEventListener\("contextmenu", onContextMenu\)/,
+  );
+  assert.match(
+    desktopMenuSource,
+    /className="desktop-channel-core"[\s\S]*?aria-label="Close desktop menu"[\s\S]*?onClick=\{closeMenu\}/,
+  );
+  assert.match(
+    cssSource,
+    /\.desktop-channel-core\s*\{[\s\S]*?pointer-events:\s*auto;/,
+  );
+});
+
 test("desktop menu trigger follows every consecutive pointer move while closed", () => {
   assert.doesNotMatch(desktopMenuSource, /frozenRef|freezeTimerRef|scheduleFreeze|distanceFromTrigger/);
   assert.match(
