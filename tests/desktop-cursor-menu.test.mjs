@@ -36,6 +36,14 @@ test("desktop service menu recomputes its enabled focus boundary on every Tab pr
   assert.match(desktopMenuSource, /if \(!menu\?\.contains\(document\.activeElement\)\)/);
 });
 
+test("desktop menu trigger follows every consecutive pointer move while closed", () => {
+  assert.doesNotMatch(desktopMenuSource, /frozenRef|freezeTimerRef|scheduleFreeze|distanceFromTrigger/);
+  assert.match(
+    desktopMenuSource,
+    /const onMove = \(event\) =>[\s\S]*?const next = \{ x: event\.clientX \+ 48, y: event\.clientY \+ 48 \}[\s\S]*?pendingPositionRef\.current = next/,
+  );
+});
+
 test("desktop navigation restores site destinations and keeps consulting services", () => {
   assert.match(desktopMenuSource, /const primaryMenuItems = \[/);
   assert.match(desktopMenuSource, /href: "\/faq\.html"/);

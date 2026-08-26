@@ -2200,24 +2200,16 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const [position, setPosition] = useState({ x: 160, y: 160 });
   const triggerRef = useRef(null);
   const menuRef = useRef(null);
-  const positionRef = useRef(position);
   const pendingPositionRef = useRef(position);
   const frameRef = useRef(null);
-  const frozenRef = useRef(false);
   const hideTimerRef = useRef(null);
-  const freezeTimerRef = useRef(null);
   const closeTimerRef = useRef(null);
-
-  useEffect(() => {
-    positionRef.current = position;
-  }, [position]);
 
   useEffect(() => () => window.clearTimeout(closeTimerRef.current), []);
 
   useEffect(() => {
     const clearTimers = () => {
       window.clearTimeout(hideTimerRef.current);
-      window.clearTimeout(freezeTimerRef.current);
       window.cancelAnimationFrame(frameRef.current);
     };
 
@@ -2230,29 +2222,12 @@ function DesktopCursorMenu({ locale, fontControls }) {
       }, 6000);
     };
 
-    const scheduleFreeze = () => {
-      window.clearTimeout(freezeTimerRef.current);
-      freezeTimerRef.current = window.setTimeout(() => {
-        frozenRef.current = true;
-      }, 180);
-    };
-
     const onMove = (event) => {
       if (open || hoveringTrigger) {
         return;
       }
 
       const next = { x: event.clientX + 48, y: event.clientY + 48 };
-
-      if (visible && frozenRef.current) {
-        const distanceFromTrigger = Math.hypot(event.clientX - positionRef.current.x, event.clientY - positionRef.current.y);
-        if (distanceFromTrigger < 180) {
-          scheduleHide();
-          return;
-        }
-      }
-
-      frozenRef.current = false;
       pendingPositionRef.current = next;
       if (!frameRef.current) {
         frameRef.current = window.requestAnimationFrame(() => {
@@ -2261,7 +2236,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
         });
       }
       setVisible(true);
-      scheduleFreeze();
       scheduleHide();
     };
 
@@ -2270,7 +2244,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
       if (open) {
         return;
       }
-      frozenRef.current = false;
       setVisible(false);
     };
 
@@ -2282,7 +2255,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseleave", onLeave);
     };
-  }, [hoveringTrigger, open, visible]);
+  }, [hoveringTrigger, open]);
 
   useEffect(() => {
     if (!hoveringTrigger || open) {
@@ -2290,8 +2263,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
     }
 
     window.clearTimeout(hideTimerRef.current);
-    window.clearTimeout(freezeTimerRef.current);
-    frozenRef.current = true;
     setVisible(true);
 
     return undefined;
@@ -2376,9 +2347,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
       return;
     }
     window.clearTimeout(hideTimerRef.current);
-    window.clearTimeout(freezeTimerRef.current);
     hideTimerRef.current = window.setTimeout(() => {
-      frozenRef.current = false;
       setVisible(false);
     }, 6000);
   };
