@@ -156,8 +156,58 @@ test("hero vortex uses dark ink for every orbit and streak", () => {
   background.start();
 
   const strokes = calls.filter(([method]) => method === "stroke").map(([, color]) => color);
-  assert.ok(strokes.length > 100);
+  assert.ok(strokes.length > 70);
   assert.ok(strokes.every((color) => color.startsWith("rgba(36,32,27,") || color.startsWith("rgba(54,49,42,") || color.startsWith("rgba(82,69,54,")));
+
+  background.stop();
+});
+
+test("hero vortex keeps one continuous clockwise rotation", () => {
+  const { canvas, calls } = createCanvas();
+  const frames = new Map();
+  let nextFrame = 0;
+  const background = createHeroVortexBackground({
+    canvas,
+    now: () => 0,
+    requestFrame(callback) {
+      nextFrame += 1;
+      frames.set(nextFrame, callback);
+      return nextFrame;
+    },
+    cancelFrame(id) {
+      frames.delete(id);
+    },
+  });
+
+  background.start();
+  frames.get(1)(1000);
+  frames.get(2)(30000);
+
+  const rotations = calls.filter(([method]) => method === "rotate").map(([, angle]) => angle);
+  assert.ok(rotations[0] > 0);
+  assert.ok(rotations[1] > rotations[0]);
+
+  background.stop();
+});
+
+test("hero vortex replaces particle dots with sparse directional ticks", () => {
+  const { canvas, calls } = createCanvas();
+  const background = createHeroVortexBackground({
+    canvas,
+    reducedMotion: true,
+  });
+
+  background.start();
+
+  const points = calls.filter(([method]) => method === "moveTo" || method === "lineTo");
+  const lengths = [];
+  for (let index = 0; index < points.length; index += 2) {
+    const [, fromX, fromY] = points[index];
+    const [, toX, toY] = points[index + 1];
+    lengths.push(Math.hypot(toX - fromX, toY - fromY));
+  }
+  assert.ok(lengths.length <= 56);
+  assert.ok(lengths.every((length) => length >= 4));
 
   background.stop();
 });

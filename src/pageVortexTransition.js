@@ -64,7 +64,9 @@ function drawFrame(context, width, height, stars, progress, elapsed, { ambient =
 
   context.save();
   context.translate(centerX, centerY);
-  context.rotate(elapsed * 0.00014 * (invert > 0.5 ? -1 : 1));
+  const rotationDirection = ambient ? 1 : invert > 0.5 ? -1 : 1;
+  const rotationSpeed = ambient ? 0.000055 : 0.00014;
+  context.rotate(elapsed * rotationSpeed * rotationDirection);
   for (let index = 0; index < 34; index += 1) {
     const z = (index / 34 + progress * speed) % 1;
     const radius = 8 + z ** 2.15 * maxRadius;
@@ -88,7 +90,9 @@ function drawFrame(context, width, height, stars, progress, elapsed, { ambient =
   stars.forEach((star, index) => {
     const radial = ((star.depth + progress * speed * 0.8) % 1) ** 2;
     const angle = star.angle + elapsed * 0.00012 * star.drift;
-    const length = lerp(1, 36, radial) * (1 - lock * 0.72) * (1 + energy * 1.4);
+    const length = (ambient ? lerp(7, 24, radial) : lerp(1, 36, radial))
+      * (1 - lock * 0.72)
+      * (1 + energy * 1.4);
     const x = centerX + Math.cos(angle) * radial * maxRadius;
     const y = centerY + Math.sin(angle) * radial * maxRadius * 0.62;
     context.beginPath();
@@ -120,7 +124,7 @@ function createVortexController({
   ambient = false,
 } = {}) {
   const context = canvas.getContext("2d");
-  const stars = makeStars();
+  const stars = makeStars(ambient ? 48 : 190);
   let frameId = null;
   let startedAt = 0;
   let energy = 0;
