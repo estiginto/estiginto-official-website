@@ -1,7 +1,20 @@
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import test from "node:test";
 import { buildClientLogoLanes, clientLogos } from "../src/clientLogoMarquee.js";
+
+const css = readFileSync(new URL("../src/App.css", import.meta.url), "utf8");
+
+test("client logos render at the approved larger marquee size", () => {
+  const itemRule = css.match(/\.client-logo-marquee-item\s*\{([^}]*)\}/)?.[1] || "";
+  const imageRule = css.match(/\.client-logo-marquee-item img\s*\{([^}]*)\}/)?.[1] || "";
+
+  assert.match(itemRule, /flex:\s*1 0 clamp\(184px,\s*17vw,\s*252px\)/);
+  assert.match(itemRule, /min-height:\s*clamp\(92px,\s*8vw,\s*118px\)/);
+  assert.match(imageRule, /width:\s*min\(96%,\s*220px\)/);
+  assert.match(imageRule, /height:\s*80px/);
+  assert.match(imageRule, /max-height:\s*none/);
+});
 
 test("client logo inventory contains every normalized source logo", () => {
   assert.equal(clientLogos.length, 45);
