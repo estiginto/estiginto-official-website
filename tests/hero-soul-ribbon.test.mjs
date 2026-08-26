@@ -63,6 +63,30 @@ test("hero soul ribbon crosses the full field from lower-left to upper-right", (
   ribbon.stop();
 });
 
+test("hero soul ribbon carries its visual weight through the lower half of center", () => {
+  const { canvas, calls } = createCanvas();
+  const ribbon = createHeroSoulRibbon({ canvas, reducedMotion: true });
+
+  ribbon.start();
+
+  const firstStrokeIndex = calls.findIndex(([method]) => method === "stroke");
+  const glowPath = calls
+    .slice(0, firstStrokeIndex)
+    .filter(([method]) => method === "moveTo" || method === "lineTo");
+  const centerPoint = glowPath.reduce((nearest, point) => (
+    Math.abs(point[1] - canvas.clientWidth / 2) < Math.abs(nearest[1] - canvas.clientWidth / 2)
+      ? point
+      : nearest
+  ));
+
+  assert.ok(
+    centerPoint[2] >= canvas.clientHeight * 0.56,
+    `expected the ribbon to stay below center before ascending, got y=${centerPoint[2]}`,
+  );
+
+  ribbon.stop();
+});
+
 test("hero soul ribbon uses continuous paths and only three travelling energy pulses", () => {
   const { canvas, calls } = createCanvas();
   const ribbon = createHeroSoulRibbon({ canvas, reducedMotion: true });
@@ -117,4 +141,3 @@ test("hero soul ribbon loops while active and reduced motion paints once", () =>
   assert.ok(staticCanvas.calls.some(([method]) => method === "stroke"));
   staticRibbon.stop();
 });
-

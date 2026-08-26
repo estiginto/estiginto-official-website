@@ -31,7 +31,7 @@ function soulPoint(progress, width, height, wave = 0) {
     + progress ** 3 * (width * 1.06);
   const y = inverse ** 3 * (height * 0.94)
     + 3 * inverse ** 2 * progress * (height * 0.82)
-    + 3 * inverse * progress ** 2 * (height * 0.22)
+    + 3 * inverse * progress ** 2 * (height * 0.36)
     + progress ** 3 * (height * 0.04);
   return [x, y + wave];
 }
