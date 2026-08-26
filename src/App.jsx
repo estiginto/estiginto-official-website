@@ -2422,15 +2422,42 @@ function DesktopCursorMenu({ locale, fontControls }) {
         aria-label={localizedMenuLabels.servicesMenu}
         aria-hidden={!open || closing}
       >
-        <p className="desktop-service-eyebrow">Services · Estiginto</p>
-        <div className="desktop-service-columns">
+        <header className="desktop-channel-header">
+          <div>
+            <p className="desktop-service-eyebrow">Temporal navigation / Estiginto</p>
+            <p className="desktop-channel-status"><i aria-hidden="true" /> Channel stable · TPE 25.0330° N</p>
+          </div>
+          <button
+            className="desktop-channel-close"
+            type="button"
+            tabIndex={open && !closing ? 0 : -1}
+            onClick={closeMenu}
+          >
+            Close <span aria-hidden="true">↗</span>
+          </button>
+        </header>
+
+        <div className="desktop-channel-deck">
+          <div className="desktop-channel-axis" aria-hidden="true">
+            <span className="desktop-channel-axis-label">NOW / 00</span>
+            <span className="desktop-channel-core"><i /></span>
+            <span className="desktop-channel-axis-label">ROUTE / ∞</span>
+          </div>
+
+          <div className="desktop-service-columns">
           {Object.entries(desktopMenuGroups).map(([groupKey, group]) => {
             const headingId = `desktop-service-${groupKey}`;
             return (
-              <section className={`desktop-service-group ${groupKey}`} aria-labelledby={headingId} key={groupKey}>
+              <section
+                className={`desktop-service-group ${groupKey}`}
+                data-channel={groupKey}
+                aria-labelledby={headingId}
+                key={groupKey}
+              >
                 <h2 className="desktop-service-title" id={headingId}>
-                  <span className="desktop-service-marker" aria-hidden="true" />
-                  {group.label}
+                  <span className="desktop-service-marker" aria-hidden="true"><i /></span>
+                  <span>{group.label}</span>
+                  <small>{groupKey === "primary" ? "Origin paths" : "Advisory paths"}</small>
                 </h2>
                 <div className="desktop-service-links">
                   {group.items.map((item, index) => (
@@ -2439,18 +2466,25 @@ function DesktopCursorMenu({ locale, fontControls }) {
                       href={item.href}
                       key={item.key}
                       tabIndex={open && !closing ? 0 : -1}
+                      style={{ "--channel-index": index }}
                     >
                       <span className="desktop-service-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                      <span>{item.label}</span>
-                      <span className="desktop-service-rule" aria-hidden="true" />
+                      <span className="desktop-service-name">{item.label}</span>
+                      <span className="desktop-service-rule" aria-hidden="true"><i /></span>
                     </a>
                   ))}
                 </div>
               </section>
             );
           })}
+          </div>
         </div>
-        <FontSizeControls {...fontControls} tabIndex={open && !closing ? 0 : -1} />
+
+        <footer className="desktop-channel-footer">
+          <span>Temporal channel control deck</span>
+          <FontSizeControls {...fontControls} tabIndex={open && !closing ? 0 : -1} />
+          <span>Estiginto motion system / 2026</span>
+        </footer>
       </nav>
     </div>
   );

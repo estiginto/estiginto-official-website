@@ -44,7 +44,21 @@ test("desktop navigation restores site destinations and keeps consulting service
   assert.match(desktopMenuSource, /growth: getServiceMenuGroups\(locale\)\.growth/);
   assert.match(desktopMenuSource, /Object\.entries\(desktopMenuGroups\)\.map/);
   assert.match(desktopMenuSource, /href=\{item\.href\}/);
-  assert.match(cssSource, /\.desktop-service-menu\s*\{[\s\S]*?border-radius:\s*18px;/);
+  assert.match(cssSource, /\.desktop-service-menu\s*\{[\s\S]*?border-radius:\s*0;/);
+});
+
+test("desktop navigation renders a full-screen temporal channel control deck", () => {
+  assert.match(desktopMenuSource, /className="desktop-channel-header"/);
+  assert.match(desktopMenuSource, /className="desktop-channel-status"/);
+  assert.match(desktopMenuSource, /className="desktop-channel-axis"/);
+  assert.match(desktopMenuSource, /className="desktop-channel-core"/);
+  assert.match(desktopMenuSource, /className="desktop-channel-footer"/);
+  assert.match(desktopMenuSource, /data-channel=\{groupKey\}/);
+  assert.match(desktopMenuSource, /style=\{\{ "--channel-index": index \}\}/);
+  assert.match(cssSource, /\.desktop-service-menu\s*\{[\s\S]*?inset:\s*0;/);
+  assert.match(cssSource, /\.desktop-channel-axis\s*\{[\s\S]*?left:\s*50%;/);
+  assert.match(cssSource, /\.desktop-service-link::before\s*\{[\s\S]*?linear-gradient/);
+  assert.match(cssSource, /@keyframes desktop-channel-pulse/);
 });
 
 test("desktop menu places a continuous spatial light field behind the panel", () => {
