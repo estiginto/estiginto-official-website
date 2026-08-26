@@ -505,9 +505,8 @@ const localizedCopy = {
       kicker: "將你的願景，建構在磐石上",
       title: ["致力於打造", "有靈魂的設計"],
       lede: [
-        "透過技術，改變人與世界互動的方式",
-        "我們以思緒縝密的設計著名",
-        "讓企業的運作，成為能夠長久運作的現實",
+        "以思緒縝密的設計著名",
+        "讓企業產生持續的影響力",
       ],
       scrolldown: "往下滾動",
     },
@@ -623,9 +622,8 @@ const localizedCopy = {
       kicker: "Build your vision on solid ground",
       title: ["Driven to create", "design with soul"],
       lede: [
-        "Through technology, we reshape how people interact with the world.",
-        "We are known for thoughtful, meticulously considered design.",
-        "We turn business operations into enduring, workable realities.",
+        "Known for thoughtful, meticulously considered design.",
+        "We help businesses create lasting impact.",
       ],
       scrolldown: "Scroll down",
     },
@@ -689,9 +687,8 @@ const localizedCopy = {
       kicker: "ビジョンを、揺るぎない基盤の上に",
       title: ["私たちが目指すのは", "魂のあるデザイン"],
       lede: [
-        "テクノロジーを通じて、人と世界の関わり方を変える。",
-        "私たちは、緻密に思考されたデザインで知られています。",
-        "企業の仕組みを、持続的に機能する現実へと変えていきます。",
+        "緻密に考え抜かれたデザインで知られています。",
+        "企業が持続的な影響力を生み出せるよう支援します。",
       ],
       scrolldown: "下へスクロール",
     },
@@ -1057,8 +1054,6 @@ function Hero({ copy }) {
             {copy.hero.lede[0]}
             <br />
             {copy.hero.lede[1]}
-            <br />
-            {copy.hero.lede[2]}
           </p>
         </div>
       </div>

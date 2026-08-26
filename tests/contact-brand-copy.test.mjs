@@ -14,28 +14,25 @@ function functionSource(name, nextName) {
   return appSource.slice(start, end);
 }
 
-test("homepage hero uses the approved three-line description in every locale", () => {
+test("homepage hero uses the approved two-line impact description in every locale", () => {
   const approvedHeroCopy = {
     zh: [
       "致力於打造",
       "有靈魂的設計",
-      "透過技術，改變人與世界互動的方式",
-      "我們以思緒縝密的設計著名",
-      "讓企業的運作，成為能夠長久運作的現實",
+      "以思緒縝密的設計著名",
+      "讓企業產生持續的影響力",
     ],
     en: [
       "Driven to create",
       "design with soul",
-      "Through technology, we reshape how people interact with the world.",
-      "We are known for thoughtful, meticulously considered design.",
-      "We turn business operations into enduring, workable realities.",
+      "Known for thoughtful, meticulously considered design.",
+      "We help businesses create lasting impact.",
     ],
     ja: [
       "私たちが目指すのは",
       "魂のあるデザイン",
-      "テクノロジーを通じて、人と世界の関わり方を変える。",
-      "私たちは、緻密に思考されたデザインで知られています。",
-      "企業の仕組みを、持続的に機能する現実へと変えていきます。",
+      "緻密に考え抜かれたデザインで知られています。",
+      "企業が持続的な影響力を生み出せるよう支援します。",
     ],
   };
 
@@ -51,7 +48,7 @@ test("homepage hero uses the approved three-line description in every locale", (
   assert.doesNotMatch(heroSource, /copy\.hero\.title\[2\]/);
   assert.match(heroSource, /copy\.hero\.lede\[0\]/);
   assert.match(heroSource, /copy\.hero\.lede\[1\]/);
-  assert.match(heroSource, /copy\.hero\.lede\[2\]/);
+  assert.doesNotMatch(heroSource, /copy\.hero\.lede\[2\]/);
 });
 
 test("homepage prioritizes services and articles over systems methodology", () => {
