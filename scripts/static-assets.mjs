@@ -5,7 +5,7 @@ const clientLogoAssetPaths = [
   "morinaga", "jung-kwan-jang", "kyce", "conflux", "fable", "tainan-airport", "archi-5", "mca-creative-industries",
   "taiwan-psychoanalytic", "wealthylife", "beyond-amazing", "sleekstrip", "king-life",
   "jing-he-medical", "a-plus-dermatology", "bauer-group", "lecoln-keysight", "mj-color",
-  "rotary", "bcfbw", "lions", "vantage", "wilderness", "worthbee", "gb-biotech", "fvs",
+  "rotary", "bcfbw", "lions", "vantage", "wilderness", "worthbee", "gb-biotech", "fvs", "yang-ming",
 ].map((name) => `client-logos/${name}.webp`);
 
 export const marketingAssetPaths = [

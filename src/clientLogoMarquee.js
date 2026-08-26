@@ -45,6 +45,7 @@ const clientLogoDefinitions = [
   ["worthbee", "滿誠蜂蜜 Worthbee"],
   ["gb-biotech", "果寶生技 GB Biotech"],
   ["fvs", "FVS 黃金數位憑證"],
+  ["yang-ming", "陽明海運 Yang Ming Marine Transport"],
 ];
 
 export const clientLogos = clientLogoDefinitions.map(([id, alt]) => ({

@@ -3,10 +3,10 @@ import { existsSync } from "node:fs";
 import test from "node:test";
 import { buildClientLogoLanes, clientLogos } from "../src/clientLogoMarquee.js";
 
-test("client logo inventory contains every normalized PDF logo", () => {
-  assert.equal(clientLogos.length, 43);
-  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 43);
-  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 43);
+test("client logo inventory contains every normalized source logo", () => {
+  assert.equal(clientLogos.length, 44);
+  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 44);
+  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 44);
   assert.equal(clientLogos.every((client) => client.alt.length > 0), true);
   assert.equal(clientLogos.every((client) => existsSync(`.${client.src}`)), true);
 });
@@ -14,7 +14,7 @@ test("client logo inventory contains every normalized PDF logo", () => {
 test("the complete client inventory fills three lanes without reserved slots", () => {
   const lanes = buildClientLogoLanes(clientLogos);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [15, 14, 14]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [15, 15, 14]);
   assert.equal(lanes.flat().every((item) => item.src !== null), true);
 });
 
