@@ -177,20 +177,20 @@ test("geometric transitions use the approved graphite ivory and champagne palett
   assert.doesNotMatch(transitionCss, /#4f9dff|rgba\(79,\s*157,\s*255/);
 });
 
-test("homepage hero hosts the shared ambient vortex in a protected visual region", () => {
+test("homepage hero hosts the full-field soul ribbon without covering its copy", () => {
   const app = read("src/App.jsx");
   const css = read("src/App.css");
 
-  assert.match(app, /function HeroVortexBackground\(\)/);
-  assert.match(app, /createHeroVortexBackground/);
-  assert.match(app, /className="hero-vortex-background" aria-hidden="true"/);
-  assert.match(app, /className="hero-vortex-canvas"/);
+  assert.match(app, /function HeroSoulRibbon\(\)/);
+  assert.match(app, /createHeroSoulRibbon/);
+  assert.match(app, /className="hero-soul-ribbon" aria-hidden="true"/);
+  assert.match(app, /className="hero-soul-ribbon-canvas"/);
   assert.match(app, /matchMedia\("\(pointer: fine\)"\)/);
   assert.match(app, /requestAnimationFrame/);
   assert.match(app, /cancelAnimationFrame/);
-  assert.match(css, /\.hero-vortex-background\s*\{[\s\S]*?left:\s*44%/);
-  assert.match(css, /\.hero-vortex-background::before\s*\{[\s\S]*?linear-gradient/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*hero-vortex-background/);
+  assert.match(css, /\.hero-soul-ribbon\s*\{[\s\S]*?inset:\s*0/);
+  assert.match(css, /\.hero::after\s*\{[\s\S]*?linear-gradient/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*hero-soul-ribbon/);
 });
 
 test("case page groups selected work by client value", () => {

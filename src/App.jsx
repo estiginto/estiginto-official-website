@@ -28,10 +28,8 @@ import {
   getPageTransitionVariant,
   getTransitionDestination,
 } from "./pageTransition.js";
-import {
-  createHeroVortexBackground,
-  createPageVortexTransition,
-} from "./pageVortexTransition.js";
+import { createHeroSoulRibbon } from "./heroSoulRibbon.js";
+import { createPageVortexTransition } from "./pageVortexTransition.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -947,14 +945,14 @@ function PageTitle({ page }) {
   );
 }
 
-function HeroVortexBackground() {
+function HeroSoulRibbon() {
   const backgroundRef = useRef(null);
   const canvasRef = useRef(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const vortex = createHeroVortexBackground({ canvas: canvasRef.current, reducedMotion });
+    const ribbon = createHeroSoulRibbon({ canvas: canvasRef.current, reducedMotion });
     let activated = false;
     let running = false;
     let pointerFrame = null;
@@ -962,10 +960,10 @@ function HeroVortexBackground() {
     const syncPlayback = () => {
       const shouldRun = activated && document.visibilityState === "visible";
       if (shouldRun && !running) {
-        vortex.start();
+        ribbon.start();
         running = true;
       } else if (!shouldRun && running) {
-        vortex.stop();
+        ribbon.stop();
         running = false;
       }
     };
@@ -983,13 +981,13 @@ function HeroVortexBackground() {
       const rect = backgroundRef.current.getBoundingClientRect();
       const x = (event.clientX - rect.left) / rect.width;
       const y = (event.clientY - rect.top) / rect.height;
-      const energy = Math.max(0, 1 - Math.hypot(x - 0.54, y - 0.5) * 1.45);
+      const energy = Math.max(0, 1 - Math.abs(x + y - 1) * 1.9);
       window.cancelAnimationFrame(pointerFrame);
       pointerFrame = window.requestAnimationFrame(() => {
-        vortex.setEnergy(energy);
-        backgroundRef.current?.style.setProperty("--hero-vortex-x", `${((x - 0.5) * 12).toFixed(2)}px`);
-        backgroundRef.current?.style.setProperty("--hero-vortex-y", `${((y - 0.5) * 9).toFixed(2)}px`);
-        backgroundRef.current?.style.setProperty("--hero-vortex-energy", energy.toFixed(3));
+        ribbon.setEnergy(energy);
+        backgroundRef.current?.style.setProperty("--soul-ribbon-x", `${((x - 0.5) * 8).toFixed(2)}px`);
+        backgroundRef.current?.style.setProperty("--soul-ribbon-y", `${((y - 0.5) * 6).toFixed(2)}px`);
+        backgroundRef.current?.style.setProperty("--soul-ribbon-energy", energy.toFixed(3));
       });
     };
 
@@ -1003,15 +1001,14 @@ function HeroVortexBackground() {
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       window.cancelAnimationFrame(pointerFrame);
-      vortex.stop();
+      ribbon.stop();
     };
   }, []);
 
   return (
-    <div ref={backgroundRef} className="hero-vortex-background" aria-hidden="true" data-ready={ready}>
-      <canvas ref={canvasRef} className="hero-vortex-canvas" />
-      <span className="hero-vortex-soul" />
-      <span className="hero-vortex-hud">CHRONAL FIELD / TAIPEI · 25.0330° N</span>
+    <div ref={backgroundRef} className="hero-soul-ribbon" aria-hidden="true" data-ready={ready}>
+      <canvas ref={canvasRef} className="hero-soul-ribbon-canvas" />
+      <span className="hero-soul-ribbon-hud">SOUL CURRENT / FULL FIELD · 01A</span>
     </div>
   );
 }
@@ -1019,7 +1016,7 @@ function HeroVortexBackground() {
 function Hero({ copy }) {
   return (
     <section className="hero" id="home">
-      <HeroVortexBackground />
+      <HeroSoulRibbon />
       <div className="wrap">
         <div>
           <div className="hero-meta">
