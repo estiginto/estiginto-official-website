@@ -1,6 +1,22 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import test from "node:test";
-import { buildClientLogoLanes } from "../src/clientLogoMarquee.js";
+import { buildClientLogoLanes, clientLogos } from "../src/clientLogoMarquee.js";
+
+test("client logo inventory contains every normalized PDF logo", () => {
+  assert.equal(clientLogos.length, 43);
+  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 43);
+  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 43);
+  assert.equal(clientLogos.every((client) => client.alt.length > 0), true);
+  assert.equal(clientLogos.every((client) => existsSync(`.${client.src}`)), true);
+});
+
+test("the complete client inventory fills three lanes without reserved slots", () => {
+  const lanes = buildClientLogoLanes(clientLogos);
+
+  assert.deepEqual(lanes.map((lane) => lane.length), [15, 14, 14]);
+  assert.equal(lanes.flat().every((item) => item.src !== null), true);
+});
 
 test("client logo marquee reserves three populated lanes without inventing brands", () => {
   const lanes = buildClientLogoLanes();
