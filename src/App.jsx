@@ -30,6 +30,7 @@ import {
 } from "./pageTransition.js";
 import { createHeroSoulRibbon } from "./heroSoulRibbon.js";
 import { createPageVortexTransition } from "./pageVortexTransition.js";
+import { buildClientLogoLanes, clientLogos } from "./clientLogoMarquee.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -509,6 +510,11 @@ const localizedCopy = {
       ],
       scrolldown: "往下滾動",
     },
+    clientLogos: {
+      eyebrow: "Selected relationships / 2011—2026",
+      title: "服務過的客戶",
+      status: "CLIENT ARCHIVE / 03 STREAMS",
+    },
     marquee: [
       "主動式應變決策系統",
       "軟體系統規劃及建置",
@@ -622,6 +628,11 @@ const localizedCopy = {
       ],
       scrolldown: "Scroll down",
     },
+    clientLogos: {
+      eyebrow: "Selected relationships / 2011—2026",
+      title: "Clients we've served",
+      status: "CLIENT ARCHIVE / 03 STREAMS",
+    },
     marquee: ["Adaptive decision systems", "Software system planning and implementation", "Software, hardware, and IoT integration", "ERP / WMS / CRM", "Business websites / e-commerce / payments / invoices", "Custom app development", "War-room dashboards", "Automation execution support systems"],
     achievements: { label: "We build designs with a soul, turning systems into engines for brand growth and lasting impact.", meta: "Since 2011" },
     manifesto: { label: "Our Approach", prelude: "Let systems fit the way work gets done", headlinePrefix: "instead of making work", headlineHighlight: "adapt to the system", points: ["1. Interactions reflect real working habits", "2. Information appears clearly when it is needed", "3. The architecture leaves room to adapt and grow"], quote: "\"Understand the work before designing the system.\"", paragraphs: [["We begin with users, workflows, and information flows", "clarifying the interactions and decisions that matter", "then shaping the needs into a system plan we can validate and build step by step."], ["The system becomes a natural part of the team's day-to-day work", "reducing repeated checks and unnecessary steps", "while leaving room for future changes and growth."]], signoff: "- Let tools return to their role of supporting the work." },
@@ -682,6 +693,11 @@ const localizedCopy = {
         "企業の仕組みを、持続的に機能する現実へと変えていきます。",
       ],
       scrolldown: "下へスクロール",
+    },
+    clientLogos: {
+      eyebrow: "Selected relationships / 2011—2026",
+      title: "ご支援した企業",
+      status: "CLIENT ARCHIVE / 03 STREAMS",
     },
     marquee: ["能動型意思決定システム", "ソフトウェアシステムの設計と構築", "ソフト・ハード・IoT 統合", "ERP / WMS / CRM", "ビジネスサイト / EC / 決済 / 請求書", "カスタム APP", "戦情室ダッシュボード", "自動化実行支援システム"],
     achievements: { label: "魂のあるデザインを作り、システムをブランド成長と持続的な影響力の推進力にします。", meta: "2011 年から" },
@@ -1046,7 +1062,7 @@ function Hero({ copy }) {
         </div>
       </div>
 
-      <a className="scrolldown" href="#marquee">{copy.hero.scrolldown}</a>
+      <a className="scrolldown" href="#clients">{copy.hero.scrolldown}</a>
     </section>
   );
 }
@@ -1137,6 +1153,48 @@ function PageTransition() {
       <span className="page-transition-panel-bottom" />
       <span className="page-transition-scan" />
     </div>
+  );
+}
+
+function ClientLogoMarquee({ copy }) {
+  const lanes = buildClientLogoLanes(clientLogos);
+
+  return (
+    <section className="client-logo-marquee" id="clients" aria-labelledby="client-logo-marquee-title">
+      <header className="client-logo-marquee-header wrap">
+        <div>
+          <span className="client-logo-marquee-eyebrow">{copy.clientLogos.eyebrow}</span>
+          <h2 id="client-logo-marquee-title">{copy.clientLogos.title}</h2>
+        </div>
+        <span className="client-logo-marquee-status">{copy.clientLogos.status}</span>
+      </header>
+
+      <div className="client-logo-marquee-field">
+        {lanes.map((lane, laneIndex) => {
+          return (
+            <div className="client-logo-marquee-lane" key={`client-lane-${laneIndex + 1}`}>
+              <div className="client-logo-marquee-track">
+                {[0, 1].map((loopIndex) => (
+                  <div className="client-logo-marquee-group" aria-hidden={loopIndex === 1 ? "true" : undefined} key={`client-loop-${loopIndex}`}>
+                    {lane.map((client, itemIndex) => (
+                      <div
+                        className="client-logo-marquee-item"
+                        data-reserved={client.src ? undefined : "true"}
+                        key={`${client.id}-${loopIndex}`}
+                      >
+                        {client.src ? <img src={client.src} alt={client.alt} loading="lazy" /> : (
+                          <span aria-hidden="true">{String(itemIndex * 3 + laneIndex + 1).padStart(2, "0")}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -2626,6 +2684,7 @@ export default function App() {
         ) : (
           <>
             <Hero copy={copy} />
+            <ClientLogoMarquee copy={copy} />
             <Marquee copy={copy} />
             <ServiceOverview copy={copy} />
             <Insights />

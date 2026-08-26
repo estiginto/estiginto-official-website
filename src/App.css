@@ -2324,7 +2324,134 @@ ul, ol  { margin: 0; }
 .btn-on-night:hover { color: var(--night); }
 
 /* ============================================================
-   MARQUEE — clients / tech ticker
+   CLIENT LOGO MARQUEE
+   ============================================================ */
+.client-logo-marquee {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(44px, 6vw, 76px) 0 clamp(36px, 5vw, 64px);
+  border-top: 1px solid var(--ink-line);
+  border-bottom: 1px solid var(--ink-line);
+  background:
+    linear-gradient(to right, rgba(20, 17, 13, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 17, 13, 0.035) 1px, transparent 1px),
+    var(--paper);
+  background-size: 88px 88px, 88px 88px, auto;
+}
+.client-logo-marquee::before,
+.client-logo-marquee::after {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  width: min(10vw, 150px);
+  pointer-events: none;
+}
+.client-logo-marquee::before { left: 0; background: linear-gradient(90deg, var(--paper), transparent); }
+.client-logo-marquee::after { right: 0; background: linear-gradient(-90deg, var(--paper), transparent); }
+.client-logo-marquee-header {
+  z-index: 4;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+.client-logo-marquee-header > div { display: grid; gap: 9px; }
+.client-logo-marquee-eyebrow,
+.client-logo-marquee-status {
+  color: var(--ink-mute);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.client-logo-marquee-header h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.65rem, 3vw, 2.6rem);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+.client-logo-marquee-status { padding-bottom: 7px; }
+.client-logo-marquee-field {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 10px;
+  transform: rotate(-1.25deg) scale(1.025);
+}
+.client-logo-marquee-lane {
+  --client-lane-duration: 42s;
+  overflow: hidden;
+  border-top: 1px solid rgba(20, 17, 13, 0.1);
+  border-bottom: 1px solid rgba(20, 17, 13, 0.1);
+  background: rgba(255, 255, 255, 0.48);
+}
+.client-logo-marquee-lane:nth-child(1) { --client-lane-duration: 44s; }
+.client-logo-marquee-lane:nth-child(2) { --client-lane-duration: 54s; }
+.client-logo-marquee-lane:nth-child(2) .client-logo-marquee-track { animation-direction: reverse; }
+.client-logo-marquee-lane:nth-child(3) { --client-lane-duration: 48s; }
+.client-logo-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: clientLogoMarquee var(--client-lane-duration) linear infinite;
+  will-change: transform;
+}
+.client-logo-marquee-field:hover .client-logo-marquee-track { animation-play-state: paused; }
+.client-logo-marquee-group {
+  display: flex;
+  flex: 0 0 auto;
+  min-width: 100vw;
+}
+.client-logo-marquee-item {
+  position: relative;
+  display: grid;
+  flex: 1 0 clamp(158px, 15vw, 226px);
+  min-height: clamp(78px, 7.5vw, 104px);
+  place-items: center;
+  border-right: 1px solid rgba(20, 17, 13, 0.1);
+  background: rgba(255, 255, 255, 0.18);
+}
+.client-logo-marquee-item img {
+  width: min(70%, 150px);
+  max-height: 48px;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.7;
+  transition: filter 240ms ease, opacity 240ms ease, transform 240ms ease;
+}
+.client-logo-marquee-item:hover img { filter: none; opacity: 1; transform: scale(1.04); }
+.client-logo-marquee-item[data-reserved="true"]::before,
+.client-logo-marquee-item[data-reserved="true"]::after {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  opacity: 0.34;
+}
+.client-logo-marquee-item[data-reserved="true"]::before {
+  top: 12px;
+  left: 12px;
+  border-top: 1px solid var(--ink);
+  border-left: 1px solid var(--ink);
+}
+.client-logo-marquee-item[data-reserved="true"]::after {
+  right: 12px;
+  bottom: 12px;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+.client-logo-marquee-item[data-reserved="true"] > span {
+  color: rgba(20, 17, 13, 0.34);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.18em;
+}
+
+/* ============================================================
+   MARQUEE — services / tech ticker
    ============================================================ */
 .marquee {
   border-top: 1px solid var(--ink-line);
@@ -3415,6 +3542,10 @@ ul, ol  { margin: 0; }
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
+@keyframes clientLogoMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
 
 /* ============================================================
    RESPONSIVE
@@ -3552,6 +3683,12 @@ ul, ol  { margin: 0; }
   .hero-soul-ribbon-hud { display: none; }
   .hero .wrap > div { width: 100%; }
   .hero::after { background: linear-gradient(180deg, var(--paper) 0%, rgba(247, 244, 239, 0.97) 43%, rgba(247, 244, 239, 0.72) 60%, transparent 78%); }
+
+  .client-logo-marquee { padding: 40px 0 34px; }
+  .client-logo-marquee-header { align-items: start; flex-direction: column; gap: 12px; margin-bottom: 26px; }
+  .client-logo-marquee-status { padding-bottom: 0; }
+  .client-logo-marquee-field { gap: 7px; transform: rotate(-1deg) scale(1.02); }
+  .client-logo-marquee-item { flex-basis: 148px; min-height: 72px; }
 
   .desktop-cursor-menu {
     display: none;
@@ -4322,6 +4459,10 @@ ul, ol  { margin: 0; }
     animation: none !important;
   }
   .hero-soul-ribbon {
+    transform: none !important;
+  }
+  .client-logo-marquee-track {
+    animation: none !important;
     transform: none !important;
   }
 }
