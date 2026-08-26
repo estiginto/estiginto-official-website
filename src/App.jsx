@@ -28,7 +28,10 @@ import {
   getPageTransitionVariant,
   getTransitionDestination,
 } from "./pageTransition.js";
-import { createPageVortexTransition } from "./pageVortexTransition.js";
+import {
+  createHeroVortexBackground,
+  createPageVortexTransition,
+} from "./pageVortexTransition.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -944,31 +947,53 @@ function PageTitle({ page }) {
   );
 }
 
-function HeroTechBackground() {
+function HeroVortexBackground() {
   const backgroundRef = useRef(null);
+  const canvasRef = useRef(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const activate = () => setReady(true);
-    const fallbackTimer = window.setTimeout(activate, 900);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const vortex = createHeroVortexBackground({ canvas: canvasRef.current, reducedMotion });
+    let activated = false;
+    let running = false;
+    let pointerFrame = null;
+
+    const syncPlayback = () => {
+      const shouldRun = activated && document.visibilityState === "visible";
+      if (shouldRun && !running) {
+        vortex.start();
+        running = true;
+      } else if (!shouldRun && running) {
+        vortex.stop();
+        running = false;
+      }
+    };
+    const activate = () => {
+      activated = true;
+      setReady(true);
+      syncPlayback();
+    };
+    const fallbackTimer = window.setTimeout(activate, 5000);
     window.addEventListener("estiginto:page-entered", activate, { once: true });
 
     const finePointer = window.matchMedia("(pointer: fine)").matches;
-    let frameId = null;
     const onPointerMove = (event) => {
       if (!finePointer || !backgroundRef.current) return;
-      const x = ((event.clientX / window.innerWidth) - 0.5) * 24;
-      const y = ((event.clientY / window.innerHeight) - 0.5) * 18;
-      window.cancelAnimationFrame(frameId);
-      frameId = window.requestAnimationFrame(() => {
-        backgroundRef.current?.style.setProperty("--hero-parallax-x", `${x.toFixed(2)}px`);
-        backgroundRef.current?.style.setProperty("--hero-parallax-y", `${y.toFixed(2)}px`);
+      const rect = backgroundRef.current.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      const energy = Math.max(0, 1 - Math.hypot(x - 0.54, y - 0.5) * 1.45);
+      window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = window.requestAnimationFrame(() => {
+        vortex.setEnergy(energy);
+        backgroundRef.current?.style.setProperty("--hero-vortex-x", `${((x - 0.5) * 12).toFixed(2)}px`);
+        backgroundRef.current?.style.setProperty("--hero-vortex-y", `${((y - 0.5) * 9).toFixed(2)}px`);
+        backgroundRef.current?.style.setProperty("--hero-vortex-energy", energy.toFixed(3));
       });
     };
 
-    const onVisibilityChange = () => {
-      document.documentElement.classList.toggle("motion-paused", document.visibilityState !== "visible");
-    };
+    const onVisibilityChange = () => syncPlayback();
 
     if (finePointer) window.addEventListener("pointermove", onPointerMove, { passive: true });
     document.addEventListener("visibilitychange", onVisibilityChange);
@@ -977,41 +1002,16 @@ function HeroTechBackground() {
       window.removeEventListener("estiginto:page-entered", activate);
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("visibilitychange", onVisibilityChange);
-      window.cancelAnimationFrame(frameId);
-      document.documentElement.classList.remove("motion-paused");
+      window.cancelAnimationFrame(pointerFrame);
+      vortex.stop();
     };
   }, []);
 
   return (
-    <div ref={backgroundRef} className="hero-tech-background" aria-hidden="true" data-ready={ready}>
-      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
-        <g className="hero-tech-axis">
-          <path d="M790 430H1395M1092 74V826" />
-          <path d="M820 172H890M1296 680H1374M932 768H1006" />
-        </g>
-        <g className="hero-tech-ring hero-tech-ring-outer">
-          <circle cx="1092" cy="430" r="286" />
-          <circle cx="1092" cy="430" r="266" className="hero-tech-ring-dashed" />
-          <path d="M1092 123v36M1092 701v36M785 430h36M1363 430h36" />
-        </g>
-        <g className="hero-tech-ring hero-tech-ring-inner">
-          <circle cx="1092" cy="430" r="196" />
-          <circle cx="1092" cy="430" r="146" className="hero-tech-ring-dashed" />
-          <path d="M962 300l36 36M1186 524l36 36M1222 300l-36 36M998 524l-36 36" />
-        </g>
-        <g className="hero-tech-calibration">
-          <circle cx="1092" cy="430" r="306" className="hero-tech-calibration-minor" />
-          <circle cx="1092" cy="430" r="218" className="hero-tech-calibration-minor hero-tech-calibration-inner" />
-          <path className="hero-tech-calibration-major" d="M1092 106v30M1092 724v30M768 430h30M1386 430h30M863 201l21 21M1300 638l21 21M1321 201l-21 21M884 638l-21 21" />
-          <path className="hero-tech-calibration-arc" d="M1092 108a322 322 0 0 1 316 262M776 430a322 322 0 0 1 160-279" />
-        </g>
-        <g className="hero-tech-reticle">
-          <circle cx="1092" cy="430" r="42" />
-          <path d="M1028 430h128M1092 366v128" />
-          <rect x="1087" y="425" width="10" height="10" />
-        </g>
-        <line className="hero-tech-scan" x1="760" y1="0" x2="760" y2="900" />
-      </svg>
+    <div ref={backgroundRef} className="hero-vortex-background" aria-hidden="true" data-ready={ready}>
+      <canvas ref={canvasRef} className="hero-vortex-canvas" />
+      <span className="hero-vortex-soul" />
+      <span className="hero-vortex-hud">CHRONAL FIELD / TAIPEI · 25.0330° N</span>
     </div>
   );
 }
@@ -1019,7 +1019,7 @@ function HeroTechBackground() {
 function Hero({ copy }) {
   return (
     <section className="hero" id="home">
-      <HeroTechBackground />
+      <HeroVortexBackground />
       <div className="wrap">
         <div>
           <div className="hero-meta">

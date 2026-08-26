@@ -38,12 +38,12 @@ function resizeCanvas(canvas, context) {
   return { width, height };
 }
 
-function drawFrame(context, width, height, stars, progress, elapsed) {
-  const fadeOut = 1 - easeOut(range(progress, 0.9, 1));
-  const lock = easeOut(range(progress, 0.72, 0.96));
-  const invert = range(progress, 0.58, 0.72);
-  const speed = lerp(0.7, 2.8, easeOut(range(progress, 0, 0.58)));
-  const centerX = width * 0.5 + Math.sin(elapsed * 0.0017) * width * 0.026 * (1 - lock);
+function drawFrame(context, width, height, stars, progress, elapsed, { ambient = false, energy = 0 } = {}) {
+  const fadeOut = ambient ? 1 : 1 - easeOut(range(progress, 0.9, 1));
+  const lock = ambient ? 0 : easeOut(range(progress, 0.72, 0.96));
+  const invert = ambient ? (Math.sin(elapsed * 0.00012) + 1) * 0.5 : range(progress, 0.58, 0.72);
+  const speed = ambient ? 0.34 : lerp(0.7, 2.8, easeOut(range(progress, 0, 0.58)));
+  const centerX = width * (ambient ? 0.54 : 0.5) + Math.sin(elapsed * 0.0017) * width * 0.026 * (1 - lock);
   const centerY = height * 0.5 + Math.cos(elapsed * 0.0012) * height * 0.022 * (1 - lock);
   const maxRadius = Math.hypot(width, height) * 0.72;
 
@@ -53,11 +53,11 @@ function drawFrame(context, width, height, stars, progress, elapsed) {
   context.fillStyle = "#020405";
   context.fillRect(0, 0, width, height);
 
-  const ambient = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, width * 0.62);
-  ambient.addColorStop(0, "rgba(28,91,103,.22)");
-  ambient.addColorStop(0.42, "rgba(11,26,31,.18)");
-  ambient.addColorStop(1, "rgba(0,0,0,0)");
-  context.fillStyle = ambient;
+  const ambientGlow = context.createRadialGradient(centerX, centerY, 0, centerX, centerY, width * 0.62);
+  ambientGlow.addColorStop(0, "rgba(28,91,103,.22)");
+  ambientGlow.addColorStop(0.42, "rgba(11,26,31,.18)");
+  ambientGlow.addColorStop(1, "rgba(0,0,0,0)");
+  context.fillStyle = ambientGlow;
   context.fillRect(0, 0, width, height);
 
   context.save();
@@ -82,7 +82,7 @@ function drawFrame(context, width, height, stars, progress, elapsed) {
   stars.forEach((star, index) => {
     const radial = ((star.depth + progress * speed * 0.8) % 1) ** 2;
     const angle = star.angle + elapsed * 0.00012 * star.drift;
-    const length = lerp(1, 36, radial) * (1 - lock * 0.72);
+    const length = lerp(1, 36, radial) * (1 - lock * 0.72) * (1 + energy * 1.4);
     const x = centerX + Math.cos(angle) * radial * maxRadius;
     const y = centerY + Math.sin(angle) * radial * maxRadius * 0.62;
     context.beginPath();
@@ -103,25 +103,27 @@ function drawFrame(context, width, height, stars, progress, elapsed) {
   context.restore();
 }
 
-export function createPageVortexTransition({
+function createVortexController({
   canvas,
   reducedMotion = false,
   now = () => performance.now(),
   requestFrame = (callback) => requestAnimationFrame(callback),
   cancelFrame = (id) => cancelAnimationFrame(id),
+  ambient = false,
 } = {}) {
   const context = canvas.getContext("2d");
   const stars = makeStars();
   let frameId = null;
   let startedAt = 0;
+  let energy = 0;
 
   const render = (timestamp) => {
     frameId = null;
     const elapsed = Math.max(0, timestamp - startedAt);
-    const progress = Math.min(1, elapsed / DURATION);
+    const progress = ambient ? elapsed / 16000 : Math.min(1, elapsed / DURATION);
     const { width, height } = resizeCanvas(canvas, context);
-    drawFrame(context, width, height, stars, progress, elapsed);
-    if (progress < 1) frameId = requestFrame(render);
+    drawFrame(context, width, height, stars, progress, elapsed, { ambient, energy });
+    if (ambient || progress < 1) frameId = requestFrame(render);
   };
 
   return {
@@ -129,7 +131,8 @@ export function createPageVortexTransition({
       startedAt = now();
       if (reducedMotion) {
         const { width, height } = resizeCanvas(canvas, context);
-        drawFrame(context, width, height, stars, 1, DURATION);
+        const elapsed = ambient ? 8000 : DURATION;
+        drawFrame(context, width, height, stars, ambient ? 0.5 : 1, elapsed, { ambient, energy });
         return;
       }
       frameId = requestFrame(render);
@@ -140,5 +143,16 @@ export function createPageVortexTransition({
       const { width, height } = resizeCanvas(canvas, context);
       context.clearRect(0, 0, width, height);
     },
+    setEnergy(value) {
+      energy = clamp(value);
+    },
   };
+}
+
+export function createPageVortexTransition(options = {}) {
+  return createVortexController(options);
+}
+
+export function createHeroVortexBackground(options = {}) {
+  return createVortexController({ ...options, ambient: true });
 }
