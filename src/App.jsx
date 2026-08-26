@@ -4,6 +4,7 @@ import {
   caseStudiesByLocale,
   companyStatsByLocale,
   serviceFamiliesByLocale,
+  teamMembersByLocale,
 } from "./content2026.js";
 import {
   getInitialLocale,
@@ -1286,6 +1287,38 @@ function Manifesto({ copy }) {
             ))}
             <span className="signoff">{manifesto.signoff}</span>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TeamSection({ copy }) {
+  const members = teamMembersByLocale[copy.locale] || teamMembersByLocale.en;
+
+  return (
+    <section className="section team-section reveal" id="team" aria-labelledby="team-section-title">
+      <div className="wrap">
+        <SectionEyebrow index="§ Leadership & Advisory" label="People behind the work" meta="05 / ESTIGINTO" />
+        <header className="team-section-header">
+          <p>Leadership & Advisory</p>
+          <h2 id="team-section-title">Different disciplines.<br />One operating field.</h2>
+        </header>
+        <div className="team-grid">
+          {members.map((member, index) => (
+            <article className={`team-member-card${index === 0 ? " team-member-card-primary" : ""}`} data-group={member.group} key={member.id}>
+              <div className="team-member-identity" aria-hidden="true">
+                <span>{member.mark}</span>
+                <i>{String(index + 1).padStart(2, "0")}</i>
+              </div>
+              <div className="team-member-copy">
+                <span className="team-member-group">{member.group}</span>
+                <h3>{member.name}</h3>
+                <p className="team-member-role">{member.role}</p>
+                <p className="team-member-summary">{member.summary}</p>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -2668,6 +2701,7 @@ export default function App() {
               <>
                 <Numbers copy={copy} />
                 <Manifesto copy={copy} />
+                <TeamSection copy={copy} />
               </>
             ) : null}
             {initialSection === "case" ? (

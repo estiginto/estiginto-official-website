@@ -97,6 +97,53 @@ const allCaseStudiesByLocale = {
   ],
 };
 
+const teamMembers = [
+  {
+    id: "lanar-lan",
+    name: "Lanar Lan",
+    mark: "LL",
+    role: "CEO",
+    group: "leadership",
+    summary: "Structures complex work across systems, design, capital, and people, connecting strategy to durable execution.",
+  },
+  {
+    id: "yu-liang-chen",
+    name: "Yu-Liang Chen",
+    mark: "YLC",
+    role: "CTO",
+    group: "leadership",
+    summary: "Leads technical direction, system architecture, and full-stack delivery across long-running digital operations.",
+  },
+  {
+    id: "cindy-wu",
+    name: "Cindy Wu",
+    mark: "CW",
+    role: "CMO",
+    group: "leadership",
+    summary: "Connects international market development, brand strategy, and cross-cultural communication.",
+  },
+  {
+    id: "yen-chen",
+    name: "Yen Chen",
+    mark: "YC",
+    role: "Director of International Business & Marketing Development",
+    group: "advisory",
+    summary: "Brings brand strategy, packaging design, and international marketing experience across Europe, Asia, and the United States.",
+  },
+  {
+    id: "wayne-schutte",
+    name: "Wayne Schutte",
+    mark: "WS",
+    role: "International Education Coordinator & Curriculum Specialist",
+    group: "advisory",
+    summary: "Brings 25 years of teaching experience to cross-cultural learning, education innovation, and experiential programs.",
+  },
+];
+
+export const teamMembersByLocale = Object.fromEntries(
+  supportedLocales.map((locale) => [locale, teamMembers]),
+);
+
 const hiddenCaseIds = new Set(["elevator-operations"]);
 
 const caseOutcomesByLocale = {
