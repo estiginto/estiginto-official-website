@@ -15,6 +15,8 @@ const clientLogoDefinitions = [
       ["morinaga", "森永 Morinaga"],
       ["jung-kwan-jang", "正官庄 Jung Kwan Jang"],
       ["yang-ming", "陽明海運 Yang Ming Marine Transport"],
+      ["taiwan-mainstream-coop", "台灣主婦聯盟生活消費合作社"],
+      ["kyl-auction", "高雄永樂拍賣 KYL Auction"],
     ],
   },
   {
@@ -29,8 +31,6 @@ const clientLogoDefinitions = [
   {
     tier: 3,
     clients: [
-      ["taiwan-mainstream-coop", "台灣主婦聯盟生活消費合作社"],
-      ["kyl-auction", "高雄永樂拍賣 KYL Auction"],
       ["eighteen-tea", "御用高級單本茶 十八味"],
       ["evco-creative-home", "EVCO Creative Home 美國生活用品百貨"],
       ["merica", "Merica"],
