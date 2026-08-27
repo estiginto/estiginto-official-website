@@ -2636,6 +2636,23 @@ ul, ol  { margin: 0; }
   margin: 0 0.05em;
 }
 
+/* Japanese needs a wider desktop measure so its two authored title rows stay intact. */
+@media (min-width: 901px) {
+  html[lang="ja"] .hero .wrap > div {
+    width: min(64vw, 1000px);
+  }
+
+  html[lang="ja"] .hero-title {
+    font-size: clamp(3rem, 5.2vw, 5.5rem);
+    letter-spacing: -0.045em;
+  }
+
+  html[lang="ja"] .hero-title .row1,
+  html[lang="ja"] .hero-title .row2 {
+    white-space: nowrap;
+  }
+}
+
 .hero-rule {
   height: 1px;
   background: linear-gradient(90deg, var(--amber), rgba(20, 17, 13, 0.12));
