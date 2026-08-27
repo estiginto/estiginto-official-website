@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  aboutIntroductionsByLocale,
   caseStudyGroupsByLocale,
   caseStudiesByLocale,
   companyStatsByLocale,
   serviceFamiliesByLocale,
   teamMembersByLocale,
+  teamSectionCopyByLocale,
 } from "./content2026.js";
 import {
   getInitialLocale,
@@ -464,7 +466,7 @@ const pageTitles = {
   about: {
     kicker: "About",
     title: "關於我們",
-    lede: "自 2011 年起，我們把規劃、設計與工程整合成能長期運作的解決方案。",
+    lede: aboutIntroductionsByLocale.zh,
   },
   case: {
     kicker: "Selected Work",
@@ -581,7 +583,7 @@ const localizedCopy = {
   },
   en: {
     pageTitles: {
-      about: { kicker: "About", title: "About Us", lede: "Since 2011, we have combined planning, design, and engineering into solutions built to last." },
+      about: { kicker: "About", title: "About Us", lede: aboutIntroductionsByLocale.en },
       case: { kicker: "Selected Work", title: "Selected Work", lede: "We turn complex operating needs into systems teams can rely on and keep using." },
       solutions: { kicker: "Solutions", title: "Solutions", lede: "Websites, custom systems, brand design, and digital marketing - connected from planning through long-term operation." },
       consulting: { kicker: "Business Consulting", title: "Business Consulting", lede: "Systems, digital integration, visual design, and international marketing advice connected to practical execution." },
@@ -646,7 +648,7 @@ const localizedCopy = {
   },
   ja: {
     pageTitles: {
-      about: { kicker: "About", title: "私たちについて", lede: "2011年の創業以来、企画・デザイン・開発を、長く運用できるソリューションとして提供しています。" },
+      about: { kicker: "About", title: "私たちについて", lede: aboutIntroductionsByLocale.ja },
       case: { kicker: "Selected Work", title: "実績紹介", lede: "複雑な業務要件を整理し、現場で長く使える仕組みへ。" },
       solutions: { kicker: "Solutions", title: "ソリューション", lede: "Webサイト、業務システム、ブランドデザイン、デジタルマーケティングを企画から長期運用まで一貫して支援します。" },
       consulting: { kicker: "Business Consulting", title: "ビジネスコンサルティング", lede: "システム、デジタル統合、ビジュアル、国際マーケティングを実行可能な計画へ整理します。" },
@@ -948,12 +950,19 @@ function PageTitle({ page }) {
     return null;
   }
 
+  const lede = Array.isArray(page.lede) ? page.lede : [page.lede];
+
   return (
     <section className="page-title reveal" aria-labelledby="page-title">
+      <HeroSoulRibbon />
       <div className="wrap">
-        <p className="page-title-kicker">{page.kicker}</p>
-        <h1 id="page-title">{page.title}</h1>
-        <p>{page.lede}</p>
+        <div className="page-title-heading">
+          <p className="page-title-kicker">{page.kicker}</p>
+          <h1 id="page-title">{page.title}</h1>
+        </div>
+        <div className="page-title-lede">
+          {lede.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        </div>
       </div>
     </section>
   );
@@ -1282,28 +1291,28 @@ function Manifesto({ copy }) {
 
 function TeamSection({ copy }) {
   const members = teamMembersByLocale[copy.locale] || teamMembersByLocale.en;
+  const sectionCopy = teamSectionCopyByLocale[copy.locale] || teamSectionCopyByLocale.en;
 
   return (
     <section className="section team-section reveal" id="team" aria-labelledby="team-section-title">
       <div className="wrap">
-        <SectionEyebrow index="§ Leadership & Advisory" label="People behind the work" meta="05 / ESTIGINTO" />
+        <SectionEyebrow index={`§ ${sectionCopy.eyebrow}`} label={sectionCopy.label} meta={`${String(members.length).padStart(2, "0")} / ESTIGINTO`} />
         <header className="team-section-header">
-          <p>Leadership & Advisory</p>
-          <h2 id="team-section-title">Different disciplines.<br />One operating field.</h2>
+          <p>{sectionCopy.eyebrow}</p>
+          <h2 id="team-section-title">{sectionCopy.heading}</h2>
         </header>
         <div className="team-grid">
-          {members.map((member, index) => (
-            <article className={`team-member-card${index === 0 ? " team-member-card-primary" : ""}`} data-group={member.group} key={member.id}>
+          {members.map((member) => (
+            <article className="team-member-card" data-group={member.group} key={member.id}>
               <div className={`team-member-identity${member.portrait ? " team-member-identity-portrait" : ""}`}>
                 {member.portrait ? (
                   <img className="team-member-portrait" src={member.portrait} alt={member.name} loading="lazy" decoding="async" />
                 ) : (
                   <span aria-hidden="true">{member.mark}</span>
                 )}
-                <i aria-hidden="true">{String(index + 1).padStart(2, "0")}</i>
               </div>
               <div className="team-member-copy">
-                <span className="team-member-group">{member.group}</span>
+                <span className="team-member-group">{sectionCopy.groupLabels[member.group]}</span>
                 <h3>{member.name}</h3>
                 <p className="team-member-role">{member.role}</p>
                 <p className="team-member-summary">{member.summary}</p>
@@ -2712,7 +2721,6 @@ export default function App() {
             {initialSection === "about" ? (
               <>
                 <Numbers copy={copy} />
-                <Manifesto copy={copy} />
                 <TeamSection copy={copy} />
               </>
             ) : null}

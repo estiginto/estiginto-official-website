@@ -1,5 +1,26 @@
 export const supportedLocales = ["zh", "en", "ja"];
 
+export const aboutIntroductionsByLocale = {
+  zh: [
+    "團隊早期由國家軟體競賽代表選手組成。",
+    "服務對象涵蓋政府單位、國際及涉外組織、金融投資機構、家族辦公室，以及有跨境營運需求的企業主。",
+    "服務範圍涵蓋企業資訊架構、營運系統、資料治理、資訊安全、AI 導入與風險治理，協助企業整合數位營運所需的系統與能力。",
+    "提升決策與執行效率，建立能支援長期成長與國際布局的數位能力。",
+  ],
+  en: [
+    "Our team was initially formed by national software competition representatives.",
+    "We serve government agencies, international and foreign-affairs organizations, financial investment institutions, family offices, and business owners with cross-border operating needs.",
+    "Our work spans enterprise information architecture, operational systems, data governance, information security, AI adoption, and risk governance, integrating the systems and capabilities companies need to operate digitally.",
+    "We improve decision-making and execution while building digital capabilities that support long-term growth and international expansion.",
+  ],
+  ja: [
+    "チームは、ソフトウェア全国大会の代表選手を中心に発足しました。",
+    "政府機関、国際・渉外組織、金融投資機関、ファミリーオフィス、そして国境を越えた事業運営を必要とする経営者を支援しています。",
+    "企業情報アーキテクチャ、業務システム、データガバナンス、情報セキュリティから、AI導入、リスクガバナンスまで、企業のデジタル運営に必要なシステムと能力を統合します。",
+    "意思決定と実行の効率を高め、長期的な成長と国際展開を支えるデジタル能力を構築します。",
+  ],
+};
+
 export const companyStatsByLocale = {
   zh: [
     { id: "founded", label: "創立年份", keyLabel: "Founded", value: "2011", suffix: "", description: "由軟體國家競賽代表選手組成，持續累積跨產業實戰經驗。" },
@@ -97,55 +118,111 @@ const allCaseStudiesByLocale = {
   ],
 };
 
-const teamMembers = [
+const teamIdentities = [
   {
     id: "lanar-lan",
     name: "Lanar Lan",
     mark: "LL",
-    role: "CEO",
     group: "leadership",
     portrait: "/img/team/avatar_lanar.jpg",
-    summary: "Structures complex work across systems, design, capital, and people, connecting strategy to durable execution.",
   },
   {
     id: "yu-liang-chen",
     name: "Yu-Liang Chen",
     mark: "YLC",
-    role: "CTO",
     group: "leadership",
-    summary: "Leads technical direction, system architecture, and full-stack delivery across long-running digital operations.",
   },
   {
     id: "cindy-wu",
     name: "Cindy Wu",
     mark: "CW",
-    role: "CMO",
     group: "leadership",
     portrait: "/img/team/avatar_Cindy.jpg",
-    summary: "Connects international market development, brand strategy, and cross-cultural communication.",
+  },
+  {
+    id: "nicola-chien",
+    name: "Nicola Chien",
+    mark: "NC",
+    group: "leadership",
   },
   {
     id: "yen-chen",
     name: "Yen Chen",
     mark: "YC",
-    role: "Director of International Business & Marketing Development",
     group: "advisory",
     portrait: "/img/team/avatar_Yen.jpg",
-    summary: "Brings brand strategy, packaging design, and international marketing experience across Europe, Asia, and the United States.",
   },
   {
     id: "wayne-schutte",
     name: "Wayne Schutte",
     mark: "WS",
-    role: "International Education Coordinator & Curriculum Specialist",
     group: "advisory",
     portrait: "/img/team/avatar_wayne.png",
-    summary: "Brings 25 years of teaching experience to cross-cultural learning, education innovation, and experiential programs.",
+  },
+  {
+    id: "michael-mlejnek",
+    name: "Michael Mlejnek",
+    mark: "MM",
+    group: "advisory",
   },
 ];
 
+export const teamSectionCopyByLocale = {
+  zh: {
+    eyebrow: "領導與顧問團隊",
+    label: "一起推動工作的成員",
+    heading: "不同領域的專業，匯聚成同一股推進力量。",
+    groupLabels: { leadership: "領導團隊", advisory: "顧問團隊" },
+  },
+  en: {
+    eyebrow: "Leadership & Advisory",
+    label: "People behind the work",
+    heading: "Different disciplines. One operating field.",
+    groupLabels: { leadership: "Leadership", advisory: "Advisory" },
+  },
+  ja: {
+    eyebrow: "リーダーシップ＆アドバイザリー",
+    label: "事業を支えるメンバー",
+    heading: "異なる専門性を、ひとつの推進力へ。",
+    groupLabels: { leadership: "リーダーシップ", advisory: "アドバイザリー" },
+  },
+};
+
+const teamDetailsByLocale = {
+  zh: [
+    { role: "執行長（CEO）", summary: "整合系統、設計、資本與人才，將複雜工作轉化為可長期執行的策略與架構。" },
+    { role: "技術長（CTO）", summary: "負責技術方向、系統架構與全端開發，支撐數位服務長期且穩定地運作。" },
+    { role: "行銷長（CMO）", summary: "串連國際市場開發、品牌策略與跨文化溝通。" },
+    { role: "國際專案經理", summary: "" },
+    { role: "國際商務與行銷發展總監", summary: "具備橫跨歐洲、亞洲與美國的品牌策略、包裝設計及國際行銷經驗。" },
+    { role: "國際教育與課程顧問", summary: "擁有 25 年教學經驗，專注跨文化學習、教育創新與體驗式課程。" },
+    { role: "法律顧問", summary: "顧問，內布拉斯加州執業律師。" },
+  ],
+  en: [
+    { role: "CEO", summary: "Structures complex work across systems, design, capital, and people, connecting strategy to durable execution." },
+    { role: "CTO", summary: "Leads technical direction, system architecture, and full-stack delivery across long-running digital operations." },
+    { role: "CMO", summary: "Connects international market development, brand strategy, and cross-cultural communication." },
+    { role: "Global Project Manager", summary: "" },
+    { role: "Director of International Business & Marketing Development", summary: "Brings brand strategy, packaging design, and international marketing experience across Europe, Asia, and the United States." },
+    { role: "International Education Coordinator & Curriculum Specialist", summary: "Brings 25 years of teaching experience to cross-cultural learning, education innovation, and experiential programs." },
+    { role: "Legal Consultant", summary: "Consultant and licensed attorney practicing in Nebraska." },
+  ],
+  ja: [
+    { role: "最高経営責任者（CEO）", summary: "システム、デザイン、資本、人材を横断して複雑な業務を整理し、戦略を持続可能な実行へつなげます。" },
+    { role: "最高技術責任者（CTO）", summary: "技術方針、システム設計、フルスタック開発を統括し、デジタルサービスの長期安定運用を支えます。" },
+    { role: "最高マーケティング責任者（CMO）", summary: "国際市場の開拓、ブランド戦略、異文化コミュニケーションをつなぎます。" },
+    { role: "グローバルプロジェクトマネージャー", summary: "" },
+    { role: "国際事業・マーケティング開発ディレクター", summary: "欧州、アジア、米国にまたがるブランド戦略、パッケージデザイン、国際マーケティングの経験を生かします。" },
+    { role: "国際教育・カリキュラムアドバイザー", summary: "25年の指導経験を生かし、異文化学習、教育イノベーション、体験型プログラムを支援します。" },
+    { role: "法律顧問", summary: "コンサルタント。ネブラスカ州で弁護士資格を持ち、実務に従事しています。" },
+  ],
+};
+
 export const teamMembersByLocale = Object.fromEntries(
-  supportedLocales.map((locale) => [locale, teamMembers]),
+  supportedLocales.map((locale) => [
+    locale,
+    teamIdentities.map((identity, index) => ({ ...identity, ...teamDetailsByLocale[locale][index] })),
+  ]),
 );
 
 const hiddenCaseIds = new Set(["elevator-operations"]);
