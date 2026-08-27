@@ -182,18 +182,8 @@ test("mobile menu uses the approved warm category palette and rounded diamonds",
   assert.match(cssSource, /\.mobile-nav \.menu-font-button::before\s*\{[\s\S]*?border-radius:\s*5px;/);
 });
 
-test("mobile home icon uses a simple outlined house", () => {
-  const outerFrame = cssSource.match(/\.mobile-nav-home-icon::before\s*\{[^}]*\}/)?.[0] || "";
-  const threshold = cssSource.match(/\.mobile-nav-home-icon::after\s*\{[^}]*\}/)?.[0] || "";
-  const innerFrame = cssSource.match(/\.mobile-nav-home-icon i\s*\{[^}]*\}/)?.[0] || "";
-
-  assert.match(outerFrame, /border-left:\s*2\.5px solid currentColor;/);
-  assert.match(outerFrame, /border-top:\s*2\.5px solid currentColor;/);
-  assert.match(outerFrame, /rotate\(45deg\)/);
-  assert.match(threshold, /border:\s*2\.5px solid currentColor;/);
-  assert.match(threshold, /border-top:\s*0;/);
-  assert.match(innerFrame, /border:\s*2\.5px solid currentColor;/);
-  assert.match(innerFrame, /border-bottom:\s*0;/);
+test("mobile home entry renders its label without a decorative icon", () => {
+  assert.doesNotMatch(mobileNavSource, /mobile-nav-home-icon/);
 });
 
 test("selected mobile category uses a navy and champagne dual underline", () => {
@@ -256,16 +246,6 @@ test("mobile home link uses a balanced footprint that clears adjacent labels", (
     cssSource,
     /\.mobile-nav-link\.center\s*\{[\s\S]*?width:\s*21%;[\s\S]*?height:\s*21%;/,
   );
-});
-
-test("mobile home uses a compact visual icon without shrinking its touch target", () => {
-  const mobileNavSource = appSource.match(/function MobileNav[\s\S]*?function DesktopCursorMenu/)?.[0] || "";
-
-  assert.match(mobileNavSource, /aria-label=\{item\.position === "center" \? item\.label : undefined\}/);
-  assert.match(mobileNavSource, /className="mobile-nav-home-icon" aria-hidden="true"/);
-  assert.match(cssSource, /\.mobile-nav-link\.center\s*\{[\s\S]*?width:\s*21%;[\s\S]*?height:\s*21%;/);
-  assert.match(cssSource, /\.mobile-nav-link\.center::before\s*\{[\s\S]*?inset:\s*17\.5%;/);
-  assert.match(cssSource, /\.mobile-nav-home-icon\s*\{[\s\S]*?width:\s*20px;[\s\S]*?height:\s*19px;/);
 });
 
 test("mobile go-to-top arrow shares the menu trigger bottom edge", () => {

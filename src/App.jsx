@@ -2277,7 +2277,6 @@ function MobileNav({ locale, fontControls }) {
               >
                 <span className="mobile-channel-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 <span className="mobile-channel-name">
-                  {item.position === "center" ? <span className="mobile-nav-home-icon" aria-hidden="true"><i /></span> : null}
                   <span>{item.label}</span>
                 </span>
                 <span className="mobile-channel-arrow" aria-hidden="true">↗</span>

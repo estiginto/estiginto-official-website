@@ -4770,50 +4770,6 @@ ul, ol  { margin: 0; }
     transform: rotate(45deg);
     opacity: 1;
   }
-  .mobile-nav-home-icon {
-    position: relative;
-    z-index: 1;
-    width: 20px;
-    height: 19px;
-    max-width: none;
-    border: 0;
-    /* The diamond core is rotated -45deg; counter-rotate the house so it stays upright. */
-    transform: translateY(1px) rotate(45deg);
-  }
-  .mobile-nav-home-icon::before {
-    content: "";
-    position: absolute;
-    left: 4px;
-    top: 0;
-    width: 12px;
-    height: 12px;
-    border-left: 2.5px solid currentColor;
-    border-top: 2.5px solid currentColor;
-    border-radius: 2px 0 0 0;
-    transform: rotate(45deg);
-  }
-  .mobile-nav-home-icon::after {
-    content: "";
-    position: absolute;
-    left: 3px;
-    right: 3px;
-    top: 9px;
-    bottom: 1px;
-    border: 2.5px solid currentColor;
-    border-top: 0;
-    border-radius: 0 0 3px 3px;
-  }
-  .mobile-nav-home-icon i {
-    position: absolute;
-    left: 50%;
-    bottom: 1px;
-    width: 7px;
-    height: 8px;
-    border: 2.5px solid currentColor;
-    border-bottom: 0;
-    border-radius: 5px 5px 0 0;
-    transform: translateX(-50%);
-  }
   .mobile-nav-link.center:hover,
   .mobile-nav-link.center:focus-visible {
     color: #ffffff;
@@ -5209,14 +5165,6 @@ ul, ol  { margin: 0; }
   }
 
   .mobile-nav .mobile-channel-link span { max-width: none; text-align: left; transform: none; }
-
-  .mobile-nav .mobile-channel-link .mobile-nav-home-icon {
-    flex: 0 0 auto;
-    width: 18px;
-    height: 17px;
-    color: #3b82f6;
-    transform: none;
-  }
 
   .mobile-channel-footer {
     position: relative;
