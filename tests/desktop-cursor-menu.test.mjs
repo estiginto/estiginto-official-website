@@ -117,6 +117,36 @@ test("cursor approach lock resumes following when the pointer moves far away in 
   assert.equal(movedFarLeft.shouldFollow, true);
 });
 
+test("cursor approach lock releases after a deliberate retreat from the trigger", () => {
+  const firstRetreat = resolveCursorMenuApproach({
+    pointer: { x: 101, y: 111 },
+    previousPointer: { x: 111, y: 111 },
+    triggerCenter: { x: 152, y: 152 },
+    locked: true,
+  });
+  assert.equal(firstRetreat.locked, true);
+  assert.equal(firstRetreat.shouldFollow, false);
+
+  const secondRetreat = resolveCursorMenuApproach({
+    pointer: { x: 91, y: 111 },
+    previousPointer: { x: 101, y: 111 },
+    triggerCenter: { x: 152, y: 152 },
+    retreatTravel: firstRetreat.retreatTravel,
+    locked: firstRetreat.locked,
+  });
+  assert.equal(secondRetreat.locked, true);
+
+  const deliberateRetreat = resolveCursorMenuApproach({
+    pointer: { x: 81, y: 111 },
+    previousPointer: { x: 91, y: 111 },
+    triggerCenter: { x: 152, y: 152 },
+    retreatTravel: secondRetreat.retreatTravel,
+    locked: secondRetreat.locked,
+  });
+  assert.equal(deliberateRetreat.locked, false);
+  assert.equal(deliberateRetreat.shouldFollow, true);
+});
+
 test("desktop menu opens through one cursor-anchored core before controls become active", () => {
   assert.match(desktopMenuSource, /const \[opening, setOpening\] = useState\(false\)/);
   assert.match(desktopMenuSource, /setOpening\(true\)[\s\S]*?setOpen\(true\)/);

@@ -2322,6 +2322,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const triggerPositionRef = useRef(position);
   const lastPointerRef = useRef(null);
   const southeastTravelRef = useRef(0);
+  const retreatTravelRef = useRef(0);
   const approachLockedRef = useRef(false);
   const frameRef = useRef(null);
   const hideTimerRef = useRef(null);
@@ -2357,10 +2358,12 @@ function DesktopCursorMenu({ locale, fontControls }) {
         previousPointer: lastPointerRef.current,
         triggerCenter: triggerPositionRef.current,
         southeastTravel: southeastTravelRef.current,
+        retreatTravel: retreatTravelRef.current,
         locked: approachLockedRef.current,
       });
       lastPointerRef.current = pointer;
       southeastTravelRef.current = motion.southeastTravel;
+      retreatTravelRef.current = motion.retreatTravel;
       approachLockedRef.current = motion.locked;
 
       if (open || hoveringTrigger) {
@@ -2390,6 +2393,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
       }
       lastPointerRef.current = null;
       southeastTravelRef.current = 0;
+      retreatTravelRef.current = 0;
       approachLockedRef.current = false;
       setVisible(false);
     };
@@ -2490,6 +2494,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
     setOpening(false);
     approachLockedRef.current = false;
     southeastTravelRef.current = 0;
+    retreatTravelRef.current = 0;
     triggerPositionRef.current = pendingPositionRef.current;
     setPosition(pendingPositionRef.current);
     setVisible(true);

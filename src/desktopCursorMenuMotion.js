@@ -1,6 +1,7 @@
 const TRIGGER_RADIUS = 32;
 const APPROACH_DEPTH = 80;
 const APPROACH_TRAVEL = 10;
+const RETREAT_TRAVEL = 24;
 const LOWER_RIGHT_EXIT_BUFFER = 18;
 const REACQUIRE_DISTANCE = 160;
 
@@ -9,6 +10,7 @@ export function resolveCursorMenuApproach({
   previousPointer,
   triggerCenter,
   southeastTravel = 0,
+  retreatTravel = 0,
   locked = false,
 }) {
   if (locked) {
@@ -20,17 +22,37 @@ export function resolveCursorMenuApproach({
       pointer.x - triggerCenter.x,
       pointer.y - triggerCenter.y,
     );
-    const shouldReacquire = passedLowerRight || distanceFromTrigger > REACQUIRE_DISTANCE;
+    const previousDistanceFromTrigger = previousPointer
+      ? Math.hypot(
+        previousPointer.x - triggerCenter.x,
+        previousPointer.y - triggerCenter.y,
+      )
+      : distanceFromTrigger;
+    const retreatDelta = distanceFromTrigger - previousDistanceFromTrigger;
+    const nextRetreatTravel = retreatDelta > 0
+      ? retreatTravel + retreatDelta
+      : 0;
+    const shouldReacquire = (
+      passedLowerRight
+      || distanceFromTrigger > REACQUIRE_DISTANCE
+      || nextRetreatTravel >= RETREAT_TRAVEL
+    );
 
     return {
       locked: !shouldReacquire,
       shouldFollow: shouldReacquire,
       southeastTravel: 0,
+      retreatTravel: shouldReacquire ? 0 : nextRetreatTravel,
     };
   }
 
   if (!previousPointer) {
-    return { locked: false, shouldFollow: true, southeastTravel: 0 };
+    return {
+      locked: false,
+      shouldFollow: true,
+      southeastTravel: 0,
+      retreatTravel: 0,
+    };
   }
 
   const deltaX = pointer.x - previousPointer.x;
@@ -38,7 +60,12 @@ export function resolveCursorMenuApproach({
   const movingSoutheast = deltaX > 0 && deltaY > 0;
 
   if (!movingSoutheast) {
-    return { locked: false, shouldFollow: true, southeastTravel: 0 };
+    return {
+      locked: false,
+      shouldFollow: true,
+      southeastTravel: 0,
+      retreatTravel: 0,
+    };
   }
 
   const nextTravel = southeastTravel + Math.min(deltaX, deltaY);
@@ -54,5 +81,6 @@ export function resolveCursorMenuApproach({
     locked: shouldLock,
     shouldFollow: !shouldLock,
     southeastTravel: shouldLock ? 0 : nextTravel,
+    retreatTravel: 0,
   };
 }
