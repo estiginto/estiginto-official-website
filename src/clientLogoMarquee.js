@@ -18,6 +18,7 @@ const clientLogoDefinitions = [
       ["you-ming-huei", "台詮科技 You Ming Huei Co., LTD"],
       ["taiwan-mainstream-coop", "台灣主婦聯盟生活消費合作社"],
       ["kyl-auction", "高雄永樂拍賣 KYL Auction"],
+      ["kyce", "國裕建設 KYCE"],
     ],
   },
   {
@@ -36,7 +37,6 @@ const clientLogoDefinitions = [
       ["evco-creative-home", "EVCO Creative Home 美國生活用品百貨"],
       ["merica", "Merica"],
       ["after-school-nest", "放學窩"],
-      ["kyce", "國裕建設 KYCE"],
       ["conflux", "Conflux 樂浪遊艇俱樂部"],
       ["archi-5", "ARCHI-5"],
       ["mca-creative-industries", "MCA Creative Industries 韓國文創"],

@@ -52,7 +52,7 @@ test("displayed client logos provide three-times-density source images", async (
 test("client inventory is explicitly grouped by recognition, government, and other clients", () => {
   const lanes = buildClientLogoLanes(clientLogos);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [13, 4, 30]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [14, 4, 29]);
   assert.deepEqual(lanes[1].map((client) => client.id), [
     "bureau-foreign-trade",
     "trade-negotiations",
@@ -60,10 +60,11 @@ test("client inventory is explicitly grouped by recognition, government, and oth
     "taiwan-stock-exchange",
   ]);
   assert.equal(lanes[0].some((client) => client.id === "yang-ming"), true);
-  assert.deepEqual(lanes[0].slice(-3).map((client) => client.id), [
+  assert.deepEqual(lanes[0].slice(-4).map((client) => client.id), [
     "you-ming-huei",
     "taiwan-mainstream-coop",
     "kyl-auction",
+    "kyce",
   ]);
   assert.equal(lanes[2].some((client) => client.id === "lecoln-keysight"), true);
   assert.deepEqual(
