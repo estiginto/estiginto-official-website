@@ -40,24 +40,24 @@ test("about team localizes its section copy, roles, summaries, and group labels"
     zh: {
       eyebrow: "領導與顧問團隊",
       label: "一起推動工作的成員",
-      heading: "不同領域的專業，匯聚成同一股推進力量。",
+      meta: "Our Team",
       groupLabels: { leadership: "領導團隊", advisory: "顧問團隊" },
     },
     en: {
       eyebrow: "Leadership & Advisory",
       label: "People behind the work",
-      heading: "Different disciplines. One operating field.",
+      meta: "Our Team",
       groupLabels: { leadership: "Leadership", advisory: "Advisory" },
     },
     ja: {
       eyebrow: "リーダーシップ＆アドバイザリー",
       label: "事業を支えるメンバー",
-      heading: "異なる専門性を、ひとつの推進力へ。",
+      meta: "Our Team",
       groupLabels: { leadership: "リーダーシップ", advisory: "アドバイザリー" },
     },
   });
 
-  const expectedNames = ["Lanar Lan", "Yu-Liang Chen", "Cindy Wu", "Nicola Chien", "Yen Chen", "Wayne Schutte", "Michael Mlejnek"];
+  const expectedNames = ["Lanar Lan", "Yu-Liang Chen", "Cindy Wu", "Nicole Chien", "Yen Chen", "Wayne Schutte", "Michael Mlejnek"];
 
   for (const locale of supportedLocales) {
     const members = teamMembersByLocale[locale];
@@ -83,8 +83,8 @@ test("about team localizes its section copy, roles, summaries, and group labels"
 
   assert.deepEqual(
     Object.fromEntries(supportedLocales.map((locale) => {
-      const nicola = teamMembersByLocale[locale].find(({ id }) => id === "nicola-chien");
-      return [locale, { role: nicola.role, summary: nicola.summary }];
+      const nicole = teamMembersByLocale[locale].find(({ id }) => id === "nicole-chien");
+      return [locale, { role: nicole.role, summary: nicole.summary }];
     })),
     {
       zh: { role: "國際專案經理", summary: "" },
@@ -107,12 +107,12 @@ test("about team renders the confirmed portraits and keeps a monogram fallback",
 
   assert.deepEqual(portraits, {
     "lanar-lan": "/img/team/avatar_lanar.jpg",
-    "yu-liang-chen": undefined,
+    "yu-liang-chen": "/img/team/avatar_YuLiang.webp",
     "cindy-wu": "/img/team/avatar_Cindy.jpg",
-    "nicola-chien": undefined,
+    "nicole-chien": "/img/team/avatar_Nicole.webp",
     "yen-chen": "/img/team/avatar_Yen.jpg",
     "wayne-schutte": "/img/team/avatar_wayne.png",
-    "michael-mlejnek": undefined,
+    "michael-mlejnek": "/img/team/avatar_Michael.webp",
   });
 
   for (const portrait of Object.values(portraits).filter(Boolean)) {
@@ -124,4 +124,31 @@ test("about team renders the confirmed portraits and keeps a monogram fallback",
   assert.match(app, /member\.portrait\s*\?\s*\(/);
   assert.match(app, /<img[\s\S]*?src=\{member\.portrait\}[\s\S]*?alt=\{member\.name\}/);
   assert.match(app, /:\s*\(\s*<span[^>]*>\{member\.mark\}<\/span>/);
+});
+
+test("every team portrait carries an individual crop so faces keep comparable visual weight", () => {
+  const members = content2026.teamMembersByLocale.zh;
+  const photographedMembers = members.filter(({ portrait }) => portrait);
+
+  for (const member of photographedMembers) {
+    assert.equal(Number.isFinite(member.portraitFrame?.scale), true, `${member.name} must define a portrait scale`);
+    assert.equal(Number.isFinite(member.portraitFrame?.x), true, `${member.name} must define a horizontal focal point`);
+    assert.equal(Number.isFinite(member.portraitFrame?.y), true, `${member.name} must define a vertical focal point`);
+    assert.equal(Number.isFinite(member.portraitFrame?.offsetY), true, `${member.name} must define a vertical alignment offset`);
+    assert.equal(member.portraitFrame.x, 50, `${member.name} must share the centered portrait axis`);
+    assert.equal(member.portraitFrame.scale >= 1, true, `${member.name} must not shrink inside the portrait frame`);
+  }
+
+  const michael = photographedMembers.find(({ id }) => id === "michael-mlejnek");
+  const yuLiang = photographedMembers.find(({ id }) => id === "yu-liang-chen");
+  const nicole = photographedMembers.find(({ id }) => id === "nicole-chien");
+  const lanar = photographedMembers.find(({ id }) => id === "lanar-lan");
+  const cindy = photographedMembers.find(({ id }) => id === "cindy-wu");
+  assert.equal(lanar.portraitFrame.scale >= 1.8, true, "Lanar's portrait needs a close chest-up crop");
+  assert.equal(lanar.portraitFrame.offsetY < 0, true, "Lanar's portrait needs an upward framing adjustment");
+  assert.equal(cindy.portraitFrame.scale >= 1.2, true, "Cindy's portrait needs comparable visual weight");
+  assert.equal(yuLiang.portraitFrame.scale >= 3, true, "Yu-Liang's full-body source needs a close chest-up crop");
+  assert.equal(nicole.name, "Nicole Chien");
+  assert.equal(nicole.portraitFrame.scale >= 2.8, true, "Nicole's full-body source needs a close chest-up crop");
+  assert.equal(michael.portraitFrame.scale >= 2.7, true, "Michael's full-body source needs a close chest-up crop");
 });

@@ -1294,19 +1294,27 @@ function TeamSection({ copy }) {
   const sectionCopy = teamSectionCopyByLocale[copy.locale] || teamSectionCopyByLocale.en;
 
   return (
-    <section className="section team-section reveal" id="team" aria-labelledby="team-section-title">
+    <section className="section team-section reveal" id="team" aria-label={sectionCopy.eyebrow}>
       <div className="wrap">
-        <SectionEyebrow index={`§ ${sectionCopy.eyebrow}`} label={sectionCopy.label} meta={`${String(members.length).padStart(2, "0")} / ESTIGINTO`} />
-        <header className="team-section-header">
-          <p>{sectionCopy.eyebrow}</p>
-          <h2 id="team-section-title">{sectionCopy.heading}</h2>
-        </header>
+        <SectionEyebrow index={`§ ${sectionCopy.eyebrow}`} label={sectionCopy.label} meta={sectionCopy.meta} />
         <div className="team-grid">
           {members.map((member) => (
             <article className="team-member-card" data-group={member.group} key={member.id}>
               <div className={`team-member-identity${member.portrait ? " team-member-identity-portrait" : ""}`}>
                 {member.portrait ? (
-                  <img className="team-member-portrait" src={member.portrait} alt={member.name} loading="lazy" decoding="async" />
+                  <img
+                    className="team-member-portrait"
+                    src={member.portrait}
+                    alt={member.name}
+                    loading="lazy"
+                    decoding="async"
+                    style={{
+                      "--portrait-scale": member.portraitFrame?.scale || 1,
+                      "--portrait-x": `${member.portraitFrame?.x ?? 50}%`,
+                      "--portrait-y": `${member.portraitFrame?.y ?? 20}%`,
+                      "--portrait-offset-y": `${member.portraitFrame?.offsetY ?? 0}%`,
+                    }}
+                  />
                 ) : (
                   <span aria-hidden="true">{member.mark}</span>
                 )}

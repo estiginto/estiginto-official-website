@@ -125,12 +125,15 @@ const teamIdentities = [
     mark: "LL",
     group: "leadership",
     portrait: "/img/team/avatar_lanar.jpg",
+    portraitFrame: { scale: 1.85, x: 50, y: 0, offsetY: -18 },
   },
   {
     id: "yu-liang-chen",
     name: "Yu-Liang Chen",
     mark: "YLC",
     group: "leadership",
+    portrait: "/img/team/avatar_YuLiang.webp",
+    portraitFrame: { scale: 3, x: 50, y: 0, offsetY: -7 },
   },
   {
     id: "cindy-wu",
@@ -138,12 +141,15 @@ const teamIdentities = [
     mark: "CW",
     group: "leadership",
     portrait: "/img/team/avatar_Cindy.jpg",
+    portraitFrame: { scale: 1.22, x: 50, y: 0, offsetY: 0 },
   },
   {
-    id: "nicola-chien",
-    name: "Nicola Chien",
+    id: "nicole-chien",
+    name: "Nicole Chien",
     mark: "NC",
     group: "leadership",
+    portrait: "/img/team/avatar_Nicole.webp",
+    portraitFrame: { scale: 3, x: 50, y: 0, offsetY: -11 },
   },
   {
     id: "yen-chen",
@@ -151,6 +157,7 @@ const teamIdentities = [
     mark: "YC",
     group: "advisory",
     portrait: "/img/team/avatar_Yen.jpg",
+    portraitFrame: { scale: 1, x: 50, y: 0, offsetY: -1.5 },
   },
   {
     id: "wayne-schutte",
@@ -158,12 +165,15 @@ const teamIdentities = [
     mark: "WS",
     group: "advisory",
     portrait: "/img/team/avatar_wayne.png",
+    portraitFrame: { scale: 1, x: 50, y: 0, offsetY: -5 },
   },
   {
     id: "michael-mlejnek",
     name: "Michael Mlejnek",
     mark: "MM",
     group: "advisory",
+    portrait: "/img/team/avatar_Michael.webp",
+    portraitFrame: { scale: 2.8, x: 50, y: 0, offsetY: -2.5 },
   },
 ];
 
@@ -171,19 +181,19 @@ export const teamSectionCopyByLocale = {
   zh: {
     eyebrow: "領導與顧問團隊",
     label: "一起推動工作的成員",
-    heading: "不同領域的專業，匯聚成同一股推進力量。",
+    meta: "Our Team",
     groupLabels: { leadership: "領導團隊", advisory: "顧問團隊" },
   },
   en: {
     eyebrow: "Leadership & Advisory",
     label: "People behind the work",
-    heading: "Different disciplines. One operating field.",
+    meta: "Our Team",
     groupLabels: { leadership: "Leadership", advisory: "Advisory" },
   },
   ja: {
     eyebrow: "リーダーシップ＆アドバイザリー",
     label: "事業を支えるメンバー",
-    heading: "異なる専門性を、ひとつの推進力へ。",
+    meta: "Our Team",
     groupLabels: { leadership: "リーダーシップ", advisory: "アドバイザリー" },
   },
 };
