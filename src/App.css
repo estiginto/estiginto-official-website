@@ -4221,9 +4221,17 @@ ul, ol  { margin: 0; }
   .client-logo-marquee { padding: 40px 0 34px; }
   .client-logo-marquee-header { align-items: start; flex-direction: column; gap: 12px; margin-bottom: 26px; }
   .client-logo-marquee-status { padding-bottom: 0; }
-  .client-logo-marquee-field { gap: 7px; transform: rotate(-1deg) scale(1.02); }
-  .client-logo-marquee-item { flex-basis: 148px; min-height: 72px; }
-  .client-logo-marquee-item img { width: min(90%, 156px); height: 58px; }
+  .client-logo-marquee-field { gap: 7px; transform: none; }
+  .client-logo-marquee-item {
+    flex: 0 0 168px;
+    min-height: 82px;
+    overflow: hidden;
+  }
+  .client-logo-marquee-item img {
+    width: auto;
+    height: 64px;
+    max-width: calc(100% - 20px);
+  }
 
   .team-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
   .team-member-card { min-height: 0; }

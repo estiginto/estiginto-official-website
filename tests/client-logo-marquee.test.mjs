@@ -50,6 +50,15 @@ test("displayed client logos provide three-times-density source images", async (
   assert.equal(metadata.every((image) => image.width === 960 && image.height === 480), true);
 });
 
+test("mobile client logo lanes keep every logo inside a fixed, unrotated cell", () => {
+  const mobileRule = css.match(/@media \(max-width: 640px\), \(pointer: coarse\) \{([\s\S]*?)\n\}/)?.[1] || "";
+
+  assert.match(mobileRule, /\.client-logo-marquee-field\s*\{[^}]*transform:\s*none/);
+  assert.match(mobileRule, /\.client-logo-marquee-item\s*\{[^}]*flex:\s*0 0 168px/);
+  assert.match(mobileRule, /\.client-logo-marquee-item\s*\{[^}]*overflow:\s*hidden/);
+  assert.match(mobileRule, /\.client-logo-marquee-item img\s*\{[^}]*max-width:\s*calc\(100% - 20px\)/);
+});
+
 test("King Life is extracted from a complete high-resolution PDF crop", () => {
   assert.match(
     extractionSource,
