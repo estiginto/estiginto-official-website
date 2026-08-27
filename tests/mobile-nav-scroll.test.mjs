@@ -102,6 +102,18 @@ test("mobile temporal channel presents safe-area navigation rows instead of a cr
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-channel-panel/);
 });
 
+test("mobile navigation keeps routes level and places category controls after the route list", () => {
+  const routesIndex = mobileNavSource.indexOf('className="mobile-nav-diamond-core mobile-channel-routes"');
+  const categoryIndex = mobileNavSource.indexOf('className="mobile-nav-category-switch"');
+
+  assert.ok(routesIndex >= 0);
+  assert.ok(categoryIndex > routesIndex);
+  assert.match(
+    cssSource,
+    /\.mobile-nav\.open \.mobile-channel-routes\s*\{[^}]*animation:\s*mobile-channel-routes-in[^}]*transform:\s*none/,
+  );
+});
+
 test("mobile menu switches between two localized service link groups", () => {
   const expectedGroupLabels = {
     zh: ["解決方案", "顧問服務"],
@@ -210,6 +222,7 @@ test("mobile category labels adapt safely across supported locales", () => {
 
 test("short mobile viewports separate the diamond, font controls, categories, and trigger", () => {
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)\s*\{[\s\S]*?\.mobile-nav-diamond\s*\{[\s\S]*?top:\s*43%;/);
+  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?grid-template-rows:\s*auto 48px minmax\(0, 1fr\) 50px auto;/);
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav \.menu-font-controls\s*\{[\s\S]*?top:\s*calc\(43% \+ min\(44vw, 178px\)\);/);
   assert.doesNotMatch(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav-category-switch\s*\{[\s\S]*?height:\s*52px;/);
 });

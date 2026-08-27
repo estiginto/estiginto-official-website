@@ -2253,24 +2253,6 @@ function MobileNav({ locale, fontControls }) {
             <span aria-hidden="true">CH / 02</span>
           </header>
 
-          <div className="mobile-nav-category-switch" role="group" aria-label="Navigation category">
-          {Object.entries(mobileMenuGroups).map(([groupKey, group]) => (
-            <button
-              key={groupKey}
-              className={`mobile-nav-category-button ${groupKey}`}
-              type="button"
-              aria-pressed={activeGroup === groupKey}
-              tabIndex={interactive ? 0 : -1}
-              onClick={() => {
-                setActiveGroup(groupKey);
-                setSelectingKey(null);
-              }}
-            >
-              <span>{group.label}</span>
-            </button>
-          ))}
-          </div>
-
           <button
             ref={coreRef}
             className="mobile-channel-core"
@@ -2300,6 +2282,24 @@ function MobileNav({ locale, fontControls }) {
                 </span>
                 <span className="mobile-channel-arrow" aria-hidden="true">↗</span>
               </a>
+            ))}
+          </div>
+
+          <div className="mobile-nav-category-switch" role="group" aria-label="Navigation category">
+            {Object.entries(mobileMenuGroups).map(([groupKey, group]) => (
+              <button
+                key={groupKey}
+                className={`mobile-nav-category-button ${groupKey}`}
+                type="button"
+                aria-pressed={activeGroup === groupKey}
+                tabIndex={interactive ? 0 : -1}
+                onClick={() => {
+                  setActiveGroup(groupKey);
+                  setSelectingKey(null);
+                }}
+              >
+                <span>{group.label}</span>
+              </button>
             ))}
           </div>
 
