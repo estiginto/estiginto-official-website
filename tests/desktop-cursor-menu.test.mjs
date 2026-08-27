@@ -149,7 +149,7 @@ test("desktop navigation restores site destinations and keeps consulting service
   assert.match(desktopMenuSource, /const primaryMenuItems = \[/);
   assert.match(desktopMenuSource, /key: "home", label: localizedMenuLabels\.home, href: "\/"/);
   assert.match(desktopMenuSource, /href: "\/faq\.html"/);
-  assert.match(desktopMenuSource, /href: "\/\#insights"/);
+  assert.doesNotMatch(desktopMenuSource, /href: "\/\#insights"/);
   assert.match(desktopMenuSource, /href: "\/contact\.html"/);
   assert.match(desktopMenuSource, /growth: getServiceMenuGroups\(locale\)\.growth/);
   assert.match(desktopMenuSource, /Object\.entries\(desktopMenuGroups\)\.map/);

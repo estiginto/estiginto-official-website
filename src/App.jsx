@@ -1966,8 +1966,7 @@ function Contact({ copy }) {
         <div className="contact">
           <div>
             <h2>
-              {contact.titleA}<br />
-              <span className="hl">{contact.titleHighlight}</span>。
+              {contact.titleA} <span className="hl">{contact.titleHighlight}</span>
             </h2>
             <p className="lede">
               {contact.lede[0]}<br />{contact.lede[1]}
@@ -2108,7 +2107,6 @@ function MobileNav({ locale, fontControls }) {
     { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
     { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
     { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
-    { key: "articles", label: primaryLabels.articles, href: "/#insights" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
   const mobileMenuGroups = {
@@ -2325,7 +2323,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
     { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
     { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
     { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
-    { key: "articles", label: primaryLabels.articles, href: "/#insights" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
   const desktopMenuGroups = {
@@ -2932,7 +2929,6 @@ export default function App() {
             <Hero copy={copy} />
             <ClientLogoMarquee copy={copy} />
             <Marquee copy={copy} />
-            <Insights />
             <Contact copy={copy} />
           </>
         )}
