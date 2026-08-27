@@ -2,6 +2,7 @@ const TRIGGER_RADIUS = 32;
 const APPROACH_DEPTH = 80;
 const APPROACH_TRAVEL = 10;
 const LOWER_RIGHT_EXIT_BUFFER = 18;
+const REACQUIRE_DISTANCE = 160;
 
 export function resolveCursorMenuApproach({
   pointer,
@@ -15,10 +16,15 @@ export function resolveCursorMenuApproach({
       pointer.x > triggerCenter.x + TRIGGER_RADIUS + LOWER_RIGHT_EXIT_BUFFER
       && pointer.y > triggerCenter.y + TRIGGER_RADIUS + LOWER_RIGHT_EXIT_BUFFER
     );
+    const distanceFromTrigger = Math.hypot(
+      pointer.x - triggerCenter.x,
+      pointer.y - triggerCenter.y,
+    );
+    const shouldReacquire = passedLowerRight || distanceFromTrigger > REACQUIRE_DISTANCE;
 
     return {
-      locked: !passedLowerRight,
-      shouldFollow: passedLowerRight,
+      locked: !shouldReacquire,
+      shouldFollow: shouldReacquire,
       southeastTravel: 0,
     };
   }

@@ -105,6 +105,18 @@ test("cursor approach lock releases only beyond the trigger's lower-right buffer
   assert.equal(passedTarget.shouldFollow, true);
 });
 
+test("cursor approach lock resumes following when the pointer moves far away in any direction", () => {
+  const movedFarLeft = resolveCursorMenuApproach({
+    pointer: { x: -16, y: 152 },
+    previousPointer: { x: 80, y: 152 },
+    triggerCenter: { x: 152, y: 152 },
+    locked: true,
+  });
+
+  assert.equal(movedFarLeft.locked, false);
+  assert.equal(movedFarLeft.shouldFollow, true);
+});
+
 test("desktop menu opens through one cursor-anchored core before controls become active", () => {
   assert.match(desktopMenuSource, /const \[opening, setOpening\] = useState\(false\)/);
   assert.match(desktopMenuSource, /setOpening\(true\)[\s\S]*?setOpen\(true\)/);
