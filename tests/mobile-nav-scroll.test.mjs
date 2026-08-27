@@ -66,11 +66,15 @@ test("mobile navigation connects scroll state without shrinking its touch target
   assert.match(cssSource, /transition:\s*transform 320ms var\(--ease-soft\)/);
 });
 
-test("mobile menu stages its geometric open and close motion", () => {
+test("mobile menu uses a lightweight time scan instead of blur and full-screen clipping", () => {
+  const mobileScrimRule = cssSource.match(/\.mobile-nav-scrim\s*\{([^}]*)\}/)?.[1] || "";
+
   assert.match(appSource, /--menu-item-index/);
   assert.match(appSource, /is-selecting/);
-  assert.match(cssSource, /\.mobile-nav-scrim\s*\{[\s\S]*?backdrop-filter:\s*blur\(10px\)/);
-  assert.match(cssSource, /\.mobile-nav-diamond\s*\{[\s\S]*?transform 520ms var\(--ease-soft\)/);
+  assert.doesNotMatch(mobileScrimRule, /backdrop-filter/);
+  assert.doesNotMatch(cssSource, /@keyframes mobile-channel-panel-open\s*\{[^}]*clip-path/);
+  assert.match(cssSource, /\.mobile-channel-panel::after\s*\{[\s\S]*?linear-gradient\(90deg[\s\S]*?pointer-events:\s*none/);
+  assert.match(cssSource, /@keyframes mobile-channel-scan-open[\s\S]*?translateY\(100dvh\)[\s\S]*?translateY\(0\)/);
   assert.match(cssSource, /\.mobile-nav\.open \.mobile-nav-link\s*\{[\s\S]*?calc\(var\(--menu-item-index\) \* 60ms \+ 120ms\)/);
   assert.match(cssSource, /\.mobile-nav:not\(\.open\) \.mobile-nav-link\s*\{[\s\S]*?calc\(\(4 - var\(--menu-item-index\)\) \* 60ms\)/);
   assert.match(cssSource, /\.mobile-nav-link\.is-selecting/);
@@ -85,8 +89,9 @@ test("mobile menu keeps its close control at the original bottom trigger", () =>
   assert.doesNotMatch(mobileNavSource, /className="mobile-menu-morph"/);
   assert.doesNotMatch(mobileNavSource, /className="mobile-channel-core"/);
   assert.match(cssSource, /\.mobile-nav\.open \.mobile-nav-trigger\s*\{[^}]*opacity:\s*1;[^}]*pointer-events:\s*auto;/);
-  assert.match(cssSource, /@keyframes mobile-channel-panel-open[\s\S]*?circle\(0[\s\S]*?circle\(150vmax/);
-  assert.match(cssSource, /@keyframes mobile-channel-panel-close[\s\S]*?circle\(150vmax[\s\S]*?circle\(0/);
+  assert.equal((mobileNavSource.match(/\}, 480\);/g) || []).length, 2);
+  assert.match(cssSource, /@keyframes mobile-channel-panel-open[\s\S]*?translateY\(10px\)[\s\S]*?translateY\(0\)/);
+  assert.match(cssSource, /@keyframes mobile-channel-panel-close[\s\S]*?translateY\(0\)[\s\S]*?translateY\(8px\)/);
 });
 
 test("mobile temporal channel presents safe-area navigation rows instead of a cramped directional grid", () => {

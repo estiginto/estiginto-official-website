@@ -2197,7 +2197,7 @@ function MobileNav({ locale, fontControls }) {
     motionTimerRef.current = window.setTimeout(() => {
       setOpen(false);
       setClosing(false);
-    }, 620);
+    }, 480);
   };
 
   const openMenu = () => {
@@ -2218,7 +2218,7 @@ function MobileNav({ locale, fontControls }) {
     setOpen(true);
     motionTimerRef.current = window.setTimeout(() => {
       setOpening(false);
-    }, 620);
+    }, 480);
   };
 
   return (
