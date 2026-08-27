@@ -20,9 +20,9 @@ test("closed desktop service menu cannot activate hidden navigation targets", ()
     cssSource,
     /\.desktop-cursor-menu\.stream-closing \.desktop-service-menu\s*\{[\s\S]*?pointer-events:\s*none;/,
   );
-  assert.match(desktopMenuSource, /tabIndex=\{open && !closing \? 0 : -1\}/);
+  assert.match(desktopMenuSource, /tabIndex=\{open && !closing && !opening \? 0 : -1\}/);
   assert.match(desktopMenuSource, /className="desktop-menu-scrim"[\s\S]*?tabIndex=\{-1\}/);
-  assert.match(desktopMenuSource, /aria-hidden=\{!open \|\| closing\}/);
+  assert.match(desktopMenuSource, /aria-hidden=\{!open \|\| closing \|\| opening\}/);
   assert.match(desktopMenuSource, /aria-controls="desktop-service-navigation"/);
   assert.match(desktopMenuSource, /aria-expanded=\{open && !closing\}/);
 });
@@ -61,6 +61,34 @@ test("desktop menu trigger follows every consecutive pointer move while closed",
     desktopMenuSource,
     /const onMove = \(event\) =>[\s\S]*?const next = \{ x: event\.clientX \+ 48, y: event\.clientY \+ 48 \}[\s\S]*?pendingPositionRef\.current = next/,
   );
+});
+
+test("desktop menu opens through one cursor-anchored core before controls become active", () => {
+  assert.match(desktopMenuSource, /const \[opening, setOpening\] = useState\(false\)/);
+  assert.match(desktopMenuSource, /setOpening\(true\)[\s\S]*?setOpen\(true\)/);
+  assert.match(desktopMenuSource, /stream-opening/);
+  assert.match(desktopMenuSource, /className="desktop-menu-morph"/);
+  assert.match(desktopMenuSource, /style=\{\{ "--cursor-x": `\$\{position\.x\}px`, "--cursor-y": `\$\{position\.y\}px` \}\}/);
+  assert.match(desktopMenuSource, /if \(!open \|\| closing \|\| opening\)/);
+  assert.match(cssSource, /\.desktop-cursor-menu\.stream-opening \.desktop-menu-morph[\s\S]*?desktop-menu-core-open 620ms/);
+  assert.match(cssSource, /@keyframes desktop-menu-core-open[\s\S]*?50vw[\s\S]*?rotate\(405deg\)/);
+  assert.match(cssSource, /@keyframes desktop-menu-surface-open[\s\S]*?circle\(0[\s\S]*?circle\(150vmax/);
+});
+
+test("desktop menu closes from its center core toward the latest pointer position", () => {
+  assert.match(
+    desktopMenuSource,
+    /const onMove = \(event\) =>[\s\S]*?pendingPositionRef\.current = next;[\s\S]*?if \(open \|\| hoveringTrigger\)/,
+  );
+  assert.match(desktopMenuSource, /setPosition\(pendingPositionRef\.current\)[\s\S]*?setClosing\(true\)/);
+  assert.match(
+    desktopMenuSource,
+    /closeTimerRef\.current = window\.setTimeout\(\(\) => \{[\s\S]*?setOpen\(false\);[\s\S]*?setClosing\(false\);[\s\S]*?setHoveringTrigger\(false\);[\s\S]*?\}, 620\)/,
+  );
+  assert.match(cssSource, /\.desktop-cursor-menu\.stream-closing \.desktop-menu-morph[\s\S]*?desktop-menu-core-close 620ms/);
+  assert.match(cssSource, /@keyframes desktop-menu-core-close[\s\S]*?50vw[\s\S]*?var\(--cursor-x/);
+  assert.match(cssSource, /@keyframes desktop-menu-stream-close[\s\S]*?circle\(150vmax[\s\S]*?circle\(0/);
+  assert.match(cssSource, /prefers-reduced-motion:\s*reduce[\s\S]*?\.desktop-menu-morph\s*\{[\s\S]*?display:\s*none/);
 });
 
 test("desktop navigation restores site destinations and keeps consulting services", () => {

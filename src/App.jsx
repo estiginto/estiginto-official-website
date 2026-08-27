@@ -2203,6 +2203,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
     growth: getServiceMenuGroups(locale).growth,
   };
   const [open, setOpen] = useState(false);
+  const [opening, setOpening] = useState(false);
   const [closing, setClosing] = useState(false);
   const [visible, setVisible] = useState(false);
   const [hoveringTrigger, setHoveringTrigger] = useState(false);
@@ -2212,9 +2213,13 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const pendingPositionRef = useRef(position);
   const frameRef = useRef(null);
   const hideTimerRef = useRef(null);
+  const openTimerRef = useRef(null);
   const closeTimerRef = useRef(null);
 
-  useEffect(() => () => window.clearTimeout(closeTimerRef.current), []);
+  useEffect(() => () => {
+    window.clearTimeout(openTimerRef.current);
+    window.clearTimeout(closeTimerRef.current);
+  }, []);
 
   useEffect(() => {
     const clearTimers = () => {
@@ -2232,12 +2237,13 @@ function DesktopCursorMenu({ locale, fontControls }) {
     };
 
     const onMove = (event) => {
+      const next = { x: event.clientX + 48, y: event.clientY + 48 };
+      pendingPositionRef.current = next;
+
       if (open || hoveringTrigger) {
         return;
       }
 
-      const next = { x: event.clientX + 48, y: event.clientY + 48 };
-      pendingPositionRef.current = next;
       if (!frameRef.current) {
         frameRef.current = window.requestAnimationFrame(() => {
           frameRef.current = null;
@@ -2278,7 +2284,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
   }, [hoveringTrigger, open]);
 
   useEffect(() => {
-    if (!open || closing) {
+    if (!open || closing || opening) {
       return undefined;
     }
 
@@ -2331,7 +2337,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
       document.removeEventListener("keydown", onKeyDown);
       document.removeEventListener("contextmenu", onContextMenu);
     };
-  }, [closing, open]);
+  }, [closing, open, opening]);
 
   const closeMenu = () => {
     if (!open || closing) {
@@ -2339,24 +2345,42 @@ function DesktopCursorMenu({ locale, fontControls }) {
     }
 
     window.clearTimeout(closeTimerRef.current);
+    window.clearTimeout(openTimerRef.current);
     triggerRef.current?.focus();
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setOpening(false);
       setOpen(false);
+      setHoveringTrigger(false);
       return;
     }
 
+    setOpening(false);
+    setPosition(pendingPositionRef.current);
+    setVisible(true);
     setClosing(true);
     closeTimerRef.current = window.setTimeout(() => {
       setOpen(false);
       setClosing(false);
-    }, 420);
+      setHoveringTrigger(false);
+    }, 620);
   };
 
   const openMenu = () => {
+    window.clearTimeout(openTimerRef.current);
     window.clearTimeout(closeTimerRef.current);
     setClosing(false);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setOpening(false);
+      setOpen(true);
+      return;
+    }
+
+    setOpening(true);
     setOpen(true);
+    openTimerRef.current = window.setTimeout(() => {
+      setOpening(false);
+    }, 620);
   };
 
   const handleTriggerLeave = () => {
@@ -2371,14 +2395,16 @@ function DesktopCursorMenu({ locale, fontControls }) {
   };
 
   return (
-    <div className={`desktop-cursor-menu ${open ? "open" : ""} ${closing ? "stream-closing" : ""} ${hoveringTrigger ? "hovering" : ""}`}>
+    <div
+      className={`desktop-cursor-menu ${open ? "open" : ""} ${opening ? "stream-opening" : ""} ${closing ? "stream-closing" : ""} ${hoveringTrigger ? "hovering" : ""}`}
+      style={{ "--cursor-x": `${position.x}px`, "--cursor-y": `${position.y}px` }}
+    >
       <button className="desktop-menu-scrim" type="button" aria-label="Close desktop menu" tabIndex={-1} onClick={closeMenu} />
 
       <button
         ref={triggerRef}
         className={`desktop-menu-trigger ${visible ? "visible" : ""}`}
         type="button"
-        style={{ "--cursor-x": `${position.x}px`, "--cursor-y": `${position.y}px` }}
         aria-label="Open desktop menu"
         aria-controls="desktop-service-navigation"
         aria-expanded={open && !closing}
@@ -2396,6 +2422,12 @@ function DesktopCursorMenu({ locale, fontControls }) {
         </span>
       </button>
 
+      <span className="desktop-menu-morph" aria-hidden="true">
+        <span className="desktop-menu-morph-shape" />
+        <span className="desktop-menu-morph-ring" />
+        <span className="desktop-menu-morph-icon"><i /><i /><i /></span>
+      </span>
+
       <div className="desktop-ambient-field" aria-hidden="true">
         <span className="desktop-ambient-layer cool" />
         <span className="desktop-ambient-layer warm" />
@@ -2407,7 +2439,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
         id="desktop-service-navigation"
         className="desktop-service-menu"
         aria-label={localizedMenuLabels.servicesMenu}
-        aria-hidden={!open || closing}
+        aria-hidden={!open || closing || opening}
       >
         <header className="desktop-channel-header">
           <div>
@@ -2417,7 +2449,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
           <button
             className="desktop-channel-close"
             type="button"
-            tabIndex={open && !closing ? 0 : -1}
+            tabIndex={open && !closing && !opening ? 0 : -1}
             onClick={closeMenu}
           >
             Close <span aria-hidden="true">↗</span>
@@ -2431,7 +2463,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
               className="desktop-channel-core"
               type="button"
               aria-label="Close desktop menu"
-              tabIndex={open && !closing ? 0 : -1}
+              tabIndex={open && !closing && !opening ? 0 : -1}
               onClick={closeMenu}
             >
               <i aria-hidden="true" />
@@ -2460,7 +2492,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
                       className="desktop-service-link"
                       href={item.href}
                       key={item.key}
-                      tabIndex={open && !closing ? 0 : -1}
+                      tabIndex={open && !closing && !opening ? 0 : -1}
                       style={{ "--channel-index": index }}
                     >
                       <span className="desktop-service-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
@@ -2477,7 +2509,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
 
         <footer className="desktop-channel-footer">
           <span>Temporal channel control deck</span>
-          <FontSizeControls {...fontControls} tabIndex={open && !closing ? 0 : -1} />
+          <FontSizeControls {...fontControls} tabIndex={open && !closing && !opening ? 0 : -1} />
           <span>Estiginto motion system / 2026</span>
         </footer>
       </nav>
