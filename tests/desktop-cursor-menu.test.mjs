@@ -3,7 +3,10 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 
-import { resolveCursorMenuApproach } from "../src/desktopCursorMenuMotion.js";
+import {
+  cancelCursorMenuFrame,
+  resolveCursorMenuApproach,
+} from "../src/desktopCursorMenuMotion.js";
 
 const appSource = readFileSync(resolve(import.meta.dirname, "../src/App.jsx"), "utf8");
 const cssSource = readFileSync(resolve(import.meta.dirname, "../src/App.css"), "utf8");
@@ -63,6 +66,16 @@ test("desktop menu trigger locks when the pointer clearly approaches from its up
     /const onMove = \(event\) =>[\s\S]*?resolveCursorMenuApproach[\s\S]*?approachLockedRef\.current = motion\.locked/,
   );
   assert.match(desktopMenuSource, /if \(!motion\.shouldFollow\)[\s\S]*?return;/);
+});
+
+test("desktop menu releases a cancelled animation frame before tracking resumes", () => {
+  const frameRef = { current: 42 };
+  const cancelledFrames = [];
+
+  cancelCursorMenuFrame((frameId) => cancelledFrames.push(frameId), frameRef);
+
+  assert.deepEqual(cancelledFrames, [42]);
+  assert.equal(frameRef.current, null);
 });
 
 test("cursor approach lock waits until a deliberate southeast movement", () => {

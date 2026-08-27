@@ -34,7 +34,10 @@ import {
 import { createHeroSoulRibbon } from "./heroSoulRibbon.js";
 import { createPageVortexTransition } from "./pageVortexTransition.js";
 import { buildClientLogoLanes, clientLogos } from "./clientLogoMarquee.js";
-import { resolveCursorMenuApproach } from "./desktopCursorMenuMotion.js";
+import {
+  cancelCursorMenuFrame,
+  resolveCursorMenuApproach,
+} from "./desktopCursorMenuMotion.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -2337,7 +2340,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
   useEffect(() => {
     const clearTimers = () => {
       window.clearTimeout(hideTimerRef.current);
-      window.cancelAnimationFrame(frameRef.current);
+      cancelCursorMenuFrame(window.cancelAnimationFrame.bind(window), frameRef);
     };
 
     const scheduleHide = () => {

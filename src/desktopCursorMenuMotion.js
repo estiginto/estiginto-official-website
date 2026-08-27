@@ -5,6 +5,15 @@ const RETREAT_TRAVEL = 24;
 const LOWER_RIGHT_EXIT_BUFFER = 18;
 const REACQUIRE_DISTANCE = 160;
 
+export function cancelCursorMenuFrame(cancelAnimationFrame, frameRef) {
+  if (frameRef.current === null) {
+    return;
+  }
+
+  cancelAnimationFrame(frameRef.current);
+  frameRef.current = null;
+}
+
 export function resolveCursorMenuApproach({
   pointer,
   previousPointer,
