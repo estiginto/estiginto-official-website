@@ -6,6 +6,8 @@ const clientLogoAssetPaths = [
   "taiwan-psychoanalytic", "wealthylife", "beyond-amazing", "sleekstrip", "king-life",
   "jing-he-medical", "a-plus-dermatology", "bauer-group", "lecoln-keysight", "mj-color",
   "bcfbw", "vantage", "worthbee", "fvs", "yang-ming", "you-ming-huei",
+  "juoda", "yun-counseling", "zhencheng-family-office", "shanheyu",
+  "apex-royal", "noah-builders", "zentia", "yabung",
 ].map((name) => `client-logos/${name}.webp`);
 
 export const marketingAssetPaths = [

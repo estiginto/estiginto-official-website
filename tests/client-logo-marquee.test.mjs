@@ -21,9 +21,9 @@ test("client logos render at the approved larger marquee size", () => {
 });
 
 test("client logo inventory contains every normalized source logo", () => {
-  assert.equal(clientLogos.length, 39);
-  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 39);
-  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 39);
+  assert.equal(clientLogos.length, 47);
+  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 47);
+  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 47);
   assert.equal(clientLogos.every((client) => client.alt.length > 0), true);
   assert.equal(clientLogos.every((client) => existsSync(`.${client.src}`)), true);
   assert.equal(clientLogos.some((client) => client.id === "fable"), false);
@@ -52,7 +52,7 @@ test("displayed client logos provide three-times-density source images", async (
 test("client inventory is explicitly grouped by recognition, government, and other clients", () => {
   const lanes = buildClientLogoLanes(clientLogos);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [10, 4, 25]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [10, 4, 33]);
   assert.deepEqual(lanes[1].map((client) => client.id), [
     "bureau-foreign-trade",
     "trade-negotiations",
@@ -61,6 +61,19 @@ test("client inventory is explicitly grouped by recognition, government, and oth
   ]);
   assert.equal(lanes[0].some((client) => client.id === "yang-ming"), true);
   assert.equal(lanes[2].some((client) => client.id === "lecoln-keysight"), true);
+  assert.deepEqual(
+    lanes[2].slice(-8).map((client) => client.id),
+    [
+      "juoda",
+      "yun-counseling",
+      "zhencheng-family-office",
+      "shanheyu",
+      "apex-royal",
+      "noah-builders",
+      "zentia",
+      "yabung",
+    ],
+  );
   assert.equal(lanes.flat().every((item) => item.src !== null), true);
 });
 
