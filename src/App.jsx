@@ -34,6 +34,7 @@ import {
 import { createHeroSoulRibbon } from "./heroSoulRibbon.js";
 import { createPageVortexTransition } from "./pageVortexTransition.js";
 import { buildClientLogoLanes, clientLogos } from "./clientLogoMarquee.js";
+import { resolveCursorMenuApproach } from "./desktopCursorMenuMotion.js";
 
 const localeOptions = [
   ["zh", "中文"],
@@ -2310,6 +2311,10 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const triggerRef = useRef(null);
   const menuRef = useRef(null);
   const pendingPositionRef = useRef(position);
+  const triggerPositionRef = useRef(position);
+  const lastPointerRef = useRef(null);
+  const southeastTravelRef = useRef(0);
+  const approachLockedRef = useRef(false);
   const frameRef = useRef(null);
   const hideTimerRef = useRef(null);
   const openTimerRef = useRef(null);
@@ -2336,21 +2341,38 @@ function DesktopCursorMenu({ locale, fontControls }) {
     };
 
     const onMove = (event) => {
-      const next = { x: event.clientX + 48, y: event.clientY + 48 };
+      const pointer = { x: event.clientX, y: event.clientY };
+      const next = { x: pointer.x + 48, y: pointer.y + 48 };
       pendingPositionRef.current = next;
+      const motion = resolveCursorMenuApproach({
+        pointer,
+        previousPointer: lastPointerRef.current,
+        triggerCenter: triggerPositionRef.current,
+        southeastTravel: southeastTravelRef.current,
+        locked: approachLockedRef.current,
+      });
+      lastPointerRef.current = pointer;
+      southeastTravelRef.current = motion.southeastTravel;
+      approachLockedRef.current = motion.locked;
 
       if (open || hoveringTrigger) {
+        return;
+      }
+
+      setVisible(true);
+      scheduleHide();
+      if (!motion.shouldFollow) {
         return;
       }
 
       if (!frameRef.current) {
         frameRef.current = window.requestAnimationFrame(() => {
           frameRef.current = null;
-          setPosition(pendingPositionRef.current);
+          const nextPosition = pendingPositionRef.current;
+          triggerPositionRef.current = nextPosition;
+          setPosition(nextPosition);
         });
       }
-      setVisible(true);
-      scheduleHide();
     };
 
     const onLeave = () => {
@@ -2358,6 +2380,9 @@ function DesktopCursorMenu({ locale, fontControls }) {
       if (open) {
         return;
       }
+      lastPointerRef.current = null;
+      southeastTravelRef.current = 0;
+      approachLockedRef.current = false;
       setVisible(false);
     };
 
@@ -2455,6 +2480,9 @@ function DesktopCursorMenu({ locale, fontControls }) {
     }
 
     setOpening(false);
+    approachLockedRef.current = false;
+    southeastTravelRef.current = 0;
+    triggerPositionRef.current = pendingPositionRef.current;
     setPosition(pendingPositionRef.current);
     setVisible(true);
     setClosing(true);

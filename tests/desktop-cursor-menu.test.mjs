@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import test from "node:test";
 
+import { resolveCursorMenuApproach } from "../src/desktopCursorMenuMotion.js";
+
 const appSource = readFileSync(resolve(import.meta.dirname, "../src/App.jsx"), "utf8");
 const cssSource = readFileSync(resolve(import.meta.dirname, "../src/App.css"), "utf8");
 const desktopMenuSource = appSource.match(/function DesktopCursorMenu[\s\S]*?function GoToTop/)?.[0] || "";
@@ -55,12 +57,52 @@ test("open desktop menu closes from the center core or a secondary click", () =>
   );
 });
 
-test("desktop menu trigger follows every consecutive pointer move while closed", () => {
-  assert.doesNotMatch(desktopMenuSource, /frozenRef|freezeTimerRef|scheduleFreeze|distanceFromTrigger/);
+test("desktop menu trigger locks when the pointer clearly approaches from its upper-left", () => {
   assert.match(
     desktopMenuSource,
-    /const onMove = \(event\) =>[\s\S]*?const next = \{ x: event\.clientX \+ 48, y: event\.clientY \+ 48 \}[\s\S]*?pendingPositionRef\.current = next/,
+    /const onMove = \(event\) =>[\s\S]*?resolveCursorMenuApproach[\s\S]*?approachLockedRef\.current = motion\.locked/,
   );
+  assert.match(desktopMenuSource, /if \(!motion\.shouldFollow\)[\s\S]*?return;/);
+});
+
+test("cursor approach lock waits until a deliberate southeast movement", () => {
+  const tentative = resolveCursorMenuApproach({
+    pointer: { x: 108, y: 108 },
+    previousPointer: { x: 104, y: 104 },
+    triggerCenter: { x: 152, y: 152 },
+    southeastTravel: 3,
+  });
+  assert.equal(tentative.locked, false);
+  assert.equal(tentative.shouldFollow, true);
+
+  const locked = resolveCursorMenuApproach({
+    pointer: { x: 111, y: 111 },
+    previousPointer: { x: 108, y: 108 },
+    triggerCenter: { x: 152, y: 152 },
+    southeastTravel: tentative.southeastTravel,
+  });
+  assert.equal(locked.locked, true);
+  assert.equal(locked.shouldFollow, false);
+});
+
+test("cursor approach lock releases only beyond the trigger's lower-right buffer", () => {
+  const stillTargeting = resolveCursorMenuApproach({
+    pointer: { x: 197, y: 197 },
+    previousPointer: { x: 190, y: 190 },
+    triggerCenter: { x: 152, y: 152 },
+    locked: true,
+  });
+  assert.equal(stillTargeting.locked, true);
+  assert.equal(stillTargeting.shouldFollow, false);
+
+  const passedTarget = resolveCursorMenuApproach({
+    pointer: { x: 205, y: 207 },
+    previousPointer: { x: 197, y: 197 },
+    triggerCenter: { x: 152, y: 152 },
+    locked: true,
+  });
+  assert.equal(passedTarget.locked, false);
+  assert.equal(passedTarget.shouldFollow, true);
 });
 
 test("desktop menu opens through one cursor-anchored core before controls become active", () => {
