@@ -6,6 +6,7 @@ import { marketingAssetPaths } from "../scripts/static-assets.mjs";
 import { buildClientLogoLanes, clientLogos } from "../src/clientLogoMarquee.js";
 
 const css = readFileSync(new URL("../src/App.css", import.meta.url), "utf8");
+const extractionSource = readFileSync(new URL("../scripts/extract-client-logos.py", import.meta.url), "utf8");
 
 test("client logos render at the approved larger marquee size", () => {
   const itemRule = css.match(/\.client-logo-marquee-item\s*\{([^}]*)\}/)?.[1] || "";
@@ -49,10 +50,17 @@ test("displayed client logos provide three-times-density source images", async (
   assert.equal(metadata.every((image) => image.width === 960 && image.height === 480), true);
 });
 
+test("King Life is extracted from a complete high-resolution PDF crop", () => {
+  assert.match(
+    extractionSource,
+    /\("king-life", "King Life 徠福文具", \(1360, 1150, 1850, 1290\)\)/,
+  );
+});
+
 test("client inventory is explicitly grouped by recognition, government, and other clients", () => {
   const lanes = buildClientLogoLanes(clientLogos);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [14, 4, 29]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [15, 4, 28]);
   assert.deepEqual(lanes[1].map((client) => client.id), [
     "bureau-foreign-trade",
     "trade-negotiations",
@@ -60,11 +68,12 @@ test("client inventory is explicitly grouped by recognition, government, and oth
     "taiwan-stock-exchange",
   ]);
   assert.equal(lanes[0].some((client) => client.id === "yang-ming"), true);
-  assert.deepEqual(lanes[0].slice(-4).map((client) => client.id), [
+  assert.deepEqual(lanes[0].slice(-5).map((client) => client.id), [
     "you-ming-huei",
     "taiwan-mainstream-coop",
     "kyl-auction",
     "kyce",
+    "king-life",
   ]);
   assert.equal(lanes[2].some((client) => client.id === "lecoln-keysight"), true);
   assert.deepEqual(

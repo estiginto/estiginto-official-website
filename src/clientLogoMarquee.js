@@ -19,6 +19,7 @@ const clientLogoDefinitions = [
       ["taiwan-mainstream-coop", "台灣主婦聯盟生活消費合作社"],
       ["kyl-auction", "高雄永樂拍賣 KYL Auction"],
       ["kyce", "國裕建設 KYCE"],
+      ["king-life", "King Life 徠福文具"],
     ],
   },
   {
@@ -44,7 +45,6 @@ const clientLogoDefinitions = [
       ["wealthylife", "中華財富人生財商推廣協會 WealthyLife"],
       ["beyond-amazing", "Beyond Amazing 國際高端旅遊"],
       ["sleekstrip", "SleekStrip"],
-      ["king-life", "King Life 徠福文具"],
       ["jing-he-medical", "景賀醫美"],
       ["a-plus-dermatology", "A+ Beauty 極緻皮膚專科診所"],
       ["bauer-group", "BauerGroup SmartVending"],
