@@ -358,6 +358,34 @@ html.language-prompt-open {
   color: var(--ink-soft);
   font-size: var(--fs-sm);
   line-height: 1.65;
+  white-space: pre-line;
+}
+.team-member-linkedin {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 7px;
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 180ms ease;
+}
+.team-member-linkedin:hover,
+.team-member-linkedin:focus-visible {
+  color: var(--amber);
+}
+.team-member-linkedin:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}
+.team-member-linkedin-icon {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
 }
 body {
   margin: 0;
@@ -2924,8 +2952,8 @@ ul, ol  { margin: 0; }
   height: 80px;
   max-height: none;
   object-fit: contain;
-  filter: grayscale(1);
-  opacity: 0.7;
+  filter: grayscale(1) contrast(1.22);
+  opacity: 0.86;
   transition: filter 240ms ease, opacity 240ms ease, transform 240ms ease;
 }
 .client-logo-marquee-item:hover img { filter: none; opacity: 1; transform: scale(1.04); }

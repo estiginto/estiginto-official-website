@@ -39,19 +39,16 @@ test("about team localizes its section copy, roles, summaries, and group labels"
   assert.deepEqual(teamSectionCopyByLocale, {
     zh: {
       eyebrow: "領導與顧問團隊",
-      label: "一起推動工作的成員",
       meta: "Our Team",
       groupLabels: { leadership: "領導團隊", advisory: "顧問團隊" },
     },
     en: {
       eyebrow: "Leadership & Advisory",
-      label: "People behind the work",
       meta: "Our Team",
       groupLabels: { leadership: "Leadership", advisory: "Advisory" },
     },
     ja: {
       eyebrow: "リーダーシップ＆アドバイザリー",
-      label: "事業を支えるメンバー",
       meta: "Our Team",
       groupLabels: { leadership: "リーダーシップ", advisory: "アドバイザリー" },
     },
@@ -75,9 +72,9 @@ test("about team localizes its section copy, roles, summaries, and group labels"
       return [locale, { role: michael.role, summary: michael.summary }];
     })),
     {
-      zh: { role: "法律顧問", summary: "顧問，內布拉斯加州執業律師。" },
-      en: { role: "Legal Consultant", summary: "Consultant and licensed attorney practicing in Nebraska." },
-      ja: { role: "法律顧問", summary: "コンサルタント。ネブラスカ州で弁護士資格を持ち、実務に従事しています。" },
+      zh: { role: "法律顧問", summary: "美國執業律師，擅長國際商務專業，橫跨美國、亞洲及拉丁美洲，兼具法律實務、跨境商務與國際市場經驗，擅長以法律與商業雙重視角處理跨國事務。" },
+      en: { role: "Legal Consultant", summary: "A practicing attorney in the United States with expertise in international business across the United States, Asia, and Latin America. Combining legal practice, cross-border business, and international market experience, he handles multinational matters through both legal and commercial perspectives." },
+      ja: { role: "法律顧問", summary: "米国で実務に従事する弁護士。米国、アジア、ラテンアメリカにまたがる国際ビジネスを専門とし、法務実務、越境ビジネス、国際市場の経験を生かして、法務とビジネス双方の視点から国際案件に対応します。" },
     },
   );
 
@@ -87,17 +84,50 @@ test("about team localizes its section copy, roles, summaries, and group labels"
       return [locale, { role: nicole.role, summary: nicole.summary }];
     })),
     {
-      zh: { role: "國際專案經理", summary: "" },
-      en: { role: "Global Project Manager", summary: "" },
-      ja: { role: "グローバルプロジェクトマネージャー", summary: "" },
+      zh: { role: "國際專案經理", summary: "15 年以上跨領域資歷，熟悉軟體工程、市場行銷、國際商務與組織協調實務經驗，擅長跨文化溝通、台美文化及商務合作專案推進。" },
+      en: { role: "Global Project Manager", summary: "More than 15 years of cross-disciplinary experience spanning software engineering, marketing, international business, and organizational coordination. She specializes in cross-cultural communication and advancing Taiwan–U.S. cultural and business collaboration projects." },
+      ja: { role: "グローバルプロジェクトマネージャー", summary: "15年以上の分野横断的な経験を持ち、ソフトウェアエンジニアリング、マーケティング、国際ビジネス、組織調整の実務に精通しています。異文化コミュニケーションと台湾・米国間の文化・ビジネス協力プロジェクトの推進を得意とします。" },
     },
   );
+
+  assert.deepEqual(
+    Object.fromEntries(supportedLocales.map((locale) => {
+      const members = teamMembersByLocale[locale];
+      return [locale, Object.fromEntries(["lanar-lan", "yu-liang-chen", "cindy-wu"].map((id) => {
+        const member = members.find((candidate) => candidate.id === id);
+        return [id, member.summary];
+      }))];
+    })),
+    {
+      zh: {
+        "lanar-lan": "20 年以上系統開發與企業數位轉型經驗。\n擅長將複雜工作轉化為可長期執行的策略與架構。",
+        "yu-liang-chen": "20 年以上系統架構及整合經驗。\n擅長大型系統維運及資訊安全。",
+        "cindy-wu": "30 年以上跨文化溝通、國際行銷與組織領導背景，長期深耕品牌策略、國際市場拓展及跨領域資源整合。\n橫跨企業顧問、國際教育、文化外交與房地產等領域，擅長以全球視野整合品牌、行銷與國際合作策略，致力於打造具國際影響力與市場價值的品牌。",
+      },
+      en: {
+        "lanar-lan": "More than 20 years of experience in systems development and enterprise digital transformation.\nSpecializes in turning complex work into strategies and frameworks built for long-term execution.",
+        "yu-liang-chen": "More than 20 years of experience in systems architecture and integration.\nSpecializes in large-scale system operations and information security.",
+        "cindy-wu": "More than 30 years of experience in cross-cultural communication, international marketing, and organizational leadership, with extensive work in brand strategy, global market expansion, and cross-disciplinary resource integration.\nHer experience spans corporate consulting, international education, cultural diplomacy, and real estate. She brings a global perspective to brand, marketing, and international partnership strategies, building brands with international influence and market value.",
+      },
+      ja: {
+        "lanar-lan": "20年以上にわたるシステム開発および企業のデジタルトランスフォーメーション経験。\n複雑な業務を、長期的に実行可能な戦略と仕組みに転換することを得意とします。",
+        "yu-liang-chen": "20年以上にわたるシステムアーキテクチャおよび統合経験。\n大規模システムの運用保守と情報セキュリティを得意とします。",
+        "cindy-wu": "30年以上にわたり、異文化コミュニケーション、国際マーケティング、組織リーダーシップに携わり、ブランド戦略、海外市場開拓、分野横断のリソース統合を推進してきました。\n企業コンサルティング、国際教育、文化外交、不動産など幅広い領域で培った経験を生かし、グローバルな視点からブランド、マーケティング、国際連携の戦略を統合し、国際的な影響力と市場価値を備えたブランドづくりに取り組んでいます。",
+      },
+    },
+  );
+
+  for (const locale of supportedLocales) {
+    const cindy = teamMembersByLocale[locale].find(({ id }) => id === "cindy-wu");
+    assert.equal(cindy.linkedin, "https://www.linkedin.com/in/cindy-wu-b3b1b89/");
+  }
 });
 
-test("about page presents leadership and advisory without the studio manifesto", () => {
+test("about page presents only leadership and advisory while achievements follow solutions", () => {
   const app = readFileSync(resolve(root, "src/App.jsx"), "utf8");
 
-  assert.match(app, /<Numbers copy=\{copy\} \/>\s*<TeamSection copy=\{copy\} \/>/);
+  assert.match(app, /initialSection === "about"\s*\?\s*<TeamSection copy=\{copy\} \/>/);
+  assert.match(app, /initialSection === "solutions"\s*\?\s*<>\s*<Solutions copy=\{copy\} \/>\s*<Numbers copy=\{copy\} \/>\s*<\/>/);
   assert.doesNotMatch(app, /<Manifesto copy=\{copy\} \/>/);
 });
 
@@ -124,6 +154,9 @@ test("about team renders the confirmed portraits and keeps a monogram fallback",
   assert.match(app, /member\.portrait\s*\?\s*\(/);
   assert.match(app, /<img[\s\S]*?src=\{member\.portrait\}[\s\S]*?alt=\{member\.name\}/);
   assert.match(app, /:\s*\(\s*<span[^>]*>\{member\.mark\}<\/span>/);
+  assert.match(app, /member\.linkedin\s*\?/);
+  assert.match(app, /href=\{member\.linkedin\}[\s\S]*?target="_blank"[\s\S]*?rel="noreferrer"/);
+  assert.match(app, /<LinkedInIcon\s*\/>/);
 });
 
 test("every team portrait carries an individual crop so faces keep comparable visual weight", () => {

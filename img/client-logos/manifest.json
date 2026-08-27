@@ -4,12 +4,12 @@
     "alt": "Marketech International Corp.",
     "file": "marketech.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      158,
-      112
+      475,
+      336
     ]
   },
   {
@@ -17,12 +17,12 @@
     "alt": "eZoom Information, Inc.",
     "file": "ezoom.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      56
+      816,
+      167
     ]
   },
   {
@@ -30,12 +30,12 @@
     "alt": "Trade-Van Information",
     "file": "tradevan.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      68
+      816,
+      203
     ]
   },
   {
@@ -43,12 +43,12 @@
     "alt": "EY 安永",
     "file": "ey.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      138,
-      112
+      413,
+      336
     ]
   },
   {
@@ -56,12 +56,12 @@
     "alt": "Lotus 美時化學製藥",
     "file": "lotus.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      93
+      816,
+      278
     ]
   },
   {
@@ -69,12 +69,12 @@
     "alt": "SPG 冠亞資產管理顧問",
     "file": "spg.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      106
+      816,
+      318
     ]
   },
   {
@@ -82,12 +82,12 @@
     "alt": "台灣主婦聯盟生活消費合作社",
     "file": "taiwan-mainstream-coop.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      67
+      816,
+      201
     ]
   },
   {
@@ -95,12 +95,12 @@
     "alt": "高雄永樂拍賣 KYL Auction",
     "file": "kyl-auction.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      67
+      816,
+      200
     ]
   },
   {
@@ -108,12 +108,12 @@
     "alt": "御用高級單本茶 十八味",
     "file": "eighteen-tea.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      94
+      816,
+      281
     ]
   },
   {
@@ -121,12 +121,12 @@
     "alt": "EVCO Creative Home 美國生活用品百貨",
     "file": "evco-creative-home.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      44
+      816,
+      133
     ]
   },
   {
@@ -134,12 +134,12 @@
     "alt": "Merica",
     "file": "merica.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      112,
-      112
+      336,
+      336
     ]
   },
   {
@@ -147,12 +147,12 @@
     "alt": "放學窩",
     "file": "after-school-nest.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      233,
-      112
+      700,
+      336
     ]
   },
   {
@@ -160,12 +160,12 @@
     "alt": "天下雜誌 CommonWealth Magazine",
     "file": "commonwealth.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      100
+      816,
+      299
     ]
   },
   {
@@ -173,12 +173,12 @@
     "alt": "經濟部國際貿易局",
     "file": "bureau-foreign-trade.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      58
+      816,
+      175
     ]
   },
   {
@@ -186,12 +186,12 @@
     "alt": "行政院經貿談判辦公室",
     "file": "trade-negotiations.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      58
+      816,
+      175
     ]
   },
   {
@@ -199,12 +199,12 @@
     "alt": "臺灣證券交易所 Taiwan Stock Exchange",
     "file": "taiwan-stock-exchange.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      50
+      816,
+      151
     ]
   },
   {
@@ -212,12 +212,12 @@
     "alt": "臺北市建築師公會",
     "file": "taipei-architects.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      45
+      816,
+      134
     ]
   },
   {
@@ -225,12 +225,12 @@
     "alt": "森永 Morinaga",
     "file": "morinaga.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      129,
-      112
+      388,
+      336
     ]
   },
   {
@@ -238,12 +238,12 @@
     "alt": "正官庄 Jung Kwan Jang",
     "file": "jung-kwan-jang.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      190,
-      112
+      569,
+      336
     ]
   },
   {
@@ -251,12 +251,12 @@
     "alt": "國裕建設 KYCE",
     "file": "kyce.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      79
+      816,
+      236
     ]
   },
   {
@@ -264,12 +264,12 @@
     "alt": "Conflux 樂浪遊艇俱樂部",
     "file": "conflux.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      61
+      816,
+      182
     ]
   },
   {
@@ -277,12 +277,12 @@
     "alt": "fable",
     "file": "fable.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      195,
-      112
+      585,
+      336
     ]
   },
   {
@@ -290,12 +290,12 @@
     "alt": "臺南航空站 Tainan Airport",
     "file": "tainan-airport.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      58
+      816,
+      175
     ]
   },
   {
@@ -303,12 +303,12 @@
     "alt": "ARCHI-5",
     "file": "archi-5.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      72,
-      112
+      216,
+      336
     ]
   },
   {
@@ -316,12 +316,12 @@
     "alt": "MCA Creative Industries 韓國文創",
     "file": "mca-creative-industries.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      93,
-      112
+      278,
+      336
     ]
   },
   {
@@ -329,12 +329,12 @@
     "alt": "臺灣精神分析學會",
     "file": "taiwan-psychoanalytic.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      69
+      816,
+      208
     ]
   },
   {
@@ -342,12 +342,12 @@
     "alt": "中華財富人生財商推廣協會 WealthyLife",
     "file": "wealthylife.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      45
+      816,
+      135
     ]
   },
   {
@@ -355,12 +355,12 @@
     "alt": "Beyond Amazing 國際高端旅遊",
     "file": "beyond-amazing.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      232,
-      112
+      695,
+      336
     ]
   },
   {
@@ -368,12 +368,12 @@
     "alt": "SleekStrip",
     "file": "sleekstrip.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      150,
-      112
+      451,
+      336
     ]
   },
   {
@@ -381,12 +381,12 @@
     "alt": "King Life 徠福文具",
     "file": "king-life.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      66
+      816,
+      199
     ]
   },
   {
@@ -394,12 +394,12 @@
     "alt": "景賀醫美",
     "file": "jing-he-medical.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      46
+      816,
+      137
     ]
   },
   {
@@ -407,12 +407,12 @@
     "alt": "A+ Beauty 極緻皮膚專科診所",
     "file": "a-plus-dermatology.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      70
+      816,
+      210
     ]
   },
   {
@@ -420,12 +420,12 @@
     "alt": "BauerGroup SmartVending",
     "file": "bauer-group.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      52
+      816,
+      156
     ]
   },
   {
@@ -433,12 +433,12 @@
     "alt": "立肯科技 Lecoln Technology / Keysight Technologies",
     "file": "lecoln-keysight.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      112
+      816,
+      335
     ]
   },
   {
@@ -446,25 +446,12 @@
     "alt": "MJ. Color",
     "file": "mj-color.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      86
-    ]
-  },
-  {
-    "id": "rotary",
-    "alt": "Rotary International",
-    "file": "rotary.webp",
-    "canvas": [
-      320,
-      160
-    ],
-    "content": [
-      112,
-      112
+      816,
+      258
     ]
   },
   {
@@ -472,25 +459,12 @@
     "alt": "BCFBW",
     "file": "bcfbw.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      102,
-      112
-    ]
-  },
-  {
-    "id": "lions",
-    "alt": "Lions International",
-    "file": "lions.webp",
-    "canvas": [
-      320,
-      160
-    ],
-    "content": [
-      118,
-      112
+      305,
+      336
     ]
   },
   {
@@ -498,25 +472,12 @@
     "alt": "Vantage",
     "file": "vantage.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      86
-    ]
-  },
-  {
-    "id": "wilderness",
-    "alt": "荒野實境 Wilderness",
-    "file": "wilderness.webp",
-    "canvas": [
-      320,
-      160
-    ],
-    "content": [
-      272,
-      90
+      816,
+      258
     ]
   },
   {
@@ -524,25 +485,12 @@
     "alt": "滿誠蜂蜜 Worthbee",
     "file": "worthbee.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      272,
-      81
-    ]
-  },
-  {
-    "id": "gb-biotech",
-    "alt": "果寶生技 GB Biotech",
-    "file": "gb-biotech.webp",
-    "canvas": [
-      320,
-      160
-    ],
-    "content": [
-      107,
-      112
+      816,
+      244
     ]
   },
   {
@@ -550,12 +498,12 @@
     "alt": "FVS 黃金數位憑證",
     "file": "fvs.webp",
     "canvas": [
-      320,
-      160
+      960,
+      480
     ],
     "content": [
-      200,
-      112
+      599,
+      336
     ]
   }
 ]

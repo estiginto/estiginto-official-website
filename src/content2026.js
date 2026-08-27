@@ -23,17 +23,14 @@ export const aboutIntroductionsByLocale = {
 
 export const companyStatsByLocale = {
   zh: [
-    { id: "founded", label: "創立年份", keyLabel: "Founded", value: "2011", suffix: "", description: "由軟體國家競賽代表選手組成，持續累積跨產業實戰經驗。" },
     { id: "longevity", label: "長期運作", keyLabel: "Longevity", value: "12", suffix: " 年", description: "最久的系統已持續穩定運作 12 年。" },
     { id: "deliveries", label: "交付成果", keyLabel: "Delivered", value: "325", suffix: "+", description: "已交付系統、設計物與整體解決方案等。" },
   ],
   en: [
-    { id: "founded", label: "Founded", keyLabel: "Founded", value: "2011", suffix: "", description: "Formed by national software competition representatives, with experience across industries." },
     { id: "longevity", label: "Long-term operation", keyLabel: "Longevity", value: "12", suffix: " yrs", description: "Our longest-running system has remained in operation for 12 years." },
     { id: "deliveries", label: "Delivered outcomes", keyLabel: "Delivered", value: "325", suffix: "+", description: "Systems, design deliverables, and integrated solutions delivered." },
   ],
   ja: [
-    { id: "founded", label: "創業", keyLabel: "Founded", value: "2011", suffix: "", description: "ソフトウェア全国大会の代表選手を中心に結成し、多様な業界で実績を重ねてきました。" },
     { id: "longevity", label: "長期運用", keyLabel: "Longevity", value: "12", suffix: " 年", description: "最も長く稼働しているシステムは、12年間にわたり運用されています。" },
     { id: "deliveries", label: "納品実績", keyLabel: "Delivered", value: "325", suffix: "+", description: "システム、デザイン制作物、総合ソリューションなどを納品しています。" },
   ],
@@ -141,6 +138,7 @@ const teamIdentities = [
     mark: "CW",
     group: "leadership",
     portrait: "/img/team/avatar_Cindy.jpg",
+    linkedin: "https://www.linkedin.com/in/cindy-wu-b3b1b89/",
     portraitFrame: { scale: 1.22, x: 50, y: 0, offsetY: 0 },
   },
   {
@@ -180,19 +178,16 @@ const teamIdentities = [
 export const teamSectionCopyByLocale = {
   zh: {
     eyebrow: "領導與顧問團隊",
-    label: "一起推動工作的成員",
     meta: "Our Team",
     groupLabels: { leadership: "領導團隊", advisory: "顧問團隊" },
   },
   en: {
     eyebrow: "Leadership & Advisory",
-    label: "People behind the work",
     meta: "Our Team",
     groupLabels: { leadership: "Leadership", advisory: "Advisory" },
   },
   ja: {
     eyebrow: "リーダーシップ＆アドバイザリー",
-    label: "事業を支えるメンバー",
     meta: "Our Team",
     groupLabels: { leadership: "リーダーシップ", advisory: "アドバイザリー" },
   },
@@ -200,31 +195,31 @@ export const teamSectionCopyByLocale = {
 
 const teamDetailsByLocale = {
   zh: [
-    { role: "執行長（CEO）", summary: "整合系統、設計、資本與人才，將複雜工作轉化為可長期執行的策略與架構。" },
-    { role: "技術長（CTO）", summary: "負責技術方向、系統架構與全端開發，支撐數位服務長期且穩定地運作。" },
-    { role: "行銷長（CMO）", summary: "串連國際市場開發、品牌策略與跨文化溝通。" },
-    { role: "國際專案經理", summary: "" },
+    { role: "執行長（CEO）", summary: "20 年以上系統開發與企業數位轉型經驗。\n擅長將複雜工作轉化為可長期執行的策略與架構。" },
+    { role: "技術長（CTO）", summary: "20 年以上系統架構及整合經驗。\n擅長大型系統維運及資訊安全。" },
+    { role: "行銷長（CMO）", summary: "30 年以上跨文化溝通、國際行銷與組織領導背景，長期深耕品牌策略、國際市場拓展及跨領域資源整合。\n橫跨企業顧問、國際教育、文化外交與房地產等領域，擅長以全球視野整合品牌、行銷與國際合作策略，致力於打造具國際影響力與市場價值的品牌。" },
+    { role: "國際專案經理", summary: "15 年以上跨領域資歷，熟悉軟體工程、市場行銷、國際商務與組織協調實務經驗，擅長跨文化溝通、台美文化及商務合作專案推進。" },
     { role: "國際商務與行銷發展總監", summary: "具備橫跨歐洲、亞洲與美國的品牌策略、包裝設計及國際行銷經驗。" },
     { role: "國際教育與課程顧問", summary: "擁有 25 年教學經驗，專注跨文化學習、教育創新與體驗式課程。" },
-    { role: "法律顧問", summary: "顧問，內布拉斯加州執業律師。" },
+    { role: "法律顧問", summary: "美國執業律師，擅長國際商務專業，橫跨美國、亞洲及拉丁美洲，兼具法律實務、跨境商務與國際市場經驗，擅長以法律與商業雙重視角處理跨國事務。" },
   ],
   en: [
-    { role: "CEO", summary: "Structures complex work across systems, design, capital, and people, connecting strategy to durable execution." },
-    { role: "CTO", summary: "Leads technical direction, system architecture, and full-stack delivery across long-running digital operations." },
-    { role: "CMO", summary: "Connects international market development, brand strategy, and cross-cultural communication." },
-    { role: "Global Project Manager", summary: "" },
+    { role: "CEO", summary: "More than 20 years of experience in systems development and enterprise digital transformation.\nSpecializes in turning complex work into strategies and frameworks built for long-term execution." },
+    { role: "CTO", summary: "More than 20 years of experience in systems architecture and integration.\nSpecializes in large-scale system operations and information security." },
+    { role: "CMO", summary: "More than 30 years of experience in cross-cultural communication, international marketing, and organizational leadership, with extensive work in brand strategy, global market expansion, and cross-disciplinary resource integration.\nHer experience spans corporate consulting, international education, cultural diplomacy, and real estate. She brings a global perspective to brand, marketing, and international partnership strategies, building brands with international influence and market value." },
+    { role: "Global Project Manager", summary: "More than 15 years of cross-disciplinary experience spanning software engineering, marketing, international business, and organizational coordination. She specializes in cross-cultural communication and advancing Taiwan–U.S. cultural and business collaboration projects." },
     { role: "Director of International Business & Marketing Development", summary: "Brings brand strategy, packaging design, and international marketing experience across Europe, Asia, and the United States." },
     { role: "International Education Coordinator & Curriculum Specialist", summary: "Brings 25 years of teaching experience to cross-cultural learning, education innovation, and experiential programs." },
-    { role: "Legal Consultant", summary: "Consultant and licensed attorney practicing in Nebraska." },
+    { role: "Legal Consultant", summary: "A practicing attorney in the United States with expertise in international business across the United States, Asia, and Latin America. Combining legal practice, cross-border business, and international market experience, he handles multinational matters through both legal and commercial perspectives." },
   ],
   ja: [
-    { role: "最高経営責任者（CEO）", summary: "システム、デザイン、資本、人材を横断して複雑な業務を整理し、戦略を持続可能な実行へつなげます。" },
-    { role: "最高技術責任者（CTO）", summary: "技術方針、システム設計、フルスタック開発を統括し、デジタルサービスの長期安定運用を支えます。" },
-    { role: "最高マーケティング責任者（CMO）", summary: "国際市場の開拓、ブランド戦略、異文化コミュニケーションをつなぎます。" },
-    { role: "グローバルプロジェクトマネージャー", summary: "" },
+    { role: "最高経営責任者（CEO）", summary: "20年以上にわたるシステム開発および企業のデジタルトランスフォーメーション経験。\n複雑な業務を、長期的に実行可能な戦略と仕組みに転換することを得意とします。" },
+    { role: "最高技術責任者（CTO）", summary: "20年以上にわたるシステムアーキテクチャおよび統合経験。\n大規模システムの運用保守と情報セキュリティを得意とします。" },
+    { role: "最高マーケティング責任者（CMO）", summary: "30年以上にわたり、異文化コミュニケーション、国際マーケティング、組織リーダーシップに携わり、ブランド戦略、海外市場開拓、分野横断のリソース統合を推進してきました。\n企業コンサルティング、国際教育、文化外交、不動産など幅広い領域で培った経験を生かし、グローバルな視点からブランド、マーケティング、国際連携の戦略を統合し、国際的な影響力と市場価値を備えたブランドづくりに取り組んでいます。" },
+    { role: "グローバルプロジェクトマネージャー", summary: "15年以上の分野横断的な経験を持ち、ソフトウェアエンジニアリング、マーケティング、国際ビジネス、組織調整の実務に精通しています。異文化コミュニケーションと台湾・米国間の文化・ビジネス協力プロジェクトの推進を得意とします。" },
     { role: "国際事業・マーケティング開発ディレクター", summary: "欧州、アジア、米国にまたがるブランド戦略、パッケージデザイン、国際マーケティングの経験を生かします。" },
     { role: "国際教育・カリキュラムアドバイザー", summary: "25年の指導経験を生かし、異文化学習、教育イノベーション、体験型プログラムを支援します。" },
-    { role: "法律顧問", summary: "コンサルタント。ネブラスカ州で弁護士資格を持ち、実務に従事しています。" },
+    { role: "法律顧問", summary: "米国で実務に従事する弁護士。米国、アジア、ラテンアメリカにまたがる国際ビジネスを専門とし、法務実務、越境ビジネス、国際市場の経験を生かして、法務とビジネス双方の視点から国際案件に対応します。" },
   ],
 };
 

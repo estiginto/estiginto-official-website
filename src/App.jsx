@@ -1223,7 +1223,6 @@ function Numbers({ copy }) {
         <SectionEyebrow
           className="achievements-eyebrow"
           index="§ Achievements"
-          meta={copy.achievements.meta}
         />
         <div className="numbers">
           {items.map((n) => (
@@ -1297,7 +1296,7 @@ function TeamSection({ copy }) {
   return (
     <section className="section team-section reveal" id="team" aria-label={sectionCopy.eyebrow}>
       <div className="wrap">
-        <SectionEyebrow index={`§ ${sectionCopy.eyebrow}`} label={sectionCopy.label} meta={sectionCopy.meta} />
+        <SectionEyebrow index={`§ ${sectionCopy.eyebrow}`} meta={sectionCopy.meta} />
         <div className="team-grid">
           {members.map((member) => (
             <article className="team-member-card" data-group={member.group} key={member.id}>
@@ -1325,12 +1324,43 @@ function TeamSection({ copy }) {
                 <h3>{member.name}</h3>
                 <p className="team-member-role">{member.role}</p>
                 <p className="team-member-summary">{member.summary}</p>
+                {member.linkedin ? (
+                  <a
+                    className="team-member-linkedin"
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`${member.name} LinkedIn`}
+                  >
+                    <LinkedInIcon />
+                    <span>LinkedIn</span>
+                  </a>
+                ) : null}
               </div>
             </article>
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function LinkedInIcon() {
+  return (
+    <svg
+      className="team-member-linkedin-icon"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path d="M8 10v7M8 7v.01M12 17v-7m0 3a3 3 0 0 1 6 0v4" />
+    </svg>
   );
 }
 
@@ -2885,19 +2915,14 @@ export default function App() {
         {isStandalonePage ? (
           <>
             <PageTitle page={pageTitle} />
-            {initialSection === "about" ? (
-              <>
-                <Numbers copy={copy} />
-                <TeamSection copy={copy} />
-              </>
-            ) : null}
+            {initialSection === "about" ? <TeamSection copy={copy} /> : null}
             {initialSection === "case" ? (
               <>
                 <CasePortfolio copy={copy} />
                 <Solutions copy={copy} />
               </>
             ) : null}
-            {initialSection === "solutions" ? <Solutions copy={copy} /> : null}
+            {initialSection === "solutions" ? <><Solutions copy={copy} /><Numbers copy={copy} /></> : null}
             {initialSection === "consulting" ? <><ConsultingServices copy={copy} /><Contact copy={copy} /></> : null}
             {isFAQPage ? <FAQ copy={copy} /> : null}
             {initialSection === "contact" ? <Contact copy={copy} /> : null}

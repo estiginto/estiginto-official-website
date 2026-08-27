@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
+import sharp from "sharp";
 import test from "node:test";
+import { marketingAssetPaths } from "../scripts/static-assets.mjs";
 import { buildClientLogoLanes, clientLogos } from "../src/clientLogoMarquee.js";
 
 const css = readFileSync(new URL("../src/App.css", import.meta.url), "utf8");
@@ -14,28 +16,51 @@ test("client logos render at the approved larger marquee size", () => {
   assert.match(imageRule, /width:\s*min\(96%,\s*220px\)/);
   assert.match(imageRule, /height:\s*80px/);
   assert.match(imageRule, /max-height:\s*none/);
+  assert.match(imageRule, /filter:\s*grayscale\(1\) contrast\(1\.22\)/);
+  assert.match(imageRule, /opacity:\s*0\.86/);
 });
 
 test("client logo inventory contains every normalized source logo", () => {
-  assert.equal(clientLogos.length, 43);
-  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 43);
-  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 43);
+  assert.equal(clientLogos.length, 39);
+  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 39);
+  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 39);
   assert.equal(clientLogos.every((client) => client.alt.length > 0), true);
   assert.equal(clientLogos.every((client) => existsSync(`.${client.src}`)), true);
   assert.equal(clientLogos.some((client) => client.id === "fable"), false);
   assert.equal(clientLogos.some((client) => client.id === "tainan-airport"), false);
+  assert.equal(clientLogos.some((client) => client.id === "rotary"), false);
+  assert.equal(clientLogos.some((client) => client.id === "lions"), false);
+  assert.equal(clientLogos.some((client) => client.id === "wilderness"), false);
+  assert.equal(clientLogos.some((client) => client.id === "gb-biotech"), false);
+});
+
+test("every declared marketing asset exists before the production copy step", () => {
+  for (const assetPath of marketingAssetPaths) {
+    assert.equal(
+      existsSync(new URL(`../img/${assetPath}`, import.meta.url)),
+      true,
+      `${assetPath} must exist before it is copied to dist`,
+    );
+  }
+});
+
+test("displayed client logos provide three-times-density source images", async () => {
+  const metadata = await Promise.all(clientLogos.map((client) => sharp(`.${client.src}`).metadata()));
+  assert.equal(metadata.every((image) => image.width === 960 && image.height === 480), true);
 });
 
 test("client inventory is explicitly grouped by recognition, government, and other clients", () => {
   const lanes = buildClientLogoLanes(clientLogos);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [12, 2, 29]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [10, 4, 25]);
   assert.deepEqual(lanes[1].map((client) => client.id), [
     "bureau-foreign-trade",
     "trade-negotiations",
+    "taipei-architects",
+    "taiwan-stock-exchange",
   ]);
   assert.equal(lanes[0].some((client) => client.id === "yang-ming"), true);
-  assert.equal(lanes[0].some((client) => client.id === "taiwan-stock-exchange"), true);
+  assert.equal(lanes[2].some((client) => client.id === "lecoln-keysight"), true);
   assert.equal(lanes.flat().every((item) => item.src !== null), true);
 });
 

@@ -73,7 +73,12 @@ test("2026 content provides complete, matching locale inventories", async () => 
   assert.deepEqual(supportedLocales, ["zh", "en", "ja"]);
 
   for (const locale of supportedLocales) {
-    assert.equal(companyStatsByLocale[locale].length, 3, `${locale} company stats`);
+    assert.equal(companyStatsByLocale[locale].length, 2, `${locale} company stats`);
+    assert.deepEqual(
+      companyStatsByLocale[locale].map(({ id }) => id),
+      ["longevity", "deliveries"],
+      `${locale} achievements exclude the founding year`,
+    );
     assert.equal(serviceFamiliesByLocale[locale].length, 4, `${locale} service families`);
     assert.equal(caseStudiesByLocale[locale].length, 13, `${locale} case studies`);
     assert.deepEqual(
@@ -144,7 +149,7 @@ test("2026 public content excludes unsupported global proof claims", async () =>
   assert.doesNotMatch(serialized, /99\.9/);
   assert.doesNotMatch(serialized, /70\+/);
   assert.match(serialized, /325/);
-  assert.match(serialized, /2011/);
+  assert.doesNotMatch(serialized, /2011/);
   assert.match(serialized, /12/);
 });
 

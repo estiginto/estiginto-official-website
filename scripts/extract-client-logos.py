@@ -9,12 +9,12 @@ import tempfile
 from collections import deque
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 from pypdf import PdfReader
 
 
-CANVAS_SIZE = (320, 160)
-CONTENT_SIZE = (272, 112)
+CANVAS_SIZE = (960, 480)
+CONTENT_SIZE = (816, 336)
 REFERENCE_SIZE = (3000, 1688)
 
 # Prefer original embedded images for fidelity. Six Canva compositions combine
@@ -50,13 +50,9 @@ EMBEDDED_LOGOS = {
     "X36.png": ("bauer-group", "BauerGroup SmartVending"),
     "X14.png": ("lecoln-keysight", "立肯科技 Lecoln Technology / Keysight Technologies"),
     "X16.png": ("mj-color", "MJ. Color"),
-    "X44.png": ("rotary", "Rotary International"),
     "X41.png": ("bcfbw", "BCFBW"),
-    "X42.png": ("lions", "Lions International"),
     "X97.png": ("vantage", "Vantage"),
-    "X17.png": ("wilderness", "荒野實境 Wilderness"),
     "X46.png": ("worthbee", "滿誠蜂蜜 Worthbee"),
-    "X19.png": ("gb-biotech", "果寶生技 GB Biotech"),
 }
 
 COMPOSITE_LOGOS = [
@@ -75,13 +71,13 @@ CLIENT_ORDER = [
     "morinaga", "jung-kwan-jang", "kyce", "conflux", "fable", "tainan-airport", "archi-5", "mca-creative-industries",
     "taiwan-psychoanalytic", "wealthylife", "beyond-amazing", "sleekstrip", "king-life",
     "jing-he-medical", "a-plus-dermatology", "bauer-group", "lecoln-keysight", "mj-color",
-    "rotary", "bcfbw", "lions", "vantage", "wilderness", "worthbee", "gb-biotech", "fvs",
+    "bcfbw", "vantage", "worthbee", "fvs",
 ]
 
 
 def render_page(pdf_path: Path, output_path: Path) -> Image.Image:
     subprocess.run(
-        ["pdftoppm", "-png", "-r", "300", "-singlefile", str(pdf_path), str(output_path.with_suffix(""))],
+        ["pdftoppm", "-png", "-r", "450", "-singlefile", str(pdf_path), str(output_path.with_suffix(""))],
         check=True,
     )
     return Image.open(output_path).convert("RGBA")
@@ -131,6 +127,7 @@ def normalize_logo(image: Image.Image) -> tuple[Image.Image, tuple[int, int]]:
     ratio = min(CONTENT_SIZE[0] / cropped.width, CONTENT_SIZE[1] / cropped.height)
     rendered_size = (max(1, round(cropped.width * ratio)), max(1, round(cropped.height * ratio)))
     rendered = cropped.resize(rendered_size, Image.Resampling.LANCZOS)
+    rendered = rendered.filter(ImageFilter.UnsharpMask(radius=1.2, percent=110, threshold=2))
     canvas = Image.new("RGBA", CANVAS_SIZE, (255, 255, 255, 0))
     canvas.alpha_composite(rendered, ((CANVAS_SIZE[0] - rendered.width) // 2, (CANVAS_SIZE[1] - rendered.height) // 2))
     return canvas, rendered_size
@@ -144,7 +141,7 @@ def create_contact_sheet(records: list[dict], output_dir: Path) -> None:
     font = ImageFont.load_default(size=16)
     for index, record in enumerate(records):
         x, y = (index % columns) * cell_width, (index // columns) * cell_height
-        logo = Image.open(output_dir / record["file"]).convert("RGBA")
+        logo = Image.open(output_dir / record["file"]).convert("RGBA").resize((320, 160), Image.Resampling.LANCZOS)
         preview = Image.new("RGB", CANVAS_SIZE, "#ffffff")
         preview.paste(logo, mask=logo.getchannel("A"))
         sheet.paste(preview, (x + 20, y + 16))

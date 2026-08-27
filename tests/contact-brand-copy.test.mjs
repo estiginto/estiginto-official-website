@@ -82,7 +82,7 @@ test("achievements and footer omit the retired introduction and business ID", ()
   const footerSource = functionSource("Footer", "ConstructionScreen");
 
   assert.match(numbersSource, /companyStatsByLocale/);
-  assert.match(numbersSource, /copy\.achievements\.meta/);
+  assert.doesNotMatch(numbersSource, /copy\.achievements\.meta/);
   assert.doesNotMatch(numbersSource, /copy\.achievements\.label/);
   assert.match(footerSource, /footer\.company/);
   assert.doesNotMatch(appSource, /統一編號|42752468/);
