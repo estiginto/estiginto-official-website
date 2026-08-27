@@ -76,16 +76,15 @@ test("mobile menu stages its geometric open and close motion", () => {
   assert.match(cssSource, /\.mobile-nav-link\.is-selecting/);
 });
 
-test("mobile menu morphs its bottom trigger into a full-screen temporal channel", () => {
+test("mobile menu keeps its close control at the original bottom trigger", () => {
   assert.match(mobileNavSource, /const \[opening, setOpening\] = useState\(false\)/);
   assert.match(mobileNavSource, /const \[closing, setClosing\] = useState\(false\)/);
   assert.match(mobileNavSource, /mobile-channel-opening/);
   assert.match(mobileNavSource, /mobile-channel-closing/);
-  assert.match(mobileNavSource, /className="mobile-menu-morph"/);
   assert.match(mobileNavSource, /className="mobile-nav-diamond mobile-channel-panel"/);
-  assert.match(mobileNavSource, /className="mobile-channel-core"/);
-  assert.match(cssSource, /\.mobile-nav\.mobile-channel-opening \.mobile-menu-morph[\s\S]*?mobile-channel-core-open 620ms/);
-  assert.match(cssSource, /\.mobile-nav\.mobile-channel-closing \.mobile-menu-morph[\s\S]*?mobile-channel-core-close 620ms/);
+  assert.doesNotMatch(mobileNavSource, /className="mobile-menu-morph"/);
+  assert.doesNotMatch(mobileNavSource, /className="mobile-channel-core"/);
+  assert.match(cssSource, /\.mobile-nav\.open \.mobile-nav-trigger\s*\{[^}]*opacity:\s*1;[^}]*pointer-events:\s*auto;/);
   assert.match(cssSource, /@keyframes mobile-channel-panel-open[\s\S]*?circle\(0[\s\S]*?circle\(150vmax/);
   assert.match(cssSource, /@keyframes mobile-channel-panel-close[\s\S]*?circle\(150vmax[\s\S]*?circle\(0/);
 });
@@ -136,7 +135,7 @@ test("mobile menu switches between two localized service link groups", () => {
 
 test("closed mobile navigation removes hidden controls from pointer and keyboard navigation", () => {
   assert.match(mobileNavSource, /className="mobile-nav-scrim"[\s\S]*?tabIndex=\{-1\}/);
-  assert.equal((mobileNavSource.match(/tabIndex=\{interactive \? 0 : -1\}/g) || []).length, 4);
+  assert.equal((mobileNavSource.match(/tabIndex=\{interactive \? 0 : -1\}/g) || []).length, 3);
   assert.match(cssSource, /\.mobile-nav-category-button\s*\{[\s\S]*?pointer-events:\s*none;/);
   assert.match(cssSource, /\.mobile-nav\.open \.mobile-nav-category-button\s*\{[\s\S]*?pointer-events:\s*auto;/);
 });
@@ -212,7 +211,7 @@ test("mobile category labels adapt safely across supported locales", () => {
 
 test("short mobile viewports separate the diamond, font controls, categories, and trigger", () => {
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)\s*\{[\s\S]*?\.mobile-nav-diamond\s*\{[\s\S]*?top:\s*43%;/);
-  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?grid-template-rows:\s*auto 48px minmax\(0, 1fr\) 50px auto;/);
+  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?grid-template-rows:\s*auto minmax\(0, 1fr\) 50px auto;/);
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav \.menu-font-controls\s*\{[\s\S]*?top:\s*calc\(43% \+ min\(44vw, 178px\)\);/);
   assert.doesNotMatch(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav-category-switch\s*\{[\s\S]*?height:\s*52px;/);
 });

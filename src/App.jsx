@@ -2123,7 +2123,6 @@ function MobileNav({ locale, fontControls }) {
   const directionTravelRef = useRef(0);
   const motionTimerRef = useRef(null);
   const triggerRef = useRef(null);
-  const coreRef = useRef(null);
   const activeGroupCopy = mobileMenuGroups[activeGroup];
   const items = activeGroup === "digital" ? primaryMenuItems : [homeItem, ...activeGroupCopy.items];
   const interactive = open && !opening && !closing;
@@ -2170,7 +2169,7 @@ function MobileNav({ locale, fontControls }) {
       return undefined;
     }
 
-    coreRef.current?.focus();
+    triggerRef.current?.focus();
     const onKeyDown = (event) => {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -2237,12 +2236,6 @@ function MobileNav({ locale, fontControls }) {
         <span className="mobile-nav-trigger-icon" aria-hidden="true"><span /><span /><span /></span>
       </button>
 
-      <span className="mobile-menu-morph" aria-hidden="true">
-        <span className="mobile-menu-morph-shape" />
-        <span className="mobile-menu-morph-ring" />
-        <span className="mobile-menu-morph-icon"><i /><i /><i /></span>
-      </span>
-
       <div className="mobile-nav-dialog" aria-hidden={!interactive}>
         <nav className="mobile-nav-diamond mobile-channel-panel" aria-label={localizedMenuLabels.servicesMenu}>
           <header className="mobile-channel-header">
@@ -2252,17 +2245,6 @@ function MobileNav({ locale, fontControls }) {
             </div>
             <span aria-hidden="true">CH / 02</span>
           </header>
-
-          <button
-            ref={coreRef}
-            className="mobile-channel-core"
-            type="button"
-            aria-label="Close mobile menu"
-            tabIndex={interactive ? 0 : -1}
-            onClick={closeMenu}
-          >
-            <i aria-hidden="true" />
-          </button>
 
           <div className="mobile-nav-diamond-core mobile-channel-routes" key={activeGroup}>
             {items.map((item, index) => (
