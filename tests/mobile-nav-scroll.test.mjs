@@ -76,6 +76,32 @@ test("mobile menu stages its geometric open and close motion", () => {
   assert.match(cssSource, /\.mobile-nav-link\.is-selecting/);
 });
 
+test("mobile menu morphs its bottom trigger into a full-screen temporal channel", () => {
+  assert.match(mobileNavSource, /const \[opening, setOpening\] = useState\(false\)/);
+  assert.match(mobileNavSource, /const \[closing, setClosing\] = useState\(false\)/);
+  assert.match(mobileNavSource, /mobile-channel-opening/);
+  assert.match(mobileNavSource, /mobile-channel-closing/);
+  assert.match(mobileNavSource, /className="mobile-menu-morph"/);
+  assert.match(mobileNavSource, /className="mobile-nav-diamond mobile-channel-panel"/);
+  assert.match(mobileNavSource, /className="mobile-channel-core"/);
+  assert.match(cssSource, /\.mobile-nav\.mobile-channel-opening \.mobile-menu-morph[\s\S]*?mobile-channel-core-open 620ms/);
+  assert.match(cssSource, /\.mobile-nav\.mobile-channel-closing \.mobile-menu-morph[\s\S]*?mobile-channel-core-close 620ms/);
+  assert.match(cssSource, /@keyframes mobile-channel-panel-open[\s\S]*?circle\(0[\s\S]*?circle\(150vmax/);
+  assert.match(cssSource, /@keyframes mobile-channel-panel-close[\s\S]*?circle\(150vmax[\s\S]*?circle\(0/);
+});
+
+test("mobile temporal channel presents safe-area navigation rows instead of a cramped directional grid", () => {
+  assert.match(mobileNavSource, /const primaryMenuItems = \[/);
+  assert.match(mobileNavSource, /key: "home"[\s\S]*?href: "\/"/);
+  assert.match(mobileNavSource, /className="mobile-channel-header"/);
+  assert.match(mobileNavSource, /className="mobile-nav-diamond-core mobile-channel-routes"/);
+  assert.match(mobileNavSource, /className="mobile-channel-footer"/);
+  assert.match(cssSource, /\.mobile-channel-panel\s*\{[\s\S]*?env\(safe-area-inset-top[\s\S]*?env\(safe-area-inset-bottom/);
+  assert.match(cssSource, /\.mobile-channel-routes\s*\{[\s\S]*?overflow-y:\s*auto/);
+  assert.match(cssSource, /\.mobile-channel-link\s*\{[\s\S]*?min-height:\s*56px/);
+  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-channel-panel/);
+});
+
 test("mobile menu switches between two localized service link groups", () => {
   const expectedGroupLabels = {
     zh: ["解決方案", "顧問服務"],
@@ -98,7 +124,7 @@ test("mobile menu switches between two localized service link groups", () => {
 
 test("closed mobile navigation removes hidden controls from pointer and keyboard navigation", () => {
   assert.match(mobileNavSource, /className="mobile-nav-scrim"[\s\S]*?tabIndex=\{-1\}/);
-  assert.equal((mobileNavSource.match(/tabIndex=\{open \? 0 : -1\}/g) || []).length, 3);
+  assert.equal((mobileNavSource.match(/tabIndex=\{interactive \? 0 : -1\}/g) || []).length, 4);
   assert.match(cssSource, /\.mobile-nav-category-button\s*\{[\s\S]*?pointer-events:\s*none;/);
   assert.match(cssSource, /\.mobile-nav\.open \.mobile-nav-category-button\s*\{[\s\S]*?pointer-events:\s*auto;/);
 });

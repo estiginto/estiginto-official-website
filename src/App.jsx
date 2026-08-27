@@ -2068,18 +2068,38 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
 
 function MobileNav({ locale, fontControls }) {
   const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
-  const mobileMenuGroups = getServiceMenuGroups(locale);
+  const primaryLabels = desktopPrimaryMenuCopy[locale] || desktopPrimaryMenuCopy.zh;
+  const serviceMenuGroups = getServiceMenuGroups(locale);
+  const homeItem = { key: "home", label: localizedMenuLabels.home, href: "/", position: "center" };
+  const primaryMenuItems = [
+    homeItem,
+    { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
+    { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
+    { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
+    { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
+    { key: "articles", label: primaryLabels.articles, href: "/#insights" },
+    { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
+  ];
+  const mobileMenuGroups = {
+    digital: { label: primaryLabels.siteMenu, items: primaryMenuItems },
+    growth: serviceMenuGroups.growth,
+  };
   const [open, setOpen] = useState(false);
+  const [opening, setOpening] = useState(false);
+  const [closing, setClosing] = useState(false);
   const [compact, setCompact] = useState(false);
   const [selectingKey, setSelectingKey] = useState(null);
   const [activeGroup, setActiveGroup] = useState("digital");
   const previousScrollYRef = useRef(0);
   const directionTravelRef = useRef(0);
+  const motionTimerRef = useRef(null);
+  const triggerRef = useRef(null);
+  const coreRef = useRef(null);
   const activeGroupCopy = mobileMenuGroups[activeGroup];
-  const items = [
-    { key: "home", label: localizedMenuLabels.home, href: "/", position: "center" },
-    ...activeGroupCopy.items,
-  ];
+  const items = activeGroup === "digital" ? primaryMenuItems : [homeItem, ...activeGroupCopy.items];
+  const interactive = open && !opening && !closing;
+
+  useEffect(() => () => window.clearTimeout(motionTimerRef.current), []);
 
   useEffect(() => {
     previousScrollYRef.current = window.scrollY;
@@ -2116,61 +2136,102 @@ function MobileNav({ locale, fontControls }) {
     };
   }, [open]);
 
-  return (
-    <div className={`mobile-nav ${open ? "open" : ""} ${compact ? "compact" : ""}`.trim()}>
-      <button className="mobile-nav-scrim" type="button" aria-label="Close mobile menu" tabIndex={-1} onClick={() => setOpen(false)} />
-      <div className="mobile-nav-dialog" aria-hidden={!open}>
-        <button
-          className="mobile-nav-trigger"
-          type="button"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((value) => {
-            const nextOpen = !value;
-            if (nextOpen) {
-              setCompact(false);
-              setSelectingKey(null);
-              setActiveGroup("digital");
-              directionTravelRef.current = 0;
-            }
-            return nextOpen;
-          })}
-        >
-          <span className="mobile-nav-trigger-shape" aria-hidden="true" />
-          <span className="mobile-nav-trigger-icon" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
-        </button>
+  useEffect(() => {
+    if (!interactive) {
+      return undefined;
+    }
 
-        <div className="mobile-nav-diamond">
-          <div className="mobile-nav-diamond-core" key={activeGroup}>
-            {items.map((item, index) => (
-              <a
-                key={item.key}
-                className={`mobile-nav-link ${item.position} ${selectingKey === item.key ? "is-selecting" : ""}`.trim()}
-                href={item.href}
-                aria-label={item.position === "center" ? item.label : undefined}
-                tabIndex={open ? 0 : -1}
-                style={{ "--menu-item-index": index }}
-                onClick={() => setSelectingKey(item.key)}
-              >
-                {item.position === "center" ? (
-                  <span className="mobile-nav-home-icon" aria-hidden="true"><i /></span>
-                ) : <span>{item.label}</span>}
-              </a>
-            ))}
-          </div>
-        </div>
-        <div className="mobile-nav-category-switch" role="group" aria-label="Service category">
+    coreRef.current?.focus();
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeMenu();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [interactive]);
+
+  const closeMenu = () => {
+    if (!open || closing) return;
+
+    window.clearTimeout(motionTimerRef.current);
+    triggerRef.current?.focus();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setOpening(false);
+      setClosing(false);
+      setOpen(false);
+      return;
+    }
+
+    setOpening(false);
+    setClosing(true);
+    motionTimerRef.current = window.setTimeout(() => {
+      setOpen(false);
+      setClosing(false);
+    }, 620);
+  };
+
+  const openMenu = () => {
+    window.clearTimeout(motionTimerRef.current);
+    setCompact(false);
+    setSelectingKey(null);
+    setActiveGroup("digital");
+    directionTravelRef.current = 0;
+    setClosing(false);
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setOpening(false);
+      setOpen(true);
+      return;
+    }
+
+    setOpening(true);
+    setOpen(true);
+    motionTimerRef.current = window.setTimeout(() => {
+      setOpening(false);
+    }, 620);
+  };
+
+  return (
+    <div className={`mobile-nav ${open ? "open" : ""} ${opening ? "mobile-channel-opening" : ""} ${closing ? "mobile-channel-closing" : ""} ${compact ? "compact" : ""}`.trim()}>
+      <button className="mobile-nav-scrim" type="button" aria-label="Close mobile menu" tabIndex={-1} onClick={closeMenu} />
+      <button
+        ref={triggerRef}
+        className="mobile-nav-trigger"
+        type="button"
+        aria-label={open ? "Close menu" : "Open menu"}
+        aria-expanded={open && !closing}
+        onClick={open ? closeMenu : openMenu}
+      >
+        <span className="mobile-nav-trigger-shape" aria-hidden="true" />
+        <span className="mobile-nav-trigger-icon" aria-hidden="true"><span /><span /><span /></span>
+      </button>
+
+      <span className="mobile-menu-morph" aria-hidden="true">
+        <span className="mobile-menu-morph-shape" />
+        <span className="mobile-menu-morph-ring" />
+        <span className="mobile-menu-morph-icon"><i /><i /><i /></span>
+      </span>
+
+      <div className="mobile-nav-dialog" aria-hidden={!interactive}>
+        <nav className="mobile-nav-diamond mobile-channel-panel" aria-label={localizedMenuLabels.servicesMenu}>
+          <header className="mobile-channel-header">
+            <div>
+              <p>Temporal navigation / Estiginto</p>
+              <span>Mobile channel · TPE 25.0330° N</span>
+            </div>
+            <span aria-hidden="true">CH / 02</span>
+          </header>
+
+          <div className="mobile-nav-category-switch" role="group" aria-label="Navigation category">
           {Object.entries(mobileMenuGroups).map(([groupKey, group]) => (
             <button
               key={groupKey}
               className={`mobile-nav-category-button ${groupKey}`}
               type="button"
               aria-pressed={activeGroup === groupKey}
-              tabIndex={open ? 0 : -1}
+              tabIndex={interactive ? 0 : -1}
               onClick={() => {
                 setActiveGroup(groupKey);
                 setSelectingKey(null);
@@ -2179,8 +2240,46 @@ function MobileNav({ locale, fontControls }) {
               <span>{group.label}</span>
             </button>
           ))}
-        </div>
-        <FontSizeControls {...fontControls} tabIndex={open ? 0 : -1} />
+          </div>
+
+          <button
+            ref={coreRef}
+            className="mobile-channel-core"
+            type="button"
+            aria-label="Close mobile menu"
+            tabIndex={interactive ? 0 : -1}
+            onClick={closeMenu}
+          >
+            <i aria-hidden="true" />
+          </button>
+
+          <div className="mobile-nav-diamond-core mobile-channel-routes" key={activeGroup}>
+            {items.map((item, index) => (
+              <a
+                key={item.key}
+                className={`mobile-nav-link mobile-channel-link ${item.position || ""} ${selectingKey === item.key ? "is-selecting" : ""}`.trim()}
+                href={item.href}
+                aria-label={item.position === "center" ? item.label : undefined}
+                tabIndex={interactive ? 0 : -1}
+                style={{ "--menu-item-index": index }}
+                onClick={() => setSelectingKey(item.key)}
+              >
+                <span className="mobile-channel-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                <span className="mobile-channel-name">
+                  {item.position === "center" ? <span className="mobile-nav-home-icon" aria-hidden="true"><i /></span> : null}
+                  <span>{item.label}</span>
+                </span>
+                <span className="mobile-channel-arrow" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+
+          <footer className="mobile-channel-footer">
+            <span>Channel control</span>
+            <FontSizeControls {...fontControls} tabIndex={interactive ? 0 : -1} />
+            <span>EST / 2026</span>
+          </footer>
+        </nav>
       </div>
     </div>
   );
