@@ -518,7 +518,7 @@ const localizedCopy = {
     },
     clientLogos: {
       eyebrow: "Selected relationships / 2011—2026",
-      title: "服務過的客戶",
+      title: "服務經驗",
       status: "CLIENT ARCHIVE / 03 STREAMS",
     },
     marquee: [
@@ -635,7 +635,7 @@ const localizedCopy = {
     },
     clientLogos: {
       eyebrow: "Selected relationships / 2011—2026",
-      title: "Clients we've served",
+      title: "Service Experience",
       status: "CLIENT ARCHIVE / 03 STREAMS",
     },
     marquee: ["Adaptive decision systems", "Software system planning and implementation", "Software, hardware, and IoT integration", "ERP / WMS / CRM", "Business websites / e-commerce / payments / invoices", "Custom app development", "War-room dashboards", "Automation execution support systems"],
@@ -700,7 +700,7 @@ const localizedCopy = {
     },
     clientLogos: {
       eyebrow: "Selected relationships / 2011—2026",
-      title: "ご支援した企業",
+      title: "サービス実績",
       status: "CLIENT ARCHIVE / 03 STREAMS",
     },
     marquee: ["能動型意思決定システム", "ソフトウェアシステムの設計と構築", "ソフト・ハード・IoT 統合", "ERP / WMS / CRM", "ビジネスサイト / EC / 決済 / 請求書", "カスタム APP", "戦情室ダッシュボード", "自動化実行支援システム"],
@@ -1170,8 +1170,13 @@ function ClientLogoMarquee({ copy }) {
   const lanes = buildClientLogoLanes(clientLogos);
 
   return (
-    <section className="client-logo-marquee" id="clients" aria-label={copy.clientLogos.title}>
-      <div className="client-logo-marquee-field">
+    <section className="client-logo-marquee" id="clients">
+      <header className="client-logo-marquee-header">
+        <span className="client-logo-marquee-index" aria-hidden="true">§ 03</span>
+        <h2>{copy.clientLogos.title}</h2>
+        <span className="client-logo-marquee-header-rule" aria-hidden="true" />
+      </header>
+      <div className="client-logo-marquee-field" aria-hidden="true">
         {lanes.map((lane, laneIndex) => {
           return (
             <div className="client-logo-marquee-lane" key={`client-lane-${laneIndex + 1}`}>
@@ -1184,7 +1189,7 @@ function ClientLogoMarquee({ copy }) {
                         data-reserved={client.src ? undefined : "true"}
                         key={`${client.id}-${loopIndex}`}
                       >
-                        {client.src ? <img src={client.src} alt={client.alt} loading="lazy" /> : (
+                        {client.src ? <img src={client.src} alt="" loading="lazy" /> : (
                           <span aria-hidden="true">{String(itemIndex * 3 + laneIndex + 1).padStart(2, "0")}</span>
                         )}
                       </div>

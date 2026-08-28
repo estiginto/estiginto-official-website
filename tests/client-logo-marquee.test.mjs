@@ -6,7 +6,21 @@ import { marketingAssetPaths } from "../scripts/static-assets.mjs";
 import { buildClientLogoLanes, clientLogos } from "../src/clientLogoMarquee.js";
 
 const css = readFileSync(new URL("../src/App.css", import.meta.url), "utf8");
+const appSource = readFileSync(new URL("../src/App.jsx", import.meta.url), "utf8");
 const extractionSource = readFileSync(new URL("../scripts/extract-client-logos.py", import.meta.url), "utf8");
+
+async function getVisibleLogoBounds(path) {
+  const { info } = await sharp(path)
+    .trim({ background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .toBuffer({ resolveWithObject: true });
+
+  return {
+    width: info.width,
+    height: info.height,
+    left: -info.trimOffsetLeft,
+    top: -info.trimOffsetTop,
+  };
+}
 
 test("client logos render at the approved larger marquee size", () => {
   const itemRule = css.match(/\.client-logo-marquee-item\s*\{([^}]*)\}/)?.[1] || "";
@@ -21,10 +35,31 @@ test("client logos render at the approved larger marquee size", () => {
   assert.match(imageRule, /opacity:\s*0\.86/);
 });
 
+test("client logo hover keeps its existing reveal while rendering on a crisp layer", () => {
+  const imageRule = css.match(/\.client-logo-marquee-item img\s*\{([^}]*)\}/)?.[1] || "";
+  const hoverRule = css.match(/\.client-logo-marquee-item:hover img\s*\{([^}]*)\}/)?.[1] || "";
+
+  assert.match(imageRule, /backface-visibility:\s*hidden/);
+  assert.match(imageRule, /image-rendering:\s*auto/);
+  assert.match(hoverRule, /filter:\s*none/);
+  assert.match(hoverRule, /opacity:\s*1/);
+  assert.match(hoverRule, /translateZ\(0\) scale\(1\.04\)/);
+});
+
+test("client logo marquee does not pause on hover or expose client names as text alternatives", () => {
+  const marqueeSource = appSource.match(/function ClientLogoMarquee[\s\S]*?\n\}/)?.[0] || "";
+
+  assert.doesNotMatch(css, /client-logo-marquee-field:hover[^{]*\{[^}]*animation-play-state:\s*paused/);
+  assert.match(marqueeSource, /aria-hidden="true"/);
+  assert.match(marqueeSource, /<img src=\{client\.src\} alt=""/);
+  assert.doesNotMatch(marqueeSource, /aria-label=\{copy\.clientLogos\.title\}/);
+  assert.doesNotMatch(marqueeSource, /alt=\{client\.alt\}/);
+});
+
 test("client logo inventory contains every normalized source logo", () => {
-  assert.equal(clientLogos.length, 47);
-  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 47);
-  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 47);
+  assert.equal(clientLogos.length, 48);
+  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 48);
+  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 48);
   assert.equal(clientLogos.every((client) => client.alt.length > 0), true);
   assert.equal(clientLogos.every((client) => existsSync(`.${client.src}`)), true);
   assert.equal(clientLogos.some((client) => client.id === "fable"), false);
@@ -59,6 +94,12 @@ test("mobile client logo lanes keep every logo inside a fixed, unrotated cell", 
   assert.match(mobileRule, /\.client-logo-marquee-item img\s*\{[^}]*max-width:\s*calc\(100% - 20px\)/);
 });
 
+test("client logo anchor leaves its heading clear of the sticky navigation", () => {
+  const sectionRule = css.match(/\.client-logo-marquee\s*\{([^}]*)\}/)?.[1] || "";
+
+  assert.match(sectionRule, /scroll-margin-top:\s*clamp\(64px,\s*8vw,\s*88px\)/);
+});
+
 test("King Life is extracted from a complete high-resolution PDF crop", () => {
   assert.match(
     extractionSource,
@@ -69,7 +110,7 @@ test("King Life is extracted from a complete high-resolution PDF crop", () => {
 test("client inventory is explicitly grouped by recognition, government, and other clients", () => {
   const lanes = buildClientLogoLanes(clientLogos);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [15, 4, 28]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [15, 4, 29]);
   assert.deepEqual(lanes[1].map((client) => client.id), [
     "bureau-foreign-trade",
     "trade-negotiations",
@@ -86,7 +127,7 @@ test("client inventory is explicitly grouped by recognition, government, and oth
   ]);
   assert.equal(lanes[2].some((client) => client.id === "lecoln-keysight"), true);
   assert.deepEqual(
-    lanes[2].slice(-8).map((client) => client.id),
+    lanes[2].slice(-9).map((client) => client.id),
     [
       "juoda",
       "yun-counseling",
@@ -96,9 +137,44 @@ test("client inventory is explicitly grouped by recognition, government, and oth
       "noah-builders",
       "zentia",
       "yabung",
+      "chun-hon-tech",
     ],
   );
   assert.equal(lanes.flat().every((item) => item.src !== null), true);
+});
+
+test("Chun Hon Tech is rendered from the supplied asset in the third lane", async () => {
+  const lanes = buildClientLogoLanes(clientLogos);
+  const client = lanes[2].find((item) => item.id === "chun-hon-tech");
+
+  assert.deepEqual(client, {
+    id: "chun-hon-tech",
+    alt: "中流科技 Chun Hon Tech",
+    tier: 3,
+    src: "/img/client-logos/chun-hon-tech.webp",
+  });
+  assert.equal(existsSync(`.${client.src}`), true);
+  assert.deepEqual(
+    await sharp(`.${client.src}`).metadata().then(({ width, height }) => ({ width, height })),
+    { width: 960, height: 480 },
+  );
+});
+
+test("Merica uses a wide lockup with readable copy to the right of its mark", async () => {
+  const bounds = await getVisibleLogoBounds("./img/client-logos/merica.webp");
+
+  assert.ok(bounds.width >= 650, `expected a wide lockup, received ${bounds.width}px`);
+  assert.ok(bounds.left >= 70, `expected safe left margin, received ${bounds.left}px`);
+  assert.ok(960 - bounds.left - bounds.width >= 70, "expected safe right margin");
+});
+
+test("WealthyLife artwork keeps enough transparent margin to avoid visual clipping", async () => {
+  const bounds = await getVisibleLogoBounds("./img/client-logos/wealthylife.webp");
+
+  assert.ok(bounds.left >= 110, `expected wider left margin, received ${bounds.left}px`);
+  assert.ok(960 - bounds.left - bounds.width >= 110, "expected wider right margin");
+  assert.ok(bounds.top >= 110, `expected safe top margin, received ${bounds.top}px`);
+  assert.ok(480 - bounds.top - bounds.height >= 110, "expected safe bottom margin");
 });
 
 test("client logo marquee reserves three populated lanes without inventing brands", () => {

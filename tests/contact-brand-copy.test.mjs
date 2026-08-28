@@ -51,11 +51,13 @@ test("homepage hero uses the approved two-line impact description in every local
   assert.doesNotMatch(heroSource, /copy\.hero\.lede\[2\]/);
 });
 
-test("client marquee keeps an accessible name without rendering archive labels", () => {
+test("client marquee exposes only its section heading while client names remain decorative", () => {
   const marqueeSource = functionSource("ClientLogoMarquee", "Marquee");
 
-  assert.match(marqueeSource, /aria-label=\{copy\.clientLogos\.title\}/);
-  assert.doesNotMatch(marqueeSource, /client-logo-marquee-header/);
+  assert.match(marqueeSource, /aria-hidden="true"/);
+  assert.doesNotMatch(marqueeSource, /aria-label=\{copy\.clientLogos\.title\}/);
+  assert.match(marqueeSource, /client-logo-marquee-header/);
+  assert.match(marqueeSource, /<h2>\{copy\.clientLogos\.title\}<\/h2>/);
   assert.doesNotMatch(marqueeSource, /copy\.clientLogos\.eyebrow/);
   assert.doesNotMatch(marqueeSource, /copy\.clientLogos\.status/);
 });

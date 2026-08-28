@@ -62,6 +62,7 @@ const clientLogoDefinitions = [
       ["noah-builders", "NoahBuilders"],
       ["zentia", "Zentia RevoCart"],
       ["yabung", "Yabung 亞楓好物"],
+      ["chun-hon-tech", "中流科技 Chun Hon Tech"],
     ],
   },
 ];

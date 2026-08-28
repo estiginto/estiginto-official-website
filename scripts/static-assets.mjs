@@ -7,7 +7,7 @@ const clientLogoAssetPaths = [
   "jing-he-medical", "a-plus-dermatology", "bauer-group", "lecoln-keysight", "mj-color",
   "bcfbw", "vantage", "worthbee", "fvs", "yang-ming", "you-ming-huei",
   "juoda", "yun-counseling", "zhencheng-family-office", "shanheyu",
-  "apex-royal", "noah-builders", "zentia", "yabung",
+  "apex-royal", "noah-builders", "zentia", "yabung", "chun-hon-tech",
 ].map((name) => `client-logos/${name}.webp`);
 
 export const marketingAssetPaths = [
