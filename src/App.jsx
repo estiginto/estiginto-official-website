@@ -1034,6 +1034,7 @@ function HeroSoulRibbon() {
 
   return (
     <div ref={backgroundRef} className="hero-soul-ribbon" aria-hidden="true" data-ready={ready}>
+      <span className="hero-depth-grid" />
       <canvas ref={canvasRef} className="hero-soul-ribbon-canvas" />
       <span className="hero-soul-ribbon-hud">SOUL CURRENT / FULL FIELD · 01A</span>
     </div>
@@ -1152,7 +1153,7 @@ function PageTransition() {
             </span>
           ) : null}
           <b data-text="ESTIGINTO">ESTIGINTO</b>
-          <em>DESIGNING SYSTEMS FOR THE NEXT REALITY</em>
+          <em>Innovation across borders</em>
         </span>
         <span className="page-transition-vortex-hud page-transition-vortex-hud-bottom">
           <i>ESTIGINTO MOTION SYSTEM</i><i>ACCELERATE · INVERT · LOCK</i>
