@@ -22,6 +22,20 @@ async function getVisibleLogoBounds(path) {
   };
 }
 
+async function getVisiblePixelRatio(path) {
+  const { data, info } = await sharp(path)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  let visiblePixels = 0;
+
+  for (let alphaIndex = 3; alphaIndex < data.length; alphaIndex += 4) {
+    if (data[alphaIndex] > 16) visiblePixels += 1;
+  }
+
+  return visiblePixels / (info.width * info.height);
+}
+
 test("client logos render at the approved larger marquee size", () => {
   const itemRule = css.match(/\.client-logo-marquee-item\s*\{([^}]*)\}/)?.[1] || "";
   const imageRule = css.match(/\.client-logo-marquee-item img\s*\{([^}]*)\}/)?.[1] || "";
@@ -175,6 +189,29 @@ test("WealthyLife artwork keeps enough transparent margin to avoid visual clippi
   assert.ok(960 - bounds.left - bounds.width >= 110, "expected wider right margin");
   assert.ok(bounds.top >= 110, `expected safe top margin, received ${bounds.top}px`);
   assert.ok(480 - bounds.top - bounds.height >= 110, "expected safe bottom margin");
+});
+
+test("Lotus uses the transparent official wordmark instead of a handmade backing panel", async () => {
+  const visiblePixelRatio = await getVisiblePixelRatio("./img/client-logos/lotus.webp");
+  const bounds = await getVisibleLogoBounds("./img/client-logos/lotus.webp");
+
+  assert.ok(visiblePixelRatio < 0.3, `expected transparent artwork, received ${visiblePixelRatio}`);
+  assert.ok(bounds.width >= 650, `expected a legible wordmark, received ${bounds.width}px`);
+});
+
+test("King Life uses its official two-mark lockup without the old full-width color strip", async () => {
+  const visiblePixelRatio = await getVisiblePixelRatio("./img/client-logos/king-life.webp");
+  const bounds = await getVisibleLogoBounds("./img/client-logos/king-life.webp");
+
+  assert.ok(visiblePixelRatio < 0.28, `expected transparent artwork, received ${visiblePixelRatio}`);
+  assert.ok(bounds.width >= 600, `expected a legible lockup, received ${bounds.width}px`);
+});
+
+test("Marketech fills its logo cell from the official artwork instead of a padded thumbnail", async () => {
+  const bounds = await getVisibleLogoBounds("./img/client-logos/marketech.webp");
+
+  assert.ok(bounds.width >= 760, `expected a wide official mark, received ${bounds.width}px`);
+  assert.ok(bounds.height >= 220, `expected a legible official mark, received ${bounds.height}px`);
 });
 
 test("client logo marquee reserves three populated lanes without inventing brands", () => {
