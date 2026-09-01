@@ -62,11 +62,11 @@ test("client marquee exposes only its section heading while client names remain 
   assert.doesNotMatch(marqueeSource, /copy\.clientLogos\.status/);
 });
 
-test("homepage continues from the client marquee to contact while news is hidden", () => {
+test("homepage continues from the product marquee through client experience to contact while news is hidden", () => {
   const homepageSource = appSource.match(/\) : \(\s*<>[\s\S]*?<Hero copy=\{copy\} \/>[\s\S]*?<\/>\s*\)\}/)?.[0] || "";
 
   assert.doesNotMatch(homepageSource, /<Insights \/>/);
-  assert.match(homepageSource, /<ClientLogoMarquee copy=\{copy\} \/>[\s\S]*?<Marquee copy=\{copy\} \/>[\s\S]*?<Contact copy=\{copy\} \/>/);
+  assert.match(homepageSource, /<Marquee copy=\{copy\} \/>[\s\S]*?<ClientLogoMarquee copy=\{copy\} \/>[\s\S]*?<Contact copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<ServiceOverview copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<Numbers copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<Manifesto copy=\{copy\} \/>/);

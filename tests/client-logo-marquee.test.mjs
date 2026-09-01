@@ -121,31 +121,51 @@ test("King Life is extracted from a complete high-resolution PDF crop", () => {
   );
 });
 
-test("client inventory is explicitly grouped by recognition, government, and other clients", () => {
+test("client inventory is arranged into four curated brand lanes", () => {
   const lanes = buildClientLogoLanes(clientLogos);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [15, 4, 29]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [13, 5, 10, 20]);
   assert.deepEqual(lanes[1].map((client) => client.id), [
+    "tradevan",
     "bureau-foreign-trade",
     "trade-negotiations",
     "taipei-architects",
     "taiwan-stock-exchange",
   ]);
-  assert.equal(lanes[0].some((client) => client.id === "yang-ming"), true);
-  assert.deepEqual(lanes[0].slice(-5).map((client) => client.id), [
+  assert.deepEqual(lanes[0].map((client) => client.id), [
+    "marketech",
+    "ezoom",
+    "ey",
+    "lotus",
+    "commonwealth",
+    "morinaga",
+    "jung-kwan-jang",
+    "yang-ming",
     "you-ming-huei",
     "taiwan-mainstream-coop",
     "kyl-auction",
     "kyce",
     "king-life",
   ]);
-  assert.equal(lanes[2].some((client) => client.id === "lecoln-keysight"), true);
+  assert.deepEqual(lanes[2].map((client) => client.id), [
+    "merica",
+    "bauer-group",
+    "lecoln-keysight",
+    "evco-creative-home",
+    "conflux",
+    "taiwan-psychoanalytic",
+    "wealthylife",
+    "sleekstrip",
+    "zhencheng-family-office",
+    "spg",
+  ]);
+  assert.equal(lanes[3].some((client) => client.id === "eighteen-tea"), true);
   assert.deepEqual(
-    lanes[2].slice(-9).map((client) => client.id),
+    lanes[3].slice(-9).map((client) => client.id),
     [
+      "fvs",
       "juoda",
       "yun-counseling",
-      "zhencheng-family-office",
       "shanheyu",
       "apex-royal",
       "noah-builders",
@@ -157,14 +177,14 @@ test("client inventory is explicitly grouped by recognition, government, and oth
   assert.equal(lanes.flat().every((item) => item.src !== null), true);
 });
 
-test("Chun Hon Tech is rendered from the supplied asset in the third lane", async () => {
+test("Chun Hon Tech is rendered from the supplied asset in the fourth lane", async () => {
   const lanes = buildClientLogoLanes(clientLogos);
-  const client = lanes[2].find((item) => item.id === "chun-hon-tech");
+  const client = lanes[3].find((item) => item.id === "chun-hon-tech");
 
   assert.deepEqual(client, {
     id: "chun-hon-tech",
     alt: "中流科技 Chun Hon Tech",
-    tier: 3,
+    tier: 4,
     src: "/img/client-logos/chun-hon-tech.webp",
   });
   assert.equal(existsSync(`.${client.src}`), true);
@@ -214,16 +234,16 @@ test("Marketech fills its logo cell from the official artwork instead of a padde
   assert.ok(bounds.height >= 220, `expected a legible official mark, received ${bounds.height}px`);
 });
 
-test("client logo marquee reserves three populated lanes without inventing brands", () => {
+test("client logo marquee reserves four populated lanes without inventing brands", () => {
   const lanes = buildClientLogoLanes();
 
-  assert.equal(lanes.length, 3);
-  assert.deepEqual(lanes.map((lane) => lane.length), [8, 8, 8]);
+  assert.equal(lanes.length, 4);
+  assert.deepEqual(lanes.map((lane) => lane.length), [6, 6, 6, 6]);
   assert.equal(lanes.flat().every((item) => item.src === null && item.alt === ""), true);
   assert.equal(new Set(lanes.flat().map((item) => item.id)).size, 24);
 });
 
-test("client logos are distributed across all three lanes without truncation", () => {
+test("client logos are distributed across all four lanes without truncation", () => {
   const clients = Array.from({ length: 29 }, (_, index) => ({
     id: `client-${index + 1}`,
     src: `/img/clients/client-${index + 1}.svg`,
@@ -232,6 +252,6 @@ test("client logos are distributed across all three lanes without truncation", (
 
   const lanes = buildClientLogoLanes(clients);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [10, 10, 9]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [8, 7, 7, 7]);
   assert.deepEqual(lanes.flatMap((lane) => lane).map((item) => item.id).sort(), clients.map((item) => item.id).sort());
 });

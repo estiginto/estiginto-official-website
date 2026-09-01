@@ -68,8 +68,8 @@ test("desktop menu trigger locks when the pointer clearly approaches from its up
   assert.match(desktopMenuSource, /if \(!motion\.shouldFollow\)[\s\S]*?return;/);
 });
 
-test("desktop menu trigger stays out of the client logo viewing area", () => {
-  assert.match(
+test("desktop menu trigger remains available over the client logo viewing area", () => {
+  assert.doesNotMatch(
     cssSource,
     /body:has\(\.client-logo-marquee:hover\) \.desktop-menu-trigger\s*\{[\s\S]*?opacity:\s*0;[\s\S]*?pointer-events:\s*none;/,
   );

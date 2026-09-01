@@ -193,15 +193,23 @@ test("homepage hero hosts the full-field soul ribbon without covering its copy",
   assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*hero-soul-ribbon/);
 });
 
-test("homepage places a three-lane client logo marquee directly below the hero", () => {
+test("homepage places its product marquee above the four-lane service experience logo marquee", () => {
   const app = read("src/App.jsx");
   const css = read("src/App.css");
 
-  assert.match(app, /<Hero copy=\{copy\} \/>\s*<ClientLogoMarquee copy=\{copy\} \/>\s*<Marquee copy=\{copy\} \/>/);
+  assert.match(app, /<Hero copy=\{copy\} \/>\s*<HomeDirectory copy=\{copy\} \/>\s*<Marquee copy=\{copy\} \/>\s*<ClientLogoMarquee copy=\{copy\} \/>/);
   assert.match(app, /function ClientLogoMarquee\(\{ copy \}\)/);
   assert.match(app, /buildClientLogoLanes/);
   assert.match(css, /\.client-logo-marquee-lane:nth-child\(2\)[\s\S]*?animation-direction:\s*reverse/);
   assert.match(css, /prefers-reduced-motion:\s*reduce[\s\S]*client-logo-marquee-track/);
+});
+
+test("homepage directory uses a brand-oriented navigation label in every locale", () => {
+  const app = read("src/App.jsx");
+
+  assert.match(app, /siteMenu:\s*"探索 ESTIGINTO"/);
+  assert.match(app, /siteMenu:\s*"Explore ESTIGINTO"/);
+  assert.match(app, /siteMenu:\s*"ESTIGINTOを知る"/);
 });
 
 test("case page groups selected work by client value", () => {

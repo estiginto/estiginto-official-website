@@ -1128,11 +1128,6 @@ ul, ol  { margin: 0; }
   pointer-events: auto;
 }
 
-body:has(.client-logo-marquee:hover) .desktop-menu-trigger {
-  opacity: 0;
-  pointer-events: none;
-}
-
 .desktop-cursor-menu.open .desktop-menu-trigger {
   z-index: 0;
   pointer-events: none;
@@ -2910,6 +2905,102 @@ body:has(.client-logo-marquee:hover) .desktop-menu-trigger {
 .btn-on-night::before { background: var(--signal); }
 .btn-on-night:hover { color: var(--night); }
 
+/* Compact homepage directory — the same destinations as the main menu. */
+.home-directory {
+  padding-block: clamp(28px, 3.6vw, 48px);
+  scroll-margin-top: 88px;
+  border-top: 1px solid var(--ink-line);
+  background: var(--paper);
+}
+.home-directory-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: clamp(32px, 4vw, 64px);
+}
+.home-directory-group { min-width: 0; }
+.home-directory-consulting {
+  padding-left: clamp(24px, 3vw, 44px);
+  border-left: 1px solid var(--ink-line);
+}
+.home-directory-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-bottom: 14px;
+}
+.home-directory-heading > span {
+  color: #8a6536;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+}
+.home-directory-heading h2 {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  color: var(--ink-mute);
+}
+.home-directory-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.home-directory-consulting .home-directory-links {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.home-directory-links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 48px;
+  height: 100%;
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--ink-line);
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+.home-directory-links a > span { overflow-wrap: anywhere; }
+.home-directory-arrow {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  color: #8a6536;
+  stroke: currentColor;
+  stroke-width: 1.25;
+  transition: transform 180ms ease;
+}
+.home-directory-links a:hover,
+.home-directory-links a:focus-visible {
+  color: var(--amber-deep);
+  border-bottom-color: #8a6536;
+}
+.home-directory-links a:hover .home-directory-arrow { transform: translateX(3px); }
+.home-directory-links a:focus-visible {
+  outline: 2px solid var(--amber-deep);
+  outline-offset: 4px;
+}
+@media (max-width: 760px) {
+  .home-directory-grid { grid-template-columns: 1fr; gap: 26px; }
+  .home-directory-consulting { padding-left: 0; border-left: 0; }
+  .home-directory-links { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+  .home-directory-heading { margin-bottom: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-directory-links a,
+  .home-directory-arrow { transition: none; }
+  .home-directory-links a:hover .home-directory-arrow { transform: none; }
+}
+
 /* ============================================================
    CLIENT LOGO MARQUEE
    ============================================================ */
@@ -2987,6 +3078,8 @@ body:has(.client-logo-marquee:hover) .desktop-menu-trigger {
 .client-logo-marquee-lane:nth-child(2) { --client-lane-duration: 54s; }
 .client-logo-marquee-lane:nth-child(2) .client-logo-marquee-track { animation-direction: reverse; }
 .client-logo-marquee-lane:nth-child(3) { --client-lane-duration: 48s; }
+.client-logo-marquee-lane:nth-child(4) { --client-lane-duration: 58s; }
+.client-logo-marquee-lane:nth-child(4) .client-logo-marquee-track { animation-direction: reverse; }
 .client-logo-marquee-track {
   display: flex;
   width: max-content;

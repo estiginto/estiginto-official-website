@@ -1,4 +1,4 @@
-const LANE_COUNT = 3;
+const LANE_COUNT = 4;
 const RESERVED_SLOT_COUNT = 24;
 
 const clientLogoDefinitions = [
@@ -7,10 +7,8 @@ const clientLogoDefinitions = [
     clients: [
       ["marketech", "Marketech International Corp."],
       ["ezoom", "eZoom Information, Inc."],
-      ["tradevan", "Trade-Van Information"],
       ["ey", "EY 安永"],
       ["lotus", "Lotus 美時化學製藥"],
-      ["spg", "SPG 冠亞資產管理顧問"],
       ["commonwealth", "天下雜誌 CommonWealth Magazine"],
       ["morinaga", "森永 Morinaga"],
       ["jung-kwan-jang", "正官庄 Jung Kwan Jang"],
@@ -25,6 +23,7 @@ const clientLogoDefinitions = [
   {
     tier: 2,
     clients: [
+      ["tradevan", "Trade-Van Information"],
       ["bureau-foreign-trade", "經濟部國際貿易局"],
       ["trade-negotiations", "行政院經貿談判辦公室"],
       ["taipei-architects", "臺北市建築師公會"],
@@ -34,21 +33,28 @@ const clientLogoDefinitions = [
   {
     tier: 3,
     clients: [
-      ["eighteen-tea", "御用高級單本茶 十八味"],
-      ["evco-creative-home", "EVCO Creative Home 美國生活用品百貨"],
-      ["merica", "Merica"],
-      ["after-school-nest", "放學窩"],
-      ["conflux", "Conflux 樂浪遊艇俱樂部"],
-      ["archi-5", "ARCHI-5"],
-      ["mca-creative-industries", "MCA Creative Industries 韓國文創"],
-      ["taiwan-psychoanalytic", "臺灣精神分析學會"],
-      ["wealthylife", "中華財富人生財商推廣協會 WealthyLife"],
-      ["beyond-amazing", "Beyond Amazing 國際高端旅遊"],
-      ["sleekstrip", "SleekStrip"],
-      ["jing-he-medical", "景賀醫美"],
-      ["a-plus-dermatology", "A+ Beauty 極緻皮膚專科診所"],
+      ["merica", "美加文教機構 Merica"],
       ["bauer-group", "BauerGroup SmartVending"],
       ["lecoln-keysight", "立肯科技 Lecoln Technology / Keysight Technologies"],
+      ["evco-creative-home", "EVCO Creative Home 美國生活用品百貨"],
+      ["conflux", "Conflux 樂浪遊艇俱樂部"],
+      ["taiwan-psychoanalytic", "臺灣精神分析學會"],
+      ["wealthylife", "中華財富人生財商推廣協會 WealthyLife"],
+      ["sleekstrip", "SleekStrip"],
+      ["zhencheng-family-office", "臻承國際家族辦公室聯盟"],
+      ["spg", "SPG 冠亞資產管理顧問"],
+    ],
+  },
+  {
+    tier: 4,
+    clients: [
+      ["eighteen-tea", "御用高級單本茶 十八味"],
+      ["after-school-nest", "放學窩"],
+      ["archi-5", "ARCHI-5"],
+      ["mca-creative-industries", "MCA Creative Industries 韓國文創"],
+      ["beyond-amazing", "Beyond Amazing 國際高端旅遊"],
+      ["jing-he-medical", "景賀醫美"],
+      ["a-plus-dermatology", "A+ Beauty 極緻皮膚專科診所"],
       ["mj-color", "MJ. Color"],
       ["bcfbw", "BCFBW"],
       ["vantage", "Vantage"],
@@ -56,7 +62,6 @@ const clientLogoDefinitions = [
       ["fvs", "FVS 黃金數位憑證"],
       ["juoda", "卓達室內裝修 Juoda Interior Design"],
       ["yun-counseling", "蘊光心理諮商所 Yun Counseling"],
-      ["zhencheng-family-office", "臻承國際家族辦公室聯盟"],
       ["shanheyu", "善和寓"],
       ["apex-royal", "Apex Royal"],
       ["noah-builders", "NoahBuilders"],

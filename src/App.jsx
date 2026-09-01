@@ -85,9 +85,9 @@ const menuLabels = {
 };
 
 const desktopPrimaryMenuCopy = {
-  zh: { faq: "常見問題", articles: "文章", siteMenu: "網站導覽" },
-  en: { faq: "FAQ", articles: "Articles", siteMenu: "Site navigation" },
-  ja: { faq: "よくある質問", articles: "記事", siteMenu: "サイトナビゲーション" },
+  zh: { faq: "常見問題", articles: "文章", siteMenu: "探索 ESTIGINTO" },
+  en: { faq: "FAQ", articles: "Articles", siteMenu: "Explore ESTIGINTO" },
+  ja: { faq: "よくある質問", articles: "記事", siteMenu: "ESTIGINTOを知る" },
 };
 
 const consultingServicesByLocale = {
@@ -1072,7 +1072,7 @@ function Hero({ copy }) {
         </div>
       </div>
 
-      <a className="scrolldown" href="#clients">{copy.hero.scrolldown}</a>
+      <a className="scrolldown" href="#home-directory">{copy.hero.scrolldown}</a>
     </section>
   );
 }
@@ -1166,6 +1166,55 @@ function PageTransition() {
   );
 }
 
+function HomeDirectory({ copy }) {
+  const labels = menuLabels[copy.locale] || menuLabels.zh;
+  const primaryLabels = desktopPrimaryMenuCopy[copy.locale] || desktopPrimaryMenuCopy.zh;
+  const consulting = getServiceMenuGroups(copy.locale).growth;
+  const groups = [
+    {
+      key: "website",
+      label: primaryLabels.siteMenu,
+      index: "01 / EXPLORE",
+      items: [
+        { key: "home", label: labels.home, href: "/" },
+        { key: "about", label: labels.about, href: "/about.html" },
+        { key: "solutions", label: labels.solutions, href: "/solutions.html" },
+        { key: "case", label: labels.case, href: "/case.html" },
+        { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
+        { key: "contact", label: labels.contact, href: "/contact.html" },
+      ],
+    },
+    { key: "consulting", label: consulting.label, index: "02 / CONSULTING", items: consulting.items },
+  ];
+
+  return (
+    <section className="home-directory" id="home-directory" aria-label={labels.servicesMenu}>
+      <div className="wrap home-directory-grid">
+        {groups.map((group) => (
+          <nav className={`home-directory-group home-directory-${group.key}`} key={group.key} aria-labelledby={`home-directory-${group.key}`}>
+            <div className="home-directory-heading">
+              <span aria-hidden="true">{group.index}</span>
+              <h2 id={`home-directory-${group.key}`}>{group.label}</h2>
+            </div>
+            <ul className="home-directory-links">
+              {group.items.map((item) => (
+                <li key={item.key}>
+                  <a href={item.href} aria-current={item.key === "home" ? "page" : undefined}>
+                    <span>{item.label}</span>
+                    <svg className="home-directory-arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M3 8h9M8 4l4 4-4 4" />
+                    </svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function ClientLogoMarquee({ copy }) {
   const lanes = buildClientLogoLanes(clientLogos);
 
@@ -1190,7 +1239,7 @@ function ClientLogoMarquee({ copy }) {
                         key={`${client.id}-${loopIndex}`}
                       >
                         {client.src ? <img src={client.src} alt="" loading="lazy" /> : (
-                          <span aria-hidden="true">{String(itemIndex * 3 + laneIndex + 1).padStart(2, "0")}</span>
+                          <span aria-hidden="true">{String(itemIndex * 4 + laneIndex + 1).padStart(2, "0")}</span>
                         )}
                       </div>
                     ))}
@@ -2922,8 +2971,9 @@ export default function App() {
         ) : (
           <>
             <Hero copy={copy} />
-            <ClientLogoMarquee copy={copy} />
+            <HomeDirectory copy={copy} />
             <Marquee copy={copy} />
+            <ClientLogoMarquee copy={copy} />
             <Contact copy={copy} />
           </>
         )}
