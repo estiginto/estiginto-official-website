@@ -57,7 +57,18 @@ test("client logo hover keeps its existing reveal while rendering on a crisp lay
   assert.match(imageRule, /image-rendering:\s*auto/);
   assert.match(hoverRule, /filter:\s*none/);
   assert.match(hoverRule, /opacity:\s*1/);
-  assert.match(hoverRule, /translateZ\(0\) scale\(1\.04\)/);
+  assert.match(imageRule, /scale\(var\(--client-logo-scale,\s*1\)\)/);
+  assert.match(hoverRule, /scale\(calc\(var\(--client-logo-scale,\s*1\) \* 1\.04\)\)/);
+});
+
+test("visually small client marks receive individual display scaling", () => {
+  const marqueeSource = appSource.match(/function ClientLogoMarquee[\s\S]*?\n\}/)?.[0] || "";
+  const scales = Object.fromEntries(clientLogos.map(({ id, visualScale }) => [id, visualScale]));
+
+  assert.match(marqueeSource, /--client-logo-scale/);
+  assert.equal(scales["bureau-foreign-trade"], 1.18);
+  assert.equal(scales.juoda, 1.25);
+  assert.equal(scales.shanheyu, 1.18);
 });
 
 test("client logo marquee does not pause on hover or expose client names as text alternatives", () => {

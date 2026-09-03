@@ -198,7 +198,7 @@ test("desktop menu closes from its center core toward the latest pointer positio
 test("desktop navigation restores site destinations and keeps consulting services", () => {
   assert.match(desktopMenuSource, /const primaryMenuItems = \[/);
   assert.match(desktopMenuSource, /key: "home", label: localizedMenuLabels\.home, href: "\/"/);
-  assert.match(desktopMenuSource, /href: "\/faq\.html"/);
+  assert.doesNotMatch(desktopMenuSource, /href: "\/faq\.html"/);
   assert.doesNotMatch(desktopMenuSource, /href: "\/\#insights"/);
   assert.match(desktopMenuSource, /href: "\/contact\.html"/);
   assert.match(desktopMenuSource, /growth: getServiceMenuGroups\(locale\)\.growth/);
@@ -226,9 +226,18 @@ test("desktop menu places a continuous spatial light field behind the panel", ()
   assert.match(desktopMenuSource, /className="desktop-ambient-layer cool"/);
   assert.match(desktopMenuSource, /className="desktop-ambient-layer warm"/);
   assert.match(desktopMenuSource, /className="desktop-ambient-layer depth"/);
+  assert.match(desktopMenuSource, /className="desktop-spatial-depth"/);
+  assert.match(desktopMenuSource, /className="desktop-spatial-horizon"/);
+  assert.match(desktopMenuSource, /className="desktop-spatial-plane far"/);
+  assert.match(desktopMenuSource, /className="desktop-spatial-plane near"/);
+  assert.match(desktopMenuSource, /className="desktop-spatial-orbit"/);
   assert.doesNotMatch(desktopMenuSource, /desktop-fiber|<svg|<path/);
   assert.match(cssSource, /\.desktop-ambient-field\s*\{[\s\S]*?position:\s*fixed;[\s\S]*?inset:\s*0;[\s\S]*?z-index:\s*2;/);
   assert.match(cssSource, /\.desktop-ambient-layer\s*\{[\s\S]*?desktop-ambient-drift[\s\S]*?infinite/);
+  assert.match(cssSource, /\.desktop-spatial-depth\s*\{[\s\S]*?perspective:\s*clamp\(/);
+  assert.match(cssSource, /\.desktop-spatial-plane\s*\{[\s\S]*?rotateX\(/);
+  assert.match(cssSource, /\.desktop-spatial-horizon\s*\{[\s\S]*?radial-gradient/);
+  assert.match(cssSource, /@keyframes desktop-spatial-drift[\s\S]*?translate3d/);
   assert.match(cssSource, /@keyframes desktop-ambient-drift[\s\S]*?translate3d[\s\S]*?scale/);
   assert.match(cssSource, /\.desktop-cursor-menu\.stream-closing \.desktop-ambient-field/);
   assert.match(cssSource, /\.desktop-service-menu::before[\s\S]*?background-size:\s*40px 40px/);
@@ -246,4 +255,5 @@ test("desktop menu places a continuous spatial light field behind the panel", ()
     cssSource,
     /prefers-reduced-motion:\s*reduce[\s\S]*?\.desktop-service-menu::before,[\s\S]*?\.desktop-service-menu::after\s*\{[\s\S]*?animation:\s*none\s*!important/,
   );
+  assert.match(cssSource, /prefers-reduced-motion:\s*reduce[\s\S]*?\.desktop-spatial-plane,[\s\S]*?\.desktop-spatial-orbit\s*\{[\s\S]*?animation:\s*none\s*!important/);
 });

@@ -54,12 +54,12 @@ test("primary navigation gives solutions and case studies distinct destinations"
   assert.notEqual(solutions?.href, cases?.href);
 });
 
-test("footer navigation preserves solutions, case studies, and FAQ destinations", () => {
+test("footer navigation preserves solutions without standalone case or FAQ entries", () => {
   const app = read("src/App.jsx");
 
   assert.match(app, /<a href="\/solutions\.html">\{menuLabels\[copy\.locale\]\?\.solutions/);
-  assert.match(app, /<a href="\/case\.html">\{menuLabels\[copy\.locale\]\?\.case/);
-  assert.match(app, /<a href="\/faq\.html">\{copy\.footer\.faqLabel\}<\/a>/);
+  assert.doesNotMatch(app, /<a href="\/case\.html">\{menuLabels\[copy\.locale\]\?\.case/);
+  assert.doesNotMatch(app, /<a href="\/faq\.html">\{copy\.footer\.faqLabel\}<\/a>/);
 });
 
 test("solutions page has a distinct localized page heading", () => {
@@ -211,7 +211,6 @@ test("homepage directory uses a brand-oriented navigation label in every locale"
   assert.match(app, /siteMenu:\s*"Explore ESTIGINTO"/);
   assert.match(app, /siteMenu:\s*"ESTIGINTOを知る"/);
 });
-
 test("case page groups selected work by client value", () => {
   const app = read("src/App.jsx");
   const css = read("src/App.css");

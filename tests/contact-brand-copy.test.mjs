@@ -62,11 +62,12 @@ test("client marquee exposes only its section heading while client names remain 
   assert.doesNotMatch(marqueeSource, /copy\.clientLogos\.status/);
 });
 
-test("homepage continues from the product marquee through client experience to contact while news is hidden", () => {
+test("homepage finishes with client experience without a duplicate contact section", () => {
   const homepageSource = appSource.match(/\) : \(\s*<>[\s\S]*?<Hero copy=\{copy\} \/>[\s\S]*?<\/>\s*\)\}/)?.[0] || "";
 
   assert.doesNotMatch(homepageSource, /<Insights \/>/);
-  assert.match(homepageSource, /<Marquee copy=\{copy\} \/>[\s\S]*?<ClientLogoMarquee copy=\{copy\} \/>[\s\S]*?<Contact copy=\{copy\} \/>/);
+  assert.match(homepageSource, /<Marquee copy=\{copy\} \/>[\s\S]*?<ClientLogoMarquee copy=\{copy\} \/>/);
+  assert.doesNotMatch(appSource, /<Contact copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<ServiceOverview copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<Numbers copy=\{copy\} \/>/);
   assert.doesNotMatch(homepageSource, /<Manifesto copy=\{copy\} \/>/);
@@ -91,17 +92,15 @@ test("achievements and footer omit the retired introduction and business ID", ()
   assert.doesNotMatch(appSource, /統一編號|42752468/);
 });
 
-test("main contact card and footer reuse accessible icons for every channel", () => {
+test("footer preserves accessible contact channels after removing the duplicate card", () => {
   const iconStart = appSource.indexOf("function ContactIcon");
-  const contactStart = appSource.indexOf("function Contact(");
   const footerStart = appSource.indexOf("function Footer(");
   const constructionStart = appSource.indexOf("function ConstructionScreen(");
 
   assert.notEqual(iconStart, -1, "ContactIcon must exist");
-  assert.ok(iconStart < contactStart, "ContactIcon must be defined outside Contact");
+  assert.ok(iconStart < footerStart, "ContactIcon must be defined before Footer");
 
-  const iconSource = appSource.slice(iconStart, contactStart);
-  const contactSource = appSource.slice(contactStart, footerStart);
+  const iconSource = appSource.slice(iconStart, footerStart);
   const footerSource = appSource.slice(footerStart, constructionStart);
   const iconTypes = ["email", "phone", "mobile", "line"];
 
@@ -110,7 +109,6 @@ test("main contact card and footer reuse accessible icons for every channel", ()
   assert.match(iconSource, /focusable="false"/);
   iconTypes.forEach((type) => {
     assert.ok(iconSource.includes(type), `ContactIcon must support ${type}`);
-    assert.ok(contactSource.includes(`type="${type}"`), `Contact must render ${type}`);
     assert.ok(footerSource.includes(`type="${type}"`), `Footer must render ${type}`);
   });
 
@@ -120,7 +118,6 @@ test("main contact card and footer reuse accessible icons for every channel", ()
     "tel:+886972118427",
     "https://lin.ee/vFdwfVg",
   ].forEach((href) => {
-    assert.ok(contactSource.includes(href), `Contact must preserve ${href}`);
     assert.ok(footerSource.includes(href), `Footer must preserve ${href}`);
   });
 });

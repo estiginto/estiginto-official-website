@@ -12,10 +12,10 @@ const serviceMenuGroupsByLocale = {
     growth: {
       label: "顧問服務",
       items: [
-        { key: "systems-consulting", label: "系統顧問", href: "/consulting.html#systems-consulting", position: "top" },
-        { key: "digital-integration", label: "數位整合", href: "/consulting.html#digital-integration", position: "left" },
-        { key: "visual-design", label: "視覺設計", href: "/consulting.html#visual-design", position: "right" },
-        { key: "international-marketing", label: "國際行銷", href: "/consulting.html#international-marketing", position: "bottom" },
+        { key: "systems-consulting", label: "軟體系統", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "visual-design", label: "視覺設計", href: "/consulting.html#visual-design", position: "left" },
+        { key: "international-marketing", label: "國際行銷", href: "/consulting.html#international-marketing", position: "right" },
+        { key: "digital-integration", label: "數位整合", href: "/consulting.html#digital-integration", position: "bottom" },
       ],
     },
   },
@@ -32,10 +32,10 @@ const serviceMenuGroupsByLocale = {
     growth: {
       label: "Consulting",
       items: [
-        { key: "systems-consulting", label: "Systems", href: "/consulting.html#systems-consulting", position: "top" },
-        { key: "digital-integration", label: "Integration", href: "/consulting.html#digital-integration", position: "left" },
-        { key: "visual-design", label: "Visual", href: "/consulting.html#visual-design", position: "right" },
-        { key: "international-marketing", label: "Global", href: "/consulting.html#international-marketing", position: "bottom" },
+        { key: "systems-consulting", label: "Software Systems", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "visual-design", label: "Visual", href: "/consulting.html#visual-design", position: "left" },
+        { key: "international-marketing", label: "Global", href: "/consulting.html#international-marketing", position: "right" },
+        { key: "digital-integration", label: "Integration", href: "/consulting.html#digital-integration", position: "bottom" },
       ],
     },
   },
@@ -52,10 +52,10 @@ const serviceMenuGroupsByLocale = {
     growth: {
       label: "コンサルティング",
       items: [
-        { key: "systems-consulting", label: "システム", href: "/consulting.html#systems-consulting", position: "top" },
-        { key: "digital-integration", label: "デジタル統合", href: "/consulting.html#digital-integration", position: "left" },
-        { key: "visual-design", label: "ビジュアル", href: "/consulting.html#visual-design", position: "right" },
-        { key: "international-marketing", label: "海外展開", href: "/consulting.html#international-marketing", position: "bottom" },
+        { key: "systems-consulting", label: "ソフトウェアシステム", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "visual-design", label: "ビジュアル", href: "/consulting.html#visual-design", position: "left" },
+        { key: "international-marketing", label: "海外展開", href: "/consulting.html#international-marketing", position: "right" },
+        { key: "digital-integration", label: "デジタル統合", href: "/consulting.html#digital-integration", position: "bottom" },
       ],
     },
   },

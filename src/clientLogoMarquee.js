@@ -24,7 +24,7 @@ const clientLogoDefinitions = [
     tier: 2,
     clients: [
       ["tradevan", "Trade-Van Information"],
-      ["bureau-foreign-trade", "經濟部國際貿易局"],
+      ["bureau-foreign-trade", "經濟部國際貿易局", 1.18],
       ["trade-negotiations", "行政院經貿談判辦公室"],
       ["taipei-architects", "臺北市建築師公會"],
       ["taiwan-stock-exchange", "臺灣證券交易所 Taiwan Stock Exchange"],
@@ -60,9 +60,9 @@ const clientLogoDefinitions = [
       ["vantage", "Vantage"],
       ["worthbee", "滿誠蜂蜜 Worthbee"],
       ["fvs", "FVS 黃金數位憑證"],
-      ["juoda", "卓達室內裝修 Juoda Interior Design"],
+      ["juoda", "卓達室內裝修 Juoda Interior Design", 1.25],
       ["yun-counseling", "蘊光心理諮商所 Yun Counseling"],
-      ["shanheyu", "善和寓"],
+      ["shanheyu", "善和寓", 1.18],
       ["apex-royal", "Apex Royal"],
       ["noah-builders", "NoahBuilders"],
       ["zentia", "Zentia RevoCart"],
@@ -73,11 +73,12 @@ const clientLogoDefinitions = [
 ];
 
 export const clientLogos = clientLogoDefinitions.flatMap(({ tier, clients }) => (
-  clients.map(([id, alt]) => ({
+  clients.map(([id, alt, visualScale]) => ({
     id,
     alt,
     tier,
     src: `/img/client-logos/${id}.webp`,
+    ...(visualScale ? { visualScale } : {}),
   }))
 ));
 

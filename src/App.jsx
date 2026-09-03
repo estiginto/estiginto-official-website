@@ -1168,53 +1168,39 @@ function PageTransition() {
 
 function HomeDirectory({ copy }) {
   const labels = menuLabels[copy.locale] || menuLabels.zh;
-  const primaryLabels = desktopPrimaryMenuCopy[copy.locale] || desktopPrimaryMenuCopy.zh;
-  const consulting = getServiceMenuGroups(copy.locale).growth;
-  const groups = [
-    {
-      key: "website",
-      label: primaryLabels.siteMenu,
-      index: "01 / EXPLORE",
-      items: [
-        { key: "home", label: labels.home, href: "/" },
-        { key: "about", label: labels.about, href: "/about.html" },
-        { key: "solutions", label: labels.solutions, href: "/solutions.html" },
-        { key: "case", label: labels.case, href: "/case.html" },
-        { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
-        { key: "contact", label: labels.contact, href: "/contact.html" },
-      ],
-    },
-    { key: "consulting", label: consulting.label, index: "02 / CONSULTING", items: consulting.items },
+  const items = [
+    { key: "about", label: labels.about, href: "/about.html" },
+    { key: "solutions", label: labels.solutions, href: "/solutions.html" },
+    ...getServiceMenuGroups(copy.locale).growth.items,
   ];
+  const icons = {
+    about: <><circle cx="16" cy="10" r="4" /><path d="M8 27v-4a8 8 0 0 1 16 0v4M6 8a3 3 0 0 0 0 6m20-6a3 3 0 0 1 0 6M3 25v-4a5 5 0 0 1 3-4m23 8v-4a5 5 0 0 0-3-4" /></>,
+    solutions: <><path d="m16 3 12 7-12 7L4 10Zm-12 14 12 7 12-7M4 23l12 7 12-7" /></>,
+    "systems-consulting": <><rect x="7" y="7" width="18" height="18" rx="2" /><path d="M12 12h8v8h-8ZM12 3v4m8-4v4m-8 18v4m8-4v4M3 12h4m-4 8h4m18-8h4m-4 8h4" /></>,
+    "digital-integration": <><rect x="3" y="3" width="9" height="9" rx="1" /><rect x="20" y="20" width="9" height="9" rx="1" /><path d="M12 7h8a5 5 0 0 1 5 5v3m-3-3 3 3 3-3M20 25h-8a5 5 0 0 1-5-5v-3m-3 3 3-3 3 3" /></>,
+    "visual-design": <><path d="m16 3 10 17-10 9L6 20ZM16 3v12M6 20h7m6 0h7" /><circle cx="16" cy="18" r="3" /></>,
+    "international-marketing": <><circle cx="16" cy="16" r="12" /><ellipse cx="16" cy="16" rx="5" ry="12" /><path d="M4 16h24M7 8h18M7 24h18" /></>,
+  };
 
   return (
-    <section className="home-directory" id="home-directory" aria-label={labels.servicesMenu}>
-      <div className="wrap home-directory-grid">
-        {groups.map((group) => (
-          <nav className={`home-directory-group home-directory-${group.key}`} key={group.key} aria-labelledby={`home-directory-${group.key}`}>
-            <div className="home-directory-heading">
-              <span aria-hidden="true">{group.index}</span>
-              <h2 id={`home-directory-${group.key}`}>{group.label}</h2>
-            </div>
-            <ul className="home-directory-links">
-              {group.items.map((item) => (
-                <li key={item.key}>
-                  <a href={item.href} aria-current={item.key === "home" ? "page" : undefined}>
-                    <span>{item.label}</span>
-                    <svg className="home-directory-arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                      <path d="M3 8h9M8 4l4 4-4 4" />
-                    </svg>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        ))}
-      </div>
+    <section className="home-directory" id="home-directory">
+      <nav className="home-directory-scroll" aria-label={labels.servicesMenu}>
+        <ul className="home-directory-row">
+          {items.map((item) => (
+            <li key={item.key}>
+              <a className="home-directory-link" href={item.href}>
+                <svg className="home-directory-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                  {icons[item.key]}
+                </svg>
+                <span>{item.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </section>
   );
 }
-
 function ClientLogoMarquee({ copy }) {
   const lanes = buildClientLogoLanes(clientLogos);
 
@@ -1235,8 +1221,10 @@ function ClientLogoMarquee({ copy }) {
                     {lane.map((client, itemIndex) => (
                       <div
                         className="client-logo-marquee-item"
+                        data-client-id={client.id}
                         data-reserved={client.src ? undefined : "true"}
                         key={`${client.id}-${loopIndex}`}
+                        style={client.visualScale ? { "--client-logo-scale": client.visualScale } : undefined}
                       >
                         {client.src ? <img src={client.src} alt="" loading="lazy" /> : (
                           <span aria-hidden="true">{String(itemIndex * 4 + laneIndex + 1).padStart(2, "0")}</span>
@@ -2015,60 +2003,10 @@ function ContactIcon({ type }) {
   );
 }
 
-function Contact({ copy }) {
-  const contact = copy.contact;
-  return (
-    <section className="section reveal" id="contact" aria-label="Contact">
-      <div className="wrap">
-        <SectionEyebrow index="§ Contact Us" label={contact.label} meta={contact.meta} />
-        <div className="contact">
-          <div>
-            <h2>
-              {contact.titleA} <span className="hl">{contact.titleHighlight}</span>
-            </h2>
-            <p className="lede">
-              {contact.lede[0]}<br />{contact.lede[1]}
-            </p>
-          </div>
-
-          <div className="contact-card">
-            <div className="contact-row">
-              <span className="k">Email</span>
-              <span className="v"><a className="contact-channel-link" href="mailto:contact@estiginto.com"><ContactIcon type="email" /><span>contact@estiginto.com</span></a></span>
-            </div>
-            <div className="contact-row">
-              <span className="k">Phone</span>
-              <span className="v"><a className="contact-channel-link" href="tel:+886224315362"><ContactIcon type="phone" /><span>+886 2 2431 5362</span></a></span>
-            </div>
-            <div className="contact-row">
-              <span className="k">Sales</span>
-              <span className="v"><a className="contact-channel-link" href="tel:+886972118427"><ContactIcon type="mobile" /><span>+886 972 118 427</span></a></span>
-            </div>
-            <div className="contact-row">
-              <span className="k">LINE@</span>
-              <span className="v"><a className="contact-channel-link" href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer"><ContactIcon type="line" /><span>@dbn3379w</span></a></span>
-            </div>
-            <div className="contact-cta">
-              <a className="btn btn-primary" href="mailto:contact@estiginto.com?subject=Project%20Brief%20%7C%20ESTIGINTO">
-                <span>{contact.emailButton}</span>
-                <span className="arrow" aria-hidden="true" />
-              </a>
-              <a className="btn" href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">
-                <span>LINE@</span>
-                <span className="arrow" aria-hidden="true" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function Footer({ copy }) {
   const footer = copy.footer;
   return (
-    <footer className="page-footer">
+    <footer className="page-footer" id="contact">
       <div className="wrap">
         <div className="footer-top">
           <div className="footer-brand">
@@ -2079,8 +2017,6 @@ function Footer({ copy }) {
             <h5>Explore</h5>
             <a href="/about.html">{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
             <a href="/solutions.html">{menuLabels[copy.locale]?.solutions || menuLabels.zh.solutions}</a>
-            <a href="/case.html">{menuLabels[copy.locale]?.case || menuLabels.zh.case}</a>
-            <a href="/faq.html">{copy.footer.faqLabel}</a>
             <a href="/contact.html">{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
           </nav>
           <div className="footer-links">
@@ -2163,8 +2099,6 @@ function MobileNav({ locale, fontControls }) {
     homeItem,
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
     { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
-    { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
-    { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
   const mobileMenuGroups = {
@@ -2360,8 +2294,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
     { key: "home", label: localizedMenuLabels.home, href: "/" },
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
     { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
-    { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
-    { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
   const desktopMenuGroups = {
@@ -2630,6 +2562,12 @@ function DesktopCursorMenu({ locale, fontControls }) {
         <span className="desktop-ambient-layer cool" />
         <span className="desktop-ambient-layer warm" />
         <span className="desktop-ambient-layer depth" />
+        <span className="desktop-spatial-depth">
+          <i className="desktop-spatial-horizon" />
+          <i className="desktop-spatial-plane far" />
+          <i className="desktop-spatial-plane near" />
+          <i className="desktop-spatial-orbit" />
+        </span>
       </div>
 
       <nav
@@ -2964,9 +2902,8 @@ export default function App() {
               </>
             ) : null}
             {initialSection === "solutions" ? <><Solutions copy={copy} /><Numbers copy={copy} /></> : null}
-            {initialSection === "consulting" ? <><ConsultingServices copy={copy} /><Contact copy={copy} /></> : null}
+            {initialSection === "consulting" ? <ConsultingServices copy={copy} /> : null}
             {isFAQPage ? <FAQ copy={copy} /> : null}
-            {initialSection === "contact" ? <Contact copy={copy} /> : null}
           </>
         ) : (
           <>
@@ -2974,7 +2911,6 @@ export default function App() {
             <HomeDirectory copy={copy} />
             <Marquee copy={copy} />
             <ClientLogoMarquee copy={copy} />
-            <Contact copy={copy} />
           </>
         )}
         </main>
