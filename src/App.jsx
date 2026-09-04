@@ -2011,7 +2011,17 @@ function Footer({ copy }) {
         <div className="footer-top">
           <div className="footer-brand">
             <p className="footer-wordmark">ESTIGINTO</p>
-            <p>{footer.company}</p>
+            <p className="footer-company">{footer.company}</p>
+            <div className="footer-offices">
+              <address>
+                <span className="footer-office-label">Taipei Office</span>
+                <span>台北市中山區南京東路一段15號3樓</span>
+              </address>
+              <address>
+                <span className="footer-office-label">Taoyuan Office</span>
+                <span>桃園市中壢區中央東路52號</span>
+              </address>
+            </div>
           </div>
           <nav className="footer-links" aria-label={footer.navLabel}>
             <h5>Explore</h5>

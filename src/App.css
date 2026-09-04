@@ -4258,11 +4258,26 @@ ul, ol  { margin: 0; }
   color: #fff;
   margin: 0 0 18px;
 }
-.footer-brand p:last-child {
+.footer-company {
   margin: 0;
   max-width: 34ch;
   color: rgba(255,255,255,0.58);
   line-height: 1.8;
+}
+.footer-offices {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+.footer-offices address {
+  display: grid;
+  gap: 4px;
+  font-style: normal;
+  font-size: var(--fs-xs);
+  line-height: 1.8;
+}
+.footer-office-label {
+  color: rgba(255,255,255,0.52);
 }
 .footer-bottom {
   display: flex;
