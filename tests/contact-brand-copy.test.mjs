@@ -19,20 +19,20 @@ test("homepage hero uses the approved two-line impact description in every local
     zh: [
       "致力於打造",
       "有靈魂的設計",
-      "以思緒縝密的設計著名",
-      "讓企業產生持續的影響力",
+      "結合品牌策略、體驗設計與技術整合，",
+      "為企業建立一致的服務體驗與營運系統。",
     ],
     en: [
       "Driven to create",
       "design with soul",
-      "Known for thoughtful, meticulously considered design.",
-      "We help businesses create lasting impact.",
+      "Brand strategy, experience design, and technology.",
+      "Connecting customer experiences with business operations.",
     ],
     ja: [
       "私たちが目指すのは",
       "魂のあるデザイン",
-      "緻密に考え抜かれたデザインで知られています。",
-      "企業が持続的な影響力を生み出せるよう支援します。",
+      "ブランド戦略、体験設計、技術の統合。",
+      "顧客体験と企業の業務を、一貫した設計でつなぎます。",
     ],
   };
 

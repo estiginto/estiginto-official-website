@@ -27,6 +27,12 @@ http://localhost:4302/
 
 ## Debug
 
+The contact page provides direct email, telephone, and LINE links in the shared
+footer. It does not contain an inquiry form or an email-draft workflow.
+
+The latest page inventory and verification record is in
+`docs/project-takeover-2026-09-05.md`.
+
 Use the browser DevTools first:
 
 - Console: React/runtime errors

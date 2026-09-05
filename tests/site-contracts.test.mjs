@@ -226,7 +226,7 @@ test("case page groups selected work by client value", () => {
   assert.match(app, /aria-expanded=\{isActive\}/);
   assert.match(app, /role="region"/);
   assert.match(app, /精選實績/);
-  assert.match(app, /查看解法/);
+  assert.match(app, /查看專案內容/);
   assert.doesNotMatch(app, /14 個匿名案例|跨產業匿名案例|14 anonymized cases|匿名事例 14件/);
   assert.match(css, /\.case-portfolio-group\s*\{/);
   assert.match(css, /\.case-portfolio-group-header\s*\{/);

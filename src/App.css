@@ -3526,6 +3526,25 @@ ul, ol  { margin: 0; }
   transition: padding-left 320ms ease;
 }
 .sol-row:last-child { border-bottom: 1px solid var(--ink-line); }
+.sol-list .sol-row { display: block; padding: 0; }
+.sol-choice {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 16px;
+  align-items: baseline;
+  width: 100%;
+  min-height: 44px;
+  padding: 26px 0;
+  text-align: left;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+.sol-row.active .sol-choice { padding-left: 22px; }
+.sol-title { display: block; }
+.sol-choice:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 .sol-row::before {
   content: "";
   position: absolute;
@@ -3545,7 +3564,7 @@ ul, ol  { margin: 0; }
 }
 .sol-row.active .num { color: var(--amber); }
 .sol-row .body {}
-.sol-row .body h3 {
+.sol-row .body h3, .sol-row .body .sol-title {
   margin: 0;
   font-weight: 400;
   font-size: var(--fs-h2);
@@ -4377,7 +4396,7 @@ ul, ol  { margin: 0; }
   .service-overview-card:nth-child(-n + 2) { border-bottom: 1px solid var(--ink-line); }
 
   .solutions { grid-template-columns: 1fr; }
-  .sol-preview { display: none; }
+  .sol-preview { position: static; display: block; }
 
   .scenario-teaser {
     grid-template-columns: 1fr;
@@ -5415,7 +5434,7 @@ ul, ol  { margin: 0; }
   .number-cell:nth-child(1),
   .number-cell:nth-child(2) { border-top: 0; }
   .number-cell:nth-child(odd) { border-right: 1px solid var(--ink-line); }
-  .number-cell .desc { display: none; }
+  .number-cell .desc { display: block; }
   .number-cell .val { font-size: var(--fs-h1); }
 
   .section { padding: clamp(72px, 14vw, 96px) 0; }
@@ -5451,7 +5470,7 @@ ul, ol  { margin: 0; }
 
   .sol-row { padding: 22px 0; grid-template-columns: 36px 1fr; }
   .sol-row .meta { display: none; }
-  .sol-row .body h3 { font-size: var(--fs-h3); }
+  .sol-row .body h3, .sol-row .body .sol-title { font-size: var(--fs-h3); }
   .sol-row.active { padding-left: 14px; }
 
   .case-body h3 { font-size: var(--fs-h3); }

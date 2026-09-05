@@ -24,7 +24,7 @@ export const aboutIntroductionsByLocale = {
 export const companyStatsByLocale = {
   zh: [
     { id: "longevity", label: "長期運作", keyLabel: "Longevity", value: "12", suffix: " 年", description: "最久的系統已持續穩定運作 12 年。" },
-    { id: "deliveries", label: "交付成果", keyLabel: "Delivered", value: "325", suffix: "+", description: "已交付系統、設計物與整體解決方案等。" },
+    { id: "deliveries", label: "交付成果", keyLabel: "Delivered", value: "325", suffix: "+", description: "已完成的系統、設計與整合服務成果。" },
   ],
   en: [
     { id: "longevity", label: "Long-term operation", keyLabel: "Longevity", value: "12", suffix: " yrs", description: "Our longest-running system has remained in operation for 12 years." },
@@ -45,22 +45,22 @@ const serviceImages = {
 
 export const serviceFamiliesByLocale = {
   zh: [
-    { id: "website-design", number: "01", eyebrow: "Website Design", title: "網站設計", summary: "從品牌形象、商務官網到電子商務與線上預約，依資料、管理與流量需求設計合適架構。", capabilities: ["品牌／商務官方網站", "電子商務與線上預約", "靜態與動態網站", "第三方服務串接", "高負載流量規劃"], image: serviceImages.website, meta: "WEB / 2026" },
-    { id: "custom-systems", number: "02", eyebrow: "Custom Systems", title: "客製化系統開發", summary: "將營運流程轉化為可管理、可追蹤、可持續擴充的線上系統、桌面應用與 APP。", capabilities: ["ERP／CRM／POS", "HRM／WMS／SCM", "BDM 業務開發管理", "線上管理系統", "桌面應用與行動 APP"], image: serviceImages.systems, meta: "SYSTEM / 2026" },
-    { id: "graphic-design", number: "03", eyebrow: "Graphic Design", title: "平面與品牌設計", summary: "建立一致的品牌識別，並延伸到商務、社群、簡報、印刷與活動現場。", capabilities: ["Logo 與企業識別", "名片／信封／信紙", "型錄與 DM", "社群與廣告素材", "簡報與展場視覺"], image: serviceImages.design, meta: "DESIGN / 2026" },
-    { id: "marketing-ads", number: "04", eyebrow: "Marketing & Ads", title: "行銷與廣告投放", summary: "從品牌定位與內容策略，到社群經營、數位廣告與電商平台曝光，建立完整成長路徑。", capabilities: ["社群與內容行銷", "SEO 與 KOL 合作", "Google／Meta 廣告", "YouTube／LINE／TikTok 廣告", "電商平台與品牌顧問"], image: serviceImages.marketing, meta: "GROWTH / 2026" },
+    { id: "website-design", number: "01", eyebrow: "Website Design", title: "網站設計", summary: "從品牌官網、線上預約到電子商務，依品牌規範與服務流程規劃網站，兼顧內容呈現、操作體驗與日常管理。", capabilities: ["品牌／商務官方網站", "電子商務與線上預約", "靜態與動態網站", "第三方服務串接", "高負載流量規劃"], image: serviceImages.website, meta: "WEB / 2026" },
+    { id: "custom-systems", number: "02", eyebrow: "Custom Systems", title: "客製化系統開發", summary: "以企業流程與資料需求為基礎，整合部門作業、管理權限與資訊交換，建置可持續維運的業務系統。", capabilities: ["ERP／CRM／POS", "HRM／WMS／SCM", "BDM 業務開發管理", "線上管理系統", "桌面應用與行動 APP"], image: serviceImages.systems, meta: "SYSTEM / 2026" },
+    { id: "graphic-design", number: "03", eyebrow: "Graphic Design", title: "平面與品牌設計", summary: "建立品牌識別與視覺規範，延伸至數位介面、商務簡報、行銷素材及實體接觸點，維持品牌表現的一致性。", capabilities: ["Logo 與企業識別", "名片／信封／信紙", "型錄與 DM", "社群與廣告素材", "簡報與展場視覺"], image: serviceImages.design, meta: "DESIGN / 2026" },
+    { id: "marketing-ads", number: "04", eyebrow: "Marketing & Ads", title: "行銷與廣告投放", summary: "依市場定位與溝通目標，規劃內容、搜尋曝光與媒體投放，協調各通路的品牌訊息與推廣節奏。", capabilities: ["社群與內容行銷", "SEO 與 KOL 合作", "Google／Meta 廣告", "YouTube／LINE／TikTok 廣告", "電商平台與品牌顧問"], image: serviceImages.marketing, meta: "GROWTH / 2026" },
   ],
   en: [
-    { id: "website-design", number: "01", eyebrow: "Website Design", title: "Website Design", summary: "From brand and corporate sites to e-commerce and online booking, we design the right architecture for your data, operations, and traffic.", capabilities: ["Brand and corporate websites", "E-commerce and online booking", "Static and dynamic websites", "Third-party integrations", "High-traffic architecture"], image: serviceImages.website, meta: "WEB / 2026" },
-    { id: "custom-systems", number: "02", eyebrow: "Custom Systems", title: "Custom System Development", summary: "We turn operating workflows into manageable, traceable, and extensible online systems, desktop applications, and mobile apps.", capabilities: ["ERP / CRM / POS", "HRM / WMS / SCM", "BDM sales development", "Online management systems", "Desktop and mobile apps"], image: serviceImages.systems, meta: "SYSTEM / 2026" },
-    { id: "graphic-design", number: "03", eyebrow: "Graphic Design", title: "Brand & Graphic Design", summary: "We build a coherent identity and extend it across business materials, social media, presentations, print, and events.", capabilities: ["Logo and identity", "Business stationery", "Catalogs and direct mail", "Social and advertising assets", "Presentations and event graphics"], image: serviceImages.design, meta: "DESIGN / 2026" },
-    { id: "marketing-ads", number: "04", eyebrow: "Marketing & Ads", title: "Marketing & Advertising", summary: "From positioning and content strategy to social operations, digital advertising, and marketplace visibility, we build a connected growth path.", capabilities: ["Social and content marketing", "SEO and KOL partnerships", "Google and Meta advertising", "YouTube, LINE, and TikTok ads", "Marketplace and brand consulting"], image: serviceImages.marketing, meta: "GROWTH / 2026" },
+    { id: "website-design", number: "01", eyebrow: "Website Design", title: "Website Design", summary: "Brand websites, online booking, and e-commerce planned around brand standards and service workflows, with attention to content, usability, and day-to-day management.", capabilities: ["Brand and corporate websites", "E-commerce and online booking", "Static and dynamic websites", "Third-party integrations", "High-traffic architecture"], image: serviceImages.website, meta: "WEB / 2026" },
+    { id: "custom-systems", number: "02", eyebrow: "Custom Systems", title: "Custom System Development", summary: "Business systems that connect departmental workflows, access controls, and information exchange, designed around operating requirements and ongoing maintenance.", capabilities: ["ERP / CRM / POS", "HRM / WMS / SCM", "BDM sales development", "Online management systems", "Desktop and mobile apps"], image: serviceImages.systems, meta: "SYSTEM / 2026" },
+    { id: "graphic-design", number: "03", eyebrow: "Graphic Design", title: "Brand & Graphic Design", summary: "Brand identity and visual standards applied consistently across digital interfaces, presentations, marketing materials, and physical touchpoints.", capabilities: ["Logo and identity", "Business stationery", "Catalogs and direct mail", "Social and advertising assets", "Presentations and event graphics"], image: serviceImages.design, meta: "DESIGN / 2026" },
+    { id: "marketing-ads", number: "04", eyebrow: "Marketing & Ads", title: "Marketing & Advertising", summary: "Content, search visibility, and media campaigns planned around market positioning, with coordinated brand messaging across channels.", capabilities: ["Social and content marketing", "SEO and KOL partnerships", "Google and Meta advertising", "YouTube, LINE, and TikTok ads", "Marketplace and brand consulting"], image: serviceImages.marketing, meta: "GROWTH / 2026" },
   ],
   ja: [
-    { id: "website-design", number: "01", eyebrow: "Website Design", title: "Webサイト制作", summary: "ブランドサイト、コーポレートサイト、EC、オンライン予約まで、データ運用やアクセス規模に合わせて最適な構成を設計します。", capabilities: ["ブランド／コーポレートサイト", "EC／オンライン予約", "静的／動的Webサイト", "外部サービス連携", "高トラフィック対応"], image: serviceImages.website, meta: "WEB / 2026" },
-    { id: "custom-systems", number: "02", eyebrow: "Custom Systems", title: "業務システム開発", summary: "業務フローを、管理・追跡・拡張しやすいWebシステム、デスクトップアプリ、モバイルアプリへ落とし込みます。", capabilities: ["ERP／CRM／POS", "HRM／WMS／SCM", "BDM 営業開発管理", "オンライン管理システム", "デスクトップ／モバイルアプリ"], image: serviceImages.systems, meta: "SYSTEM / 2026" },
-    { id: "graphic-design", number: "03", eyebrow: "Graphic Design", title: "ブランド／グラフィックデザイン", summary: "一貫したブランドイメージを構築し、営業資料、SNS、プレゼン、印刷物、イベントへ展開します。", capabilities: ["ロゴ／VI", "名刺／封筒／レターヘッド", "カタログ／DM", "SNS／広告クリエイティブ", "プレゼン／イベント装飾"], image: serviceImages.design, meta: "DESIGN / 2026" },
-    { id: "marketing-ads", number: "04", eyebrow: "Marketing & Ads", title: "マーケティング／広告運用", summary: "ブランド戦略とコンテンツ設計から、SNS運用、デジタル広告、ECモールでの露出まで、一貫した成長導線を構築します。", capabilities: ["SNS／コンテンツマーケティング", "SEO／KOL連携", "Google／Meta 広告", "YouTube／LINE／TikTok 広告", "ECモール／ブランドコンサルティング"], image: serviceImages.marketing, meta: "GROWTH / 2026" },
+    { id: "website-design", number: "01", eyebrow: "Website Design", title: "Webサイト制作", summary: "ブランド基準とサービスの流れに沿って、公式サイト、オンライン予約、ECを設計します。コンテンツの表現、操作性、日々の管理を考慮します。", capabilities: ["ブランド／コーポレートサイト", "EC／オンライン予約", "静的／動的Webサイト", "外部サービス連携", "高トラフィック対応"], image: serviceImages.website, meta: "WEB / 2026" },
+    { id: "custom-systems", number: "02", eyebrow: "Custom Systems", title: "業務システム開発", summary: "企業の業務とデータ要件に基づき、部門間の作業、権限、情報交換を統合し、継続的に運用できる業務システムを構築します。", capabilities: ["ERP／CRM／POS", "HRM／WMS／SCM", "BDM 営業開発管理", "オンライン管理システム", "デスクトップ／モバイルアプリ"], image: serviceImages.systems, meta: "SYSTEM / 2026" },
+    { id: "graphic-design", number: "03", eyebrow: "Graphic Design", title: "ブランド／グラフィックデザイン", summary: "ブランド識別とビジュアル基準を整え、デジタル画面、営業資料、販促素材、実際の接点まで一貫した表現を展開します。", capabilities: ["ロゴ／VI", "名刺／封筒／レターヘッド", "カタログ／DM", "SNS／広告クリエイティブ", "プレゼン／イベント装飾"], image: serviceImages.design, meta: "DESIGN / 2026" },
+    { id: "marketing-ads", number: "04", eyebrow: "Marketing & Ads", title: "マーケティング／広告運用", summary: "市場での位置づけと発信の目的に沿って、コンテンツ、検索での露出、広告を計画し、各チャネルのメッセージと展開時期を調整します。", capabilities: ["SNS／コンテンツマーケティング", "SEO／KOL連携", "Google／Meta 広告", "YouTube／LINE／TikTok 広告", "ECモール／ブランドコンサルティング"], image: serviceImages.marketing, meta: "GROWTH / 2026" },
   ],
 };
 
@@ -69,13 +69,13 @@ const allCaseStudiesByLocale = {
     { id: "elevator-operations", number: "01", industry: "知名電梯製造商", title: "電梯總管系統", summary: "串接維修派工、設備狀態與跨區營運資訊，讓管理團隊即時掌握服務現場。", capabilities: ["自動化維修保養派工", "可視化管理", "行事曆與地圖", "物聯網電梯管理", "儀表板戰情室", "台灣／日本／中國多國運作"] },
     { id: "senior-care-iot", number: "02", industry: "大型安養中心", title: "安養物聯監控系統", summary: "整合全棟設備、健康監測與行政管理，建立安全且可持續運作的照護環境。", capabilities: ["全棟電氣設備聯網控制", "血氧與心率監控", "智慧電表／煙霧／瓦斯／香氛", "人員與物資採購管理", "資安防護", "UPS 備援"] },
     { id: "pharma-management", number: "03", industry: "全球知名藥廠", title: "醫藥管理系統", summary: "支援跨國醫療關係、供應商與文件簽署流程，兼顧資安與高流量使用情境。", capabilities: ["全球醫師管理", "全球診所管理", "全球供應商管理", "線上簽署機制", "同意書與協議簽署", "資安與高流量負載"] },
-    { id: "shipping-warehouse", number: "04", industry: "煉油廠下游氣體廠商", title: "倉管航運管理系統", summary: "把儲量偵測、船運通知與指派流程整合進同一套營運視圖。", capabilities: ["儀表板戰情室", "自動化船運通知", "物聯網儲量偵測", "儲量報表管理", "自動化儲量指派"] },
+    { id: "shipping-warehouse", number: "04", industry: "煉油廠下游氣體廠商", title: "倉管航運管理系統", summary: "整合儲量偵測、船運通知與指派流程，支援倉儲與航運管理。", capabilities: ["儀表板戰情室", "自動化船運通知", "物聯網儲量偵測", "儲量報表管理", "自動化儲量指派"] },
     { id: "art-collection", number: "05", industry: "古董藝術拍賣", title: "藝術藏品系統", summary: "從數位典藏、憑證到拍賣與行銷，建立藝術資產的完整線上服務。", capabilities: ["3D 數位典藏", "虛擬證券化發行", "線上拍賣機制", "線上憑證簽章", "視覺設計", "行銷統包"] },
     { id: "fresh-food-omnichannel", number: "06", industry: "知名生鮮通路", title: "全台生鮮通路系統", summary: "整合電商、冷鏈、配送與企業管理，支援全台通路及大量會員使用。", capabilities: ["電子商務與冷鏈倉儲", "當日即時配送", "經營報表與百人企業管理", "線上線下整合", "倉儲管理", "八萬會員負載平衡"] },
     { id: "government-administration", number: "07", industry: "政府部門", title: "行政管理系統", summary: "以單一登入與內網資安架構承載全台教育、預算與大規模資料管理。", capabilities: ["單一登入 SSO", "全台教育資訊管理", "百萬人數據管理", "預算經費管理", "高度資安管理", "內網運作"] },
     { id: "yacht-event-management", number: "08", industry: "遊艇活動服務", title: "活動管理系統", summary: "整合高端交通、場地、報價、保險與預約，支援活動服務的完整成交流程。", capabilities: ["遊艇／飛機／會館空間管理", "線上報價單", "訂單管理", "自動化產險流程", "活動預約", "視覺設計與行銷統包"] },
     { id: "production-quality", number: "09", industry: "上市供應鏈設備廠", title: "產線履歷品管系統", summary: "以雙平台行動應用記錄品管、產品與產線影像，支援內網安全作業。", capabilities: ["iOS／Android APP", "品管驗收管理", "QR 作業", "產品管理", "產線照片管理", "高度資安與內網"] },
-    { id: "manufacturing-management", number: "10", industry: "供應鏈製造業", title: "生產管理系統", summary: "串起物料、工單、組裝與成本，讓製造現場更早發現缺料與流程異常。", capabilities: ["物料管理", "半成品與產品管理", "自動化工單", "自動化組裝流程", "自動化成本計算", "缺料自動預警"] },
+    { id: "manufacturing-management", number: "10", industry: "供應鏈製造業", title: "生產管理系統", summary: "整合物料、工單、組裝與成本管理，提供缺料及流程異常預警。", capabilities: ["物料管理", "半成品與產品管理", "自動化工單", "自動化組裝流程", "自動化成本計算", "缺料自動預警"] },
     { id: "travel-discovery", number: "11", industry: "旅遊社群服務", title: "旅遊地點應用", summary: "以地點與旅程為核心，結合社群互動及廣告版位的行動服務。", capabilities: ["旅遊地點管理", "地點設備管理", "旅行軌跡", "社群互動", "廣告收入管理", "版位管理"] },
     { id: "location-broadcast", number: "12", industry: "實境遊戲與通訊服務", title: "內部廣播通訊應用", summary: "依位置、範圍與頻率傳遞指定訊息，支援通知、信標與實境互動。", capabilities: ["範圍內訊息接收", "廣播範圍設定", "廣播頻率設定", "手機通知", "信標應用", "實境遊戲應用"] },
     { id: "event-booking-commerce", number: "13", industry: "電子商務與活動服務", title: "活動預約網站", summary: "把會員、預約、付款與通知整合成可自動運作的活動商務流程。", capabilities: ["活動預約", "會員管理", "線上結帳", "發票串接", "簡訊串接", "會費通知與繳費單生成"] },
@@ -319,10 +319,10 @@ const caseGroupKeywordsByLocale = {
 
 export const caseStudyGroupsByLocale = {
   zh: [
-    { id: "operations-management", number: "01", title: "營運整合與管理", summary: "把分散的人員、資料、權限與作業流程，整理成一套可追蹤、可管理的營運系統。", caseIds: ["pharma-management", "government-administration", "production-quality", "manufacturing-management"] },
-    { id: "iot-visibility", number: "02", title: "IoT 與即時監控", summary: "串接設備、感測資料、派工與戰情資訊，讓現場狀況即時可見，也更容易採取行動。", caseIds: ["senior-care-iot", "shipping-warehouse", "location-broadcast"] },
-    { id: "commerce-members", number: "03", title: "電商與會員服務", summary: "整合會員、預約、付款、物流與通知，讓線上服務不只好看，也能完成交易與後續營運。", caseIds: ["fresh-food-omnichannel", "yacht-event-management", "event-booking-commerce", "consumer-brand-site"] },
-    { id: "brand-digital", number: "04", title: "品牌體驗與數位創新", summary: "把內容、互動與服務設計成可使用的數位產品，讓品牌特色被看見，也能持續延伸。", caseIds: ["art-collection", "travel-discovery"] },
+    { id: "operations-management", number: "01", title: "營運整合與管理", summary: "整合人員權限、業務資料與作業流程，支援跨部門管理及資訊查詢。", caseIds: ["pharma-management", "government-administration", "production-quality", "manufacturing-management"] },
+    { id: "iot-visibility", number: "02", title: "IoT 與即時監控", summary: "整合設備、感測資料與派工資訊，提供現場監控及營運管理所需的資訊。", caseIds: ["senior-care-iot", "shipping-warehouse", "location-broadcast"] },
+    { id: "commerce-members", number: "03", title: "電商與會員服務", summary: "串接會員、預約、付款、物流與通知，支援完整的線上交易及後續服務。", caseIds: ["fresh-food-omnichannel", "yacht-event-management", "event-booking-commerce", "consumer-brand-site"] },
+    { id: "brand-digital", number: "04", title: "品牌體驗與數位創新", summary: "結合內容、互動與服務設計，將品牌識別延伸至數位產品及使用體驗。", caseIds: ["art-collection", "travel-discovery"] },
   ],
   en: [
     { id: "operations-management", number: "01", title: "Operations & Management", summary: "Bring people, data, permissions, and workflows into one operation teams can track and manage.", caseIds: ["pharma-management", "government-administration", "production-quality", "manufacturing-management"] },

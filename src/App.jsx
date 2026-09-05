@@ -1,4 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import PageNextSteps from "./PageNextSteps.jsx";
+import { faqContentByLocale } from "./faqContent.js";
+import "./pageCompletion.css";
 import {
   aboutIntroductionsByLocale,
   caseStudyGroupsByLocale,
@@ -63,7 +66,7 @@ const menuLabels = {
     about: "關於我們",
     solutions: "解決方案",
     case: "參考案例",
-    contact: "聯繫我們",
+    contact: "聯絡我們",
     servicesMenu: "服務導覽",
   },
   en: {
@@ -85,44 +88,44 @@ const menuLabels = {
 };
 
 const desktopPrimaryMenuCopy = {
-  zh: { faq: "常見問題", articles: "文章", siteMenu: "探索 ESTIGINTO" },
-  en: { faq: "FAQ", articles: "Articles", siteMenu: "Explore ESTIGINTO" },
-  ja: { faq: "よくある質問", articles: "記事", siteMenu: "ESTIGINTOを知る" },
+  zh: { faq: "合作說明", articles: "文章", siteMenu: "探索 ESTIGINTO" },
+  en: { faq: "Working with us", articles: "Articles", siteMenu: "Explore ESTIGINTO" },
+  ja: { faq: "ご依頼について", articles: "記事", siteMenu: "ESTIGINTOを知る" },
 };
 
 const consultingServicesByLocale = {
   zh: {
     sectionLabel: "商業顧問服務",
     sectionMeta: "四個專業方向",
-    intro: "從真實問題出發，協助企業看清優先順序、整合資源，並把策略接到可執行的工作。",
-    labels: { situations: "適合情境", scope: "顧問範圍", deliverables: "可交付內容", execution: "可銜接服務", consult: "預約諮詢" },
+    intro: "評估既有品牌規範、營運流程與技術環境，釐清各階段的目標、協作分工及執行優先順序。",
+    labels: { situations: "適用需求", scope: "服務範圍", deliverables: "規劃成果", execution: "後續執行", consult: "聯絡我們" },
     processTitle: "顧問合作流程",
     process: ["現況盤點", "目標確認", "策略規劃", "執行協作", "成效檢視"],
     services: [
-      { id: "systems-consulting", shortLabel: "系統顧問", title: "系統顧問服務", summary: "把營運流程、權限與資料關係整理成能落地的系統藍圖。", situations: ["準備導入或汰換 ERP、CRM、WMS", "既有系統分散，流程與資料難以串接"], scope: ["需求與流程盤點", "功能、權限與資料架構", "導入順序與專案風險"], deliverables: ["需求分析", "系統架構圖", "導入藍圖"], execution: "可銜接客製系統開發、既有系統整合與專案協作。" },
-      { id: "digital-integration", shortLabel: "數位整合", title: "數位整合顧問", summary: "把網站、電商、會員與第三方服務整合成一致的數位流程。", situations: ["數位工具很多，但資料仍靠人工搬運", "網站、金流、物流與內部系統各自運作"], scope: ["數位服務盤點", "資料流與 API 串接", "自動化與階段建置"], deliverables: ["整合架構圖", "串接清單", "執行優先序"], execution: "可銜接網站、電商、會員、金流、物流及自動化建置。" },
-      { id: "visual-design", shortLabel: "視覺設計", title: "視覺設計顧問", summary: "讓品牌、介面與行銷素材使用同一套清楚且可延續的視覺語言。", situations: ["品牌視覺缺乏一致性", "數位介面資訊層級不清楚"], scope: ["品牌視覺檢視", "UI 與資訊層級", "設計規範與素材管理"], deliverables: ["視覺方向", "設計規範", "改善清單"], execution: "可銜接品牌識別、UI、網站視覺及行銷素材設計。" },
-      { id: "international-marketing", shortLabel: "國際行銷", title: "國際行銷顧問", summary: "依市場與決策路徑規劃海外溝通，不把國際化簡化成翻譯。", situations: ["準備進入海外市場", "已有多語內容但缺少轉換路徑"], scope: ["市場與受眾定位", "多語內容與國際 SEO", "廣告、通路與在地化"], deliverables: ["市場進入策略", "內容方向", "執行計畫"], execution: "可銜接多語網站、SEO、廣告素材與海外行銷執行。" },
+      { id: "systems-consulting", shortLabel: "系統顧問", title: "系統顧問服務", summary: "評估營運流程、使用權限與資料需求，規劃系統架構及導入順序。", situations: ["準備導入或汰換 ERP、CRM、WMS", "既有系統分散，流程與資料難以串接"], scope: ["需求與流程盤點", "功能、權限與資料架構", "導入順序與專案風險"], deliverables: ["需求分析", "系統架構圖", "導入藍圖"], execution: "可依規劃執行客製系統開發、既有系統整合與專案協作。" },
+      { id: "digital-integration", shortLabel: "數位整合", title: "數位整合顧問", summary: "規劃網站、電商、會員與第三方服務的資料串接，減少重複作業。", situations: ["不同工具之間需要重複輸入或人工彙整資料", "網站、金流、物流與內部系統各自運作"], scope: ["數位服務盤點", "資料流與 API 串接", "自動化與階段建置"], deliverables: ["整合架構圖", "串接清單", "執行優先序"], execution: "可依規劃建置網站、電商、會員功能，以及金流、物流與自動化串接。" },
+      { id: "visual-design", shortLabel: "視覺設計", title: "視覺設計顧問", summary: "讓品牌、介面與行銷素材使用同一套清楚且可延續的視覺語言。", situations: ["品牌視覺缺乏一致性", "數位介面資訊層級不清楚"], scope: ["品牌視覺檢視", "UI 與資訊層級", "設計規範與素材管理"], deliverables: ["視覺方向", "設計規範", "改善清單"], execution: "可依規劃製作品牌識別、介面、網站視覺與行銷素材。" },
+      { id: "international-marketing", shortLabel: "國際行銷", title: "國際行銷顧問", summary: "依目標市場與客戶需求，規劃多語內容、行銷通路及在地化方式。", situations: ["準備進入海外市場", "已有多語內容，希望改善海外客戶的洽詢與購買流程"], scope: ["市場與受眾定位", "多語內容與國際 SEO", "廣告、通路與在地化"], deliverables: ["市場進入策略", "內容方向", "執行計畫"], execution: "可依規劃製作多語網站與廣告素材，並執行 SEO 及海外行銷。" },
     ],
   },
   en: {
-    sectionLabel: "Business Consulting", sectionMeta: "Four advisory practices", intro: "We clarify priorities, connect resources, and turn strategy into executable work.",
-    labels: { situations: "Best for", scope: "Advisory scope", deliverables: "Deliverables", execution: "Execution support", consult: "Book a consultation" }, processTitle: "How we work", process: ["Current state", "Goals", "Strategy", "Execution", "Review"],
+    sectionLabel: "Business Consulting", sectionMeta: "Four advisory practices", intro: "We review brand standards, operating processes, and technical environments to define priorities, responsibilities, and a practical implementation plan.",
+    labels: { situations: "Best for", scope: "Advisory scope", deliverables: "Deliverables", execution: "Execution support", consult: "Discuss a project" }, processTitle: "How we work", process: ["Current state", "Goals", "Strategy", "Execution", "Review"],
     services: [
       { id: "systems-consulting", shortLabel: "Systems", title: "Systems Consulting", summary: "Turn workflows, permissions, and data relationships into an implementable system blueprint.", situations: ["Planning an ERP, CRM, or WMS rollout", "Disconnected systems and manual handoffs"], scope: ["Workflow discovery", "Functional and data architecture", "Implementation sequence and risk"], deliverables: ["Requirements analysis", "Architecture map", "Adoption roadmap"], execution: "Connects to custom development, integration, and delivery support." },
       { id: "digital-integration", shortLabel: "Integration", title: "Digital Integration Consulting", summary: "Connect websites, commerce, membership, and third-party services into one operating flow.", situations: ["Teams manually move data between tools", "Web, payment, logistics, and internal systems operate separately"], scope: ["Digital service audit", "Data flow and API integration", "Automation roadmap"], deliverables: ["Integration map", "Connection inventory", "Prioritized plan"], execution: "Connects to web, commerce, membership, payments, logistics, and automation." },
       { id: "visual-design", shortLabel: "Visual", title: "Visual Design Consulting", summary: "Create a consistent visual language across brand, interface, and marketing materials.", situations: ["Brand applications feel inconsistent", "Digital interfaces lack visual hierarchy"], scope: ["Brand review", "UI and information hierarchy", "Design governance"], deliverables: ["Visual direction", "Design guidelines", "Improvement list"], execution: "Connects to identity, UI, web visuals, and campaign assets." },
-      { id: "international-marketing", shortLabel: "Global", title: "International Marketing Consulting", summary: "Plan overseas communication around market context and buyer decisions, not translation alone.", situations: ["Preparing to enter overseas markets", "Multilingual content exists without a conversion path"], scope: ["Market and audience position", "Multilingual content and SEO", "Ads, channels, and localization"], deliverables: ["Market-entry strategy", "Content direction", "Execution plan"], execution: "Connects to multilingual websites, SEO, advertising, and market execution." },
+      { id: "international-marketing", shortLabel: "Global", title: "International Marketing Consulting", summary: "Plan multilingual communication, channels, and localization around the target market and its customers.", situations: ["Preparing to enter overseas markets", "Multilingual content exists without a conversion path"], scope: ["Market and audience position", "Multilingual content and SEO", "Ads, channels, and localization"], deliverables: ["Market-entry strategy", "Content direction", "Execution plan"], execution: "Connects to multilingual websites, SEO, advertising, and market execution." },
     ],
   },
   ja: {
-    sectionLabel: "ビジネスコンサルティング", sectionMeta: "4つの専門領域", intro: "現状と優先順位を整理し、戦略を実行可能な仕事へつなげます。",
-    labels: { situations: "適した状況", scope: "支援範囲", deliverables: "成果物", execution: "実行支援", consult: "相談を予約" }, processTitle: "支援の流れ", process: ["現状整理", "目標確認", "戦略設計", "実行連携", "効果検証"],
+    sectionLabel: "ビジネスコンサルティング", sectionMeta: "4つの専門領域", intro: "ブランド基準、業務フロー、技術環境を確認し、各段階の目標、役割分担、実施の優先順位を整理します。",
+    labels: { situations: "適した状況", scope: "支援範囲", deliverables: "成果物", execution: "実行支援", consult: "お問い合わせ" }, processTitle: "支援の流れ", process: ["現状整理", "目標確認", "戦略設計", "実行連携", "効果検証"],
     services: [
       { id: "systems-consulting", shortLabel: "システム", title: "システムコンサルティング", summary: "業務、権限、データを導入可能なシステム設計へ整理します。", situations: ["ERP・CRM・WMS の導入や刷新", "システムと業務が分断している"], scope: ["業務と要件の整理", "機能・権限・データ設計", "導入順序とリスク"], deliverables: ["要件分析", "構成図", "導入ロードマップ"], execution: "カスタム開発、既存連携、プロジェクト支援へ接続できます。" },
       { id: "digital-integration", shortLabel: "デジタル統合", title: "デジタル統合コンサルティング", summary: "Web、EC、会員、外部サービスを一つの運用フローへ統合します。", situations: ["ツール間の手作業が多い", "決済・物流・社内システムが分断している"], scope: ["サービス棚卸し", "データと API 連携", "自動化計画"], deliverables: ["統合構成図", "連携一覧", "優先順位"], execution: "Web、EC、会員、決済、物流、自動化の構築へ接続できます。" },
       { id: "visual-design", shortLabel: "ビジュアル", title: "ビジュアルデザインコンサルティング", summary: "ブランド、UI、販促物に一貫した視覚言語を設計します。", situations: ["ブランド表現が統一されていない", "画面の情報階層が分かりにくい"], scope: ["ブランド診断", "UI と情報階層", "デザイン運用"], deliverables: ["ビジュアル方針", "デザイン規定", "改善一覧"], execution: "ブランド、UI、Web、マーケティング素材制作へ接続できます。" },
-      { id: "international-marketing", shortLabel: "海外展開", title: "国際マーケティングコンサルティング", summary: "翻訳だけでなく、市場と購買判断に沿った海外展開を設計します。", situations: ["海外市場への進出を検討している", "多言語コンテンツに成果導線がない"], scope: ["市場・顧客定位", "多言語コンテンツと SEO", "広告・チャネル・現地化"], deliverables: ["市場参入戦略", "コンテンツ方針", "実行計画"], execution: "多言語サイト、SEO、広告、海外施策へ接続できます。" },
+      { id: "international-marketing", shortLabel: "海外展開", title: "国際マーケティングコンサルティング", summary: "対象市場と顧客のニーズに応じて、多言語のコミュニケーション、販路、現地化を計画します。", situations: ["海外市場への進出を検討している", "多言語コンテンツに成果導線がない"], scope: ["市場・顧客定位", "多言語コンテンツと SEO", "広告・チャネル・現地化"], deliverables: ["市場参入戦略", "コンテンツ方針", "実行計画"], execution: "多言語サイト、SEO、広告、海外施策へ接続できます。" },
     ],
   },
 };
@@ -308,163 +311,7 @@ const techStack = [
   },
 ];
 
-const faqGroups = [
-  {
-    title: "A. 入門與價格認知",
-    subtitle: "常見議題",
-    items: [
-      ["1", "做一個網站多少錢？ *", "依功能與複雜度不同，製作總價從 5 萬～500 萬皆有可能，就像建築及裝潢，從套房到豪宅飯店皆有懸殊之差異。"],
-      ["2", "為什麼報價差異這麼大？ *", "差異來自：功能、設計、客製程度、穩定性與擴展性。就像車子，有代步車也有跑車，即便都是輪子也有懸殊差異，最終還是取決於總預算。此外若是涉及商業模式，亦不建議總預算放置過多於系統部位，因為需考量保留行銷、行政、規劃等執行預算。"],
-      ["3", "為什麼評估起來比較貴？ *", "儘管我們已相較業界優惠許多，但仍有許多隱性成本往往是決定系統成敗的關鍵，若有實際預算考量應先如實告知，我方亦擅長在有限預算內達到客戶的核心需求目標。"],
-      ["4", "可以做便宜一點嗎？ *", "可以，只要如實告知實際預算，可以根據重要性減少功能、改變機制，或降低客製程度。"],
-      ["5", "為什麼不能直接報價？或者報價很久？ *", "所有系統皆須經過詳細規劃過程，才能評估越趨近於實際施作情境所需要的成本；當需求尚不明朗或細節不足時，報價容易以超出安全的粗估範圍來提供。"],
-      ["6", "MVP 是什麼？ *", "最小可行產品，先做核心功能驗證，確保商業邏輯正確，且避免一次性投入過多成本卻走錯路，可以階段性試錯後調整。"],
-      ["7", "為什麼建議分階段？ *", "過往近乎所有專案失敗都是始於評估規劃的階段不充分，造成雙輸局面，理應降低風險，避免一次投入過大。"],
-      ["8", "開發時間多久？ *", "根據需求，約 2 週～6 個月以上，大型專案可能涉及更長時間。"],
-      ["9", "維護費是什麼？", "包含主機、更新、安全與維運。包含查找隱性未知的錯誤以及維持環境更新至安全版本。"],
-    ],
-  },
-  {
-    title: "B. 系統觀念與基本理解",
-    subtitle: "基礎名詞",
-    items: [
-      ["11", "網址（URL）是什麼？", "使用者進入網站的地址。（就像門牌號碼）"],
-      ["12", "網域（Domain）是什麼？", "網站名稱就像是你的住宅或社區名稱，需要向網域供應商每年續費，沒辦法買斷。(全世界的網域由 ICANN 管理，規則只能註冊／續租，不能永久擁有) "],
-      ["13", "主機（Hosting）是什麼？", "放網站資料的伺服器。（就像是放置房屋建物的土地）"],
-      ["14", "網域 vs 主機差在哪？", "網域是地址，主機是土地所在。而土地上面的房屋建物則是網站或程式系統。"],
-      ["15", "API 是什麼？", "系統與系統之間的溝通方式。（按照特定規格溝通對接的模式）"],
-      ["16", "什麼叫「串接」？", "將不同系統連接。（像把不同電器接到同一個電源）"],
-      ["17", "為什麼串接會增加費用？ *", "需要整合第三方系統與處理流程及例外（例如：第三方支付、刷卡、電子發票、數位錢包、數位憑證等）。"],
-      ["18", "什麼是前端 vs 後端？", "前端是畫面，後端是邏輯。（像餐廳店面裝潢 vs 餐廳動線機能）"],
-      ["19", "資料庫是什麼？", "用來儲存資料。（像倉庫）"],
-      ["20", "SaaS 是什麼？", "雲端軟體服務。（像租用現成店面）"],
-    ],
-  },
-  {
-    title: "C. 功能與開發決策",
-    subtitle: "範圍選擇",
-    items: [
-      ["21", "可以先做一部分後再加功能嗎？ *", "可以，但前期架構需設計好。（像預留施工管線）"],
-      ["22", "可以只做部分功能嗎？", "可以，建議先做核心。（先求有再求好）"],
-      ["23", "是否一定要做 App？", "不一定，需要根據使用者類型，以及行銷策略而定。"],
-      ["24", "Web App 跟網站差在哪？", "架構相同，但呈現方式大不同，通常是因為純移動裝置 APP 開發及維護成本較高，而優先使用 Web App。"],
-      ["25", "是否需要管理後台？", "若是資料時常異動或時常累積，希望由公司內部人員可直接管理，最小化後期開發公司的支援，則需要管理後台。(需先定義好哪些資料可以編輯)"],
-      ["26", "是否需要權限控管？", "幾乎一定需要。"],
-      ["27", "是否需要報表？", "視營運需求而定，應將數據轉為可視化呈現或報表下載。"],
-      ["28", "是否需要即時系統？", "若涉及到即時聊天室，則需要架構即時系統。若預算有限則改為非即時系統，則需要調整使用者體驗以配合非即時的特性，如 留言式對話。"],
-      ["29", "是否可以用現成工具？", "可以，諸如 WordPress、Shopify、Wix 等，但擴充彈性受限於平台規範。（像租現成店面）"],
-      ["30", "客製 vs 套版怎麼選？ *", "取決於功能需求、上線時間要求，看是否需要差異化。（像訂製西裝 vs 成衣）"],
-    ],
-  },
-  {
-    title: "D. 設計與使用體驗",
-    subtitle: "介面與流程",
-    items: [
-      ["31", "為什麼視覺設計也要錢？ *", "若使用者為終端消費者，則視覺設計將嚴重影響轉換率與效率，但同時需要經過市場驗證，顧視覺設計仍然是使用型系統佔比非常大的部分，甚至部分品牌可能超過系統設計。（像店面品牌、店面動線設計）"],
-      ["32", "UI vs UX 差在哪？", "UI 是畫面，UX 是體驗。（像裝潢 vs 動線）"],
-      ["33", "是否一定要做 RWD？", "通常是內建選項。（像一個空間適合不同人使用）"],
-      ["34", "可以照參考網站做嗎？", "可以參考但不能複製，必須以同品質但不同風格方式呈現。（像參考風格）"],
-      ["35", "為什麼要先做設計規劃？", "避免開發後才發現不是自己要的或者規劃錯誤。（像先畫藍圖）"],
-      ["36", "是否需要儀表板 Dashboard？", "通常都需要，因為只要系統有數據，就應該有可視化操作作呈現。尤其是若大型電視牆或者螢幕呈現。"],
-      ["37", "是否需要動畫？", "不一定，視是否增加使用者體驗 UX 而定。"],
-      ["38", "可以自己提供設計嗎？", "可以，但仍然需要實作成可施工設計圖。"],
-      ["39", "品牌風格重要嗎？", "如同門面一般，影響信任感。"],
-      ["40", "為什麼有些網站比較順？", "讀取速度取決於 前端設計架構、素材選擇、主機環境等，應逐步檢核、逐步優化。"],
-    ],
-  },
-  {
-    title: "E. AI 技術現實",
-    subtitle: "工具與限制",
-    items: [
-      ["41", "你們會用 AI 做嗎？ *", "僅在我們的規劃下輔助使用，因為 AI 設計風格過於鮮明，而每一位客戶的需求及風格都不同，仍然需要搭配非常多的規劃設計、價值驗證。"],
-      ["42", "用 AI 為什麼還這麼貴？ *", "AI 僅能解決部分的設計速度，但無法解決決策及底層邏輯，但可以讓預算用在最有價值的地方。"],
-      ["43", "AI 可以直接做完整系統嗎？", "就實際落地商業化仍然還有一段距離。"],
-      ["44", "為什麼還需要工程團隊？", "AI 如同施工助理，可以加速，但仍然需要整合與設計核心。"],
-      ["45", "AI 會偷我的資料嗎？", "若涉及機密或者商業邏輯，則應該使用內部私有模型，避免外洩風險。"],
-      ["46", "可以做私有 AI 嗎？", "可以，根據需求架設私人模型。"],
-      ["47", "AI 做出來可靠嗎？", "就商業落地而言仍然有非常的多細節需要逐步修正。"],
-      ["48", "AI 會取代工程師嗎？", "中高階工程師仍無法取代，但會對既有的市場收入產生影響。"],
-      ["49", "可以用 AI 降成本嗎？", "絕對可以，根據目前已實際落地的專案，AI 已加速節省開發時間達 70%，剩餘決策、溝通、反饋時間仍無法縮短。"],
-      ["50", "AI 最大限制是什麼？", "目前最缺乏的部份是商業邏輯機制、視覺設計、使用者體驗等，仍然需要有詳盡的系統規劃及品牌統一性。"],
-    ],
-  },
-  {
-    title: "F. 合約、權利與控制權",
-    subtitle: "交付與授權",
-    items: [
-      ["51", "程式碼會給我嗎？ *", "視合約條件而定。一般可分為：僅提供系統使用權、交付程式碼但不包含重製／轉售／再授權權利，或依專案另行約定完整原始碼與智慧財產權歸屬。實際交付範圍、授權方式、維護責任與使用限制，皆應以合約明確載明。"],
-      ["52", "設計稿可以給原始檔嗎？ *", "可提供，但需於合約中明確約定交付範圍（如 Figma / AI / PSD 等原始檔）、使用授權（是否包含修改權、再利用權）、以及是否包含設計系統與元件庫。未約定時，預設僅提供最終輸出檔。"],
-
-      ["53", "著作權是誰的？", "依合約約定。一般區分為：著作財產權移轉（買斷）或授權使用（非專屬／專屬）。未特別約定時，著作權通常仍歸創作者所有，客戶僅取得使用授權。另需特別區分：若涉及客戶既有之專利、商業機密、營業秘密或專有技術（Know-how），其權利仍專屬於客戶，我方僅於專案範圍內為履約目的使用，且負有保密義務，不因設計或開發成果而取得任何權利或衍生權。相關權利歸屬與使用範圍，應於合約中明確載明。"],
-
-      ["54", "我可以拿去給別人用嗎？", "需依授權範圍判定。若為非專屬授權且未限制，可於約定範圍內使用；若涉及轉讓、再授權或商業擴散，通常需取得書面同意或另行授權。"],
-
-      ["55", "可以只買設計嗎？", "可以。可單獨委託設計服務，但需明確界定交付內容（如視覺稿、系統規劃書）、檔案格式、以及後續使用與授權範圍，避免與開發權責混淆。"],
-
-      ["56", "我可以自己架主機嗎？", "可以。若採自架模式，需由客戶負責主機環境（含資安、備份、監控、更新維護等），我方可提供部署文件或技術支援，並於合約中界定責任邊界。"],
-
-      ["57", "可以轉給別人維護嗎？", "可以，但需符合授權條款。若涉及程式碼交付，應確認是否包含維護權、修改權與技術文件完整性；必要時可提供交接文件或付費技術交接服務。"],
-
-      ["58", "如果你們不在了怎麼辦？", "可透過機制降低風險，例如：完整技術文件、原始碼託管（如 escrow）、版本控管（Git）、第三方可接手的架構設計等，並於合約中事先約定交付與備援條款。"],
-
-      ["59", "我可以改程式嗎？", "需視授權而定。若包含原始碼且授權含修改權，則可自行或委外修改；若未授權修改或僅提供使用權，則不得擅自變更，以免違反合約或影響維護責任。"],
-
-      ["60", "是否需要合約？", "視專案規模與複雜度而定。小型案件可由報價單或訂單條款構成契約；中大型或涉及客製開發、智慧財產權與維運責任之專案，建議簽訂正式合約。無論形式為何，均應明確約定交付內容、費用、時程、驗收與授權條款，以降低履約與法律風險。"],
-    ],
-  },
-  {
-    title: "G. 風險、品質與現實",
-    subtitle: "交付管理",
-    items: [
-      ["61", "可以保證成功嗎？ *", "無法保證最終商業成果（如營收或轉換率）。我們可保證依約完成交付內容、品質標準與技術規格；成效仍取決於市場、營運策略與使用方式等多重因素。"],
-
-      ["62", "可以保證排名（SEO）嗎？ *", "無法保證特定排名。搜尋引擎演算法與競爭環境持續變動，我們可依最佳實務提供優化策略（技術SEO、內容結構等），但不承諾特定名次或流量。"],
-
-      ["63", "為什麼專案會失敗？ *", "常見原因包含：需求定義不清、決策方向錯誤、頻繁變更範圍、資源不足或溝通落差。多數問題源於前期規劃與共識不足，而非單一技術問題。"],
-
-      ["64", "為什麼需求要寫很細？", "為確保交付一致性與可驗收性。明確需求可作為報價、排程與驗收依據，降低誤解與重工風險。"],
-
-      ["65", "可以很快做完嗎？", "可透過增加人力、簡化功能或採用現成方案加速，但通常會影響成本、品質或可擴展性，需於三者間取得平衡並事前約定。"],
-
-      ["66", "可以邊做邊改嗎？", "可行，但需納入變更管理流程（Change Request），包含影響評估、時程與費用調整，避免失控與延誤。"],
-
-      ["67", "為什麼修改要收費？", "若超出原合約範圍或影響既有設計／開發，將產生額外工時與風險，因此需依變更內容另行報價或計費。"],
-
-      ["68", "可以無限修改嗎？", "通常不行。合約會約定修改次數或範圍；超出部分需走變更流程並另計費，以確保專案可控與如期交付。"],
-
-      ["69", "為什麼要驗收？", "驗收用於確認交付是否符合合約規格與品質標準，並作為里程碑款項與責任轉移的依據。"],
-
-      ["70", "為什麼要文件？", "文件可確保系統可維護、可交接與可擴展，並作為後續營運、除錯與風險控管的重要依據。"],
-    ],
-  },
-  {
-    title: "H. 付款相關",
-    subtitle: "最關鍵",
-    items: [
-      ["71", "別人比較便宜？ *", "報價差異通常來自架構設計、穩定性、擴展性與服務範圍不同，而非單純功能表面。較低價格可能未包含完整測試、文件、資安、設計機制或長期維護成本，需綜合評估整體價值與風險。"],
-
-      ["72", "我只要很簡單功能 *", "表面功能簡單不代表實作簡單，背後仍涉及資料結構、權限邏輯、例外處理與未來擴展性。需先釐清使用情境與邊界條件，才能準確評估成本與時程。"],
-
-      ["73", "可以用模板嗎？", "可以。模板或現成方案可降低開發成本與時程，但在客製化程度、擴展性與系統整合上會有所限制，需評估是否符合長期需求。"],
-
-      ["74", "為什麼客製功能這麼貴？", "成本主要來自邏輯設計、系統整合、穩定性與測試，而非畫面本身。越是關鍵功能，對資料正確性與例外處理要求越高，開發成本亦相對提升。"],
-
-      ["75", "可以免費試做嗎？", "通常不提供免費開發。可透過需求訪談、原型設計或系統規劃來降低決策風險，確保方向正確後再進入正式開發。"],
-
-      ["76", "可以成功再付錢嗎？", "原則上不建議以「最終商業成功」作為唯一付款條件，因其定義模糊且受市場與營運等外部因素影響。較可行方式為採里程碑分階段付款，並可另行約定具體且可驗證的量化指標（KPI），如流量、轉換率或系統效能等，作為部分款項的觸發條件。相關指標之定義、量測方式與責任歸屬，應於合約中明確約定。"],
-
-      ["77", "為什麼要簽約？", "非所有案件皆需正式合約。小型或低複雜度專案可由報價單或訂單條款構成契約；但對於中大型、客製化或涉及智慧財產權與維運責任之專案，建議簽訂正式合約，以明確界定交付範圍、費用、時程、驗收與權利義務，降低履約風險與爭議。"],
-
-      ["78", "為什麼要分階段付款？", "分攤雙方風險並對齊進度與成果，確保專案能持續推進，同時避免單方資金或履約壓力過高。"],
-
-      ["79", "為什麼要這麼多討論？", "前期討論不僅為建立需求共識，亦包含機制設計、流程驗證與風險評估。透過完整規劃，可於開發前先進行市場驗證（如原型測試、用戶回饋、MVP 驗證等），提早修正方向，降低後續變更、重工與決策錯誤所帶來的成本與風險。"],
-
-      ["80", "為什麼系統這麼複雜？", "系統複雜度通常源自實際商業流程、權限控管與資料流轉需求。為確保可用性與可擴展性，需反映這些真實條件，而非僅呈現表面功能。"],
-    ],
-  },
-];
-
-const faqCount = faqGroups.reduce((count, group) => count + group.items.length, 0);
+const faqGroups = faqContentByLocale.zh;
 
 const pageTitles = {
   about: {
@@ -475,27 +322,27 @@ const pageTitles = {
   case: {
     kicker: "Selected Work",
     title: "精選實績",
-    lede: "不只完成系統，更把複雜的營運需求，整理成真正能長期使用的工具。",
+    lede: "精選企業管理、設備監控、電商服務與品牌網站專案，呈現不同產業的需求與建置成果。",
   },
   solutions: {
     kicker: "Solutions",
     title: "解決方案",
-    lede: "網站、客製系統、品牌設計與數位行銷，從需求規劃到長期運作一次整合。",
+    lede: "以品牌標準與營運需求為基礎，整合網站、企業系統、視覺設計與數位行銷。",
   },
   consulting: {
     kicker: "Business Consulting",
     title: "商業顧問服務",
-    lede: "從系統、數位整合、視覺設計到國際行銷，先釐清問題，再把策略接到可執行的工作。",
+    lede: "從品牌、服務流程與資訊系統評估需求，提供企業在規劃、整合與執行階段所需的專業建議。",
   },
   faq: {
     kicker: "FAQ",
-    title: "常見問題",
-    lede: "整理入門、系統、功能、設計、AI、合約、風險與付款相關等合作前最常遇到的問題。",
+    title: "合作說明",
+    lede: "關於專案規劃、品牌與系統整合、交付及維護，了解我們的合作方式與責任分工。",
   },
   contact: {
     kicker: "Contact",
-    title: "聯繫我們",
-    lede: "告訴我們你的現況、目標與卡住的地方，我們會先協助釐清方向。",
+    title: "聯絡我們",
+    lede: "關於品牌、數位服務或企業系統專案，歡迎與我們聯繫，討論專案方向與合作需求。",
   },
 };
 
@@ -511,8 +358,8 @@ const localizedCopy = {
       kicker: "將你的願景，建構在磐石上",
       title: ["致力於打造", "有靈魂的設計"],
       lede: [
-        "以思緒縝密的設計著名",
-        "讓企業產生持續的影響力",
+        "結合品牌策略、體驗設計與技術整合，",
+        "為企業建立一致的服務體驗與營運系統。",
       ],
       scrolldown: "往下滾動",
     },
@@ -549,9 +396,9 @@ const localizedCopy = {
       signoff: "— 讓工具回到支援工作的角色。",
     },
     solutionsUi: {
-      index: "§ 參考其他人的應用情境",
-      label: "依需求查看解法",
-      button: "討論這個方案",
+      index: "§ 專業服務",
+      label: "服務內容",
+      button: "洽詢服務",
     },
     aiLab: {
       label: "以客戶為本",
@@ -571,7 +418,7 @@ const localizedCopy = {
       company: "造物者科技",
       navLabel: "頁尾網站導覽",
       line: "LINE@ 官方帳號",
-      faqLabel: "常見問題",
+      faqLabel: "合作說明",
     },
     construction: "網站內容更新中 敬請期待",
     font: {
@@ -588,11 +435,11 @@ const localizedCopy = {
   en: {
     pageTitles: {
       about: { kicker: "About", title: "About Us", lede: aboutIntroductionsByLocale.en },
-      case: { kicker: "Selected Work", title: "Selected Work", lede: "We turn complex operating needs into systems teams can rely on and keep using." },
+      case: { kicker: "Selected Work", title: "Selected Work", lede: "Explore our work in business operations, equipment monitoring, e-commerce, and brand websites." },
       solutions: { kicker: "Solutions", title: "Solutions", lede: "Websites, custom systems, brand design, and digital marketing - connected from planning through long-term operation." },
-      consulting: { kicker: "Business Consulting", title: "Business Consulting", lede: "Systems, digital integration, visual design, and international marketing advice connected to practical execution." },
-      faq: { kicker: "FAQ", title: "FAQ", lede: "Questions clients most often ask before working with us, covering pricing, systems, design, AI, contracts, risk, and payment." },
-      contact: { kicker: "Contact", title: "Contact Us", lede: "Tell us where you are, what you want to achieve, and where you are stuck. We will help clarify the direction first." },
+      consulting: { kicker: "Business Consulting", title: "Business Consulting", lede: "Advice on software adoption, digital integration, visual identity, and international marketing, with a plan for implementation." },
+      faq: { kicker: "FAQ", title: "Working with Us", lede: "Our approach to project planning, brand and systems integration, delivery, and ongoing support." },
+      contact: { kicker: "Contact", title: "Contact Us", lede: "For brand, digital service, or enterprise system projects, contact us to discuss your requirements and the scope of collaboration." },
     },
     numbers: [
       { idx: "Sustainability", keyLabel: "Sustainability", val: "12", sup: "+", unit: " yrs", desc: "Our longest-running system has operated reliably for more than 12 years." },
@@ -628,8 +475,8 @@ const localizedCopy = {
       kicker: "Build your vision on solid ground",
       title: ["Driven to create", "design with soul"],
       lede: [
-        "Known for thoughtful, meticulously considered design.",
-        "We help businesses create lasting impact.",
+        "Brand strategy, experience design, and technology.",
+        "Connecting customer experiences with business operations.",
       ],
       scrolldown: "Scroll down",
     },
@@ -641,11 +488,11 @@ const localizedCopy = {
     marquee: ["Adaptive decision systems", "Software system planning and implementation", "Software, hardware, and IoT integration", "ERP / WMS / CRM", "Business websites / e-commerce / payments / invoices", "Custom app development", "War-room dashboards", "Automation execution support systems"],
     achievements: { label: "We build designs with a soul, turning systems into engines for brand growth and lasting impact.", meta: "Since 2011" },
     manifesto: { label: "Our Approach", prelude: "Let systems fit the way work gets done", headlinePrefix: "instead of making work", headlineHighlight: "adapt to the system", points: ["1. Interactions reflect real working habits", "2. Information appears clearly when it is needed", "3. The architecture leaves room to adapt and grow"], quote: "\"Understand the work before designing the system.\"", paragraphs: [["We begin with users, workflows, and information flows", "clarifying the interactions and decisions that matter", "then shaping the needs into a system plan we can validate and build step by step."], ["The system becomes a natural part of the team's day-to-day work", "reducing repeated checks and unnecessary steps", "while leaving room for future changes and growth."]], signoff: "- Let tools return to their role of supporting the work." },
-    solutionsUi: { index: "§ Reference application scenarios", label: "Explore by need", button: "Discuss this solution" },
+    solutionsUi: { index: "§ Services", label: "Services", button: "Contact us" },
     aiLab: { label: "Customer-centered", title: "Core Services", lede: "Since 2011, we have connected deeply with Taiwan's industry chain and gradually expanded internationally." },
     faqNoteLabel: "Key answer logic",
-    contact: { label: "When you are ready", meta: "Book a consultation", titleA: "Seize your", titleHighlight: "chance to shape the future", lede: ["Book an online consultation now", "and let us help build your business landscape."], emailButton: "Email us" },
-    footer: { company: "ESTIGINTO Co., Ltd.", navLabel: "Footer navigation", line: "LINE@ Official Account", faqLabel: "FAQ" },
+    contact: { label: "When you are ready", meta: "Discuss a project", titleA: "Seize your", titleHighlight: "chance to shape the future", lede: ["Book an online consultation now", "and let us help build your business landscape."], emailButton: "Email us" },
+    footer: { company: "ESTIGINTO Co., Ltd.", navLabel: "Footer navigation", line: "LINE@ Official Account", faqLabel: "Working with us" },
     construction: "Website content is being updated. Please stay tuned.",
     font: { label: "Font size", increase: "Increase font size", reset: "Default font size", decrease: "Decrease font size" },
     preview: { show: "Preview construction page", back: "Back to full page" },
@@ -656,8 +503,8 @@ const localizedCopy = {
       case: { kicker: "Selected Work", title: "実績紹介", lede: "複雑な業務要件を整理し、現場で長く使える仕組みへ。" },
       solutions: { kicker: "Solutions", title: "ソリューション", lede: "Webサイト、業務システム、ブランドデザイン、デジタルマーケティングを企画から長期運用まで一貫して支援します。" },
       consulting: { kicker: "Business Consulting", title: "ビジネスコンサルティング", lede: "システム、デジタル統合、ビジュアル、国際マーケティングを実行可能な計画へ整理します。" },
-      faq: { kicker: "FAQ", title: "よくある質問", lede: "価格、システム、機能、設計、AI、契約、リスク、支払いなど、相談前によくある質問をまとめました。" },
-      contact: { kicker: "Contact", title: "お問い合わせ", lede: "現状、目標、課題をお聞かせください。まず方向性の整理からお手伝いします。" },
+      faq: { kicker: "Working Together", title: "ご依頼について", lede: "プロジェクトの計画、ブランドとシステムの連携、納品・保守における進め方と役割分担をご案内します。" },
+      contact: { kicker: "Contact", title: "お問い合わせ", lede: "ブランド、デジタルサービス、業務システムのプロジェクトについて、方針やご要望をお聞かせください。" },
     },
     numbers: [
       { idx: "持続性", keyLabel: "Sustainability", val: "12", sup: "+", unit: " 年", desc: "最も長く稼働しているシステムは 12 年以上安定運用されています。" },
@@ -693,8 +540,8 @@ const localizedCopy = {
       kicker: "ビジョンを、揺るぎない基盤の上に",
       title: ["私たちが目指すのは", "魂のあるデザイン"],
       lede: [
-        "緻密に考え抜かれたデザインで知られています。",
-        "企業が持続的な影響力を生み出せるよう支援します。",
+        "ブランド戦略、体験設計、技術の統合。",
+        "顧客体験と企業の業務を、一貫した設計でつなぎます。",
       ],
       scrolldown: "下へスクロール",
     },
@@ -706,11 +553,11 @@ const localizedCopy = {
     marquee: ["能動型意思決定システム", "ソフトウェアシステムの設計と構築", "ソフト・ハード・IoT 統合", "ERP / WMS / CRM", "ビジネスサイト / EC / 決済 / 請求書", "カスタム APP", "戦情室ダッシュボード", "自動化実行支援システム"],
     achievements: { label: "魂のあるデザインを作り、システムをブランド成長と持続的な影響力の推進力にします。", meta: "2011 年から" },
     manifesto: { label: "私たちのアプローチ", prelude: "システムを仕事に合わせる", headlinePrefix: "仕事をシステムに", headlineHighlight: "合わせるのではなく", points: ["1. 実際の働き方に沿った操作", "2. 必要なときに、必要な情報が明確に届く", "3. 変化や拡張に対応できる余地を残す"], quote: "「仕事を理解してから、システムを設計する。」", paragraphs: [["利用者、業務プロセス、情報の流れから始め", "重要な操作と意思決定のポイントを整理し", "検証しながら段階的に実現できるシステム計画へ落とし込みます。"], ["システムをチームの日常に自然になじませ", "繰り返しの確認や不要な操作を減らし", "将来の変更や拡張にも余地を残します。"]], signoff: "- ツールを、仕事を支える本来の役割へ。" },
-    solutionsUi: { index: "§ 他社の活用シーンを参考にする", label: "課題別に見る", button: "この方案を相談する" },
+    solutionsUi: { index: "§ サービス", label: "サービス内容", button: "サービスについて相談" },
     aiLab: { label: "顧客中心", title: "主要サービス", lede: "2011 年から台湾の産業チェーン資源と深く連携し、国際展開を進めています。" },
     faqNoteLabel: "回答の要点",
-    contact: { label: "準備ができたら", meta: "相談を予約", titleA: "未来を変える", titleHighlight: "チャンスをつかむ", lede: ["オンライン相談をご予約ください", "あなたのビジネス構想を形にするお手伝いをします。"], emailButton: "メールする" },
-    footer: { company: "造物者科技", navLabel: "フッターナビゲーション", line: "LINE@ 公式アカウント", faqLabel: "よくある質問" },
+    contact: { label: "準備ができたら", meta: "お問い合わせ", titleA: "未来を変える", titleHighlight: "チャンスをつかむ", lede: ["オンライン相談をご予約ください", "あなたのビジネス構想を形にするお手伝いをします。"], emailButton: "メールする" },
+    footer: { company: "造物者科技", navLabel: "フッターナビゲーション", line: "LINE@ 公式アカウント", faqLabel: "ご依頼について" },
     construction: "サイト内容を更新中です。しばらくお待ちください。",
     font: { label: "文字サイズ", increase: "文字を大きく", reset: "標準サイズ", decrease: "文字を小さく" },
     preview: { show: "工事中画面をプレビュー", back: "完全ページへ戻る" },
@@ -719,47 +566,7 @@ const localizedCopy = {
 
 function getCopy(locale) {
   const copy = localizedCopy[locale] || localizedCopy.zh;
-  if (locale === "en") {
-    const faqHeadings = [
-      ["A. Getting Started and Pricing", "Common topics"],
-      ["B. System Concepts and Basics", "Basic terms"],
-      ["C. Feature and Development Decisions", "Scope choices"],
-      ["D. Design and User Experience", "Interface and flow"],
-      ["E. The Reality of AI", "Tools and limits"],
-      ["F. Contracts, Rights, and Control", "Delivery and licensing"],
-      ["G. Risk, Quality, and Reality", "Delivery management"],
-      ["H. Payment", "Key points"],
-    ];
-    return {
-      ...copy,
-      faqGroups: faqGroups.map((group, index) => ({
-        ...group,
-        title: faqHeadings[index]?.[0] || group.title,
-        subtitle: faqHeadings[index]?.[1] || group.subtitle,
-      })),
-    };
-  }
-  if (locale === "ja") {
-    const faqHeadings = [
-      ["A. 入門と価格の考え方", "よくある議題"],
-      ["B. システムの基本理解", "基礎用語"],
-      ["C. 機能と開発判断", "範囲選択"],
-      ["D. デザインと利用体験", "画面と流れ"],
-      ["E. AI 技術の現実", "ツールと制約"],
-      ["F. 契約、権利、管理権", "納品とライセンス"],
-      ["G. リスク、品質、現実", "納品管理"],
-      ["H. 支払い関連", "重要事項"],
-    ];
-    return {
-      ...copy,
-      faqGroups: faqGroups.map((group, index) => ({
-        ...group,
-        title: faqHeadings[index]?.[0] || group.title,
-        subtitle: faqHeadings[index]?.[1] || group.subtitle,
-      })),
-    };
-  }
-  return copy;
+  return { ...copy, faqGroups: faqContentByLocale[locale] || faqContentByLocale.zh };
 }
 
 function LanguageSwitch({ locale, onSelect, switchRef, activeOptionRef, className = "" }) {
@@ -1036,7 +843,7 @@ function HeroSoulRibbon() {
     <div ref={backgroundRef} className="hero-soul-ribbon" aria-hidden="true" data-ready={ready}>
       <span className="hero-depth-grid" />
       <canvas ref={canvasRef} className="hero-soul-ribbon-canvas" />
-      <span className="hero-soul-ribbon-hud">SOUL CURRENT / FULL FIELD · 01A</span>
+
     </div>
   );
 }
@@ -1144,7 +951,7 @@ function PageTransition() {
       <span className="page-transition-vortex">
         <canvas ref={vortexCanvasRef} className="page-transition-vortex-canvas" />
         <span className="page-transition-vortex-hud page-transition-vortex-hud-top">
-          <i>TRANSIT / 02</i><i>CHRONO FIELD</i><i>TAIPEI / 25.0330° N</i>
+          <i>ESTIGINTO</i><i>DESIGN & TECHNOLOGY</i><i>TAIPEI</i>
         </span>
         <span className="page-transition-vortex-interface">
           {transitionBrand ? (
@@ -1156,7 +963,7 @@ function PageTransition() {
           <em>Innovation across borders</em>
         </span>
         <span className="page-transition-vortex-hud page-transition-vortex-hud-bottom">
-          <i>ESTIGINTO MOTION SYSTEM</i><i>ACCELERATE · INVERT · LOCK</i>
+          <i>ESTIGINTO</i><i>BRAND · EXPERIENCE · TECHNOLOGY</i>
         </span>
       </span>
       <span className="page-transition-panel-top" />
@@ -1440,7 +1247,7 @@ function Solutions({ copy }) {
   return (
     <section className="section reveal" id="solutions" aria-label="Solutions">
       <div className="wrap">
-        <SectionEyebrow index={copy.solutionsUi.index} label={copy.solutionsUi.label} meta={`${items.length} programs`} />
+        <SectionEyebrow index={copy.solutionsUi.index} label={copy.solutionsUi.label}  />
         <div className="solutions">
           <ul className="sol-list">
             {items.map((s, i) => (
@@ -1448,22 +1255,22 @@ function Solutions({ copy }) {
                 key={s.id}
                 className={`sol-row ${i === active ? "active" : ""}`}
                 onMouseEnter={() => setActive(i)}
-                onFocus={() => setActive(i)}
-                tabIndex={0}
               >
+                <button className="sol-choice" type="button" aria-pressed={i === active} aria-controls="solution-preview" onClick={() => setActive(i)}>
                 <span className="num">{s.number}</span>
-                <div className="body">
+                <span className="body">
                   <span className="tag">
                     <span>{s.eyebrow}</span>
                   </span>
-                  <h3>{s.title}</h3>
-                </div>
-                <span className="meta">{s.meta}</span>
+                  <span className="sol-title">{s.title}</span>
+                </span>
+
+                </button>
               </li>
             ))}
           </ul>
 
-          <aside className="sol-preview" aria-live="polite">
+          <aside className="sol-preview" id="solution-preview" aria-live="polite" aria-atomic="true">
             <div
               className="figure"
               style={{ backgroundImage: `url(${item.image})` }}
@@ -1471,7 +1278,7 @@ function Solutions({ copy }) {
               aria-label={item.eyebrow}
             >
               <span className="frame" aria-hidden="true" />
-              <span className="label">{item.meta}</span>
+
             </div>
             <div className="info">
               <p>{item.summary}</p>
@@ -1608,10 +1415,10 @@ function CasePortfolio({ copy }) {
   const casesById = new Map(cases.map((caseStudy) => [caseStudy.id, caseStudy]));
   const [activeCaseId, setActiveCaseId] = useState(null);
   const labels = {
-    zh: { section: "精選實績", meta: "依需求查看解法", intro: "從問題出發，看見我們如何把流程做成可持續運作的系統。", expand: "查看解法", collapse: "收合內容", details: "建置內容" },
-    en: { section: "Selected Work", meta: "Explore by need", intro: "Start with the problem and see how we turn workflows into systems built for ongoing use.", expand: "View solution", collapse: "Close details", details: "What we built" },
-    ja: { section: "実績紹介", meta: "課題別に見る", intro: "課題を起点に、業務フローを継続運用できる仕組みへ整えた事例をご紹介します。", expand: "解決内容を見る", collapse: "詳細を閉じる", details: "構築内容" },
-  }[copy.locale] || { section: "精選實績", meta: "依需求查看解法", intro: "從問題出發，看見我們如何把流程做成可持續運作的系統。", expand: "查看解法", collapse: "收合內容", details: "建置內容" };
+    zh: { section: "精選實績", meta: "服務內容", intro: "以下依應用領域整理專案，點選案例可查看建置功能。", expand: "查看專案內容", collapse: "收合內容", details: "建置內容" },
+    en: { section: "Selected Work", meta: "Services", intro: "Browse projects by application area and select a case to see the features delivered.", expand: "View project details", collapse: "Close details", details: "What we built" },
+    ja: { section: "実績紹介", meta: "サービス内容", intro: "用途別に実績をご紹介します。各事例を選択すると、構築した機能をご覧いただけます。", expand: "構築内容を見る", collapse: "詳細を閉じる", details: "構築内容" },
+  }[copy.locale] || { section: "精選實績", meta: "服務內容", intro: "以下依應用領域整理專案，點選案例可查看建置功能。", expand: "查看專案內容", collapse: "收合內容", details: "建置內容" };
 
   return (
     <section className="section reveal" id="case" aria-label={labels.section}>
@@ -1894,6 +1701,7 @@ function FAQ({ copy }) {
                 type="button"
                 id={`faq-group-${groupIndex}`}
                 aria-expanded={openGroup === groupIndex}
+                aria-controls={`faq-body-${groupIndex}`}
                 onClick={() => {
                   setOpenGroup((current) => {
                     const next = current === groupIndex ? -1 : groupIndex;
@@ -1908,7 +1716,7 @@ function FAQ({ copy }) {
                 <span className="faq-group-subtitle">{group.subtitle}</span>
                 <span className="faq-group-toggle" aria-hidden="true" />
               </button>
-              <div className="faq-group-body">
+              <div className="faq-group-body" id={`faq-body-${groupIndex}`} inert={openGroup !== groupIndex} aria-hidden={openGroup !== groupIndex}>
                 <div>
                   <div className="faq-list">
                     {group.items.map(([num, q, a], itemIndex) => {
@@ -1921,12 +1729,13 @@ function FAQ({ copy }) {
                             type="button"
                             onClick={() => setOpen(isOpen ? "" : itemId)}
                             aria-expanded={isOpen}
+                            aria-controls={`faq-answer-${itemId}`}
                           >
                             <span className="num">{num}</span>
                             <span>{q}</span>
                             <span className="toggle" aria-hidden="true" />
                           </button>
-                          <div className="faq-a">
+                          <div className="faq-a" id={`faq-answer-${itemId}`} aria-hidden={!isOpen}>
                             <div>
                               <p>{a}</p>
                             </div>
@@ -2242,10 +2051,10 @@ function MobileNav({ locale, fontControls }) {
         <nav className="mobile-nav-diamond mobile-channel-panel" aria-label={localizedMenuLabels.servicesMenu}>
           <header className="mobile-channel-header">
             <div>
-              <p>Temporal navigation / Estiginto</p>
-              <span>Mobile channel · TPE 25.0330° N</span>
+              <p>ESTIGINTO</p>
+              <span>{localizedMenuLabels.servicesMenu}</span>
             </div>
-            <span aria-hidden="true">CH / 02</span>
+
           </header>
 
           <div className="mobile-nav-diamond-core mobile-channel-routes" key={activeGroup}>
@@ -2287,7 +2096,7 @@ function MobileNav({ locale, fontControls }) {
           </div>
 
           <footer className="mobile-channel-footer">
-            <span>Channel control</span>
+            <span>{fontControls.labels.label}</span>
             <FontSizeControls {...fontControls} tabIndex={interactive ? 0 : -1} />
             <span>EST / 2026</span>
           </footer>
@@ -2589,8 +2398,8 @@ function DesktopCursorMenu({ locale, fontControls }) {
       >
         <header className="desktop-channel-header">
           <div>
-            <p className="desktop-service-eyebrow">Temporal navigation / Estiginto</p>
-            <p className="desktop-channel-status"><i aria-hidden="true" /> Channel stable · TPE 25.0330° N</p>
+            <p className="desktop-service-eyebrow">ESTIGINTO</p>
+            <p className="desktop-channel-status"><i aria-hidden="true" /> {localizedMenuLabels.servicesMenu}</p>
           </div>
           <button
             className="desktop-channel-close"
@@ -2604,7 +2413,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
 
         <div className="desktop-channel-deck">
           <div className="desktop-channel-axis">
-            <span className="desktop-channel-axis-label" aria-hidden="true">NOW / 00</span>
+            <span className="desktop-channel-axis-label" aria-hidden="true">EST. 2011</span>
             <button
               className="desktop-channel-core"
               type="button"
@@ -2614,7 +2423,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
             >
               <i aria-hidden="true" />
             </button>
-            <span className="desktop-channel-axis-label" aria-hidden="true">ROUTE / ∞</span>
+            <span className="desktop-channel-axis-label" aria-hidden="true">ESTIGINTO</span>
           </div>
 
           <div className="desktop-service-columns">
@@ -2630,7 +2439,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
                 <h2 className="desktop-service-title" id={headingId}>
                   <span className="desktop-service-marker" aria-hidden="true"><i /></span>
                   <span>{group.label}</span>
-                  <small>{groupKey === "primary" ? "Origin paths" : "Advisory paths"}</small>
+
                 </h2>
                 <div className="desktop-service-links">
                   {group.items.map((item, index) => (
@@ -2654,9 +2463,9 @@ function DesktopCursorMenu({ locale, fontControls }) {
         </div>
 
         <footer className="desktop-channel-footer">
-          <span>Temporal channel control deck</span>
+          <span>{localizedMenuLabels.servicesMenu}</span>
           <FontSizeControls {...fontControls} tabIndex={open && !closing && !opening ? 0 : -1} />
-          <span>Estiginto motion system / 2026</span>
+          <span>ESTIGINTO</span>
         </footer>
       </nav>
     </div>
@@ -2751,8 +2560,6 @@ export default function App() {
   const pageTitle = copy.pageTitles[initialSection];
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
-  const isCasePage = initialSection === "case";
-  const shouldShowApplicationScenarios = initialSection === "case" || initialSection === "solutions";
   const currentFontScaleIndex = fontScaleOptions.indexOf(fontScale);
   const fontControls = {
     labels: copy.font,
@@ -2908,12 +2715,12 @@ export default function App() {
             {initialSection === "case" ? (
               <>
                 <CasePortfolio copy={copy} />
-                <Solutions copy={copy} />
               </>
             ) : null}
             {initialSection === "solutions" ? <><Solutions copy={copy} /><Numbers copy={copy} /></> : null}
             {initialSection === "consulting" ? <ConsultingServices copy={copy} /> : null}
             {isFAQPage ? <FAQ copy={copy} /> : null}
+            <PageNextSteps page={initialSection} locale={locale} />
           </>
         ) : (
           <>
@@ -2924,7 +2731,7 @@ export default function App() {
           </>
         )}
         </main>
-        {isFAQPage ? null : <Footer copy={copy} />}
+        <Footer copy={copy} />
         <GoToTop />
       </div>
       <div className={`language-transition language-transition-${languageTransitionPhase}`} aria-hidden="true" data-target-locale={languageTransitionTarget}>
