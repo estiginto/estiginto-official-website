@@ -2,3 +2,9 @@
   .sol-list .sol-choice { grid-template-columns: 36px 1fr; padding: 22px 0; }
   .sol-list .sol-row.active .sol-choice { padding-left: 14px; }
 }
+.sol-preview .info .system-design-motto { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.45; margin-bottom: 24px; color: var(--ink); }
+.system-design-motto span { color: #b18b54; }
+@media (min-width: 901px) {
+  html[lang="en"] .hero .wrap > div { width: min(60vw, 880px); }
+  html[lang="en"] .hero-title { font-size: clamp(42px, 4.5vw, 64px); }
+}

@@ -167,6 +167,7 @@ const teamIdentities = [
   },
   {
     id: "michael-mlejnek",
+    hidden: true,
     name: "Michael Mlejnek",
     mark: "MM",
     group: "advisory",

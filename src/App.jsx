@@ -356,10 +356,11 @@ const localizedCopy = {
     faqGroups,
     hero: {
       kicker: "將你的願景，建構在磐石上",
-      title: ["致力於打造", "有靈魂的設計"],
+      title: ["以遠見布局", "連結世界與台灣"],
+      systemMotto: ["致力於打造", "有靈魂的設計"],
       lede: [
-        "結合品牌策略、體驗設計與技術整合，",
-        "為企業建立一致的服務體驗與營運系統。",
+        "整合科技、產業與金融的力量，",
+        "讓每一份珍貴價值，持續閃耀。",
       ],
       scrolldown: "往下滾動",
     },
@@ -473,10 +474,11 @@ const localizedCopy = {
     faqGroups,
     hero: {
       kicker: "Build your vision on solid ground",
-      title: ["Driven to create", "design with soul"],
+      title: ["Guided by foresight", "Connecting Taiwan and the world"],
+      systemMotto: ["Driven to create", "design with soul"],
       lede: [
-        "Brand strategy, experience design, and technology.",
-        "Connecting customer experiences with business operations.",
+        "Bringing together the strengths of technology, industry, and finance.",
+        "Helping every source of value continue to shine.",
       ],
       scrolldown: "Scroll down",
     },
@@ -538,10 +540,11 @@ const localizedCopy = {
     faqGroups,
     hero: {
       kicker: "ビジョンを、揺るぎない基盤の上に",
-      title: ["私たちが目指すのは", "魂のあるデザイン"],
+      title: ["先を見据え、未来を描く", "台湾と世界をつなぐ"],
+      systemMotto: ["私たちが目指すのは", "魂のあるデザイン"],
       lede: [
-        "ブランド戦略、体験設計、技術の統合。",
-        "顧客体験と企業の業務を、一貫した設計でつなぎます。",
+        "テクノロジー、産業、金融の力を結集し、",
+        "かけがえのない価値が、輝き続けるように。",
       ],
       scrolldown: "下へスクロール",
     },
@@ -1143,7 +1146,8 @@ function Manifesto({ copy }) {
 }
 
 function TeamSection({ copy }) {
-  const members = teamMembersByLocale[copy.locale] || teamMembersByLocale.en;
+  const members = (teamMembersByLocale[copy.locale] || teamMembersByLocale.en)
+    .filter(member => !member.hidden);
   const sectionCopy = teamSectionCopyByLocale[copy.locale] || teamSectionCopyByLocale.en;
 
   return (
@@ -1282,6 +1286,12 @@ function Solutions({ copy }) {
 
             </div>
             <div className="info">
+              {item.id === "custom-systems" ? (
+                <p className="system-design-motto">
+                  {copy.hero.systemMotto[0]}<br />
+                  <span>{copy.hero.systemMotto[1]}</span>
+                </p>
+              ) : null}
               <p>{item.summary}</p>
               <ul>
                 {item.capabilities.map((p, pointIndex) => (

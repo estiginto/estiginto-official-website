@@ -14,25 +14,25 @@ function functionSource(name, nextName) {
   return appSource.slice(start, end);
 }
 
-test("homepage hero uses the approved two-line impact description in every locale", () => {
+test("hero uses the approved international positioning while custom systems retains its design motto", () => {
   const approvedHeroCopy = {
     zh: [
       "致力於打造",
       "有靈魂的設計",
-      "結合品牌策略、體驗設計與技術整合，",
-      "為企業建立一致的服務體驗與營運系統。",
+      "整合科技、產業與金融的力量，",
+      "讓每一份珍貴價值，持續閃耀。",
     ],
     en: [
       "Driven to create",
       "design with soul",
-      "Brand strategy, experience design, and technology.",
-      "Connecting customer experiences with business operations.",
+      "Bringing together the strengths of technology, industry, and finance.",
+      "Helping every source of value continue to shine.",
     ],
     ja: [
       "私たちが目指すのは",
       "魂のあるデザイン",
-      "ブランド戦略、体験設計、技術の統合。",
-      "顧客体験と企業の業務を、一貫した設計でつなぎます。",
+      "テクノロジー、産業、金融の力を結集し、",
+      "かけがえのない価値が、輝き続けるように。",
     ],
   };
 
@@ -45,7 +45,10 @@ test("homepage hero uses the approved two-line impact description in every local
   const heroSource = functionSource("Hero", "PageTransition");
   assert.match(heroSource, /copy\.hero\.title\[0\]/);
   assert.match(heroSource, /copy\.hero\.title\[1\]/);
-  assert.doesNotMatch(heroSource, /copy\.hero\.title\[2\]/);
+  const systemsSource = functionSource("Solutions", "ApplicationScenarioTeaser");
+  assert.match(systemsSource, /item\.id === "custom-systems"/);
+  assert.match(systemsSource, /copy\.hero\.systemMotto\[0\]/);
+  assert.match(systemsSource, /copy\.hero\.systemMotto\[1\]/);
   assert.match(heroSource, /copy\.hero\.lede\[0\]/);
   assert.match(heroSource, /copy\.hero\.lede\[1\]/);
   assert.doesNotMatch(heroSource, /copy\.hero\.lede\[2\]/);
