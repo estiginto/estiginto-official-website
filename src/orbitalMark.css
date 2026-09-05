@@ -1,0 +1,38 @@
+.orbital-background-section { position: relative; isolation: isolate; overflow: hidden; }
+.orbital-background-section > .wrap { position: relative; z-index: 1; }
+.orbital-background {
+  position: absolute;
+  z-index: 0;
+  width: clamp(380px, 47vw, 720px);
+  aspect-ratio: 1;
+  top: -100px;
+  right: -12%;
+  pointer-events: none;
+  color: rgba(153, 127, 88, .2);
+}
+.orbital-background svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+.orbital-background circle { vector-effect: non-scaling-stroke; }
+.orbital-dot { fill: currentColor; stroke: none; }
+.orbital-outline, .orbital-axis { position: absolute; inset: 0; }
+.orbital-axis { transform: rotateZ(32deg); perspective: 1000px; }
+.orbital-ring {
+  transform: rotateY(58deg);
+  animation: orbital-ring-turn 48s linear infinite;
+}
+@keyframes orbital-ring-turn {
+  from { transform: rotateY(58deg); }
+  to { transform: rotateY(418deg); }
+}
+@media (max-width: 760px) {
+  .orbital-background { width: 380px; right: -235px; top: -70px; color: rgba(153, 127, 88, .15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .orbital-ring { animation: none; }
+}

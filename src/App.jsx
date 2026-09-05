@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import PageNextSteps from "./PageNextSteps.jsx";
 import { faqContentByLocale } from "./faqContent.js";
 import "./pageCompletion.css";
 import {
@@ -35,6 +34,7 @@ import {
   getTransitionDestination,
 } from "./pageTransition.js";
 import { createHeroSoulRibbon } from "./heroSoulRibbon.js";
+import OrbitalMark from "./OrbitalMark.jsx";
 import { createPageVortexTransition } from "./pageVortexTransition.js";
 import { buildClientLogoLanes, clientLogos } from "./clientLogoMarquee.js";
 import {
@@ -1245,7 +1245,8 @@ function Solutions({ copy }) {
   const item = items[active] || items[0];
 
   return (
-    <section className="section reveal" id="solutions" aria-label="Solutions">
+    <section className="section reveal orbital-background-section" id="solutions" aria-label="Solutions">
+      <OrbitalMark />
       <div className="wrap">
         <SectionEyebrow index={copy.solutionsUi.index} label={copy.solutionsUi.label}  />
         <div className="solutions">
@@ -2720,7 +2721,6 @@ export default function App() {
             {initialSection === "solutions" ? <><Solutions copy={copy} /><Numbers copy={copy} /></> : null}
             {initialSection === "consulting" ? <ConsultingServices copy={copy} /> : null}
             {isFAQPage ? <FAQ copy={copy} /> : null}
-            <PageNextSteps page={initialSection} locale={locale} />
           </>
         ) : (
           <>
