@@ -1835,6 +1835,10 @@ function Footer({ copy }) {
             <div className="footer-offices">
               <address>
                 <span className="footer-office-label">Taipei Office</span>
+                <span>台北市信義區松信路 71 號 2 樓</span>
+              </address>
+              <address>
+                <span className="footer-office-label">Taipei Meeting Room</span>
                 <span>台北市中山區南京東路一段15號3樓</span>
               </address>
               <address>
