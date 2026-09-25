@@ -82,9 +82,9 @@ test("client logo marquee does not pause on hover or expose client names as text
 });
 
 test("client logo inventory contains every normalized source logo", () => {
-  assert.equal(clientLogos.length, 48);
-  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 48);
-  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 48);
+  assert.equal(clientLogos.length, 47);
+  assert.equal(new Set(clientLogos.map((client) => client.id)).size, 47);
+  assert.equal(new Set(clientLogos.map((client) => client.src)).size, 47);
   assert.equal(clientLogos.every((client) => client.alt.length > 0), true);
   assert.equal(clientLogos.every((client) => existsSync(`.${client.src}`)), true);
   assert.equal(clientLogos.some((client) => client.id === "fable"), false);
@@ -135,7 +135,7 @@ test("King Life is extracted from a complete high-resolution PDF crop", () => {
 test("client inventory is arranged into four curated brand lanes", () => {
   const lanes = buildClientLogoLanes(clientLogos);
 
-  assert.deepEqual(lanes.map((lane) => lane.length), [13, 5, 10, 20]);
+  assert.deepEqual(lanes.map((lane) => lane.length), [13, 5, 9, 20]);
   assert.deepEqual(lanes[1].map((client) => client.id), [
     "tradevan",
     "bureau-foreign-trade",
@@ -168,7 +168,6 @@ test("client inventory is arranged into four curated brand lanes", () => {
     "wealthylife",
     "sleekstrip",
     "zhencheng-family-office",
-    "spg",
   ]);
   assert.equal(lanes[3].some((client) => client.id === "eighteen-tea"), true);
   assert.deepEqual(

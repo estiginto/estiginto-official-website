@@ -42,7 +42,6 @@ const clientLogoDefinitions = [
       ["wealthylife", "中華財富人生財商推廣協會 WealthyLife"],
       ["sleekstrip", "SleekStrip"],
       ["zhencheng-family-office", "臻承國際家族辦公室聯盟"],
-      ["spg", "SPG 冠亞資產管理顧問"],
     ],
   },
   {
