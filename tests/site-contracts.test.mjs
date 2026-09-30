@@ -100,14 +100,14 @@ test("public pages consume the verified localized 2026 content model", () => {
   assert.doesNotMatch(app, /val:\s*"70"/);
 });
 
-test("consulting page presents the four approved advisory services", () => {
+test("consulting page presents the five approved advisory services", () => {
   const app = read("src/App.jsx");
   const html = read("consulting.html");
 
   assert.match(html, /data-target-section="consulting"/);
   assert.match(app, /function ConsultingServices\(\{ copy \}\)/);
   assert.match(app, /const consultingServicesByLocale\s*=\s*\{/);
-  for (const id of ["systems-consulting", "digital-integration", "visual-design", "international-marketing"]) {
+  for (const id of ["systems-consulting", "digital-integration", "visual-design", "international-marketing", "international-finance"]) {
     assert.match(app, new RegExp(`id: "${id}"`));
   }
   assert.match(app, /現況盤點/);

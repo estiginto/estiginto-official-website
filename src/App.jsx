@@ -96,7 +96,7 @@ const desktopPrimaryMenuCopy = {
 const consultingServicesByLocale = {
   zh: {
     sectionLabel: "商業顧問服務",
-    sectionMeta: "四個專業方向",
+    sectionMeta: "五個專業方向",
     intro: "評估既有品牌規範、營運流程與技術環境，釐清各階段的目標、協作分工及執行優先順序。",
     labels: { situations: "適用需求", scope: "服務範圍", deliverables: "規劃成果", execution: "後續執行", consult: "聯絡我們" },
     processTitle: "顧問合作流程",
@@ -106,26 +106,29 @@ const consultingServicesByLocale = {
       { id: "digital-integration", shortLabel: "數位整合", title: "數位整合顧問", summary: "規劃網站、電商、會員與第三方服務的資料串接，減少重複作業。", situations: ["不同工具之間需要重複輸入或人工彙整資料", "網站、金流、物流與內部系統各自運作"], scope: ["數位服務盤點", "資料流與 API 串接", "自動化與階段建置"], deliverables: ["整合架構圖", "串接清單", "執行優先序"], execution: "可依規劃建置網站、電商、會員功能，以及金流、物流與自動化串接。" },
       { id: "visual-design", shortLabel: "視覺設計", title: "視覺設計顧問", summary: "讓品牌、介面與行銷素材使用同一套清楚且可延續的視覺語言。", situations: ["品牌視覺缺乏一致性", "數位介面資訊層級不清楚"], scope: ["品牌視覺檢視", "UI 與資訊層級", "設計規範與素材管理"], deliverables: ["視覺方向", "設計規範", "改善清單"], execution: "可依規劃製作品牌識別、介面、網站視覺與行銷素材。" },
       { id: "international-marketing", shortLabel: "國際行銷", title: "國際行銷顧問", summary: "依目標市場與客戶需求，規劃多語內容、行銷通路及在地化方式。", situations: ["準備進入海外市場", "已有多語內容，希望改善海外客戶的洽詢與購買流程"], scope: ["市場與受眾定位", "多語內容與國際 SEO", "廣告、通路與在地化"], deliverables: ["市場進入策略", "內容方向", "執行計畫"], execution: "可依規劃製作多語網站與廣告素材，並執行 SEO 及海外行銷。" },
+      { id: "international-finance", shortLabel: "國際金融", title: "國際金融服務", summary: "結合資訊技術與跨境法律、稅務、金融專業資源，協助企業與家族整理資產、評估交易及規劃跨國布局，讓決策建立在可查核的資訊上。", situations: ["企業準備跨國投資、資金媒合或跨境交易", "資產分布多地，需要統整持有關係與財務資訊", "家族成員具不同國籍或居住地，需要傳承與信託規劃協作", "投資或合作前，需要查核背景、資金及退出條件"], scope: ["跨國資金媒合：整理資金需求、對接專業資源與協調合作條件", "跨境資產盤點：彙整資產、負債、持有架構與相關文件", "背景調查與驗資協作：查核公開及合法授權資料、資金證明與文件真偽", "跨境稅務與金流規劃協作：串聯律師、稅務及金融專業人員，整理申報與交易需求", "信託與傳承規劃協作：整理受益安排、跨境繼承需求與設立作業", "企業跨境架構：協同專業團隊評估公司、股權與投資架構", "投資風險與退出評估：釐清交易條件、資金流向、退出機制與待確認風險", "家族辦公室與資產規劃系統：整合資產資料、文件、權限、報表及協作流程"], deliverables: ["跨境需求與資產清冊、持有關係圖", "背景調查與驗資資料彙整、待查核事項", "專業團隊分工、規劃議題與執行順序", "交易風險、退出條件及決策資訊清單", "資產管理與家族辦公室系統建置藍圖"], execution: "由 ESTIGINTO 負責資訊整合、系統建置與跨專業協作；法律、稅務、信託及金融事項，依需求串聯相關專業團隊共同評估與執行。" },
     ],
   },
   en: {
-    sectionLabel: "Business Consulting", sectionMeta: "Four advisory practices", intro: "We review brand standards, operating processes, and technical environments to define priorities, responsibilities, and a practical implementation plan.",
+    sectionLabel: "Business Consulting", sectionMeta: "Five advisory practices", intro: "We review brand standards, operating processes, and technical environments to define priorities, responsibilities, and a practical implementation plan.",
     labels: { situations: "Best for", scope: "Advisory scope", deliverables: "Deliverables", execution: "Execution support", consult: "Discuss a project" }, processTitle: "How we work", process: ["Current state", "Goals", "Strategy", "Execution", "Review"],
     services: [
       { id: "systems-consulting", shortLabel: "Systems", title: "Systems Consulting", summary: "Turn workflows, permissions, and data relationships into an implementable system blueprint.", situations: ["Planning an ERP, CRM, or WMS rollout", "Disconnected systems and manual handoffs"], scope: ["Workflow discovery", "Functional and data architecture", "Implementation sequence and risk"], deliverables: ["Requirements analysis", "Architecture map", "Adoption roadmap"], execution: "Connects to custom development, integration, and delivery support." },
       { id: "digital-integration", shortLabel: "Integration", title: "Digital Integration Consulting", summary: "Connect websites, commerce, membership, and third-party services into one operating flow.", situations: ["Teams manually move data between tools", "Web, payment, logistics, and internal systems operate separately"], scope: ["Digital service audit", "Data flow and API integration", "Automation roadmap"], deliverables: ["Integration map", "Connection inventory", "Prioritized plan"], execution: "Connects to web, commerce, membership, payments, logistics, and automation." },
       { id: "visual-design", shortLabel: "Visual", title: "Visual Design Consulting", summary: "Create a consistent visual language across brand, interface, and marketing materials.", situations: ["Brand applications feel inconsistent", "Digital interfaces lack visual hierarchy"], scope: ["Brand review", "UI and information hierarchy", "Design governance"], deliverables: ["Visual direction", "Design guidelines", "Improvement list"], execution: "Connects to identity, UI, web visuals, and campaign assets." },
       { id: "international-marketing", shortLabel: "Global", title: "International Marketing Consulting", summary: "Plan multilingual communication, channels, and localization around the target market and its customers.", situations: ["Preparing to enter overseas markets", "Multilingual content exists without a conversion path"], scope: ["Market and audience position", "Multilingual content and SEO", "Ads, channels, and localization"], deliverables: ["Market-entry strategy", "Content direction", "Execution plan"], execution: "Connects to multilingual websites, SEO, advertising, and market execution." },
+      { id: "international-finance", shortLabel: "Finance", title: "International Finance Services", summary: "Combine information technology with cross-border legal, tax, and financial expertise to help businesses and families organize assets, assess transactions, and plan international operations using verifiable information.", situations: ["Planning international investment, funding introductions, or cross-border transactions", "Assets held across jurisdictions require consolidated ownership and financial records", "Family members have different nationalities or residences and need coordinated succession and trust planning", "An investment or partnership requires background, funding, and exit-condition checks"], scope: ["Cross-border funding introductions: define funding needs, connect professional resources, and coordinate terms", "Cross-border asset inventory: consolidate assets, liabilities, ownership structures, and supporting documents", "Background research and proof-of-funds coordination: review public and lawfully authorized information, funding evidence, and document authenticity", "Tax and payment planning coordination: connect legal, tax, and financial professionals to review reporting and transaction needs", "Trust and succession coordination: organize beneficiary arrangements, cross-border inheritance needs, and setup tasks", "Cross-border corporate structures: coordinate professional assessment of entities, ownership, and investment structures", "Investment risk and exit assessment: clarify transaction terms, fund flows, exit mechanisms, and unresolved risks", "Family office and asset planning systems: integrate asset records, documents, permissions, reporting, and collaboration"], deliverables: ["Cross-border requirements, asset inventory, and ownership map", "Background and funding documentation with items requiring verification", "Professional responsibilities, planning topics, and implementation sequence", "Transaction risks, exit conditions, and decision information checklist", "Asset management and family office system blueprint"], execution: "ESTIGINTO provides information integration, system development, and professional coordination. Legal, tax, trust, and financial matters are assessed and implemented with relevant professional teams according to the requirements." },
     ],
   },
   ja: {
-    sectionLabel: "ビジネスコンサルティング", sectionMeta: "4つの専門領域", intro: "ブランド基準、業務フロー、技術環境を確認し、各段階の目標、役割分担、実施の優先順位を整理します。",
+    sectionLabel: "ビジネスコンサルティング", sectionMeta: "5つの専門領域", intro: "ブランド基準、業務フロー、技術環境を確認し、各段階の目標、役割分担、実施の優先順位を整理します。",
     labels: { situations: "適した状況", scope: "支援範囲", deliverables: "成果物", execution: "実行支援", consult: "お問い合わせ" }, processTitle: "支援の流れ", process: ["現状整理", "目標確認", "戦略設計", "実行連携", "効果検証"],
     services: [
       { id: "systems-consulting", shortLabel: "システム", title: "システムコンサルティング", summary: "業務、権限、データを導入可能なシステム設計へ整理します。", situations: ["ERP・CRM・WMS の導入や刷新", "システムと業務が分断している"], scope: ["業務と要件の整理", "機能・権限・データ設計", "導入順序とリスク"], deliverables: ["要件分析", "構成図", "導入ロードマップ"], execution: "カスタム開発、既存連携、プロジェクト支援へ接続できます。" },
       { id: "digital-integration", shortLabel: "デジタル統合", title: "デジタル統合コンサルティング", summary: "Web、EC、会員、外部サービスを一つの運用フローへ統合します。", situations: ["ツール間の手作業が多い", "決済・物流・社内システムが分断している"], scope: ["サービス棚卸し", "データと API 連携", "自動化計画"], deliverables: ["統合構成図", "連携一覧", "優先順位"], execution: "Web、EC、会員、決済、物流、自動化の構築へ接続できます。" },
       { id: "visual-design", shortLabel: "ビジュアル", title: "ビジュアルデザインコンサルティング", summary: "ブランド、UI、販促物に一貫した視覚言語を設計します。", situations: ["ブランド表現が統一されていない", "画面の情報階層が分かりにくい"], scope: ["ブランド診断", "UI と情報階層", "デザイン運用"], deliverables: ["ビジュアル方針", "デザイン規定", "改善一覧"], execution: "ブランド、UI、Web、マーケティング素材制作へ接続できます。" },
       { id: "international-marketing", shortLabel: "海外展開", title: "国際マーケティングコンサルティング", summary: "対象市場と顧客のニーズに応じて、多言語のコミュニケーション、販路、現地化を計画します。", situations: ["海外市場への進出を検討している", "多言語コンテンツに成果導線がない"], scope: ["市場・顧客定位", "多言語コンテンツと SEO", "広告・チャネル・現地化"], deliverables: ["市場参入戦略", "コンテンツ方針", "実行計画"], execution: "多言語サイト、SEO、広告、海外施策へ接続できます。" },
+      { id: "international-finance", shortLabel: "国際金融", title: "国際金融サービス", summary: "情報技術と国際的な法務・税務・金融の専門知識を組み合わせ、企業やご家族の資産整理、取引評価、海外展開を支援します。確認可能な情報に基づく意思決定を支えます。", situations: ["海外投資、資金調達先の紹介、国際取引を検討している", "複数の国・地域にある資産の保有関係や財務情報を整理したい", "家族の国籍や居住地が異なり、承継・信託の専門家連携が必要", "投資や提携前に、相手方の背景、資金、出口条件を確認したい"], scope: ["国際的な資金調達先の紹介：資金需要の整理、専門家との連携、条件の調整", "国際資産の棚卸し：資産・負債・保有構造・関連文書の整理", "背景調査・資金証明の確認支援：公開情報や適法に利用許諾を得た情報、資金証明、文書の真正性の確認", "国際税務・資金移動の計画支援：法務・税務・金融の専門家と申告・取引要件を整理", "信託・承継計画の支援：受益者の設定、国際相続の要件、設立手続きの整理", "国際的な企業構造：専門家と法人・持分・投資構造を検討", "投資リスクと出口の評価：取引条件、資金の流れ、出口の仕組み、未確認リスクを整理", "ファミリーオフィス・資産計画システム：資産情報、文書、権限、レポート、協働フローを統合"], deliverables: ["国際案件の要件・資産一覧・保有関係図", "背景調査・資金証明資料と要確認事項", "専門家の役割分担・検討事項・実施順序", "取引リスク・出口条件・意思決定情報の一覧", "資産管理・ファミリーオフィスのシステム構築計画"], execution: "ESTIGINTO は情報統合、システム構築、専門家間の連携を担当します。法務・税務・信託・金融に関する事項は、要件に応じて関連する専門チームと評価・実施します。" },
     ],
   },
 };
@@ -332,7 +335,7 @@ const pageTitles = {
   consulting: {
     kicker: "Business Consulting",
     title: "商業顧問服務",
-    lede: "從品牌、服務流程與資訊系統評估需求，提供企業在規劃、整合與執行階段所需的專業建議。",
+    lede: "涵蓋資訊系統、數位整合、視覺設計、國際行銷與國際金融，協助企業與家族釐清需求、整合專業資源並推進執行。",
   },
   faq: {
     kicker: "FAQ",
@@ -438,7 +441,7 @@ const localizedCopy = {
       about: { kicker: "About", title: "About Us", lede: aboutIntroductionsByLocale.en },
       case: { kicker: "Selected Work", title: "Selected Work", lede: "Explore our work in business operations, equipment monitoring, e-commerce, and brand websites." },
       solutions: { kicker: "Solutions", title: "Solutions", lede: "Websites, custom systems, brand design, and digital marketing - connected from planning through long-term operation." },
-      consulting: { kicker: "Business Consulting", title: "Business Consulting", lede: "Advice on software adoption, digital integration, visual identity, and international marketing, with a plan for implementation." },
+      consulting: { kicker: "Business Consulting", title: "Business Consulting", lede: "Advice on information systems, digital integration, visual identity, international marketing, and international finance, with coordinated implementation." },
       faq: { kicker: "FAQ", title: "Working with Us", lede: "Our approach to project planning, brand and systems integration, delivery, and ongoing support." },
       contact: { kicker: "Contact", title: "Contact Us", lede: "For brand, digital service, or enterprise system projects, contact us to discuss your requirements and the scope of collaboration." },
     },
@@ -504,7 +507,7 @@ const localizedCopy = {
       about: { kicker: "About", title: "私たちについて", lede: aboutIntroductionsByLocale.ja },
       case: { kicker: "Selected Work", title: "実績紹介", lede: "複雑な業務要件を整理し、現場で長く使える仕組みへ。" },
       solutions: { kicker: "Solutions", title: "ソリューション", lede: "Webサイト、業務システム、ブランドデザイン、デジタルマーケティングを企画から長期運用まで一貫して支援します。" },
-      consulting: { kicker: "Business Consulting", title: "ビジネスコンサルティング", lede: "システム、デジタル統合、ビジュアル、国際マーケティングを実行可能な計画へ整理します。" },
+      consulting: { kicker: "Business Consulting", title: "ビジネスコンサルティング", lede: "情報システム、デジタル統合、ビジュアル、国際マーケティング、国際金融の課題を整理し、専門家と実行を支援します。" },
       faq: { kicker: "Working Together", title: "ご依頼について", lede: "プロジェクトの計画、ブランドとシステムの連携、納品・保守における進め方と役割分担をご案内します。" },
       contact: { kicker: "Contact", title: "お問い合わせ", lede: "ブランド、デジタルサービス、業務システムのプロジェクトについて、方針やご要望をお聞かせください。" },
     },
@@ -989,6 +992,7 @@ function HomeDirectory({ copy }) {
     "systems-consulting": <><rect x="7" y="7" width="18" height="18" rx="2" /><path d="M12 12h8v8h-8ZM12 3v4m8-4v4m-8 18v4m8-4v4M3 12h4m-4 8h4m18-8h4m-4 8h4" /></>,
     "digital-integration": <><rect x="3" y="3" width="9" height="9" rx="1" /><rect x="20" y="20" width="9" height="9" rx="1" /><path d="M12 7h8a5 5 0 0 1 5 5v3m-3-3 3 3 3-3M20 25h-8a5 5 0 0 1-5-5v-3m-3 3 3-3 3 3" /></>,
     "visual-design": <><path d="m16 3 10 17-10 9L6 20ZM16 3v12M6 20h7m6 0h7" /><circle cx="16" cy="18" r="3" /></>,
+    "international-finance": <><path d="m3 11 13-8 13 8ZM6 14v10m7-10v10m6-10v10m7-10v10M3 28 h26" /></>,
     "international-marketing": <><circle cx="16" cy="16" r="12" /><ellipse cx="16" cy="16" rx="5" ry="12" /><path d="M4 16h24M7 8h18M7 24h18" /></>,
   };
 

@@ -11,13 +11,14 @@ const destinations = [
   "/consulting.html#systems-consulting",
   "/consulting.html#visual-design",
   "/consulting.html#international-marketing",
+  "/consulting.html#international-finance",
   "/consulting.html#digital-integration",
 ];
 
 const expectedLabels = {
-  zh: ["系統規劃", "客製開發", "系統案例", "專案諮詢", "軟體系統", "視覺設計", "國際行銷", "數位整合"],
-  en: ["Planning", "Custom Dev", "System Work", "Consult", "Software Systems", "Visual", "Global", "Integration"],
-  ja: ["システム設計", "開発", "導入事例", "相談", "ソフトウェアシステム", "ビジュアル", "海外展開", "デジタル統合"],
+  zh: ["系統規劃", "客製開發", "系統案例", "專案諮詢", "資訊系統", "視覺設計", "國際行銷", "國際金融", "數位整合"],
+  en: ["Planning", "Custom Dev", "System Work", "Consult", "Information Systems", "Visual", "Global", "International Finance", "Integration"],
+  ja: ["システム設計", "開発", "導入事例", "相談", "情報システム", "ビジュアル", "海外展開", "国際金融", "デジタル統合"],
 };
 
 for (const locale of ["zh", "en", "ja"]) {

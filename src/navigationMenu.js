@@ -12,9 +12,10 @@ const serviceMenuGroupsByLocale = {
     growth: {
       label: "顧問服務",
       items: [
-        { key: "systems-consulting", label: "軟體系統", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "systems-consulting", label: "資訊系統", href: "/consulting.html#systems-consulting", position: "top" },
         { key: "visual-design", label: "視覺設計", href: "/consulting.html#visual-design", position: "left" },
         { key: "international-marketing", label: "國際行銷", href: "/consulting.html#international-marketing", position: "right" },
+        { key: "international-finance", label: "國際金融", href: "/consulting.html#international-finance" },
         { key: "digital-integration", label: "數位整合", href: "/consulting.html#digital-integration", position: "bottom" },
       ],
     },
@@ -32,9 +33,10 @@ const serviceMenuGroupsByLocale = {
     growth: {
       label: "Consulting",
       items: [
-        { key: "systems-consulting", label: "Software Systems", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "systems-consulting", label: "Information Systems", href: "/consulting.html#systems-consulting", position: "top" },
         { key: "visual-design", label: "Visual", href: "/consulting.html#visual-design", position: "left" },
         { key: "international-marketing", label: "Global", href: "/consulting.html#international-marketing", position: "right" },
+        { key: "international-finance", label: "International Finance", href: "/consulting.html#international-finance" },
         { key: "digital-integration", label: "Integration", href: "/consulting.html#digital-integration", position: "bottom" },
       ],
     },
@@ -52,9 +54,10 @@ const serviceMenuGroupsByLocale = {
     growth: {
       label: "コンサルティング",
       items: [
-        { key: "systems-consulting", label: "ソフトウェアシステム", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "systems-consulting", label: "情報システム", href: "/consulting.html#systems-consulting", position: "top" },
         { key: "visual-design", label: "ビジュアル", href: "/consulting.html#visual-design", position: "left" },
         { key: "international-marketing", label: "海外展開", href: "/consulting.html#international-marketing", position: "right" },
+        { key: "international-finance", label: "国際金融", href: "/consulting.html#international-finance" },
         { key: "digital-integration", label: "デジタル統合", href: "/consulting.html#digital-integration", position: "bottom" },
       ],
     },
