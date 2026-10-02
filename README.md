@@ -68,6 +68,8 @@ faq.html         FAQ page
 contact.html     Contact page
 map.html         Interactive map experience
 Oasis/           Published Oasis guide subsite
+brightbean-privacy.html        BrightBean Studio privacy policy
+brightbean-data-deletion.html  BrightBean Studio data deletion instructions
 ```
 
 ## Project Structure

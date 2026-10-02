@@ -28,7 +28,13 @@ export const marketingAssetPaths = [
   ...clientLogoAssetPaths,
 ];
 
-export const rootStaticFiles = ["robots.txt", "sitemap.xml"];
+export const rootStaticFiles = [
+  "robots.txt",
+  "sitemap.xml",
+  "brightbean-privacy.html",
+  "brightbean-data-deletion.html",
+  "brightbean-legal.css",
+];
 
 export function shouldCopyOasisPath(relativePath) {
   const normalized = relativePath.replaceAll("\\", "/").replace(/^\.\//, "");

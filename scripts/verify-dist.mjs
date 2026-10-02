@@ -14,6 +14,9 @@ const requiredFiles = [
   "map.html",
   "robots.txt",
   "sitemap.xml",
+  "brightbean-privacy.html",
+  "brightbean-data-deletion.html",
+  "brightbean-legal.css",
 ];
 const maxDistBytes = 40 * 1024 * 1024;
 const maxMarketingImageBytes = 1024 * 1024;

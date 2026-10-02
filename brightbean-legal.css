@@ -1,0 +1,29 @@
+:root { color-scheme: light; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans TC", sans-serif; color: #202a35; background: #fafbf9; }
+* { box-sizing: border-box; }
+body { margin: 0; font-size: 1rem; line-height: 1.85; }
+a { color: #174e74; text-underline-offset: .2em; overflow-wrap: anywhere; }
+a:hover { color: #0c304a; }
+a:focus-visible { outline: 3px solid #174e74; outline-offset: 4px; }
+header, main, footer { width: min(100% - 2rem, 52rem); margin-inline: auto; }
+header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .5rem 2rem; padding-block: 1.25rem; border-bottom: 1px solid #d8dedb; }
+header > a { font-weight: 700; }
+nav, footer { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
+nav a, footer a { display: inline-flex; align-items: center; min-height: 44px; }
+[aria-current="page"] { font-weight: 700; }
+main { padding-block: clamp(2rem, 5vw, 4rem); }
+h1, h2 { line-height: 1.4; text-wrap: balance; }
+h1 { margin: .35rem 0 1.5rem; font-size: clamp(2rem, 5vw, 3rem); }
+h2 { margin: 2.5rem 0 .75rem; font-size: 1.3rem; }
+p { margin-block: .75rem; }
+ul, ol { padding-inline-start: 1.5rem; }
+li { margin-block: .5rem; }
+.eyebrow { margin: 0; color: #4b5b56; font-size: .85rem; font-weight: 700; letter-spacing: .12em; }
+.metadata { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .25rem 1rem; padding: 1.25rem; margin: 0 0 2rem; background: #edf1ed; border-radius: .5rem; }
+.metadata dt { font-weight: 600; }
+.metadata dd { margin: 0; overflow-wrap: anywhere; }
+.notice { padding: 1rem; border-inline-start: 4px solid #174e74; background: #edf2f5; }
+footer { align-items: center; padding-block: 1rem 2rem; border-top: 1px solid #d8dedb; font-size: .9rem; }
+.skip-link { position: absolute; inset-inline-start: 1rem; inset-block-start: -8rem; padding: .75rem 1rem; background: white; z-index: 1; }
+.skip-link:focus { inset-block-start: .5rem; }
+@media (max-width: 360px) { .metadata { grid-template-columns: 1fr; } .metadata dd { margin-block-end: .5rem; } }
+@media print { header, footer, .skip-link { display: none; } main { width: 100%; padding: 0; } a { color: inherit; } .metadata { background: transparent; padding: 0; } }
