@@ -174,7 +174,12 @@ body.map-page {
   gap: 9px;
   min-width: 0;
   white-space: nowrap;
+  min-height: 44px;
+  color: inherit;
+  text-decoration: none;
 }
+
+.hud-brand:focus-visible { outline: 2px solid var(--hud-cyan); outline-offset: 4px; }
 
 .hud-brand strong {
   font-size: 14px;

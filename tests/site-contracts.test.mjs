@@ -46,20 +46,18 @@ test("every public page declares the existing brand favicon", () => {
 
 test("primary navigation gives solutions and case studies distinct destinations", () => {
   const items = getServiceMenuGroups("zh").digital.items;
-  const solutions = items.find((item) => item.key === "system-planning");
+  const solutions = items.find((item) => item.key === "custom-development");
   const cases = items.find((item) => item.key === "system-cases");
 
-  assert.equal(solutions?.href, "/solutions.html");
+  assert.equal(solutions?.href, "/solutions.html#custom-systems");
   assert.equal(cases?.href, "/case.html#case-group-operations-management");
   assert.notEqual(solutions?.href, cases?.href);
 });
 
-test("footer navigation preserves solutions without standalone case or FAQ entries", () => {
+test("footer navigation exposes solutions, selected work and collaboration guidance in each locale", () => {
   const app = read("src/App.jsx");
 
-  assert.match(app, /<a href="\/solutions\.html">\{menuLabels\[copy\.locale\]\?\.solutions/);
-  assert.doesNotMatch(app, /<a href="\/case\.html">\{menuLabels\[copy\.locale\]\?\.case/);
-  assert.doesNotMatch(app, /<a href="\/faq\.html">\{copy\.footer\.faqLabel\}<\/a>/);
+  for (const path of ["solutions", "case", "faq"]) assert.ok(app.includes(`localizeHref("/${path}.html", copy.locale)`));
 });
 
 test("solutions page has a distinct localized page heading", () => {

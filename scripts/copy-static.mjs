@@ -1,6 +1,7 @@
 import { cp, mkdir } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";
 import { marketingAssetPaths, rootStaticFiles, shouldCopyOasisPath } from "./static-assets.mjs";
+import { writeLocalizedPages } from "./localized-pages.mjs";
 
 const root = process.cwd();
 const dist = join(root, "dist");
@@ -23,3 +24,5 @@ await cp(oasisRoot, join(dist, "Oasis"), {
 for (const file of rootStaticFiles) {
   await cp(join(root, file), join(dist, file), { force: true });
 }
+
+await writeLocalizedPages(dist);

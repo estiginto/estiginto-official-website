@@ -63,7 +63,7 @@ test("prompt eligibility is limited to mobile home", () => {
 });
 
 test("only explicit language selection writes and refreshes the language cookie", () => {
-  assert.match(appSource, /const cookieLocale = readLanguageCookie\(document\.cookie\)/);
+  assert.match(appSource, /return getLocaleFromPath\(window\.location\.pathname\)/);
   assert.match(appSource, /const selectLocale = \(nextLocale\) =>/);
   assert.match(appSource, /const languageCookie = serializeLanguageCookie/);
   assert.match(appSource, /document\.cookie = languageCookie/);
@@ -71,7 +71,7 @@ test("only explicit language selection writes and refreshes the language cookie"
   assert.match(appSource, /onSelect=\{commitLocale\}/);
 
   const localeEffect = appSource.match(
-    /useEffect\(\(\) => \{\s*document\.documentElement\.lang[\s\S]*?\}, \[locale\]\);/,
+    /useEffect\(\(\) => \{\s*applyPageMetadata[\s\S]*?\}, \[locale, initialSection\]\);/,
   )?.[0] || "";
   assert.doesNotMatch(localeEffect, /document\.cookie/);
 });

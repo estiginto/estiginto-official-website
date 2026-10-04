@@ -4,6 +4,50 @@
 }
 .sol-preview .info .system-design-motto { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.45; margin-bottom: 24px; color: var(--ink); }
 .system-design-motto span { color: #b18b54; }
+.home-service-summary { max-width: 820px; margin: 0 auto 28px; color: var(--ink-soft); font-size: var(--fs-base); line-height: 1.8; text-align: center; }
+.page-title-heading { min-width: 0; }
+html[lang="ja"] .page-title h1 { max-width: 100%; overflow-wrap: anywhere; font-size: clamp(2.4rem, 6vw, 5.5rem); line-height: 1.12; letter-spacing: -0.02em; }
+.service-related-links { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 20px; margin-block: 20px; }
+.service-related-links > span { width: 100%; font-size: var(--fs-sm); color: var(--ink-mute); }
+.service-related-links a, .service-inline-link { display: inline-flex; align-items: center; min-height: 44px; color: var(--night); text-decoration: underline; text-underline-offset: 5px; }
+.contact-options { padding-block: 36px 72px; }
+body[data-target-section="contact"] .page-title { min-height: 0; padding-block: 140px 58px; }
+.contact-options h2, .site-next-steps h2 { font-size: var(--fs-h2); line-height: 1.4; margin: 0 0 28px; }
+.contact-selected-service { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; margin-bottom: 24px; padding: 16px 24px; background: var(--paper-deep); }
+.contact-selected-service p { margin: 0; }
+.contact-selected-service a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 5px; }
+.contact-options-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.contact-option { display: flex; gap: 16px; align-items: flex-start; padding: 26px 20px; border: 1px solid var(--ink-line); background: var(--paper); text-decoration: none; min-width: 0; }
+.contact-option > svg { flex-shrink: 0; width: 24px; height: 24px; color: var(--night); }
+.contact-option > span { display: grid; gap: 12px; min-width: 0; }
+.contact-option strong { color: var(--night); font-size: var(--fs-base); }
+.contact-option > span > span { font-size: var(--fs-sm); color: var(--ink-soft); overflow-wrap: anywhere; }
+.contact-option:hover { background: var(--paper-deep); }
+.contact-requirements { max-width: 840px; margin-top: 40px; color: var(--ink-soft); line-height: 1.8; }
+.contact-requirements h3 { color: var(--ink); font-size: var(--fs-h4); margin-bottom: 16px; }
+.contact-requirements ul { padding-left: 1.4em; margin-bottom: 20px; }
+.contact-requirements li { margin-block: 8px; }
+.contact-requirements p { margin-top: 20px; }
+.contact-privacy-note { color: var(--ink-mute); font-size: var(--fs-sm); }
+.site-next-steps { background: var(--paper-deep); border-top: 1px solid var(--ink-line); padding-block: 56px 64px; }
+.site-next-steps-label { font-size: var(--fs-sm); color: var(--ink-mute); margin-bottom: 12px; }
+.site-next-steps-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.site-next-steps-links > a { display: flex; flex-direction: column; gap: 16px; padding: 24px; min-height: 140px; border: 1px solid var(--ink-line); background: var(--paper); text-decoration: none; font-size: var(--fs-sm); color: var(--ink-soft); line-height: 1.8; }
+.site-next-steps-name { display: flex; justify-content: space-between; align-items: center; gap: 16px; color: var(--night); font-size: var(--fs-h4); }
+.site-next-steps-name svg { width: 24px; height: 24px; flex-shrink: 0; }
+.site-next-steps-links a:hover { background: #edf2f8; }
+.site-next-steps-links a:focus-visible, .contact-option:focus-visible, .contact-selected-service a:focus-visible, .service-related-links a:focus-visible { outline: 2px solid var(--night); outline-offset: 4px; }
+@media (max-width: 1000px) { .contact-options-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) {
+  .page-title .wrap { grid-template-columns: minmax(0, 1fr); }
+  .page-title h1 { max-width: 100%; overflow-wrap: anywhere; }
+  html[lang="ja"] .page-title h1 { font-size: clamp(2.25rem, 10vw, 3.5rem); }
+  body[data-target-section="contact"] .page-title { padding-block: 118px 36px; }
+  .site-next-steps-links, .contact-options-grid { grid-template-columns: 1fr; gap: 12px; }
+  .contact-option { padding: 20px; }
+  .site-next-steps-links > a { min-height: 112px; }
+  .contact-selected-service { padding: 12px 16px; }
+}
 @media (min-width: 901px) {
   html[lang="en"] .hero .wrap > div { width: min(60vw, 880px); }
   html[lang="en"] .hero-title { font-size: clamp(42px, 4.5vw, 64px); }

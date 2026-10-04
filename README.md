@@ -27,8 +27,14 @@ http://localhost:4302/
 
 ## Debug
 
-The contact page provides direct email, telephone, and LINE links in the shared
-footer. It does not contain an inquiry form or an email-draft workflow.
+The contact page provides direct email, telephone, and LINE links in its main
+content and the shared footer. Service links retain the selected service through
+the `service` query parameter and the email subject; there is no inquiry form.
+
+Marketing pages have stable Traditional Chinese, English (`/en/`) and Japanese
+(`/ja/`) URLs. The URL takes precedence over saved language preferences. Language
+switching preserves the current page, query and section while updating metadata.
+Use `npm run build` and `npm run preview` to verify the generated language pages.
 
 The latest page inventory and verification record is in
 `docs/project-takeover-2026-09-05.md`.
@@ -66,6 +72,8 @@ case.html        Case studies
 consulting.html  Consulting page
 faq.html         FAQ page
 contact.html     Contact page
+en/              English copies of the seven marketing pages
+ja/              Japanese copies of the seven marketing pages
 map.html         Interactive map experience
 Oasis/           Published Oasis guide subsite
 brightbean-privacy.html        BrightBean Studio privacy policy
@@ -78,12 +86,15 @@ brightbean-data-deletion.html  BrightBean Studio data deletion instructions
 *.html                  Vite HTML entries and page-specific metadata
 src/main.jsx            Official-site React bootstrap
 src/App.jsx             Official-site content and React components
+src/siteRoutes.js       Language routes and page metadata
+src/serviceConnections.js  Service relationships and inquiry links
 src/App.css             Official-site styling
 src/map/                Interactive map application
 Oasis/                  Standalone guide subsite copied into production
 img/                    Public marketing images
 tests/                  Node contract and behavior tests
 scripts/copy-static.mjs Copies approved static assets into dist
+scripts/localized-pages.mjs Generates language HTML, metadata and sitemap
 scripts/verify-dist.mjs Checks production output and asset limits
 vercel.json             Vercel build/output/cache config
 ```

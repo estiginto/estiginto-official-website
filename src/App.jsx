@@ -1,6 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { faqContentByLocale } from "./faqContent.js";
 import "./pageCompletion.css";
+import SiteNextSteps from "./SiteNextSteps.jsx";
+import ContactOptions from "./ContactOptions.jsx";
+import { applyPageMetadata, getLocaleFromPath, getPageFromPath, localizeHref } from "./siteRoutes.js";
+import { connectionCopy, consultingConnections, getContactHref, getServiceLabel, solutionConnections } from "./serviceConnections.js";
 import {
   aboutIntroductionsByLocale,
   caseStudyGroupsByLocale,
@@ -11,7 +15,6 @@ import {
   teamSectionCopyByLocale,
 } from "./content2026.js";
 import {
-  getInitialLocale,
   readLanguageCookie,
   serializeLanguageCookie,
   shouldShowMobileHomeLanguagePrompt,
@@ -65,7 +68,7 @@ const menuLabels = {
     home: "首頁",
     about: "關於我們",
     solutions: "解決方案",
-    case: "參考案例",
+    case: "精選實績",
     contact: "聯絡我們",
     servicesMenu: "服務導覽",
   },
@@ -73,7 +76,7 @@ const menuLabels = {
     home: "Home",
     about: "About",
     solutions: "Solutions",
-    case: "Case Studies",
+    case: "Selected Work",
     contact: "Contact",
     servicesMenu: "Service navigation",
   },
@@ -334,7 +337,7 @@ const pageTitles = {
   },
   consulting: {
     kicker: "Business Consulting",
-    title: "商業顧問服務",
+    title: "顧問服務",
     lede: "涵蓋資訊系統、數位整合、視覺設計、國際行銷與國際金融，協助企業與家族釐清需求、整合專業資源並推進執行。",
   },
   faq: {
@@ -345,7 +348,7 @@ const pageTitles = {
   contact: {
     kicker: "Contact",
     title: "聯絡我們",
-    lede: "關於品牌、數位服務或企業系統專案，歡迎與我們聯繫，討論專案方向與合作需求。",
+    lede: "歡迎洽詢資訊系統、網站、品牌設計、國際行銷與國際金融服務，包含跨境資產整理、財務規劃需求及專業團隊協作。",
   },
 };
 
@@ -441,9 +444,9 @@ const localizedCopy = {
       about: { kicker: "About", title: "About Us", lede: aboutIntroductionsByLocale.en },
       case: { kicker: "Selected Work", title: "Selected Work", lede: "Explore our work in business operations, equipment monitoring, e-commerce, and brand websites." },
       solutions: { kicker: "Solutions", title: "Solutions", lede: "Websites, custom systems, brand design, and digital marketing - connected from planning through long-term operation." },
-      consulting: { kicker: "Business Consulting", title: "Business Consulting", lede: "Advice on information systems, digital integration, visual identity, international marketing, and international finance, with coordinated implementation." },
+      consulting: { kicker: "Business Consulting", title: "Consulting", lede: "Advice on information systems, digital integration, visual identity, international marketing, and international finance, with coordinated implementation." },
       faq: { kicker: "FAQ", title: "Working with Us", lede: "Our approach to project planning, brand and systems integration, delivery, and ongoing support." },
-      contact: { kicker: "Contact", title: "Contact Us", lede: "For brand, digital service, or enterprise system projects, contact us to discuss your requirements and the scope of collaboration." },
+      contact: { kicker: "Contact", title: "Contact Us", lede: "Discuss information systems, websites, brand design, international marketing, and international finance, including cross-border asset information, financial planning needs, and professional coordination." },
     },
     numbers: [
       { idx: "Sustainability", keyLabel: "Sustainability", val: "12", sup: "+", unit: " yrs", desc: "Our longest-running system has operated reliably for more than 12 years." },
@@ -507,9 +510,9 @@ const localizedCopy = {
       about: { kicker: "About", title: "私たちについて", lede: aboutIntroductionsByLocale.ja },
       case: { kicker: "Selected Work", title: "実績紹介", lede: "複雑な業務要件を整理し、現場で長く使える仕組みへ。" },
       solutions: { kicker: "Solutions", title: "ソリューション", lede: "Webサイト、業務システム、ブランドデザイン、デジタルマーケティングを企画から長期運用まで一貫して支援します。" },
-      consulting: { kicker: "Business Consulting", title: "ビジネスコンサルティング", lede: "情報システム、デジタル統合、ビジュアル、国際マーケティング、国際金融の課題を整理し、専門家と実行を支援します。" },
+      consulting: { kicker: "Business Consulting", title: "コンサルティング", lede: "情報システム、デジタル統合、ビジュアル、国際マーケティング、国際金融の課題を整理し、専門家と実行を支援します。" },
       faq: { kicker: "Working Together", title: "ご依頼について", lede: "プロジェクトの計画、ブランドとシステムの連携、納品・保守における進め方と役割分担をご案内します。" },
-      contact: { kicker: "Contact", title: "お問い合わせ", lede: "ブランド、デジタルサービス、業務システムのプロジェクトについて、方針やご要望をお聞かせください。" },
+      contact: { kicker: "Contact", title: "お問い合わせ", lede: "情報システム、Web、ブランドデザイン、国際マーケティング、国際金融についてご相談ください。国際資産の整理、財務計画の要件、専門家との連携にも対応します。" },
     },
     numbers: [
       { idx: "持続性", keyLabel: "Sustainability", val: "12", sup: "+", unit: " 年", desc: "最も長く稼働しているシステムは 12 年以上安定運用されています。" },
@@ -726,7 +729,7 @@ function MobileHomeLanguagePrompt({ locale, onSelect, destinationRef, onComplete
 function Header({ locale, onToggleLocale, languageSwitchRef, promptActive }) {
   return (
     <header className="page-header">
-      <a className="brand-mark" href="/">
+      <a className="brand-mark" href={localizeHref("/", locale)}>
         <span className="logo">
           <img src="/img/logo_estiginto.png" alt="ESTIGINTO logo" />
         </span>
@@ -985,10 +988,14 @@ function HomeDirectory({ copy }) {
     { key: "about", label: labels.about, href: "/about.html" },
     { key: "solutions", label: labels.solutions, href: "/solutions.html" },
     ...getServiceMenuGroups(copy.locale).growth.items,
+    { key: "case", label: labels.case, href: "/case.html" },
+    { key: "faq", label: desktopPrimaryMenuCopy[copy.locale].faq, href: "/faq.html" },
   ];
   const icons = {
     about: <><circle cx="16" cy="10" r="4" /><path d="M8 27v-4a8 8 0 0 1 16 0v4M6 8a3 3 0 0 0 0 6m20-6a3 3 0 0 1 0 6M3 25v-4a5 5 0 0 1 3-4m23 8v-4a5 5 0 0 0-3-4" /></>,
     solutions: <><path d="m16 3 12 7-12 7L4 10Zm-12 14 12 7 12-7M4 23l12 7 12-7" /></>,
+    case: <><rect x="4" y="7" width="24" height="21" rx="2" /><path d="M11 7V4h10v3M4 15h24M13 15v4h6v-4" /></>,
+    faq: <><circle cx="16" cy="16" r="12" /><path d="M12 12a4 4 0 0 1 8 0c0 3-4 3-4 6m0 4h.1" /></>,
     "systems-consulting": <><rect x="7" y="7" width="18" height="18" rx="2" /><path d="M12 12h8v8h-8ZM12 3v4m8-4v4m-8 18v4m8-4v4M3 12h4m-4 8h4m18-8h4m-4 8h4" /></>,
     "digital-integration": <><rect x="3" y="3" width="9" height="9" rx="1" /><rect x="20" y="20" width="9" height="9" rx="1" /><path d="M12 7h8a5 5 0 0 1 5 5v3m-3-3 3 3 3-3M20 25h-8a5 5 0 0 1-5-5v-3m-3 3 3-3 3 3" /></>,
     "visual-design": <><path d="m16 3 10 17-10 9L6 20ZM16 3v12M6 20h7m6 0h7" /><circle cx="16" cy="18" r="3" /></>,
@@ -998,11 +1005,12 @@ function HomeDirectory({ copy }) {
 
   return (
     <section className="home-directory" id="home-directory">
+      <p className="home-service-summary wrap">{{ zh: "資訊系統、視覺設計、國際行銷、國際金融與數位整合，提供需求規劃、建置及專業協作。", en: "Information systems, visual design, international marketing, international finance, and digital integration: planning, implementation, and professional coordination.", ja: "情報システム、ビジュアルデザイン、国際マーケティング、国際金融、デジタル統合の計画、構築、専門家連携を支援します。" }[copy.locale]}</p>
       <nav className="home-directory-scroll" aria-label={labels.servicesMenu}>
         <ul className="home-directory-row">
           {items.map((item) => (
             <li key={item.key}>
-              <a className="home-directory-link" href={item.href}>
+              <a className="home-directory-link" href={localizeHref(item.href, copy.locale)}>
                 <svg className="home-directory-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
                   {icons[item.key]}
                 </svg>
@@ -1248,8 +1256,23 @@ function ServiceOverview({ copy }) {
 }
 
 function Solutions({ copy }) {
-  const [active, setActive] = useState(0);
   const items = serviceFamiliesByLocale[copy.locale] || serviceFamiliesByLocale.zh;
+  const [active, setActive] = useState(() => {
+    const id = window.location.hash.slice(1);
+    return Math.max(0, items.findIndex((item) => item.id === id));
+  });
+  useEffect(() => {
+    const syncSelection = () => {
+      const index = items.findIndex((item) => item.id === window.location.hash.slice(1));
+      if (index !== -1) setActive(index);
+    };
+    window.addEventListener("hashchange", syncSelection);
+    return () => window.removeEventListener("hashchange", syncSelection);
+  }, [items]);
+  const selectSolution = (index) => {
+    setActive(index);
+    window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}#${items[index].id}`);
+  };
   const item = items[active] || items[0];
 
   return (
@@ -1262,10 +1285,10 @@ function Solutions({ copy }) {
             {items.map((s, i) => (
               <li
                 key={s.id}
+                id={s.id}
                 className={`sol-row ${i === active ? "active" : ""}`}
-                onMouseEnter={() => setActive(i)}
               >
-                <button className="sol-choice" type="button" aria-pressed={i === active} aria-controls="solution-preview" onClick={() => setActive(i)}>
+                <button className="sol-choice" type="button" aria-pressed={i === active} aria-controls="solution-preview" onClick={() => selectSolution(i)}>
                 <span className="num">{s.number}</span>
                 <span className="body">
                   <span className="tag">
@@ -1302,7 +1325,11 @@ function Solutions({ copy }) {
                   <li key={`${item.id}-${pointIndex}`}>{p}</li>
                 ))}
               </ul>
-              <a className="btn" href="/contact.html" style={{ marginTop: 8 }}>
+              <div className="service-related-links">
+                <span>{connectionCopy[copy.locale].planning}</span>
+                {solutionConnections[item.id].map((id) => <a href={localizeHref(`/consulting.html#${id}`, copy.locale)} key={id}>{getServiceLabel(id, copy.locale)}</a>)}
+              </div>
+              <a className="btn" href={getContactHref(item.id, copy.locale)} style={{ marginTop: 8 }}>
                 <span>{copy.solutionsUi.button}</span>
                 <span className="arrow" aria-hidden="true" />
               </a>
@@ -1333,14 +1360,16 @@ function ApplicationScenarioTeaser() {
 
 function ConsultingServices({ copy }) {
   const content = consultingServicesByLocale[copy.locale] || consultingServicesByLocale.zh;
+  const services = getServiceMenuGroups(copy.locale).growth.items.map((item) => ({ ...content.services.find((service) => service.id === item.key), shortLabel: item.label, title: item.label }));
 
   return (
     <section className="section consulting-services reveal" aria-label={content.sectionLabel}>
       <div className="wrap">
         <SectionEyebrow index="§ Consulting" label={content.sectionLabel} meta={content.sectionMeta} />
         <p className="consulting-intro">{content.intro}</p>
+        <p className="consulting-intro">{connectionCopy[copy.locale].intro} <a className="service-inline-link" href={localizeHref("/solutions.html", copy.locale)}>{connectionCopy[copy.locale].solutions}</a></p>
         <nav className="consulting-nav" aria-label={content.sectionLabel}>
-          {content.services.map((service, index) => (
+          {services.map((service, index) => (
             <a href={`#${service.id}`} key={service.id}>
               <span>{String(index + 1).padStart(2, "0")}</span>
               {service.shortLabel}
@@ -1348,7 +1377,7 @@ function ConsultingServices({ copy }) {
           ))}
         </nav>
         <div className="consulting-service-list">
-          {content.services.map((service, index) => (
+          {services.map((service, index) => (
             <article className="consulting-service" id={service.id} key={service.id}>
               <header>
                 <span className="consulting-service-number">{String(index + 1).padStart(2, "0")}</span>
@@ -1373,8 +1402,9 @@ function ConsultingServices({ copy }) {
               </div>
               <div className="consulting-execution">
                 <div><strong>{content.labels.execution}</strong><p>{service.execution}</p></div>
-                <a className="btn" href="/contact.html"><span>{content.labels.consult}</span><span className="arrow" aria-hidden="true" /></a>
+                <a className="btn" href={getContactHref(service.id, copy.locale)}><span>{content.labels.consult}</span><span className="arrow" aria-hidden="true" /></a>
               </div>
+              {consultingConnections[service.id] ? <div className="service-related-links"><span>{connectionCopy[copy.locale].implementation}</span>{consultingConnections[service.id].map((id) => <a href={localizeHref(`/solutions.html#${id}`, copy.locale)} key={id}>{getServiceLabel(id, copy.locale)}</a>)}</div> : null}
             </article>
           ))}
         </div>
@@ -1827,8 +1857,27 @@ function ContactIcon({ type }) {
   );
 }
 
+const footerDetailsByLocale = {
+  zh: { explore: "網站導覽", contact: "聯絡方式", offices: [
+    ["台北辦公室", "台北市信義區松信路 71 號 2 樓"],
+    ["台北會議室", "台北市中山區南京東路一段15號3樓"],
+    ["桃園辦公室", "桃園市中壢區中央東路52號"],
+  ] },
+  en: { explore: "Explore", contact: "Contact", offices: [
+    ["Taipei Office", "2F., No. 71, Songxin Rd., Xinyi Dist., Taipei City, Taiwan"],
+    ["Taipei Meeting Room", "3F., No. 15, Sec. 1, Nanjing E. Rd., Zhongshan Dist., Taipei City, Taiwan"],
+    ["Taoyuan Office", "No. 52, Zhongyang E. Rd., Zhongli Dist., Taoyuan City, Taiwan"],
+  ] },
+  ja: { explore: "サイト案内", contact: "お問い合わせ", offices: [
+    ["台北オフィス", "台湾 台北市信義区松信路71号2階"],
+    ["台北会議室", "台湾 台北市中山区南京東路一段15号3階"],
+    ["桃園オフィス", "台湾 桃園市中壢区中央東路52号"],
+  ] },
+};
+
 function Footer({ copy }) {
   const footer = copy.footer;
+  const details = footerDetailsByLocale[copy.locale] || footerDetailsByLocale.zh;
   return (
     <footer className="page-footer" id="contact">
       <div className="wrap">
@@ -1837,28 +1886,20 @@ function Footer({ copy }) {
             <p className="footer-wordmark">ESTIGINTO</p>
             <p className="footer-company">{footer.company}</p>
             <div className="footer-offices">
-              <address>
-                <span className="footer-office-label">Taipei Office</span>
-                <span>台北市信義區松信路 71 號 2 樓</span>
-              </address>
-              <address>
-                <span className="footer-office-label">Taipei Meeting Room</span>
-                <span>台北市中山區南京東路一段15號3樓</span>
-              </address>
-              <address>
-                <span className="footer-office-label">Taoyuan Office</span>
-                <span>桃園市中壢區中央東路52號</span>
-              </address>
+              {details.offices.map(([label, address]) => <address key={label}><span className="footer-office-label">{label}</span><span>{address}</span></address>)}
             </div>
           </div>
           <nav className="footer-links" aria-label={footer.navLabel}>
-            <h5>Explore</h5>
-            <a href="/about.html">{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
-            <a href="/solutions.html">{menuLabels[copy.locale]?.solutions || menuLabels.zh.solutions}</a>
-            <a href="/contact.html">{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
+            <h5>{details.explore}</h5>
+            <a href={localizeHref("/about.html", copy.locale)}>{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
+            <a href={localizeHref("/consulting.html", copy.locale)}>{getServiceMenuGroups(copy.locale).growth.label}</a>
+            <a href={localizeHref("/solutions.html", copy.locale)}>{menuLabels[copy.locale]?.solutions || menuLabels.zh.solutions}</a>
+            <a href={localizeHref("/case.html", copy.locale)}>{menuLabels[copy.locale]?.case || menuLabels.zh.case}</a>
+            <a href={localizeHref("/faq.html", copy.locale)}>{desktopPrimaryMenuCopy[copy.locale].faq}</a>
+            <a href={localizeHref("/contact.html", copy.locale)}>{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
           </nav>
           <div className="footer-links">
-            <h5>Contact</h5>
+            <h5>{details.contact}</h5>
             <a className="contact-channel-link" href="mailto:contact@estiginto.com"><ContactIcon type="email" /><span>contact@estiginto.com</span></a>
             <a className="contact-channel-link" href="tel:+886224315362"><ContactIcon type="phone" /><span>+886 2 2431 5362</span></a>
             <a className="contact-channel-link" href="tel:+886972118427"><ContactIcon type="mobile" /><span>+886 972 118 427</span></a>
@@ -1937,6 +1978,8 @@ function MobileNav({ locale, fontControls }) {
     homeItem,
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
     { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
+    { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
+    { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
   const mobileMenuGroups = {
@@ -2081,11 +2124,11 @@ function MobileNav({ locale, fontControls }) {
               <a
                 key={item.key}
                 className={`mobile-nav-link mobile-channel-link ${item.position || ""} ${selectingKey === item.key ? "is-selecting" : ""}`.trim()}
-                href={item.href}
+                href={localizeHref(item.href, locale)}
                 aria-label={item.position === "center" ? item.label : undefined}
                 tabIndex={interactive ? 0 : -1}
                 style={{ "--menu-item-index": index }}
-                onClick={() => setSelectingKey(item.key)}
+                onClick={() => { setSelectingKey(item.key); closeMenu(); }}
               >
                 <span className="mobile-channel-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                 <span className="mobile-channel-name">
@@ -2132,6 +2175,8 @@ function DesktopCursorMenu({ locale, fontControls }) {
     { key: "home", label: localizedMenuLabels.home, href: "/" },
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
     { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
+    { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
+    { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
   const desktopMenuGroups = {
@@ -2464,7 +2509,8 @@ function DesktopCursorMenu({ locale, fontControls }) {
                   {group.items.map((item, index) => (
                     <a
                       className="desktop-service-link"
-                      href={item.href}
+                      href={localizeHref(item.href, locale)}
+                      onClick={closeMenu}
                       key={item.key}
                       tabIndex={open && !closing && !opening ? 0 : -1}
                       style={{ "--channel-index": index }}
@@ -2526,16 +2572,15 @@ export default function App() {
     if (typeof document === "undefined") {
       return "";
     }
-    return document.body.dataset.targetSection || "";
+    const page = getPageFromPath(window.location.pathname);
+    return page && page.key !== "home" ? page.key : document.body.dataset.targetSection || "";
   }, []);
 
   const [locale, setLocale] = useState(() => {
     if (typeof window === "undefined") {
       return "zh";
     }
-    const savedLocale = window.localStorage.getItem("estiginto-locale");
-    const cookieLocale = readLanguageCookie(document.cookie);
-    return getInitialLocale(savedLocale, window.navigator.language, cookieLocale);
+    return getLocaleFromPath(window.location.pathname);
   });
   const [languageTransitionPhase, setLanguageTransitionPhase] = useState("idle");
   const [languageTransitionTarget, setLanguageTransitionTarget] = useState(locale);
@@ -2573,7 +2618,7 @@ export default function App() {
   const promptEligible = shouldShowMobileHomeLanguagePrompt({
     initialSection,
     shouldUseMobileNav,
-    hasLanguageCookie,
+    hasLanguageCookie: hasLanguageCookie || locale !== "zh",
   });
   const [showLanguagePrompt, setShowLanguagePrompt] = useState(promptEligible);
   const pageTitle = copy.pageTitles[initialSection];
@@ -2604,6 +2649,7 @@ export default function App() {
     if (!languageCookie) return false;
 
     setLocale(nextLocale);
+    window.history.replaceState(window.history.state, "", localizeHref(`${window.location.pathname}${window.location.search}${window.location.hash}`, nextLocale));
     window.localStorage.setItem("estiginto-locale", nextLocale);
     document.cookie = languageCookie;
     return true;
@@ -2648,9 +2694,9 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.lang = locale === "en" ? "en" : locale === "ja" ? "ja" : "zh-Hant";
+    applyPageMetadata(document, initialSection || "home", locale);
     window.localStorage.setItem("estiginto-locale", locale);
-  }, [locale]);
+  }, [locale, initialSection]);
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${fontScale}%`;
@@ -2739,6 +2785,8 @@ export default function App() {
             {initialSection === "solutions" ? <><Solutions copy={copy} /><Numbers copy={copy} /></> : null}
             {initialSection === "consulting" ? <ConsultingServices copy={copy} /> : null}
             {isFAQPage ? <FAQ copy={copy} /> : null}
+            {initialSection === "contact" ? <ContactOptions locale={locale} /> : null}
+            <SiteNextSteps page={initialSection} locale={locale} />
           </>
         ) : (
           <>

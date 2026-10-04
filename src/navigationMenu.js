@@ -3,8 +3,8 @@ const serviceMenuGroupsByLocale = {
     digital: {
       label: "解決方案",
       items: [
-        { key: "system-planning", label: "系統規劃", href: "/solutions.html", position: "top" },
-        { key: "custom-development", label: "客製開發", href: "/solutions.html", position: "left" },
+        { key: "system-planning", label: "系統規劃", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "custom-development", label: "客製開發", href: "/solutions.html#custom-systems", position: "left" },
         { key: "system-cases", label: "系統案例", href: "/case.html#case-group-operations-management", position: "right" },
         { key: "project-consulting", label: "專案諮詢", href: "/contact.html", position: "bottom" },
       ],
@@ -24,8 +24,8 @@ const serviceMenuGroupsByLocale = {
     digital: {
       label: "Solutions",
       items: [
-        { key: "system-planning", label: "Planning", href: "/solutions.html", position: "top" },
-        { key: "custom-development", label: "Custom Dev", href: "/solutions.html", position: "left" },
+        { key: "system-planning", label: "Planning", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "custom-development", label: "Custom Dev", href: "/solutions.html#custom-systems", position: "left" },
         { key: "system-cases", label: "System Work", href: "/case.html#case-group-operations-management", position: "right" },
         { key: "project-consulting", label: "Consult", href: "/contact.html", position: "bottom" },
       ],
@@ -34,10 +34,10 @@ const serviceMenuGroupsByLocale = {
       label: "Consulting",
       items: [
         { key: "systems-consulting", label: "Information Systems", href: "/consulting.html#systems-consulting", position: "top" },
-        { key: "visual-design", label: "Visual", href: "/consulting.html#visual-design", position: "left" },
-        { key: "international-marketing", label: "Global", href: "/consulting.html#international-marketing", position: "right" },
+        { key: "visual-design", label: "Visual Design", href: "/consulting.html#visual-design", position: "left" },
+        { key: "international-marketing", label: "International Marketing", href: "/consulting.html#international-marketing", position: "right" },
         { key: "international-finance", label: "International Finance", href: "/consulting.html#international-finance" },
-        { key: "digital-integration", label: "Integration", href: "/consulting.html#digital-integration", position: "bottom" },
+        { key: "digital-integration", label: "Digital Integration", href: "/consulting.html#digital-integration", position: "bottom" },
       ],
     },
   },
@@ -45,8 +45,8 @@ const serviceMenuGroupsByLocale = {
     digital: {
       label: "ソリューション",
       items: [
-        { key: "system-planning", label: "システム設計", href: "/solutions.html", position: "top" },
-        { key: "custom-development", label: "開発", href: "/solutions.html", position: "left" },
+        { key: "system-planning", label: "システム設計", href: "/consulting.html#systems-consulting", position: "top" },
+        { key: "custom-development", label: "開発", href: "/solutions.html#custom-systems", position: "left" },
         { key: "system-cases", label: "導入事例", href: "/case.html#case-group-operations-management", position: "right" },
         { key: "project-consulting", label: "相談", href: "/contact.html", position: "bottom" },
       ],
@@ -55,8 +55,8 @@ const serviceMenuGroupsByLocale = {
       label: "コンサルティング",
       items: [
         { key: "systems-consulting", label: "情報システム", href: "/consulting.html#systems-consulting", position: "top" },
-        { key: "visual-design", label: "ビジュアル", href: "/consulting.html#visual-design", position: "left" },
-        { key: "international-marketing", label: "海外展開", href: "/consulting.html#international-marketing", position: "right" },
+        { key: "visual-design", label: "ビジュアルデザイン", href: "/consulting.html#visual-design", position: "left" },
+        { key: "international-marketing", label: "国際マーケティング", href: "/consulting.html#international-marketing", position: "right" },
         { key: "international-finance", label: "国際金融", href: "/consulting.html#international-finance" },
         { key: "digital-integration", label: "デジタル統合", href: "/consulting.html#digital-integration", position: "bottom" },
       ],

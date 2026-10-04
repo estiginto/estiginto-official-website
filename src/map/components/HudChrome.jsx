@@ -35,10 +35,10 @@ export default function HudChrome({
   return (
     <>
       <header className="hud-top hud-interactive angular-frame">
-        <div className="hud-brand">
+        <a className="hud-brand" href="/" aria-label="返回 ESTIGINTO 官網">
           <strong>ESTIGINTO</strong>
           <span>// GEO INTELLIGENCE</span>
-        </div>
+        </a>
         <div className="mode-switch" aria-label="地圖顯示模式">
           <button
             type="button"

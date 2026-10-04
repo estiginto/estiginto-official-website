@@ -4,8 +4,8 @@ import test from "node:test";
 import { getServiceMenuGroups } from "../src/navigationMenu.js";
 
 const destinations = [
-  "/solutions.html",
-  "/solutions.html",
+  "/consulting.html#systems-consulting",
+  "/solutions.html#custom-systems",
   "/case.html#case-group-operations-management",
   "/contact.html",
   "/consulting.html#systems-consulting",
@@ -17,8 +17,8 @@ const destinations = [
 
 const expectedLabels = {
   zh: ["系統規劃", "客製開發", "系統案例", "專案諮詢", "資訊系統", "視覺設計", "國際行銷", "國際金融", "數位整合"],
-  en: ["Planning", "Custom Dev", "System Work", "Consult", "Information Systems", "Visual", "Global", "International Finance", "Integration"],
-  ja: ["システム設計", "開発", "導入事例", "相談", "情報システム", "ビジュアル", "海外展開", "国際金融", "デジタル統合"],
+  en: ["Planning", "Custom Dev", "System Work", "Consult", "Information Systems", "Visual Design", "International Marketing", "International Finance", "Digital Integration"],
+  ja: ["システム設計", "開発", "導入事例", "相談", "情報システム", "ビジュアルデザイン", "国際マーケティング", "国際金融", "デジタル統合"],
 };
 
 for (const locale of ["zh", "en", "ja"]) {
