@@ -3,6 +3,7 @@ import { faqContentByLocale } from "./faqContent.js";
 import "./pageCompletion.css";
 import SiteNextSteps from "./SiteNextSteps.jsx";
 import ContactOptions from "./ContactOptions.jsx";
+import { serviceDetailsByLocale } from "./serviceDetails.js";
 import { applyPageMetadata, getLocaleFromPath, getPageFromPath, localizeHref } from "./siteRoutes.js";
 import { connectionCopy, consultingConnections, getContactHref, getServiceLabel, solutionConnections } from "./serviceConnections.js";
 import {
@@ -1255,8 +1256,29 @@ function ServiceOverview({ copy }) {
   );
 }
 
+function ServicePracticeDetails({ locale, kind }) {
+  const details = serviceDetailsByLocale[locale] || serviceDetailsByLocale.zh;
+  const items = details[kind];
+  return (
+    <section className="service-practice-details">
+      <h3>{kind === "systems" ? details.labels.practices : details.labels.finance}</h3>
+      <div className="service-practice-grid">
+        {items.map((item) => (
+          <article key={item.title}>
+            <h4>{item.title}</h4>
+            <p>{item.description}</p>
+            <p className="service-planning-output"><strong>{details.labels.outcomes}</strong>{item.outcomes}</p>
+          </article>
+        ))}
+      </div>
+      {kind === "systems" ? <div className="service-terms"><h4>{details.labels.terms}</h4>{details.terms.map((term) => <p key={term}>{term}</p>)}</div> : null}
+    </section>
+  );
+}
+
 function Solutions({ copy }) {
   const items = serviceFamiliesByLocale[copy.locale] || serviceFamiliesByLocale.zh;
+  const details = serviceDetailsByLocale[copy.locale] || serviceDetailsByLocale.zh;
   const [active, setActive] = useState(() => {
     const id = window.location.hash.slice(1);
     return Math.max(0, items.findIndex((item) => item.id === id));
@@ -1274,6 +1296,7 @@ function Solutions({ copy }) {
     window.history.replaceState(window.history.state, "", `${window.location.pathname}${window.location.search}#${items[index].id}`);
   };
   const item = items[active] || items[0];
+  const serviceDetails = details.solutions[item.id];
 
   return (
     <section className="section reveal orbital-background-section" id="solutions" aria-label="Solutions">
@@ -1336,6 +1359,16 @@ function Solutions({ copy }) {
             </div>
           </aside>
         </div>
+        <section className="solution-delivery" id="solution-delivery" aria-labelledby="solution-delivery-title">
+          <h3 id="solution-delivery-title">{item.title} · {details.labels.title}</h3>
+          <div className="service-detail-grid">
+            <section><h4>{details.labels.deliverables}</h4><ul>{serviceDetails.deliverables.map((entry) => <li key={entry}>{entry}</li>)}</ul></section>
+            <section><h4>{details.labels.preparation}</h4><p>{serviceDetails.preparation}</p></section>
+            <section><h4>{details.labels.boundaries}</h4><p>{serviceDetails.boundaries}</p></section>
+          </div>
+          <p className="service-scope-note">{details.labels.note}</p>
+        </section>
+        {item.id === "custom-systems" ? <ServicePracticeDetails locale={copy.locale} kind="systems" /> : null}
       </div>
     </section>
   );
@@ -1360,6 +1393,7 @@ function ApplicationScenarioTeaser() {
 
 function ConsultingServices({ copy }) {
   const content = consultingServicesByLocale[copy.locale] || consultingServicesByLocale.zh;
+  const details = serviceDetailsByLocale[copy.locale] || serviceDetailsByLocale.zh;
   const services = getServiceMenuGroups(copy.locale).growth.items.map((item) => ({ ...content.services.find((service) => service.id === item.key), shortLabel: item.label, title: item.label }));
 
   return (
@@ -1400,6 +1434,8 @@ function ConsultingServices({ copy }) {
                   <ul>{service.deliverables.map((item) => <li key={item}>{item}</li>)}</ul>
                 </section>
               </div>
+              {service.id === "systems-consulting" ? <ServicePracticeDetails locale={copy.locale} kind="systems" /> : null}
+              {service.id === "international-finance" ? <ServicePracticeDetails locale={copy.locale} kind="finance" /> : null}
               <div className="consulting-execution">
                 <div><strong>{content.labels.execution}</strong><p>{service.execution}</p></div>
                 <a className="btn" href={getContactHref(service.id, copy.locale)}><span>{content.labels.consult}</span><span className="arrow" aria-hidden="true" /></a>
@@ -1410,7 +1446,7 @@ function ConsultingServices({ copy }) {
         </div>
         <section className="consulting-process" aria-labelledby="consulting-process-title">
           <h2 id="consulting-process-title">{content.processTitle}</h2>
-          <ol>{content.process.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, "0")}</span>{step}</li>)}</ol>
+          <ol>{content.process.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{step}</h3><p>{details.process[index]}</p></div></li>)}</ol>
         </section>
       </div>
     </section>

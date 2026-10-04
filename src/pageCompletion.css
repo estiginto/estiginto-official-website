@@ -4,6 +4,32 @@
 }
 .sol-preview .info .system-design-motto { font-size: clamp(24px, 2.2vw, 34px); line-height: 1.45; margin-bottom: 24px; color: var(--ink); }
 .system-design-motto span { color: #b18b54; }
+.solution-delivery { margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--ink-line); }
+.solution-delivery > h3, .service-practice-details > h3 { margin: 0 0 24px; font-size: var(--fs-h3); line-height: 1.5; }
+.service-detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.service-detail-grid h4, .service-terms h4 { margin: 0 0 12px; font-size: var(--fs-base); line-height: 1.6; }
+.service-detail-grid p, .service-detail-grid li, .service-practice-details p, .service-scope-note, .consulting-process li p { color: var(--ink-soft); font-size: var(--fs-sm); line-height: 1.9; }
+.service-detail-grid ul { margin: 0; padding-left: 20px; }
+.service-detail-grid li + li { margin-top: 10px; }
+.service-detail-grid p { margin: 0; }
+.service-scope-note { margin: 24px 0 0; }
+.service-practice-details { margin-block: 36px; }
+.service-practice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.service-practice-grid article { min-width: 0; padding: 24px; background: var(--paper-deep); }
+.service-practice-grid h4 { font-size: var(--fs-h4); line-height: 1.5; margin: 0 0 16px; }
+.service-practice-grid p { margin: 0; }
+.service-practice-grid .service-planning-output { margin-top: 20px; }
+.service-planning-output strong { display: block; font-size: var(--fs-xs); color: var(--ink); margin-bottom: 6px; }
+.service-terms { margin-top: 24px; }
+.service-terms p { margin: 8px 0 0; }
+.consulting-process li h3 { margin: 0 0 12px; font-size: var(--fs-base); line-height: 1.6; }
+.consulting-process li p { margin: 0; }
+@media (max-width: 1000px) { .consulting-services .consulting-process ol { grid-template-columns: 1fr; } .consulting-services .consulting-process li { grid-template-columns: 44px minmax(0, 1fr); min-height: 0; border-right: 0; border-bottom: 1px solid var(--ink-line); } }
+@media (max-width: 760px) {
+  .service-detail-grid, .service-practice-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .service-practice-grid article { padding: 20px; }
+  .solution-delivery { margin-top: 32px; }
+}
 .home-service-summary { max-width: 820px; margin: 0 auto 28px; color: var(--ink-soft); font-size: var(--fs-base); line-height: 1.8; text-align: center; }
 .page-title-heading { min-width: 0; }
 html[lang="ja"] .page-title h1 { max-width: 100%; overflow-wrap: anywhere; font-size: clamp(2.4rem, 6vw, 5.5rem); line-height: 1.12; letter-spacing: -0.02em; }

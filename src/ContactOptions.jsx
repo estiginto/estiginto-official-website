@@ -7,6 +7,12 @@ const contactCopy = {
   ja: { title: "ご要望をお聞かせください", selected: "ご相談のサービス", clear: "一般のお問い合わせ", email: "メールで相談", phone: "オフィスに電話", mobile: "携帯電話", line: "LINEで相談", details: "お知らせいただきたい情報", items: ["プロジェクトの背景、課題、ご希望のサービス", "既存のWebサイト、システム、ブランド資料、国際資産整理の要件", "予定日程、参加チーム、ご希望の連絡方法"], finance: "国際金融のご相談では、対象の国・地域、資産と保有構造、連携が必要な法務・税務・財務の課題をお知らせください。法務・税務・信託・金融の事項は、ご要望に応じて専門チームと検討します。", privacy: "初回は概要をお知らせください。機密情報、個人情報、資産関連文書の共有方法とアクセス権は、ご相談の中で確認します。", subject: "サービスのご相談" },
 };
 
+const meetingCopy = {
+  zh: "會面地點、時間與參與人員，請於聯絡時確認。跨境需求可一併說明涉及地區與溝通語言；實際協作方式及專業團隊依專案需求確認。",
+  en: "Confirm the meeting location, time, and participants when contacting us. For cross-border work, share the jurisdictions and preferred communication language; coordination and professional teams are confirmed for the project.",
+  ja: "ご連絡時に、打ち合わせの場所、日時、参加者をご確認ください。国際案件では、対象の国・地域と希望する連絡言語もお知らせください。実際の連携方法と専門チームは案件の要件に応じて確認します。",
+};
+
 function ChannelIcon({ type }) {
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{type === "email" ? <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></> : type === "line" ? <><path d="M21 11c0 4-4 7-9 7l-6 3 1-5a7 7 0 0 1-4-5c0-4 4-7 9-7s9 3 9 7Z" /><path d="M8 11h.1m4 0h.1m4 0h.1" /></> : <path d="M7 3 10 7 8 10a15 15 0 0 0 6 6l3-2 4 3-1 3c-9 2-18-7-17-16Z" />}</svg>;
 }
@@ -30,7 +36,7 @@ export default function ContactOptions({ locale }) {
         <div className="contact-options-grid">
           {channels.map((channel) => <a className="contact-option" key={channel.title} href={channel.href} target={channel.external ? "_blank" : undefined} rel={channel.external ? "noopener noreferrer" : undefined}><ChannelIcon type={channel.type} /><span><strong>{channel.title}</strong><span>{channel.value}</span></span></a>)}
         </div>
-        <div className="contact-requirements"><h3>{copy.details}</h3><ul>{copy.items.map((item) => <li key={item}>{item}</li>)}</ul>{id === "international-finance" ? <p>{copy.finance}</p> : null}<p className="contact-privacy-note">{copy.privacy}</p></div>
+        <div className="contact-requirements"><h3>{copy.details}</h3><ul>{copy.items.map((item) => <li key={item}>{item}</li>)}</ul>{id === "international-finance" ? <p>{copy.finance}</p> : null}<p>{meetingCopy[locale] || meetingCopy.zh}</p><p className="contact-privacy-note">{copy.privacy}</p></div>
       </div>
     </section>
   );

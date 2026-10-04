@@ -29,6 +29,16 @@ export const faqContentByLocale = {
         ['12', '如何界定行銷與專案成效？', '依專案目標約定服務範圍、交付標準與可驗證的評估方式。搜尋排名、流量與營收也受市場及營運因素影響，不作特定結果保證。'],
       ],
     },
+    {
+      title: '國際金融與跨境協作', subtitle: '專業分工、資訊使用與合作條件',
+      items: [
+        ['13', '已有律師、會計師或財務顧問，如何與他們協作？', '可依專案需要與您既有的專業顧問協作，確認各方負責的議題、所需資訊、溝通窗口與核准方式。法律、稅務及財務專業判斷仍由相應的專業人士提供。'],
+        ['14', '專業規劃、資訊整理與系統建置的角色有何不同？', '專業規劃涉及法律、稅務或財務判斷，應由具相應資格的專業人士負責；資訊整理協助彙整需求、文件與工作流程；系統建置則依已確認的需求設計及實作工具。各項工作的範圍與責任依專案確認。'],
+        ['15', '背景調查會使用哪些資料，報告有什麼限制？', '資料來源、取得與使用授權、調查範圍及方法會依專案確認。報告會說明所依據的資料、查核時間與已知限制；內容不應視為資料完整無誤、未來結果或法律結論的保證。'],
+        ['16', '跨團隊分享機密資料時，如何確認權限與用途？', '依資料提供方的授權及專案需要，確認接收對象、可存取範圍、使用目的、分享方式與後續處理條件。涉及外部專業團隊時，也會確認各方的保密與責任安排。'],
+        ['17', '第三方專業費用、委任及可承接地區如何確認？', '外部專業人士的參與、委任關係、服務地區、工作範圍及費用，會依專案需求與對方條件確認。報價與責任分工會在相關工作展開前說明，不預設特定機構或所有地區均可承接。'],
+      ],
+    },
   ],
   en: [
     {
@@ -58,6 +68,16 @@ export const faqContentByLocale = {
         ['12', 'How are project and marketing outcomes defined?', 'The project objectives inform the service scope, delivery standards, and measurable evaluation criteria. Search rankings, traffic, and revenue also depend on market and operating factors; specific results are not guaranteed.'],
       ],
     },
+    {
+      title: 'International finance and cross-border collaboration', subtitle: 'Professional roles, information use, and engagement terms',
+      items: [
+        ['13', 'How do you work with our existing lawyers, accountants, or financial advisers?', 'We can coordinate with your existing advisers as the project requires, agreeing on each party’s topics, information needs, point of contact, and approval process. Legal, tax, and financial judgments remain with the relevant professionals.'],
+        ['14', 'How do professional planning, information organization, and system development differ?', 'Planning that involves legal, tax, or financial judgments belongs to appropriately qualified professionals. Information organization brings requirements, documents, and workflows together. System development designs and builds tools against confirmed requirements. The scope and responsibilities of each role are agreed for the project.'],
+        ['15', 'What sources are used for background checks, and what are the report’s limits?', 'Sources, permission to obtain and use information, the scope of inquiry, and methods are confirmed for each project. Reports identify the information relied on, the time of review, and known limitations; they do not guarantee complete accuracy, future outcomes, or legal conclusions.'],
+        ['16', 'How are access and purpose agreed when confidential information is shared across teams?', 'Based on the information provider’s authorization and project needs, we confirm recipients, access scope, intended purpose, sharing method, and subsequent handling terms. Confidentiality and responsibilities are also agreed when external professional teams take part.'],
+        ['17', 'How are third-party professional fees, engagement, and service regions confirmed?', 'Participation by external professionals, engagement terms, service regions, scope, and fees depend on the project and the provider’s terms. Pricing and responsibilities are explained before the related work begins; no particular firm or availability in every region is assumed.'],
+      ],
+    },
   ],
   ja: [
     {
@@ -85,6 +105,16 @@ export const faqContentByLocale = {
         ['10', 'ソースデータと利用権はどのように定めますか？', '納品ファイル、利用範囲、変更権、再許諾、知的財産権の帰属を契約条件に明記します。ソースコード、編集可能なデザインデータ、部品ライブラリは案件ごとの合意に従います。編集可能なデザインデータの合意がない場合は最終出力ファイルを提供します。お客様の既存の特許、営業秘密、独自技術はお客様に帰属し、当社は履行に必要な範囲で使用し、秘密保持義務を負います。'],
         ['11', '公開後の保守や技術的な引き継ぎにも対応しますか？', '必要に応じてサーバー、更新、安全対策、問題調査を計画します。お客様側のサーバー運用や、他社への保守引き継ぎもご相談いただけます。サービス内容、費用、資料、必要な権限、責任分担を事前に確認します。'],
         ['12', 'マーケティングやプロジェクトの成果はどう定義しますか？', '目的に沿ってサービス範囲、納品基準、検証可能な評価方法を定めます。検索順位、アクセス数、売上には市場や運営上の要因も影響するため、特定の結果は保証していません。'],
+      ],
+    },
+    {
+      title: '国際金融と国境を越えた協業', subtitle: '専門家の役割、情報の利用、委任条件',
+      items: [
+        ['13', '既に依頼している弁護士、会計士、財務アドバイザーとはどのように協業しますか？', '案件に応じて既存の専門家と連携し、各担当分野、必要な情報、連絡窓口、承認方法を確認します。法律、税務、財務に関する専門的な判断は、それぞれの専門家が担います。'],
+        ['14', '専門的な計画、情報整理、システム構築はどう違いますか？', '法律、税務、財務に関する判断を伴う計画は、該当する資格を持つ専門家が担当します。情報整理では要件、資料、業務の流れをまとめます。システム構築では確認済みの要件に沿ってツールを設計・実装します。各業務の範囲と責任は案件ごとに確認します。'],
+        ['15', '背景調査の情報源と報告書の限界はどのように扱いますか？', '情報源、取得・利用の許可、調査範囲と方法は案件ごとに確認します。報告書には根拠となる情報、確認時期、判明している制約を記載します。情報の完全性や正確性、将来の結果、法的結論を保証するものではありません。'],
+        ['16', '複数チームで機密情報を共有する際、権限と用途はどう確認しますか？', '情報提供者の許可と案件上の必要性に基づき、共有先、アクセス範囲、利用目的、共有方法、その後の取扱条件を確認します。外部の専門チームが関わる場合は、秘密保持と各者の責任も確認します。'],
+        ['17', '第三者の専門家の費用、委任、対応地域はどう確認しますか？', '外部専門家の参加、委任条件、対応地域、業務範囲、費用は、案件の要件と相手方の条件に応じて確認します。関連業務の開始前に見積もりと責任分担を説明し、特定の機関やすべての地域での対応を前提とはしません。'],
       ],
     },
   ],
