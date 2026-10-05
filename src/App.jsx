@@ -52,6 +52,12 @@ const localeOptions = [
   ["ja", "日本語"],
 ];
 
+const actionCopyByLocale = {
+  zh: { openMenu: "開啟服務選單", closeMenu: "關閉服務選單", close: "關閉", category: "選單分類", top: "返回頁首", language: "切換語言" },
+  en: { openMenu: "Open service menu", closeMenu: "Close service menu", close: "Close", category: "Navigation category", top: "Go to top", language: "Switch language" },
+  ja: { openMenu: "サービスメニューを開く", closeMenu: "サービスメニューを閉じる", close: "閉じる", category: "メニューの分類", top: "ページ先頭へ戻る", language: "言語の切り替え" },
+};
+
 const languagePromptCopy = {
   zh: { eyebrow: "LANGUAGE", title: "選擇您的語言" },
   en: { eyebrow: "LANGUAGE", title: "Choose your language" },
@@ -580,12 +586,13 @@ function getCopy(locale) {
 }
 
 function LanguageSwitch({ locale, onSelect, switchRef, activeOptionRef, className = "" }) {
+  const actions = actionCopyByLocale[locale] || actionCopyByLocale.zh;
   return (
     <div
       ref={switchRef}
       className={`language-switch is-${locale} ${className}`.trim()}
       role="group"
-      aria-label="Switch language"
+      aria-label={actions.language}
     >
       <span className="language-track" aria-hidden="true" />
       <span className="language-thumb" aria-hidden="true" />
@@ -1268,6 +1275,7 @@ function ServicePracticeDetails({ locale, kind }) {
             <h4>{item.title}</h4>
             <p>{item.description}</p>
             <p className="service-planning-output"><strong>{details.labels.outcomes}</strong>{item.outcomes}</p>
+            {item.implementation ? <><div className="service-related-links"><span>{details.labels.systemImplementation}</span><a href={localizeHref(`/solutions.html#${item.implementation}`, locale)}>{getServiceLabel(item.implementation, locale)}</a></div><p>{details.labels.systemImplementationNote}</p></> : null}
           </article>
         ))}
       </div>
@@ -2006,6 +2014,7 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
 }
 
 function MobileNav({ locale, fontControls }) {
+  const actions = actionCopyByLocale[locale] || actionCopyByLocale.zh;
   const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
   const primaryLabels = desktopPrimaryMenuCopy[locale] || desktopPrimaryMenuCopy.zh;
   const serviceMenuGroups = getServiceMenuGroups(locale);
@@ -2132,12 +2141,12 @@ function MobileNav({ locale, fontControls }) {
 
   return (
     <div className={`mobile-nav ${open ? "open" : ""} ${opening ? "mobile-channel-opening" : ""} ${closing ? "mobile-channel-closing" : ""} ${compact ? "compact" : ""}`.trim()}>
-      <button className="mobile-nav-scrim" type="button" aria-label="Close mobile menu" tabIndex={-1} onClick={closeMenu} />
+      <button className="mobile-nav-scrim" type="button" aria-label={actions.closeMenu} tabIndex={-1} onClick={closeMenu} />
       <button
         ref={triggerRef}
         className="mobile-nav-trigger"
         type="button"
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? actions.closeMenu : actions.openMenu}
         aria-expanded={open && !closing}
         onClick={open ? closeMenu : openMenu}
       >
@@ -2175,7 +2184,7 @@ function MobileNav({ locale, fontControls }) {
             ))}
           </div>
 
-          <div className="mobile-nav-category-switch" role="group" aria-label="Navigation category">
+          <div className="mobile-nav-category-switch" role="group" aria-label={actions.category}>
             {Object.entries(mobileMenuGroups).map(([groupKey, group]) => (
               <button
                 key={groupKey}
@@ -2205,6 +2214,7 @@ function MobileNav({ locale, fontControls }) {
 }
 
 function DesktopCursorMenu({ locale, fontControls }) {
+  const actions = actionCopyByLocale[locale] || actionCopyByLocale.zh;
   const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
   const primaryLabels = desktopPrimaryMenuCopy[locale] || desktopPrimaryMenuCopy.zh;
   const primaryMenuItems = [
@@ -2448,13 +2458,13 @@ function DesktopCursorMenu({ locale, fontControls }) {
       className={`desktop-cursor-menu ${open ? "open" : ""} ${opening ? "stream-opening" : ""} ${closing ? "stream-closing" : ""} ${hoveringTrigger ? "hovering" : ""}`}
       style={{ "--cursor-x": `${position.x}px`, "--cursor-y": `${position.y}px` }}
     >
-      <button className="desktop-menu-scrim" type="button" aria-label="Close desktop menu" tabIndex={-1} onClick={closeMenu} />
+      <button className="desktop-menu-scrim" type="button" aria-label={actions.closeMenu} tabIndex={-1} onClick={closeMenu} />
 
       <button
         ref={triggerRef}
         className={`desktop-menu-trigger ${visible ? "visible" : ""}`}
         type="button"
-        aria-label="Open desktop menu"
+        aria-label={actions.openMenu}
         aria-controls="desktop-service-navigation"
         aria-expanded={open && !closing}
         onClick={openMenu}
@@ -2504,10 +2514,11 @@ function DesktopCursorMenu({ locale, fontControls }) {
           <button
             className="desktop-channel-close"
             type="button"
+            aria-label={actions.closeMenu}
             tabIndex={open && !closing && !opening ? 0 : -1}
             onClick={closeMenu}
           >
-            Close <span aria-hidden="true">↗</span>
+            {actions.close} <span aria-hidden="true">↗</span>
           </button>
         </header>
 
@@ -2517,7 +2528,7 @@ function DesktopCursorMenu({ locale, fontControls }) {
             <button
               className="desktop-channel-core"
               type="button"
-              aria-label="Close desktop menu"
+              aria-label={actions.closeMenu}
               tabIndex={open && !closing && !opening ? 0 : -1}
               onClick={closeMenu}
             >
@@ -2573,7 +2584,8 @@ function DesktopCursorMenu({ locale, fontControls }) {
   );
 }
 
-function GoToTop() {
+function GoToTop({ locale }) {
+  const actions = actionCopyByLocale[locale] || actionCopyByLocale.zh;
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -2592,7 +2604,7 @@ function GoToTop() {
     <button
       className={`go-to-top ${visible ? "is-visible" : ""}`}
       type="button"
-      aria-label="Go to top"
+      aria-label={actions.top}
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
     >
       <span aria-hidden="true" />
@@ -2834,7 +2846,7 @@ export default function App() {
         )}
         </main>
         <Footer copy={copy} />
-        <GoToTop />
+        <GoToTop locale={locale} />
       </div>
       <div className={`language-transition language-transition-${languageTransitionPhase}`} aria-hidden="true" data-target-locale={languageTransitionTarget}>
         <span className="language-transition-scan" aria-hidden="true" />

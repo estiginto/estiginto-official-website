@@ -52,7 +52,7 @@ test("open desktop menu closes from the center core or a secondary click", () =>
   );
   assert.match(
     desktopMenuSource,
-    /className="desktop-channel-core"[\s\S]*?aria-label="Close desktop menu"[\s\S]*?onClick=\{closeMenu\}/,
+    /className="desktop-channel-core"[\s\S]*?aria-label=\{actions\.closeMenu\}[\s\S]*?onClick=\{closeMenu\}/,
   );
   assert.match(
     cssSource,

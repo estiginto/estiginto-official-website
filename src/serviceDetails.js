@@ -1,7 +1,7 @@
 // These describe topics to agree for each engagement, not fixed package promises.
 export const serviceDetailsByLocale = {
   zh: {
-    labels: { title: "合作內容", deliverables: "可規劃的交付內容", preparation: "需求討論可提供", boundaries: "合作範圍", outcomes: "規劃成果", practices: "資訊系統的應用與規劃", finance: "財務資訊與系統協作", terms: "常見系統用途", note: "實際交付項目、格式、驗收及授權條件，依需求與合作約定確認。" },
+    labels: { title: "合作內容", deliverables: "可規劃的交付內容", preparation: "需求討論可提供", boundaries: "合作範圍", outcomes: "規劃成果", practices: "資訊系統的應用與規劃", finance: "財務資訊與系統協作", terms: "常見系統用途", note: "實際交付項目、格式、驗收及授權條件，依需求與合作約定確認。", systemImplementation: "相關系統建置", systemImplementationNote: "此入口說明資訊系統的建置與交付；法律、稅務及金融專業服務依各自委任範圍處理。" },
     solutions: {
       "website-design": {
         deliverables: ["網站內容架構、頁面與操作流程規劃", "依約定建置網站、管理功能與第三方串接", "裝置相容與功能測試、部署及操作交接"],
@@ -33,7 +33,7 @@ export const serviceDetailsByLocale = {
     terms: ["ERP（企業資源規劃）整合營運流程；CRM（客戶關係管理）整理客戶與互動；POS（銷售點系統）支援門市交易。", "HRM（人力資源管理）處理人事作業；WMS（倉儲管理）追蹤庫存與出入庫；SCM（供應鏈管理）串聯採購、供應與交付；BDM（業務開發管理）追蹤商機及業務進度。"],
     finance: [
       { title: "財務規劃的資訊整理", description: "協助彙整資產、負債、持有關係、收支與資金需求，標示資料期間、來源及待確認事項。整理後的資訊供委任的法律、稅務與財務專業人員評估；專業規劃、意見及執行責任依委任範圍確認。", outcomes: "財務與資產資料清冊、資金需求及規劃議題、專業團隊分工。" },
-      { title: "家族辦公室與資產盤點系統", description: "依企業或家族的協作需求，規劃資產與持有關係資料、文件、角色權限、審核與異動歷程、報表及既有系統串接。資料來源、更新責任與可共享範圍須確認；系統支援資訊管理，不取代相關專業判斷。", outcomes: "資料與權限架構、報表需求、文件協作流程及階段建置計畫。" },
+      { implementation: "custom-systems", title: "家族辦公室與資產盤點系統", description: "依企業或家族的協作需求，規劃資產與持有關係資料、文件、角色權限、審核與異動歷程、報表及既有系統串接。資料來源、更新責任與可共享範圍須確認；系統支援資訊管理，不取代相關專業判斷。", outcomes: "資料與權限架構、報表需求、文件協作流程及階段建置計畫。" },
     ],
     process: [
       "由客戶提供背景、作業流程與可分享資料，整理現況、限制及待釐清問題。",
@@ -44,7 +44,7 @@ export const serviceDetailsByLocale = {
     ],
   },
   en: {
-    labels: { title: "Engagement details", deliverables: "Deliverables to plan", preparation: "Useful for the discussion", boundaries: "Scope and responsibilities", outcomes: "Planning outputs", practices: "Information system applications", finance: "Financial information and system coordination", terms: "Common system purposes", note: "Deliverables, formats, acceptance criteria, and licensing are confirmed in the engagement terms." },
+    labels: { title: "Engagement details", deliverables: "Deliverables to plan", preparation: "Useful for the discussion", boundaries: "Scope and responsibilities", outcomes: "Planning outputs", practices: "Information system applications", finance: "Financial information and system coordination", terms: "Common system purposes", note: "Deliverables, formats, acceptance criteria, and licensing are confirmed in the engagement terms.", systemImplementation: "Related system implementation", systemImplementationNote: "This link explains system implementation and delivery. Legal, tax, and financial professional services follow their respective engagement terms." },
     solutions: {
       "website-design": {
         deliverables: ["Content structure, pages, and user journeys", "Agreed website, management features, and third-party integrations", "Device and functional testing, deployment, and operational handover"],
@@ -76,7 +76,7 @@ export const serviceDetailsByLocale = {
     terms: ["ERP (enterprise resource planning) connects operations; CRM (customer relationship management) organizes customers and interactions; POS (point of sale) supports retail transactions.", "HRM (human resource management) handles personnel workflows; WMS (warehouse management) tracks inventory and movements; SCM (supply chain management) connects purchasing, supply, and delivery; BDM (business development management) tracks opportunities and sales progress."],
     finance: [
       { title: "Information for financial planning", description: "Consolidate assets, liabilities, ownership, income, expenditure, and funding needs with record periods, sources, and open questions. Engaged legal, tax, and financial professionals use the information for their assessment. Professional planning, advice, and execution responsibilities follow each engagement.", outcomes: "Financial and asset inventory, funding needs and planning topics, and professional responsibilities." },
-      { title: "Family office and asset inventory systems", description: "Plan asset and ownership records, documents, roles, approvals, change histories, reporting, and existing system integrations around business or family collaboration needs. Confirm sources, update responsibilities, and sharing permissions. The system manages information and does not replace professional judgment.", outcomes: "Data and access architecture, reporting needs, document workflows, and phased implementation plan." },
+      { implementation: "custom-systems", title: "Family office and asset inventory systems", description: "Plan asset and ownership records, documents, roles, approvals, change histories, reporting, and existing system integrations around business or family collaboration needs. Confirm sources, update responsibilities, and sharing permissions. The system manages information and does not replace professional judgment.", outcomes: "Data and access architecture, reporting needs, document workflows, and phased implementation plan." },
     ],
     process: [
       "The client shares background, workflows, and permitted information to identify the current state, constraints, and open questions.",
@@ -87,7 +87,7 @@ export const serviceDetailsByLocale = {
     ],
   },
   ja: {
-    labels: { title: "ご依頼の内容", deliverables: "計画する成果物", preparation: "ご相談時に共有いただく情報", boundaries: "範囲と役割分担", outcomes: "計画の成果物", practices: "情報システムの用途と計画", finance: "財務情報とシステムの連携", terms: "主なシステムの用途", note: "実際の成果物、形式、検収基準、利用許諾は、ご依頼の条件に従って確認します。" },
+    labels: { title: "ご依頼の内容", deliverables: "計画する成果物", preparation: "ご相談時に共有いただく情報", boundaries: "範囲と役割分担", outcomes: "計画の成果物", practices: "情報システムの用途と計画", finance: "財務情報とシステムの連携", terms: "主なシステムの用途", note: "実際の成果物、形式、検収基準、利用許諾は、ご依頼の条件に従って確認します。", systemImplementation: "関連するシステム構築", systemImplementationNote: "このリンクでは、システムの構築と納品について説明しています。法務・税務・金融の専門サービスは、それぞれの委任範囲に従って進めます。" },
     solutions: {
       "website-design": {
         deliverables: ["コンテンツ構成、ページ、操作の流れの計画", "合意したWebサイト、管理機能、外部サービス連携の構築", "端末対応と機能のテスト、公開、操作の引き継ぎ"],
@@ -119,7 +119,7 @@ export const serviceDetailsByLocale = {
     terms: ["ERP（企業資源計画）は業務全体を連携し、CRM（顧客関係管理）は顧客と対応履歴を整理します。POS（販売時点管理）は店舗の取引を支援します。", "HRM（人材管理）は人事業務、WMS（倉庫管理）は在庫と入出庫、SCM（サプライチェーン管理）は調達・供給・納品を扱います。BDM（事業開発管理）は商談機会と営業進捗を管理します。"],
     finance: [
       { title: "財務計画のための情報整理", description: "資産、負債、保有関係、収支、資金需要を整理し、対象期間、出典、要確認事項を記載します。委任した法務・税務・財務の専門家が検討に利用します。専門的な計画、助言、実行の責任は、それぞれの委任範囲に従って確認します。", outcomes: "財務・資産の一覧、資金需要と計画の議題、専門家の役割分担。" },
-      { title: "ファミリーオフィス・資産管理システム", description: "企業や家族の連携要件に応じ、資産・保有関係、文書、役割と権限、承認・変更履歴、レポート、既存システム連携を計画します。出典、更新担当、共有可能な範囲を確認します。システムは情報管理を支援し、専門家の判断を置き換えるものではありません。", outcomes: "データと権限の設計、レポート要件、文書連携の流れ、段階的な構築計画。" },
+      { implementation: "custom-systems", title: "ファミリーオフィス・資産管理システム", description: "企業や家族の連携要件に応じ、資産・保有関係、文書、役割と権限、承認・変更履歴、レポート、既存システム連携を計画します。出典、更新担当、共有可能な範囲を確認します。システムは情報管理を支援し、専門家の判断を置き換えるものではありません。", outcomes: "データと権限の設計、レポート要件、文書連携の流れ、段階的な構築計画。" },
     ],
     process: [
       "お客様から背景、業務の流れ、共有可能な情報を伺い、現状、制約、要確認事項を整理します。",
