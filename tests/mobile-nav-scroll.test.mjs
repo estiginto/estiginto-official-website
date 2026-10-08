@@ -156,7 +156,7 @@ test("business consulting menu links to the five approved consulting sections in
 
   for (const locale of ["zh", "en", "ja"]) {
     const links = getServiceMenuGroups(locale).growth.items.map((item) => item.href);
-    assert.deepEqual(links, expectedIds.map((id) => `/consulting.html#${id}`));
+    assert.deepEqual(links, expectedIds.map((id) => `/${id}.html`));
   }
 
   assert.deepEqual(getServiceMenuGroups("zh").growth.items.map((item) => item.label), ["資訊系統", "視覺設計", "國際行銷", "國際金融", "數位整合"]);

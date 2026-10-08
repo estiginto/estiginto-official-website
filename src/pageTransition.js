@@ -1,3 +1,4 @@
+import { consultingServiceIds } from "./consultingPages.js";
 export const INITIAL_PAGE_ENTER_DURATION = 4600;
 export const PAGE_ENTER_DURATION = 1050;
 export const PAGE_LEAVE_DURATION = 760;
@@ -7,7 +8,7 @@ export function getPageTransitionVariant(pathname = "/") {
   const normalizedPath = pathname.toLowerCase();
 
   if (normalizedPath === "/" || normalizedPath.endsWith("/index.html")) return "grille";
-  if (normalizedPath.endsWith("/solutions.html") || normalizedPath.endsWith("/consulting.html")) return "matrix";
+  if (normalizedPath.endsWith("/solutions.html") || normalizedPath.endsWith("/consulting.html") || consultingServiceIds.some((id) => normalizedPath.endsWith(`/${id}.html`))) return "matrix";
   if (normalizedPath.endsWith("/case.html")) return "aperture";
   return "axis";
 }

@@ -103,16 +103,17 @@ test("consulting page presents the five approved advisory services", () => {
   const html = read("consulting.html");
 
   assert.match(html, /data-target-section="consulting"/);
-  assert.match(app, /function ConsultingServices\(\{ copy \}\)/);
-  assert.match(app, /const consultingServicesByLocale\s*=\s*\{/);
+  assert.match(read("src/ConsultingPages.jsx"), /function ConsultingServices\(\{ copy \}\)/);
+  const content = read("src/consultingContent.js");
+  assert.match(content, /const consultingServicesByLocale\s*=\s*\{/);
   for (const id of ["systems-consulting", "digital-integration", "visual-design", "international-marketing", "international-finance"]) {
-    assert.match(app, new RegExp(`id: "${id}"`));
+    assert.match(content, new RegExp(`id: "${id}"`));
   }
-  assert.match(app, /現況盤點/);
-  assert.match(app, /目標確認/);
-  assert.match(app, /策略規劃/);
-  assert.match(app, /執行協作/);
-  assert.match(app, /成效檢視/);
+  assert.match(content, /現況盤點/);
+  assert.match(content, /目標確認/);
+  assert.match(content, /策略規劃/);
+  assert.match(content, /執行協作/);
+  assert.match(content, /成效檢視/);
   assert.match(app, /initialSection === "consulting"/);
 });
 

@@ -6,7 +6,7 @@ import { getContactHref, getServiceLabel } from "../src/serviceConnections.js";
 import { renderLocalizedHtml, renderSitemap } from "../scripts/localized-pages.mjs";
 
 for (const locale of siteLocales) {
-  test(`${locale} routes identify all seven pages and retain a shareable language`, () => {
+  test(`${locale} routes identify all public pages and retain a shareable language`, () => {
     for (const page of sitePages) {
       const href = localizeHref(page.path, locale);
       assert.equal(getPageFromPath(href)?.key, page.key);
@@ -59,10 +59,10 @@ test("service inquiry context accepts only known services and uses localized lab
   assert.equal(getServiceLabel("<script>", "zh"), null);
 });
 
-test("sitemap includes exactly 21 marketing URLs with reciprocal language alternatives", () => {
+test("sitemap includes all marketing URLs with reciprocal language alternatives", () => {
   const sitemap = renderSitemap();
-  assert.equal((sitemap.match(/<loc>/g) || []).length, 21);
-  assert.equal((sitemap.match(/xhtml:link/g) || []).length, 84);
+  assert.equal((sitemap.match(/<loc>/g) || []).length, sitePages.length * siteLocales.length);
+  assert.equal((sitemap.match(/xhtml:link/g) || []).length, sitePages.length * siteLocales.length * 4);
   for (const locale of siteLocales) for (const page of sitePages) assert.ok(sitemap.includes(`<loc>https://estiginto.com${localizeHref(page.path, locale)}</loc>`));
   assert.doesNotMatch(sitemap, /\/Oasis\//);
 });

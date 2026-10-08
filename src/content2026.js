@@ -155,7 +155,7 @@ const teamIdentities = [
     mark: "YC",
     group: "advisory",
     portrait: "/img/team/avatar_Yen.jpg",
-    portraitFrame: { scale: 1, x: 50, y: 0, offsetY: -1.5 },
+    portraitFrame: { scale: 1.02, x: 50, y: 0, offsetY: -1.5 },
   },
   {
     id: "wayne-schutte",
@@ -163,7 +163,7 @@ const teamIdentities = [
     mark: "WS",
     group: "advisory",
     portrait: "/img/team/avatar_wayne.png",
-    portraitFrame: { scale: 1, x: 50, y: 0, offsetY: -5 },
+    portraitFrame: { scale: 1.06, x: 50, y: 0, offsetY: -5 },
   },
   {
     id: "michael-mlejnek",

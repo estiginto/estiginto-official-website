@@ -5,6 +5,7 @@ import { sitePages } from "../src/siteRoutes.js";
 const root = process.cwd();
 const dist = join(root, "dist");
 const requiredFiles = [
+  ...sitePages.map((page) => page.file),
   ...["en", "ja"].flatMap((locale) => sitePages.map((page) => `${locale}/${page.file}`)),
   "index.html",
   "about.html",

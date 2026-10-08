@@ -4,15 +4,15 @@ import test from "node:test";
 import { getServiceMenuGroups } from "../src/navigationMenu.js";
 
 const destinations = [
-  "/consulting.html#systems-consulting",
+  "/systems-consulting.html",
   "/solutions.html#custom-systems",
   "/case.html#case-group-operations-management",
   "/contact.html",
-  "/consulting.html#systems-consulting",
-  "/consulting.html#visual-design",
-  "/consulting.html#international-marketing",
-  "/consulting.html#international-finance",
-  "/consulting.html#digital-integration",
+  "/systems-consulting.html",
+  "/visual-design.html",
+  "/international-marketing.html",
+  "/international-finance.html",
+  "/digital-integration.html",
 ];
 
 const expectedLabels = {

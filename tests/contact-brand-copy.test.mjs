@@ -19,20 +19,17 @@ test("hero uses the approved international positioning while custom systems reta
     zh: [
       "致力於打造",
       "有靈魂的設計",
-      "整合科技、產業與金融的力量，",
-      "讓每一份珍貴價值，持續閃耀。",
+      "提供您持續閃耀的力量。",
     ],
     en: [
       "Driven to create",
       "design with soul",
-      "Bringing together the strengths of technology, industry, and finance.",
-      "Helping every source of value continue to shine.",
+      "Giving you the power to keep shining.",
     ],
     ja: [
       "私たちが目指すのは",
       "魂のあるデザイン",
-      "テクノロジー、産業、金融の力を結集し、",
-      "かけがえのない価値が、輝き続けるように。",
+      "あなたが輝き続けるための力を。",
     ],
   };
 
@@ -49,8 +46,7 @@ test("hero uses the approved international positioning while custom systems reta
   assert.match(systemsSource, /item\.id === "custom-systems"/);
   assert.match(systemsSource, /copy\.hero\.systemMotto\[0\]/);
   assert.match(systemsSource, /copy\.hero\.systemMotto\[1\]/);
-  assert.match(heroSource, /copy\.hero\.lede\[0\]/);
-  assert.match(heroSource, /copy\.hero\.lede\[1\]/);
+  assert.match(heroSource, /copy\.hero\.lede\.map/);
   assert.doesNotMatch(heroSource, /copy\.hero\.lede\[2\]/);
 });
 

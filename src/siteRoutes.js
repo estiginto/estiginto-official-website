@@ -1,3 +1,5 @@
+import { consultingServicesByLocale } from "./consultingContent.js";
+import { consultingServiceIds } from "./consultingPages.js";
 export const siteOrigin = "https://estiginto.com";
 export const siteLocales = ["zh", "en", "ja"];
 export const sitePages = [
@@ -6,6 +8,7 @@ export const sitePages = [
   { key: "solutions", file: "solutions.html", path: "/solutions.html" },
   { key: "case", file: "case.html", path: "/case.html" },
   { key: "consulting", file: "consulting.html", path: "/consulting.html" },
+  ...consultingServiceIds.map((id) => ({ key: id, file: `${id}.html`, path: `/${id}.html` })),
   { key: "faq", file: "faq.html", path: "/faq.html" },
   { key: "contact", file: "contact.html", path: "/contact.html" },
 ];
@@ -62,7 +65,10 @@ export function localizeHref(href, locale = "zh") {
 export function getPageMetadata(pageKey, locale = "zh") {
   const resolvedLocale = siteLocales.includes(locale) ? locale : "zh";
   const page = sitePages.find((item) => item.key === pageKey) || sitePages[0];
-  const [title, description] = metadataByLocale[resolvedLocale][page.key];
+  const service = consultingServicesByLocale[resolvedLocale].services.find((item) => item.id === page.key);
+  const [title, description] = service
+    ? [`${service.title}${resolvedLocale === "en" ? " | " : "｜"}ESTIGINTO`, service.summary]
+    : metadataByLocale[resolvedLocale][page.key];
   return {
     title, description,
     keywords: page.key === "case" ? {
