@@ -77,7 +77,7 @@ test("service overview keeps the homepage service list compact and linked", () =
 
   assert.match(serviceOverviewSource, /serviceFamiliesByLocale/);
   assert.match(serviceOverviewSource, /service-overview-grid/);
-  assert.match(serviceOverviewSource, /href="\/solutions\.html"/);
+  assert.match(serviceOverviewSource, /getImplementationHref\(service\.id\)/);
 });
 
 test("achievements and footer omit the retired introduction and business ID", () => {

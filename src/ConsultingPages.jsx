@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { consultingServicesByLocale } from "./consultingContent.js";
 import { consultingCaseIds, consultingFaqByLocale, consultingPageCopy, consultingServiceIds, getConsultingHref } from "./consultingPages.js";
-import { caseStudiesByLocale } from "./content2026.js";
+import { caseStudiesByLocale, serviceFamiliesByLocale } from "./content2026.js";
+import { getImplementationHref, getServiceImplementationIds, implementationOwners } from "./serviceImplementation.js";
 import { faqContentByLocale } from "./faqContent.js";
 import { serviceDetailsByLocale } from "./serviceDetails.js";
 import { connectionCopy, consultingConnections, getContactHref, getServiceLabel } from "./serviceConnections.js";
@@ -64,6 +65,32 @@ function ServiceFAQ({ id, locale }) {
   </section>;
 }
 
+function ServiceImplementation({ id, locale }) {
+  const ids = getServiceImplementationIds(id);
+  if (!ids.length) return null;
+  const copy = consultingPageCopy[locale];
+  const details = serviceDetailsByLocale[locale];
+  return <section className="advisory-block" id="service-implementation" aria-labelledby="service-implementation-title">
+    <h2 id="service-implementation-title">{copy.implementation}</h2>
+    {ids.map((target) => {
+      const item = serviceFamiliesByLocale[locale].find((family) => family.id === target);
+      const delivery = details.solutions[target];
+      return <section className="service-implementation" id={`implementation-${target}`} key={target} aria-labelledby={`implementation-${target}-title`}>
+        <h3 id={`implementation-${target}-title`}>{item.title}</h3>
+        <p className="advisory-block-intro">{item.summary}</p>
+        <h4>{copy.capabilities}</h4>
+        <ul className="service-implementation-features">{item.capabilities.map((feature) => <li key={feature}>{feature}</li>)}</ul>
+        <div className="service-detail-grid">
+          <section><h4>{details.labels.deliverables}</h4><ul>{delivery.deliverables.map((entry) => <li key={entry}>{entry}</li>)}</ul></section>
+          <section><h4>{details.labels.preparation}</h4><p>{delivery.preparation}</p></section>
+          <section><h4>{details.labels.boundaries}</h4><p>{delivery.boundaries}</p></section>
+        </div>
+        <p className="service-scope-note">{details.labels.note}</p>
+      </section>;
+    })}
+  </section>;
+}
+
 export function ConsultingServicePage({ copy, id, children }) {
   const locale = copy.locale;
   const content = consultingServicesByLocale[locale];
@@ -71,11 +98,13 @@ export function ConsultingServicePage({ copy, id, children }) {
   const labels = consultingPageCopy[locale];
   const details = serviceDetailsByLocale[locale];
   const cases = consultingCaseIds[id].map((caseId) => caseStudiesByLocale[locale].find((item) => item.id === caseId));
+  const related = (consultingConnections[id] || []).filter((target) => implementationOwners[target] !== id);
   return <article className="section consulting-services advisory-page" data-service={id}>
     <div className="wrap">
       <a className="service-inline-link" href={localizeHref("/consulting.html", locale)}>{labels.directory}</a>
       <nav className="advisory-section-nav" aria-label={labels.contents}>
         <a href="#service-content">{labels.content}</a>
+        {getServiceImplementationIds(id).length ? <a href="#service-implementation">{labels.implementation}</a> : null}
         {cases.length ? <a href="#reference-cases">{labels.cases}</a> : null}
         <a href="#service-faq">{labels.faq}</a>
       </nav>
@@ -88,8 +117,9 @@ export function ConsultingServicePage({ copy, id, children }) {
         </div>
         {children}
         <div className="consulting-execution"><div><strong>{content.labels.execution}</strong><p>{service.execution}</p></div></div>
-        {consultingConnections[id] ? <div className="service-related-links"><span>{connectionCopy[locale].implementation}</span>{consultingConnections[id].map((target) => <a href={localizeHref(`/solutions.html#${target}`, locale)} key={target}>{getServiceLabel(target, locale)}</a>)}</div> : null}
+        {related.length ? <div className="service-related-links"><span>{connectionCopy[locale].implementation}</span>{related.map((target) => <a href={localizeHref(getImplementationHref(target), locale)} key={target}>{getServiceLabel(target, locale)}</a>)}</div> : null}
       </section>
+      <ServiceImplementation id={id} locale={locale} />
       {cases.length ? <section className="advisory-block" id="reference-cases" aria-labelledby="reference-cases-title">
         <h2 id="reference-cases-title">{labels.cases}</h2>
         <p className="advisory-block-intro">{id === "international-marketing" ? labels.marketingCasesIntro : labels.casesIntro}</p>

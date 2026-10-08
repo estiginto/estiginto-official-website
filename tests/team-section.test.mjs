@@ -123,11 +123,11 @@ test("about team localizes its section copy, roles, summaries, and group labels"
   }
 });
 
-test("about page presents only leadership and advisory while achievements follow solutions", () => {
+test("about page retains leadership and advisory while the hidden solutions page does not render", () => {
   const app = readFileSync(resolve(root, "src/App.jsx"), "utf8");
 
   assert.match(app, /initialSection === "about"\s*\?\s*<TeamSection copy=\{copy\} \/>/);
-  assert.match(app, /initialSection === "solutions"\s*\?\s*<>\s*<Solutions copy=\{copy\} \/>\s*<Numbers copy=\{copy\} \/>\s*<\/>/);
+  assert.doesNotMatch(app, /<Solutions copy=\{copy\} \/>/);
   assert.doesNotMatch(app, /<Manifesto copy=\{copy\} \/>/);
 });
 

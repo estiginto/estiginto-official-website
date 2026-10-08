@@ -5,7 +5,6 @@ const copyByLocale = {
     title: "了解服務與合作方式", label: "延伸資訊",
     about: ["認識團隊", "了解團隊背景與服務方向。"],
     consulting: ["顧問服務", "盤點需求，確認服務範圍與協作方式。"],
-    solutions: ["解決方案", "查看網站、系統、設計與行銷的建置內容。"],
     case: ["精選實績", "依應用領域查看已交付的功能。"],
     faq: ["合作說明", "了解需求評估、交付、授權與維護安排。"],
     contact: ["聯絡我們", "透過 Email、電話或 LINE 討論需求。"],
@@ -14,7 +13,6 @@ const copyByLocale = {
     title: "Explore services and collaboration", label: "Related information",
     about: ["About us", "Meet the team and explore our areas of work."],
     consulting: ["Consulting", "Define requirements, scope, and responsibilities."],
-    solutions: ["Solutions", "Explore website, system, design, and marketing delivery."],
     case: ["Selected work", "Review delivered features by application area."],
     faq: ["Working with us", "Learn about planning, delivery, licensing, and support."],
     contact: ["Contact us", "Discuss your requirements by email, phone, or LINE."],
@@ -23,7 +21,6 @@ const copyByLocale = {
     title: "サービスとご依頼について", label: "関連情報",
     about: ["私たちについて", "チームとサービスの方針をご紹介します。"],
     consulting: ["コンサルティング", "要件、支援範囲、役割分担を整理します。"],
-    solutions: ["ソリューション", "Web、システム、デザイン、マーケティングの構築内容をご紹介します。"],
     case: ["実績紹介", "提供した機能を用途別にご覧いただけます。"],
     faq: ["ご依頼について", "要件整理、納品、ライセンス、保守をご案内します。"],
     contact: ["お問い合わせ", "メール、電話、LINEでご相談いただけます。"],
@@ -31,12 +28,11 @@ const copyByLocale = {
 };
 
 const destinations = {
-  about: ["consulting", "solutions", "contact"],
-  solutions: ["case", "faq", "contact"],
-  case: ["solutions", "faq", "contact"],
-  consulting: ["solutions", "faq", "contact"],
-  faq: ["consulting", "solutions", "contact"],
-  contact: ["consulting", "solutions", "faq"],
+  about: ["consulting", "case", "contact"],
+  case: ["consulting", "faq", "contact"],
+  consulting: ["case", "faq", "contact"],
+  faq: ["consulting", "case", "contact"],
+  contact: ["consulting", "case", "faq"],
 };
 
 export default function SiteNextSteps({ page, locale }) {

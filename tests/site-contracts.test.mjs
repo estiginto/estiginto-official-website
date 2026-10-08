@@ -44,20 +44,15 @@ test("every public page declares the existing brand favicon", () => {
   }
 });
 
-test("primary navigation gives solutions and case studies distinct destinations", () => {
+test("primary navigation provides site pages without the hidden solutions area", () => {
   const items = getServiceMenuGroups("zh").digital.items;
-  const solutions = items.find((item) => item.key === "custom-development");
-  const cases = items.find((item) => item.key === "system-cases");
-
-  assert.equal(solutions?.href, "/solutions.html#custom-systems");
-  assert.equal(cases?.href, "/case.html#case-group-operations-management");
-  assert.notEqual(solutions?.href, cases?.href);
+  assert.deepEqual(items.map((item) => item.href), ["/about.html", "/case.html", "/faq.html", "/contact.html"]);
 });
 
-test("footer navigation exposes solutions, selected work and collaboration guidance in each locale", () => {
+test("footer navigation exposes services, selected work and collaboration guidance in each locale", () => {
   const app = read("src/App.jsx");
 
-  for (const path of ["solutions", "case", "faq"]) assert.ok(app.includes(`localizeHref("/${path}.html", copy.locale)`));
+  for (const path of ["consulting", "case", "faq"]) assert.ok(app.includes(`localizeHref("/${path}.html", copy.locale)`));
 });
 
 test("solutions page has a distinct localized page heading", () => {
@@ -269,7 +264,8 @@ test("robots and sitemap sources exist and list the public pages", () => {
   const robots = read("robots.txt");
   const sitemap = read("sitemap.xml");
   assert.match(robots, /Sitemap: https:\/\/estiginto\.com\/sitemap\.xml/);
-  for (const [, canonical] of pages) {
+  for (const [, canonical] of pages.filter(([file]) => file !== "solutions.html")) {
     assert.ok(sitemap.includes(`<loc>${canonical}</loc>`), `${canonical} must be in sitemap`);
   }
+  assert.doesNotMatch(sitemap, /solutions\.html/);
 });

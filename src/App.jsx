@@ -3,6 +3,7 @@ import { faqContentByLocale } from "./faqContent.js";
 import "./pageCompletion.css";
 import { ConsultingServices, ConsultingServicePage, ServiceFaqDirectory } from "./ConsultingPages.jsx";
 import { consultingServicesByLocale } from "./consultingContent.js";
+import { getImplementationHref } from "./serviceImplementation.js";
 import { consultingServiceIds, getConsultingHref } from "./consultingPages.js";
 import SiteNextSteps from "./SiteNextSteps.jsx";
 import ContactOptions from "./ContactOptions.jsx";
@@ -77,7 +78,6 @@ const menuLabels = {
   zh: {
     home: "首頁",
     about: "關於我們",
-    solutions: "解決方案",
     case: "精選實績",
     contact: "聯絡我們",
     servicesMenu: "服務導覽",
@@ -85,7 +85,6 @@ const menuLabels = {
   en: {
     home: "Home",
     about: "About",
-    solutions: "Solutions",
     case: "Selected Work",
     contact: "Contact",
     servicesMenu: "Service navigation",
@@ -93,7 +92,6 @@ const menuLabels = {
   ja: {
     home: "ホーム",
     about: "私たちについて",
-    solutions: "ソリューション",
     case: "事例紹介",
     contact: "お問い合わせ",
     servicesMenu: "サービスナビゲーション",
@@ -954,14 +952,12 @@ function HomeDirectory({ copy }) {
   const labels = menuLabels[copy.locale] || menuLabels.zh;
   const items = [
     { key: "about", label: labels.about, href: "/about.html" },
-    { key: "solutions", label: labels.solutions, href: "/solutions.html" },
     ...getServiceMenuGroups(copy.locale).growth.items,
     { key: "case", label: labels.case, href: "/case.html" },
     { key: "faq", label: desktopPrimaryMenuCopy[copy.locale].faq, href: "/faq.html" },
   ];
   const icons = {
     about: <><circle cx="16" cy="10" r="4" /><path d="M8 27v-4a8 8 0 0 1 16 0v4M6 8a3 3 0 0 0 0 6m20-6a3 3 0 0 1 0 6M3 25v-4a5 5 0 0 1 3-4m23 8v-4a5 5 0 0 0-3-4" /></>,
-    solutions: <><path d="m16 3 12 7-12 7L4 10Zm-12 14 12 7 12-7M4 23l12 7 12-7" /></>,
     case: <><rect x="4" y="7" width="24" height="21" rx="2" /><path d="M11 7V4h10v3M4 15h24M13 15v4h6v-4" /></>,
     faq: <><circle cx="16" cy="16" r="12" /><path d="M12 12a4 4 0 0 1 8 0c0 3-4 3-4 6m0 4h.1" /></>,
     "systems-consulting": <><rect x="7" y="7" width="18" height="18" rx="2" /><path d="M12 12h8v8h-8ZM12 3v4m8-4v4m-8 18v4m8-4v4M3 12h4m-4 8h4m18-8h4m-4 8h4" /></>,
@@ -1210,7 +1206,7 @@ function ServiceOverview({ copy }) {
         <SectionEyebrow index={copy.solutionsUi.index} label={copy.solutionsUi.label} meta={`${items.length} directions`} />
         <div className="service-overview-grid">
           {items.map((service) => (
-            <a className="service-overview-card" href="/solutions.html" key={service.id}>
+            <a className="service-overview-card" href={localizeHref(getImplementationHref(service.id), copy.locale)} key={service.id}>
               <span className="service-overview-number">{service.number}</span>
               <span className="service-overview-eyebrow">{service.eyebrow}</span>
               <h2>{service.title}</h2>
@@ -1235,7 +1231,7 @@ function ServicePracticeDetails({ locale, kind }) {
             <h4>{item.title}</h4>
             <p>{item.description}</p>
             <p className="service-planning-output"><strong>{details.labels.outcomes}</strong>{item.outcomes}</p>
-            {item.implementation ? <><div className="service-related-links"><span>{details.labels.systemImplementation}</span><a href={localizeHref(`/solutions.html#${item.implementation}`, locale)}>{getServiceLabel(item.implementation, locale)}</a></div><p>{details.labels.systemImplementationNote}</p></> : null}
+            {item.implementation ? <><div className="service-related-links"><span>{details.labels.systemImplementation}</span><a href={localizeHref(getImplementationHref(item.implementation), locale)}>{getServiceLabel(item.implementation, locale)}</a></div><p>{details.labels.systemImplementationNote}</p></> : null}
           </article>
         ))}
       </div>
@@ -1834,7 +1830,6 @@ function Footer({ copy }) {
             <h5>{details.explore}</h5>
             <a href={localizeHref("/about.html", copy.locale)}>{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
             <a href={localizeHref("/consulting.html", copy.locale)}>{getServiceMenuGroups(copy.locale).growth.label}</a>
-            <a href={localizeHref("/solutions.html", copy.locale)}>{menuLabels[copy.locale]?.solutions || menuLabels.zh.solutions}</a>
             <a href={localizeHref("/case.html", copy.locale)}>{menuLabels[copy.locale]?.case || menuLabels.zh.case}</a>
             <a href={localizeHref("/faq.html", copy.locale)}>{desktopPrimaryMenuCopy[copy.locale].faq}</a>
             <a href={localizeHref("/contact.html", copy.locale)}>{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
@@ -1919,7 +1914,6 @@ function MobileNav({ locale, fontControls }) {
   const primaryMenuItems = [
     homeItem,
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
-    { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
     { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
     { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
@@ -2117,7 +2111,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const primaryMenuItems = [
     { key: "home", label: localizedMenuLabels.home, href: "/" },
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
-    { key: "solutions", label: localizedMenuLabels.solutions, href: "/solutions.html" },
     { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
     { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
@@ -2728,7 +2721,6 @@ export default function App() {
                 <CasePortfolio copy={copy} />
               </>
             ) : null}
-            {initialSection === "solutions" ? <><Solutions copy={copy} /><Numbers copy={copy} /></> : null}
             {initialSection === "consulting" ? <ConsultingServices copy={copy} /> : null}
             {consultingServiceIds.includes(initialSection) ? <ConsultingServicePage copy={copy} id={initialSection}>
               {initialSection === "systems-consulting" ? <ServicePracticeDetails locale={locale} kind="systems" /> : null}

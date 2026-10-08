@@ -1,12 +1,12 @@
 const serviceMenuGroupsByLocale = {
   zh: {
     digital: {
-      label: "解決方案",
+      label: "網站導覽",
       items: [
-        { key: "system-planning", label: "系統規劃", href: "/systems-consulting.html", position: "top" },
-        { key: "custom-development", label: "客製開發", href: "/solutions.html#custom-systems", position: "left" },
-        { key: "system-cases", label: "系統案例", href: "/case.html#case-group-operations-management", position: "right" },
-        { key: "project-consulting", label: "專案諮詢", href: "/contact.html", position: "bottom" },
+        { key: "about", label: "關於我們", href: "/about.html", position: "top" },
+        { key: "case", label: "精選實績", href: "/case.html", position: "left" },
+        { key: "faq", label: "合作說明", href: "/faq.html", position: "right" },
+        { key: "contact", label: "聯絡我們", href: "/contact.html", position: "bottom" },
       ],
     },
     growth: {
@@ -22,12 +22,12 @@ const serviceMenuGroupsByLocale = {
   },
   en: {
     digital: {
-      label: "Solutions",
+      label: "Site navigation",
       items: [
-        { key: "system-planning", label: "Planning", href: "/systems-consulting.html", position: "top" },
-        { key: "custom-development", label: "Custom Dev", href: "/solutions.html#custom-systems", position: "left" },
-        { key: "system-cases", label: "System Work", href: "/case.html#case-group-operations-management", position: "right" },
-        { key: "project-consulting", label: "Consult", href: "/contact.html", position: "bottom" },
+        { key: "about", label: "About", href: "/about.html", position: "top" },
+        { key: "case", label: "Selected Work", href: "/case.html", position: "left" },
+        { key: "faq", label: "Working with us", href: "/faq.html", position: "right" },
+        { key: "contact", label: "Contact", href: "/contact.html", position: "bottom" },
       ],
     },
     growth: {
@@ -43,12 +43,12 @@ const serviceMenuGroupsByLocale = {
   },
   ja: {
     digital: {
-      label: "ソリューション",
+      label: "サイト案内",
       items: [
-        { key: "system-planning", label: "システム設計", href: "/systems-consulting.html", position: "top" },
-        { key: "custom-development", label: "開発", href: "/solutions.html#custom-systems", position: "left" },
-        { key: "system-cases", label: "導入事例", href: "/case.html#case-group-operations-management", position: "right" },
-        { key: "project-consulting", label: "相談", href: "/contact.html", position: "bottom" },
+        { key: "about", label: "私たちについて", href: "/about.html", position: "top" },
+        { key: "case", label: "実績紹介", href: "/case.html", position: "left" },
+        { key: "faq", label: "ご依頼について", href: "/faq.html", position: "right" },
+        { key: "contact", label: "お問い合わせ", href: "/contact.html", position: "bottom" },
       ],
     },
     growth: {

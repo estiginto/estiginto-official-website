@@ -5,7 +5,7 @@ export const siteLocales = ["zh", "en", "ja"];
 export const sitePages = [
   { key: "home", file: "index.html", path: "/" },
   { key: "about", file: "about.html", path: "/about.html" },
-  { key: "solutions", file: "solutions.html", path: "/solutions.html" },
+  { key: "solutions", file: "solutions.html", path: "/solutions.html", hidden: true },
   { key: "case", file: "case.html", path: "/case.html" },
   { key: "consulting", file: "consulting.html", path: "/consulting.html" },
   ...consultingServiceIds.map((id) => ({ key: id, file: `${id}.html`, path: `/${id}.html` })),
@@ -71,6 +71,7 @@ export function getPageMetadata(pageKey, locale = "zh") {
     : metadataByLocale[resolvedLocale][page.key];
   return {
     title, description,
+    robots: page.hidden ? "noindex, follow" : null,
     keywords: page.key === "case" ? {
       zh: "客製化系統開發, ERP 系統, WMS 倉儲管理, IoT 整合, 即時監控, 電子商務網站, 會員系統, 預約系統, 品牌官網, UI/UX 設計",
       en: "Custom system development, ERP, WMS, IoT integration, monitoring, e-commerce, membership, booking, brand websites, UI/UX design",
@@ -93,6 +94,8 @@ export function applyPageMetadata(document, pageKey, locale) {
     element.content = content;
   };
   setMeta("name", "description", meta.description);
+  if (meta.robots) setMeta("name", "robots", meta.robots);
+  else document.head.querySelector('meta[name="robots"]')?.remove();
   setMeta("name", "keywords", meta.keywords);
   for (const [key, content] of Object.entries({ "og:title": meta.title, "og:description": meta.description, "og:url": meta.canonical, "og:locale": meta.ogLocale, "og:site_name": "ESTIGINTO" })) setMeta("property", key, content);
   setMeta("name", "twitter:title", meta.title);

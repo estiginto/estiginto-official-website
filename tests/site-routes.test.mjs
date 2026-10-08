@@ -61,8 +61,8 @@ test("service inquiry context accepts only known services and uses localized lab
 
 test("sitemap includes all marketing URLs with reciprocal language alternatives", () => {
   const sitemap = renderSitemap();
-  assert.equal((sitemap.match(/<loc>/g) || []).length, sitePages.length * siteLocales.length);
-  assert.equal((sitemap.match(/xhtml:link/g) || []).length, sitePages.length * siteLocales.length * 4);
-  for (const locale of siteLocales) for (const page of sitePages) assert.ok(sitemap.includes(`<loc>https://estiginto.com${localizeHref(page.path, locale)}</loc>`));
+  assert.equal((sitemap.match(/<loc>/g) || []).length, sitePages.filter((page) => !page.hidden).length * siteLocales.length);
+  assert.equal((sitemap.match(/xhtml:link/g) || []).length, sitePages.filter((page) => !page.hidden).length * siteLocales.length * 4);
+  for (const locale of siteLocales) for (const page of sitePages.filter((page) => !page.hidden)) assert.ok(sitemap.includes(`<loc>https://estiginto.com${localizeHref(page.path, locale)}</loc>`));
   assert.doesNotMatch(sitemap, /\/Oasis\//);
 });

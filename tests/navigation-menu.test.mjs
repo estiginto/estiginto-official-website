@@ -4,9 +4,9 @@ import test from "node:test";
 import { getServiceMenuGroups } from "../src/navigationMenu.js";
 
 const destinations = [
-  "/systems-consulting.html",
-  "/solutions.html#custom-systems",
-  "/case.html#case-group-operations-management",
+  "/about.html",
+  "/case.html",
+  "/faq.html",
   "/contact.html",
   "/systems-consulting.html",
   "/visual-design.html",
@@ -16,9 +16,9 @@ const destinations = [
 ];
 
 const expectedLabels = {
-  zh: ["系統規劃", "客製開發", "系統案例", "專案諮詢", "資訊系統", "視覺設計", "國際行銷", "國際金融", "數位整合"],
-  en: ["Planning", "Custom Dev", "System Work", "Consult", "Information Systems", "Visual Design", "International Marketing", "International Finance", "Digital Integration"],
-  ja: ["システム設計", "開発", "導入事例", "相談", "情報システム", "ビジュアルデザイン", "国際マーケティング", "国際金融", "デジタル統合"],
+  zh: ["關於我們", "精選實績", "合作說明", "聯絡我們", "資訊系統", "視覺設計", "國際行銷", "國際金融", "數位整合"],
+  en: ["About", "Selected Work", "Working with us", "Contact", "Information Systems", "Visual Design", "International Marketing", "International Finance", "Digital Integration"],
+  ja: ["私たちについて", "実績紹介", "ご依頼について", "お問い合わせ", "情報システム", "ビジュアルデザイン", "国際マーケティング", "国際金融", "デジタル統合"],
 };
 
 for (const locale of ["zh", "en", "ja"]) {
@@ -35,6 +35,6 @@ for (const locale of ["zh", "en", "ja"]) {
 test("unsupported locales fall back to the Chinese service menu", () => {
   const groups = getServiceMenuGroups("unsupported");
 
-  assert.equal(groups.digital.label, "解決方案");
+  assert.equal(groups.digital.label, "網站導覽");
   assert.equal(groups.growth.label, "顧問服務");
 });

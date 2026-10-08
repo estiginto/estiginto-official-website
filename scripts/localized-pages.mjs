@@ -8,12 +8,13 @@ export function renderLocalizedHtml(html, key, locale) {
   const meta = getPageMetadata(key, locale);
   let output = html.replace(/<html\s+lang="[^"]*"/, `<html lang="${meta.language}"`)
     .replace(/\s*<title>[\s\S]*?<\/title>/g, "")
-    .replace(/\s*<meta\b[^>]*(?:name="(?:description|keywords|twitter:title|twitter:description)"|property="og:(?:title|description|url|locale|site_name)")[^>]*>/g, "")
+    .replace(/\s*<meta\b[^>]*(?:name="(?:description|keywords|robots|twitter:title|twitter:description)"|property="og:(?:title|description|url|locale|site_name)")[^>]*>/g, "")
     .replace(/\s*<link\b[^>]*(?:rel="canonical"|hreflang=)[^>]*>/g, "");
   const tags = [
     `<title>${escape(meta.title)}</title>`,
     `<meta name="description" content="${escape(meta.description)}" />`,
     `<meta name="keywords" content="${escape(meta.keywords)}" />`,
+    ...(meta.robots ? [`<meta name="robots" content="${meta.robots}" />`] : []),
     `<link rel="canonical" href="${meta.canonical}" />`,
     ...meta.alternates.map((item) => `<link rel="alternate" hreflang="${item.language}" href="${item.href}" />`),
     ...Object.entries({ "og:title": meta.title, "og:description": meta.description, "og:url": meta.canonical, "og:locale": meta.ogLocale, "og:site_name": "ESTIGINTO" }).map(([key, value]) => `<meta property="${key}" content="${escape(value)}" />`),
@@ -24,9 +25,10 @@ export function renderLocalizedHtml(html, key, locale) {
 }
 
 export function renderSitemap() {
-  const entries = sitePages.map((page) => `  <url><loc>${siteOrigin}${page.path}</loc>${getPageMetadata(page.key).alternates.map((item) => `<xhtml:link rel="alternate" hreflang="${item.language}" href="${item.href}"/>`).join("")}</url>`);
+  const publicPages = sitePages.filter((page) => !page.hidden);
+  const entries = publicPages.map((page) => `  <url><loc>${siteOrigin}${page.path}</loc>${getPageMetadata(page.key).alternates.map((item) => `<xhtml:link rel="alternate" hreflang="${item.language}" href="${item.href}"/>`).join("")}</url>`);
   for (const locale of ["en", "ja"]) {
-    for (const page of sitePages) entries.push(`  <url><loc>${siteOrigin}${localizeHref(page.path, locale)}</loc>${getPageMetadata(page.key, locale).alternates.map((item) => `<xhtml:link rel="alternate" hreflang="${item.language}" href="${item.href}"/>`).join("")}</url>`);
+    for (const page of publicPages) entries.push(`  <url><loc>${siteOrigin}${localizeHref(page.path, locale)}</loc>${getPageMetadata(page.key, locale).alternates.map((item) => `<xhtml:link rel="alternate" hreflang="${item.language}" href="${item.href}"/>`).join("")}</url>`);
   }
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries.join("\n")}\n</urlset>\n`;
 }

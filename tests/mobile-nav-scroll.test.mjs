@@ -120,9 +120,9 @@ test("mobile navigation keeps routes level and places category controls after th
 
 test("mobile menu switches between two localized service link groups", () => {
   const expectedGroupLabels = {
-    zh: ["解決方案", "顧問服務"],
-    en: ["Solutions", "Consulting"],
-    ja: ["ソリューション", "コンサルティング"],
+    zh: ["網站導覽", "顧問服務"],
+    en: ["Site navigation", "Consulting"],
+    ja: ["サイト案内", "コンサルティング"],
   };
 
   for (const locale of ["zh", "en", "ja"]) {
