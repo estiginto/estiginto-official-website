@@ -41,40 +41,80 @@ html[lang="ja"] .page-title h1 { max-width: 100%; overflow-wrap: anywhere; font-
 .advisory-directory-card:hover { background: var(--paper-deep); }
 .advisory-directory-card h2 { font-size: var(--fs-h3); line-height: 1.4; margin: 0; }
 .advisory-directory-card p { margin: 0 0 12px; color: var(--ink-soft); line-height: 1.9; }
+.advisory-directory-card:last-child { grid-column: 1 / -1; }
+.advisory-directory-topics { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 0; margin: 0 0 12px; list-style: none; color: var(--ink-mute); font-size: var(--fs-sm); line-height: 1.8; }
+.advisory-directory-topics li { padding-bottom: 4px; border-bottom: 1px solid var(--ink-line); }
 .advisory-card-action { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; margin-top: auto; font-size: var(--fs-sm); }
 .advisory-card-action svg { width: 24px; height: 24px; flex-shrink: 0; }
 .page-title.page-title-advisory { min-height: 0; padding-block: 144px 64px; }
 .page-title.page-title-advisory h1 { font-size: clamp(3rem, 5vw, 5rem); line-height: 1.12; max-width: 18ch; }
+.page-title.page-title-advisory .wrap { gap: clamp(32px, 5vw, 72px); }
 .section.consulting-directory { padding-block: 48px 80px; }
 .section.advisory-page { padding-block: 24px 64px; }
+.advisory-page-tools { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 8px 24px; }
+.advisory-top-inquiry { gap: 12px; }
+.advisory-top-inquiry svg { width: 20px; height: 20px; }
 .advisory-section-nav { display: flex; flex-wrap: wrap; gap: 8px 32px; padding-block: 16px; margin-top: 24px; border-block: 1px solid var(--ink-line); }
 .advisory-section-nav a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); text-decoration: underline; text-underline-offset: 6px; }
 .advisory-block { scroll-margin-top: 104px; padding-block: clamp(40px, 5vw, 64px); border-bottom: 1px solid var(--ink-line); }
 .advisory-block > h2, .advisory-other-services h2, .service-faq-directory h2 { font-size: var(--fs-h2); line-height: 1.4; margin: 0 0 28px; }
 .advisory-block-intro { max-width: 800px; margin-bottom: 28px; color: var(--ink-soft); line-height: 1.9; }
+.advisory-overview { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.advisory-overview > section { min-width: 0; padding: clamp(24px, 3vw, 36px); background: var(--paper-deep); }
+.advisory-overview h3, .advisory-scope > h3 { margin: 0 0 20px; font-size: var(--fs-h4); line-height: 1.5; }
+.advisory-overview ul { padding-left: 20px; margin: 0; color: var(--ink-soft); line-height: 1.85; }
+.advisory-overview li + li { margin-top: 10px; }
+.advisory-scope { margin-top: 40px; }
+.advisory-scope-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; list-style: none; padding: 0; margin: 0; }
+.advisory-scope-list > li { min-width: 0; padding: clamp(24px, 3vw, 32px); border: 1px solid var(--ink-line); }
+.advisory-scope-list h4 { margin: 0 0 12px; font-size: var(--fs-lg); line-height: 1.5; }
+.advisory-scope-list p { max-width: 60ch; margin: 0; font-size: var(--fs-base); line-height: 1.85; color: var(--ink-soft); }
+.advisory-page .consulting-execution { padding: 24px 0; margin-top: 24px; border-bottom: 1px solid var(--ink-line); }
+.advisory-page .consulting-execution strong { font-size: var(--fs-sm); letter-spacing: 0; }
+.advisory-page .consulting-execution p { max-width: 82ch; line-height: 1.85; }
 .service-implementation { scroll-margin-top: 104px; }
 .service-implementation > h3 { margin: 0 0 20px; font-size: var(--fs-h3); line-height: 1.5; }
 .service-implementation > h4 { margin: 0 0 12px; font-size: var(--fs-base); line-height: 1.6; }
 .service-implementation-features { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 32px; margin: 0 0 32px; padding-left: 20px; color: var(--ink-soft); line-height: 1.9; }
+.service-implementation .service-detail-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.service-implementation .service-detail-grid > section { min-width: 0; padding: 24px; background: var(--paper-deep); }
+.service-implementation .service-detail-grid > section:first-child { grid-column: 1 / -1; }
+.service-implementation .service-detail-grid p, .service-implementation .service-detail-grid li { font-size: var(--fs-base); }
+.service-implementation .service-detail-grid > section:first-child ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 32px; }
+.service-implementation .service-detail-grid > section:first-child li + li { margin-top: 0; }
 .advisory-case { padding: clamp(24px, 3vw, 36px); background: var(--paper-deep); }
 .advisory-case h3 { font-size: var(--fs-h3); line-height: 1.4; margin: 0 0 16px; }
 .advisory-case p, .advisory-case li { font-size: var(--fs-base); color: var(--ink-soft); line-height: 1.9; }
 .advisory-case .advisory-case-outcome { color: var(--signal); font-size: var(--fs-sm); margin: 0 0 20px; }
 .advisory-case ul { padding-left: 20px; margin: 20px 0 0; }
 .advisory-faq h3 { margin: 0; font: inherit; }
-.advisory-faq .faq-q { width: 100%; text-align: left; }
+.advisory-faq .faq-q { width: 100%; text-align: left; grid-template-columns: 32px minmax(0, 1fr) 24px; gap: 16px; font-size: var(--fs-lg); line-height: 1.6; }
+.advisory-faq .faq-a > div { padding-left: 48px; padding-right: 40px; }
+.advisory-faq .faq-a p { max-width: 80ch; margin: 0; font-size: var(--fs-base); line-height: 1.85; }
+.advisory-faq .faq-q:focus-visible { outline: 2px solid var(--night); outline-offset: 4px; }
 .advisory-faq > .service-inline-link { margin-top: 24px; }
 .advisory-inquiry { padding-block: 40px; }
 .advisory-other-services { padding-top: 24px; }
+.advisory-page .consulting-process ol { grid-template-columns: minmax(0, 1fr); }
+.advisory-page .consulting-process li { grid-template-columns: 40px minmax(0, 1fr); gap: 20px; min-height: 0; padding: 28px 0; border-right: 0; border-bottom: 1px solid var(--ink-line); }
+.advisory-page .consulting-process li > div { display: grid; grid-template-columns: minmax(160px, 0.6fr) minmax(0, 1.6fr); gap: 24px; }
+.advisory-page .consulting-process li h3 { margin: 0; font-size: var(--fs-lg); }
+.advisory-page .consulting-process li p { max-width: 80ch; font-size: var(--fs-base); line-height: 1.85; }
 .service-faq-directory { padding-block: 24px; }
 .advisory-directory-card:focus-visible, .advisory-section-nav a:focus-visible, .advisory-page .service-inline-link:focus-visible { outline: 2px solid var(--night); outline-offset: 4px; }
 @media (max-width: 760px) {
-  .advisory-directory-grid, .advisory-case-grid { grid-template-columns: minmax(0, 1fr); }
+  .advisory-directory-grid, .advisory-case-grid, .advisory-overview, .advisory-scope-list { grid-template-columns: minmax(0, 1fr); }
+  .page-title.page-title-advisory { padding-block: 120px 40px; }
+  .page-title.page-title-advisory h1 { font-size: clamp(2.25rem, 9vw, 3.5rem); line-height: 1.18; }
+  .advisory-directory-card { gap: 16px; }
+  .advisory-page-tools { gap: 8px 20px; }
+  .advisory-page .consulting-process li > div { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .advisory-page .consulting-process li { grid-template-columns: 28px minmax(0, 1fr); gap: 12px; }
+  .advisory-faq .faq-q { grid-template-columns: 24px minmax(0, 1fr) 20px; gap: 10px; }
+  .advisory-faq .faq-a > div { padding-left: 34px; padding-right: 0; }
+  .service-implementation .service-detail-grid, .service-implementation .service-detail-grid > section:first-child ul { grid-template-columns: minmax(0, 1fr); }
   .service-implementation-features { grid-template-columns: minmax(0, 1fr); }
   .advisory-section-nav { gap: 8px 24px; }
-  .advisory-page .consulting-service-grid { grid-template-columns: minmax(0, 1fr); }
-  .advisory-page .consulting-service-grid section { border-right: 0; border-bottom: 1px solid var(--ink-line); }
-  .advisory-page .consulting-service-grid section:last-child { border-bottom: 0; }
 }
 .contact-options { padding-block: 36px 72px; }
 body[data-target-section="contact"] .page-title { min-height: 0; padding-block: 140px 58px; }

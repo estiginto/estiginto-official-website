@@ -23,6 +23,7 @@ export function ConsultingServices({ copy }) {
               <span className="consulting-service-number">{String(index + 1).padStart(2, "0")}</span>
               <h2>{getServiceLabel(id, copy.locale)}</h2>
               <p>{service.summary}</p>
+              <ul className="advisory-directory-topics">{service.scope.slice(0, 3).map((item) => <li key={item.title}>{item.title}</li>)}</ul>
               <span className="advisory-card-action">{labels.view}<Arrow /></span>
             </a>;
           })}
@@ -49,7 +50,7 @@ function ServiceFAQ({ id, locale }) {
     ? faqContentByLocale[locale][3].items.map(([, question, answer]) => [question, answer])
     : consultingFaqByLocale[locale][id];
   return <section className="advisory-block advisory-faq" id="service-faq" aria-labelledby="service-faq-title">
-    <h2 id="service-faq-title">{getServiceLabel(id, locale)} · {labels.faq}</h2>
+    <h2 id="service-faq-title">{labels.faq}</h2>
     <div className="faq-list">
       {items.map(([question, answer], index) => {
         const expanded = open === index;
@@ -101,20 +102,27 @@ export function ConsultingServicePage({ copy, id, children }) {
   const related = (consultingConnections[id] || []).filter((target) => implementationOwners[target] !== id);
   return <article className="section consulting-services advisory-page" data-service={id}>
     <div className="wrap">
-      <a className="service-inline-link" href={localizeHref("/consulting.html", locale)}>{labels.directory}</a>
+      <div className="advisory-page-tools">
+        <a className="service-inline-link" href={localizeHref("/consulting.html", locale)}>{labels.directory}</a>
+        <a className="service-inline-link advisory-top-inquiry" href={getContactHref(id, locale)}>{labels.inquiry}<Arrow /></a>
+      </div>
       <nav className="advisory-section-nav" aria-label={labels.contents}>
         <a href="#service-content">{labels.content}</a>
         {getServiceImplementationIds(id).length ? <a href="#service-implementation">{labels.implementation}</a> : null}
         {cases.length ? <a href="#reference-cases">{labels.cases}</a> : null}
         <a href="#service-faq">{labels.faq}</a>
+        <a href="#service-process">{labels.process}</a>
       </nav>
       <section className="advisory-block" id="service-content" aria-labelledby="service-content-title">
         <h2 id="service-content-title">{labels.content}</h2>
-        <div className="consulting-service-grid">
+        <div className="advisory-overview">
           <section><h3>{content.labels.situations}</h3><ul>{service.situations.map((item) => <li key={item}>{item}</li>)}</ul></section>
-          <section><h3>{content.labels.scope}</h3><ul>{service.scope.map((item) => <li key={item}>{item}</li>)}</ul></section>
-          <section className="consulting-deliverables"><h3>{content.labels.deliverables}</h3><ul>{service.deliverables.map((item) => <li key={item}>{item}</li>)}</ul></section>
+          <section><h3>{content.labels.deliverables}</h3><ul>{service.deliverables.map((item) => <li key={item}>{item}</li>)}</ul></section>
         </div>
+        <section className="advisory-scope" aria-labelledby="service-scope-title">
+          <h3 id="service-scope-title">{content.labels.scope}</h3>
+          <ul className="advisory-scope-list">{service.scope.map((item) => <li key={item.title}><h4>{item.title}</h4><p>{item.description}</p></li>)}</ul>
+        </section>
         {children}
         <div className="consulting-execution"><div><strong>{content.labels.execution}</strong><p>{service.execution}</p></div></div>
         {related.length ? <div className="service-related-links"><span>{connectionCopy[locale].implementation}</span>{related.map((target) => <a href={localizeHref(getImplementationHref(target), locale)} key={target}>{getServiceLabel(target, locale)}</a>)}</div> : null}
@@ -129,7 +137,7 @@ export function ConsultingServicePage({ copy, id, children }) {
         </article>)}</div>
       </section> : null}
       <ServiceFAQ id={id} locale={locale} />
-      <section className="consulting-process advisory-block" aria-labelledby="consulting-process-title">
+      <section className="consulting-process advisory-block" id="service-process" aria-labelledby="consulting-process-title">
         <h2 id="consulting-process-title">{content.processTitle}</h2>
         <ol>{content.process.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, "0")}</span><div><h3>{step}</h3><p>{details.process[index]}</p></div></li>)}</ol>
       </section>

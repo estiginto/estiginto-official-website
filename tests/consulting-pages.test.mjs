@@ -16,7 +16,11 @@ for (const locale of ["zh", "en", "ja"]) {
       assert.equal(getPageFromPath(href)?.key, id);
       assert.equal(getPageTransitionVariant(href), "matrix");
       assert.equal(getServiceMenuGroups(locale).growth.items.find((item) => item.key === id).href, getConsultingHref(id));
+      const service = consultingServicesByLocale[locale].services.find((item) => item.id === id);
+      const menuName = getServiceMenuGroups(locale).growth.items.find((item) => item.key === id).label;
+      assert.equal(service.title, menuName, "page and menu must name the same service");
       const metadata = getPageMetadata(id, locale);
+      assert.ok(metadata.title.includes(menuName));
       assert.equal(metadata.canonical, `https://estiginto.com${href}`);
       assert.ok(metadata.description.length > 20);
       titles.add(metadata.title);
@@ -30,6 +34,9 @@ for (const locale of ["zh", "en", "ja"]) {
     for (const id of consultingServiceIds) {
       const content = consultingServicesByLocale[locale].services.find((item) => item.id === id);
       for (const field of ["situations", "scope", "deliverables"]) assert.ok(content[field].length >= 2);
+      assert.ok(content.scope.length >= 4, "service scope must explain the actual work");
+      assert.equal(new Set(content.scope.map((item) => item.title)).size, content.scope.length);
+      for (const item of content.scope) assert.ok(item.title?.trim() && item.description?.trim(), "each scope item needs a title and a complete explanation");
       for (const caseId of consultingCaseIds[id]) assert.ok(caseStudiesByLocale[locale].some((item) => item.id === caseId));
       if (id === "international-finance") {
         assert.deepEqual(consultingCaseIds[id], []);
