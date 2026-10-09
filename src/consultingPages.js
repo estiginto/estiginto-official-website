@@ -25,22 +25,25 @@ export const consultingCaseIds = {
 
 export const consultingPageCopy = {
   zh: {
+    financeNote: "協助資訊整合與專業團隊協作；法律、稅務及金融事項由受委任的專業人員處理。",
     implementation: "建置與交付", capabilities: "可規劃功能", process: "合作流程",
     directory: "顧問服務總覽", view: "查看服務內容", contents: "本頁內容", content: "服務內容", cases: "參考案例", faq: "常見問題", inquiry: "討論這項服務", other: "其他顧問服務", general: "一般合作說明", faqDirectory: "各服務常見問題",
-    casesIntro: "以下取自已公開的建置實績，可參考相關功能與應用方式；顧問工作與建置工作可分別委託，實際範圍依合作約定確認。",
-    marketingCasesIntro: "以下是品牌網站與行銷整合的建置參考，展示品牌呈現與數位通路功能；不代表特定海外市場或廣告投放成果。",
+    casesIntro: "以下為相關建置實績；服務範圍依委託內容確認。",
+    marketingCasesIntro: "以下展示品牌與數位通路建置，不代表海外市場或廣告投放成果。",
   },
   en: {
+    financeNote: "We integrate information and coordinate teams. Appointed professionals handle legal, tax, and financial matters.",
     implementation: "Implementation and delivery", capabilities: "Features to plan", process: "How we work",
     directory: "All consulting services", view: "Explore this service", contents: "On this page", content: "Service details", cases: "Reference work", faq: "Frequently asked questions", inquiry: "Discuss this service", other: "Other consulting services", general: "Working with us", faqDirectory: "Questions by service",
-    casesIntro: "These published implementation references illustrate related features and applications. Consulting and implementation can be commissioned separately; the agreed engagement defines the scope.",
-    marketingCasesIntro: "These brand website and marketing integration references illustrate brand presentation and digital channels. They do not represent results in a particular overseas market or advertising campaign.",
+    casesIntro: "Related implementation references. Engagement scope is agreed for each project.",
+    marketingCasesIntro: "These references show brand and digital channel implementation, not overseas market or advertising results.",
   },
   ja: {
+    financeNote: "情報統合と専門家間の連携を支援します。法務・税務・金融の事項は、委任された専門家が担当します。",
     implementation: "構築と納品", capabilities: "計画する機能", process: "ご依頼の流れ",
     directory: "コンサルティング一覧", view: "サービス内容を見る", contents: "このページの内容", content: "サービス内容", cases: "参考実績", faq: "よくあるご質問", inquiry: "このサービスについて相談する", other: "その他のコンサルティング", general: "ご依頼について", faqDirectory: "サービス別のよくあるご質問",
-    casesIntro: "公開済みの構築実績から、関連する機能や用途をご紹介します。コンサルティングと構築は個別にご依頼いただけます。実際の範囲はご依頼の条件に従って確認します。",
-    marketingCasesIntro: "ブランドサイトとマーケティング連携の構築実績として、ブランド表現とデジタル販路の機能をご紹介します。特定の海外市場や広告配信の成果を示すものではありません。",
+    casesIntro: "関連する構築実績です。サービスの範囲はご依頼ごとに確認します。",
+    marketingCasesIntro: "ブランドとデジタル販路の構築例です。海外市場や広告配信の成果を示すものではありません。",
   },
 };
 

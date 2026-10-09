@@ -5,7 +5,6 @@ import { ConsultingServices, ConsultingServicePage, ServiceFaqDirectory } from "
 import { consultingServicesByLocale } from "./consultingContent.js";
 import { getImplementationHref } from "./serviceImplementation.js";
 import { consultingServiceIds, getConsultingHref } from "./consultingPages.js";
-import SiteNextSteps from "./SiteNextSteps.jsx";
 import ContactOptions from "./ContactOptions.jsx";
 import { serviceDetailsByLocale } from "./serviceDetails.js";
 import { applyPageMetadata, getLocaleFromPath, getPageFromPath, localizeHref } from "./siteRoutes.js";
@@ -318,7 +317,7 @@ const pageTitles = {
   contact: {
     kicker: "Contact",
     title: "聯絡我們",
-    lede: "歡迎洽詢資訊系統、網站、品牌設計、國際行銷與國際金融服務，包含跨境資產整理、財務規劃需求及專業團隊協作。",
+    lede: "透過 Email、電話或 LINE，簡單說明您的需求即可。",
   },
 };
 
@@ -415,7 +414,7 @@ const localizedCopy = {
       solutions: { kicker: "Solutions", title: "Solutions", lede: "Websites, custom systems, brand design, and digital marketing - connected from planning through long-term operation." },
       consulting: { kicker: "Business Consulting", title: "Consulting", lede: "Advice on information systems, digital integration, visual identity, international marketing, and international finance, with coordinated implementation." },
       faq: { kicker: "FAQ", title: "Working with Us", lede: "Our approach to project planning, brand and systems integration, delivery, and ongoing support." },
-      contact: { kicker: "Contact", title: "Contact Us", lede: "Discuss information systems, websites, brand design, international marketing, and international finance, including cross-border asset information, financial planning needs, and professional coordination." },
+      contact: { kicker: "Contact", title: "Contact Us", lede: "Tell us what you need by email, phone, or LINE." },
     },
     numbers: [
       { idx: "Sustainability", keyLabel: "Sustainability", val: "12", sup: "+", unit: " yrs", desc: "Our longest-running system has operated reliably for more than 12 years." },
@@ -480,7 +479,7 @@ const localizedCopy = {
       solutions: { kicker: "Solutions", title: "ソリューション", lede: "Webサイト、業務システム、ブランドデザイン、デジタルマーケティングを企画から長期運用まで一貫して支援します。" },
       consulting: { kicker: "Business Consulting", title: "コンサルティング", lede: "情報システム、デジタル統合、ビジュアル、国際マーケティング、国際金融の課題を整理し、専門家と実行を支援します。" },
       faq: { kicker: "Working Together", title: "ご依頼について", lede: "プロジェクトの計画、ブランドとシステムの連携、納品・保守における進め方と役割分担をご案内します。" },
-      contact: { kicker: "Contact", title: "お問い合わせ", lede: "情報システム、Web、ブランドデザイン、国際マーケティング、国際金融についてご相談ください。国際資産の整理、財務計画の要件、専門家との連携にも対応します。" },
+      contact: { kicker: "Contact", title: "お問い合わせ", lede: "メール、電話、LINEでお気軽にご相談ください。" },
     },
     numbers: [
       { idx: "持続性", keyLabel: "Sustainability", val: "12", sup: "+", unit: " 年", desc: "最も長く稼働しているシステムは 12 年以上安定運用されています。" },
@@ -1795,36 +1794,39 @@ function ContactIcon({ type }) {
 }
 
 const footerDetailsByLocale = {
-  zh: { explore: "網站導覽", contact: "聯絡方式", offices: [
+  zh: { officeLabel: "辦公室資訊", explore: "網站導覽", contact: "聯絡方式", offices: [
     ["台北辦公室", "台北市信義區松信路 71 號 2 樓"],
     ["台北會議室", "台北市中山區南京東路一段15號3樓"],
     ["桃園辦公室", "桃園市中壢區中央東路52號"],
   ] },
-  en: { explore: "Explore", contact: "Contact", offices: [
+  en: { officeLabel: "Office locations", explore: "Explore", contact: "Contact", offices: [
     ["Taipei Office", "2F., No. 71, Songxin Rd., Xinyi Dist., Taipei City, Taiwan"],
     ["Taipei Meeting Room", "3F., No. 15, Sec. 1, Nanjing E. Rd., Zhongshan Dist., Taipei City, Taiwan"],
     ["Taoyuan Office", "No. 52, Zhongyang E. Rd., Zhongli Dist., Taoyuan City, Taiwan"],
   ] },
-  ja: { explore: "サイト案内", contact: "お問い合わせ", offices: [
+  ja: { officeLabel: "オフィス所在地", explore: "サイト案内", contact: "お問い合わせ", offices: [
     ["台北オフィス", "台湾 台北市信義区松信路71号2階"],
     ["台北会議室", "台湾 台北市中山区南京東路一段15号3階"],
     ["桃園オフィス", "台湾 桃園市中壢区中央東路52号"],
   ] },
 };
 
-function Footer({ copy }) {
+function Footer({ copy, isContact = false }) {
   const footer = copy.footer;
   const details = footerDetailsByLocale[copy.locale] || footerDetailsByLocale.zh;
   return (
-    <footer className="page-footer" id="contact">
+    <footer className="page-footer footer-compact" id="contact">
       <div className="wrap">
         <div className="footer-top">
           <div className="footer-brand">
             <p className="footer-wordmark">ESTIGINTO</p>
             <p className="footer-company">{footer.company}</p>
-            <div className="footer-offices">
-              {details.offices.map(([label, address]) => <address key={label}><span className="footer-office-label">{label}</span><span>{address}</span></address>)}
-            </div>
+            <details className="footer-office-disclosure">
+              <summary>{details.officeLabel}</summary>
+              <div className="footer-offices">
+                {details.offices.map(([label, address]) => <address key={label}><span className="footer-office-label">{label}</span><span>{address}</span></address>)}
+              </div>
+            </details>
           </div>
           <nav className="footer-links" aria-label={footer.navLabel}>
             <h5>{details.explore}</h5>
@@ -1834,13 +1836,12 @@ function Footer({ copy }) {
             <a href={localizeHref("/faq.html", copy.locale)}>{desktopPrimaryMenuCopy[copy.locale].faq}</a>
             <a href={localizeHref("/contact.html", copy.locale)}>{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
           </nav>
-          <div className="footer-links">
-            <h5>{details.contact}</h5>
+          {!isContact ? <div className="footer-links footer-contact-links" aria-label={details.contact}>
             <a className="contact-channel-link" href="mailto:contact@estiginto.com"><ContactIcon type="email" /><span>contact@estiginto.com</span></a>
             <a className="contact-channel-link" href="tel:+886224315362"><ContactIcon type="phone" /><span>+886 2 2431 5362</span></a>
             <a className="contact-channel-link" href="tel:+886972118427"><ContactIcon type="mobile" /><span>+886 972 118 427</span></a>
             <a className="contact-channel-link" href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer"><ContactIcon type="line" /><span>{footer.line}</span></a>
-          </div>
+          </div> : null}
         </div>
         <div className="footer-bottom">
           <span>© 2011 – 2026 ESTIGINTO Co., Ltd.</span>
@@ -2722,13 +2723,9 @@ export default function App() {
               </>
             ) : null}
             {initialSection === "consulting" ? <ConsultingServices copy={copy} /> : null}
-            {consultingServiceIds.includes(initialSection) ? <ConsultingServicePage copy={copy} id={initialSection}>
-              {initialSection === "systems-consulting" ? <ServicePracticeDetails locale={locale} kind="systems" /> : null}
-              {initialSection === "international-finance" ? <ServicePracticeDetails locale={locale} kind="finance" /> : null}
-            </ConsultingServicePage> : null}
+            {consultingServiceIds.includes(initialSection) ? <ConsultingServicePage copy={copy} id={initialSection} /> : null}
             {isFAQPage ? <><ServiceFaqDirectory locale={locale} /><FAQ copy={copy} /></> : null}
             {initialSection === "contact" ? <ContactOptions locale={locale} /> : null}
-            <SiteNextSteps page={initialSection} locale={locale} />
           </>
         ) : (
           <>
@@ -2739,7 +2736,7 @@ export default function App() {
           </>
         )}
         </main>
-        <Footer copy={copy} />
+        <Footer copy={copy} isContact={initialSection === "contact"} />
         <GoToTop locale={locale} />
       </div>
       <div className={`language-transition language-transition-${languageTransitionPhase}`} aria-hidden="true" data-target-locale={languageTransitionTarget}>
