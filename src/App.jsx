@@ -2715,7 +2715,7 @@ export default function App() {
         <main className="page-main" id="mainpage">
         {isStandalonePage ? (
           <>
-            <PageTitle page={pageTitle} compact={initialSection === "consulting" || Boolean(service)} />
+            {initialSection !== "contact" ? <PageTitle page={pageTitle} compact={initialSection === "consulting" || Boolean(service)} /> : null}
             {initialSection === "about" ? <TeamSection copy={copy} /> : null}
             {initialSection === "case" ? (
               <>
@@ -2725,7 +2725,7 @@ export default function App() {
             {initialSection === "consulting" ? <ConsultingServices copy={copy} /> : null}
             {consultingServiceIds.includes(initialSection) ? <ConsultingServicePage copy={copy} id={initialSection} /> : null}
             {isFAQPage ? <><ServiceFaqDirectory locale={locale} /><FAQ copy={copy} /></> : null}
-            {initialSection === "contact" ? <ContactOptions locale={locale} /> : null}
+            {initialSection === "contact" ? <ContactOptions locale={locale} page={pageTitle}><HeroSoulRibbon /></ContactOptions> : null}
           </>
         ) : (
           <>
