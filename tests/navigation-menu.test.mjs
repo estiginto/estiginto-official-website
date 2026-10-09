@@ -5,20 +5,17 @@ import { getServiceMenuGroups } from "../src/navigationMenu.js";
 
 const destinations = [
   "/about.html",
-  "/case.html",
-  "/faq.html",
   "/contact.html",
   "/systems-consulting.html",
   "/visual-design.html",
   "/international-marketing.html",
   "/international-finance.html",
-  "/digital-integration.html",
 ];
 
 const expectedLabels = {
-  zh: ["關於我們", "精選實績", "合作說明", "聯絡我們", "資訊系統", "視覺設計", "國際行銷", "國際金融", "數位整合"],
-  en: ["About", "Selected Work", "Working with us", "Contact", "Information Systems", "Visual Design", "International Marketing", "International Finance", "Digital Integration"],
-  ja: ["私たちについて", "実績紹介", "ご依頼について", "お問い合わせ", "情報システム", "ビジュアルデザイン", "国際マーケティング", "国際金融", "デジタル統合"],
+  zh: ["關於我們", "聯絡我們", "資訊系統", "視覺設計", "國際行銷", "國際金融"],
+  en: ["About", "Contact", "Information Systems", "Visual Design", "International Marketing", "International Finance"],
+  ja: ["私たちについて", "お問い合わせ", "情報システム", "ビジュアルデザイン", "国際マーケティング", "国際金融"],
 };
 
 for (const locale of ["zh", "en", "ja"]) {

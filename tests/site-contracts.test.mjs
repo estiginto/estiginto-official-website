@@ -46,7 +46,7 @@ test("every public page declares the existing brand favicon", () => {
 
 test("primary navigation provides site pages without the hidden solutions area", () => {
   const items = getServiceMenuGroups("zh").digital.items;
-  assert.deepEqual(items.map((item) => item.href), ["/about.html", "/case.html", "/faq.html", "/contact.html"]);
+  assert.deepEqual(items.map((item) => item.href), ["/about.html", "/contact.html"]);
 });
 
 test("footer navigation exposes services, selected work and collaboration guidance in each locale", () => {

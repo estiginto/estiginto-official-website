@@ -15,9 +15,11 @@ for (const locale of ["zh", "en", "ja"]) {
       const href = localizeHref(getConsultingHref(id), locale);
       assert.equal(getPageFromPath(href)?.key, id);
       assert.equal(getPageTransitionVariant(href), "matrix");
-      assert.equal(getServiceMenuGroups(locale).growth.items.find((item) => item.key === id).href, getConsultingHref(id));
       const service = consultingServicesByLocale[locale].services.find((item) => item.id === id);
-      const menuName = getServiceMenuGroups(locale).growth.items.find((item) => item.key === id).label;
+      const menuItem = getServiceMenuGroups(locale).growth.items.find((item) => item.key === id);
+      if (id === "digital-integration") assert.equal(menuItem, undefined);
+      else assert.equal(menuItem.href, getConsultingHref(id));
+      const menuName = menuItem?.label || service.title;
       assert.equal(service.title, menuName, "page and menu must name the same service");
       const metadata = getPageMetadata(id, locale);
       assert.ok(metadata.title.includes(menuName));

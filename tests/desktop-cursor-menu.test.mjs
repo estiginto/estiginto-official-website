@@ -198,8 +198,8 @@ test("desktop menu closes from its center core toward the latest pointer positio
 test("desktop navigation restores site destinations and keeps consulting services", () => {
   assert.match(desktopMenuSource, /const primaryMenuItems = \[/);
   assert.match(desktopMenuSource, /key: "home", label: localizedMenuLabels\.home, href: "\/"/);
-  assert.match(desktopMenuSource, /href: "\/faq\.html"/);
-  assert.match(desktopMenuSource, /href: "\/case\.html"/);
+  assert.doesNotMatch(desktopMenuSource, /href: "\/faq\.html"/);
+  assert.doesNotMatch(desktopMenuSource, /href: "\/case\.html"/);
   assert.doesNotMatch(desktopMenuSource, /href: "\/\#insights"/);
   assert.match(desktopMenuSource, /href: "\/contact\.html"/);
   assert.match(desktopMenuSource, /growth: getServiceMenuGroups\(locale\)\.growth/);

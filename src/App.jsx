@@ -1915,8 +1915,6 @@ function MobileNav({ locale, fontControls }) {
   const primaryMenuItems = [
     homeItem,
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
-    { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
-    { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
   const mobileMenuGroups = {
@@ -2112,8 +2110,6 @@ function DesktopCursorMenu({ locale, fontControls }) {
   const primaryMenuItems = [
     { key: "home", label: localizedMenuLabels.home, href: "/" },
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
-    { key: "case", label: localizedMenuLabels.case, href: "/case.html" },
-    { key: "faq", label: primaryLabels.faq, href: "/faq.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
   const desktopMenuGroups = {
