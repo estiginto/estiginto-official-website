@@ -1,3 +1,4 @@
+import BusinessJourney from "./BusinessJourney.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { faqContentByLocale } from "./faqContent.js";
 import "./pageCompletion.css";
@@ -2723,6 +2724,7 @@ export default function App() {
           <>
             <Hero copy={copy} />
             <HomeDirectory copy={copy} />
+            <BusinessJourney locale={locale} />
             <Marquee copy={copy} />
             <ClientLogoMarquee copy={copy} />
           </>

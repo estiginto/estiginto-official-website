@@ -193,7 +193,7 @@ test("homepage places its product marquee above the four-lane service experience
   const app = read("src/App.jsx");
   const css = read("src/App.css");
 
-  assert.match(app, /<Hero copy=\{copy\} \/>\s*<HomeDirectory copy=\{copy\} \/>\s*<Marquee copy=\{copy\} \/>\s*<ClientLogoMarquee copy=\{copy\} \/>/);
+  assert.match(app, /<Hero copy=\{copy\} \/>\s*<HomeDirectory copy=\{copy\} \/>\s*<BusinessJourney locale=\{locale\} \/>\s*<Marquee copy=\{copy\} \/>\s*<ClientLogoMarquee copy=\{copy\} \/>/);
   assert.match(app, /function ClientLogoMarquee\(\{ copy \}\)/);
   assert.match(app, /buildClientLogoLanes/);
   assert.match(css, /\.client-logo-marquee-lane:nth-child\(2\)[\s\S]*?animation-direction:\s*reverse/);
