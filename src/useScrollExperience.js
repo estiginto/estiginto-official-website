@@ -12,7 +12,7 @@ export function useScrollExperience() {
     for (const group of groups) {
       group.classList.add("is-visible");
       const nested = group.querySelectorAll(
-        ".journey-heading, .growth-experience, .growth-renewal, .section-eyebrow, .section-head, .service-overview-card, .team-card, .client-logo-marquee-header, .client-logo-marquee-field"
+        ".journey-heading, .growth-experience, .growth-renewal, .section-eyebrow, .section-head, .service-overview-card, .team-card, .client-logo-marquee-header"
       );
       const items = nested.length ? [...nested] : [...group.children];
       items.forEach((item, index) => {

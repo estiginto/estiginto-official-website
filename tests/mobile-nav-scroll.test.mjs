@@ -59,11 +59,9 @@ test("mobile navigation connects scroll state without shrinking its touch target
   assert.match(mobileNavSource, /advanceMobileNavScrollState\(/);
   assert.match(mobileNavSource, /compact \? "compact" : ""/);
   assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?width:\s*var\(--mobile-trigger-width\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
-  assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-shape\s*\{[\s\S]*?scale\(0\.5\)/);
-  assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-icon\s*\{[\s\S]*?scale\(0\.5\)/);
-  assert.match(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger-icon\s*\{[\s\S]*?bottom:\s*11px;/);
-  assert.match(cssSource, /\.mobile-nav-trigger-icon\s*\{[\s\S]*?transition:\s*transform 320ms var\(--ease-soft\), bottom 320ms var\(--ease-soft\)/);
-  assert.match(cssSource, /transition:\s*transform 320ms var\(--ease-soft\)/);
+  assert.doesNotMatch(cssSource, /\.mobile-nav\.compact:not\(\.open\) \.mobile-nav-trigger/);
+  assert.match(cssSource, /\.mobile-nav-trigger-shape\s*\{[^}]*width:\s*52px;[^}]*height:\s*52px;/);
+  assert.match(cssSource, /\.mobile-nav-trigger-icon span\s*\{[^}]*width:\s*20px;/);
 });
 
 test("mobile menu uses a lightweight time scan instead of blur and full-screen clipping", () => {
@@ -163,7 +161,7 @@ test("business consulting menu links to the four visible consulting sections in 
 });
 
 test("mobile category controls extend from both viewport edges", () => {
-  assert.match(cssSource, /\.mobile-nav\s*\{[\s\S]*?--mobile-trigger-bottom:\s*max\(18px, env\(safe-area-inset-bottom, 0px\)\);[\s\S]*?--mobile-trigger-height:\s*92px;[\s\S]*?--mobile-trigger-width:\s*120px;[\s\S]*?--mobile-trigger-seam:\s*1px;/);
+  assert.match(cssSource, /\.mobile-nav\s*\{[\s\S]*?--mobile-trigger-bottom:\s*max\(18px, env\(safe-area-inset-bottom, 0px\)\);[\s\S]*?--mobile-trigger-height:\s*52px;[\s\S]*?--mobile-trigger-width:\s*52px;[\s\S]*?--mobile-trigger-seam:\s*1px;/);
   assert.match(cssSource, /\.mobile-nav-trigger\s*\{[\s\S]*?bottom:\s*var\(--mobile-trigger-bottom\);[\s\S]*?width:\s*var\(--mobile-trigger-width\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
   assert.match(cssSource, /\.mobile-nav-category-switch\s*\{[\s\S]*?left:\s*0;[\s\S]*?right:\s*0;[\s\S]*?bottom:\s*var\(--mobile-trigger-bottom\);[\s\S]*?height:\s*var\(--mobile-trigger-height\);/);
   assert.match(cssSource, /\.mobile-nav-category-button\.digital\s*\{[\s\S]*?left:\s*0;[\s\S]*?width:\s*calc\(50% \+ var\(--mobile-trigger-seam\)\);[\s\S]*?clip-path:\s*polygon\(0 0, 100% 0, calc\(100% - 60px\) 100%, 0 100%\)/);
