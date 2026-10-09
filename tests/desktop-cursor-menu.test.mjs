@@ -245,7 +245,7 @@ test("desktop menu places a continuous spatial light field behind the panel", ()
   assert.match(cssSource, /\.desktop-service-menu::after[\s\S]*?radial-gradient/);
   assert.match(
     cssSource,
-    /\.desktop-cursor-menu\.open:not\(\.stream-closing\) \.desktop-service-menu::before[\s\S]*?desktop-grid-breathe 8s/,
+    /\.desktop-cursor-menu\.open:not\(\.stream-closing\) \.desktop-service-menu::before[\s\S]*?desktop-grid-breathe 5s/,
   );
   assert.match(
     cssSource,

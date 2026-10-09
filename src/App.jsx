@@ -952,8 +952,6 @@ function HomeDirectory({ copy }) {
   const items = [
     { key: "about", label: labels.about, href: "/about.html" },
     ...getServiceMenuGroups(copy.locale).growth.items,
-    { key: "case", label: labels.case, href: "/case.html" },
-    { key: "faq", label: desktopPrimaryMenuCopy[copy.locale].faq, href: "/faq.html" },
   ];
   const icons = {
     about: <><circle cx="16" cy="10" r="4" /><path d="M8 27v-4a8 8 0 0 1 16 0v4M6 8a3 3 0 0 0 0 6m20-6a3 3 0 0 1 0 6M3 25v-4a5 5 0 0 1 3-4m23 8v-4a5 5 0 0 0-3-4" /></>,
@@ -968,7 +966,7 @@ function HomeDirectory({ copy }) {
 
   return (
     <section className="home-directory" id="home-directory">
-      <p className="home-service-summary wrap">{{ zh: "資訊系統、視覺設計、國際行銷、國際金融與數位整合，提供需求規劃、建置及專業協作。", en: "Information systems, visual design, international marketing, international finance, and digital integration: planning, implementation, and professional coordination.", ja: "情報システム、ビジュアルデザイン、国際マーケティング、国際金融、デジタル統合の計画、構築、専門家連携を支援します。" }[copy.locale]}</p>
+      <p className="home-service-summary wrap">{{ zh: "資訊系統、視覺設計、國際行銷與國際金融，提供需求規劃、建置及專業協作。", en: "Information systems, visual design, international marketing, and international finance: planning, implementation, and professional coordination.", ja: "情報システム、ビジュアルデザイン、国際マーケティング、国際金融の計画、構築、専門家連携を支援します。" }[copy.locale]}</p>
       <nav className="home-directory-scroll" aria-label={labels.servicesMenu}>
         <ul className="home-directory-row">
           {items.map((item) => (
@@ -1832,8 +1830,6 @@ function Footer({ copy, isContact = false }) {
             <h5>{details.explore}</h5>
             <a href={localizeHref("/about.html", copy.locale)}>{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
             <a href={localizeHref("/consulting.html", copy.locale)}>{getServiceMenuGroups(copy.locale).growth.label}</a>
-            <a href={localizeHref("/case.html", copy.locale)}>{menuLabels[copy.locale]?.case || menuLabels.zh.case}</a>
-            <a href={localizeHref("/faq.html", copy.locale)}>{desktopPrimaryMenuCopy[copy.locale].faq}</a>
             <a href={localizeHref("/contact.html", copy.locale)}>{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
           </nav>
           {!isContact ? <div className="footer-links footer-contact-links" aria-label={details.contact}>

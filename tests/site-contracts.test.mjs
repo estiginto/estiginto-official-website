@@ -49,10 +49,12 @@ test("primary navigation provides site pages without the hidden solutions area",
   assert.deepEqual(items.map((item) => item.href), ["/about.html", "/contact.html"]);
 });
 
-test("footer navigation exposes services, selected work and collaboration guidance in each locale", () => {
+test("footer navigation keeps visible pages and omits hidden entries", () => {
   const app = read("src/App.jsx");
 
-  for (const path of ["consulting", "case", "faq"]) assert.ok(app.includes(`localizeHref("/${path}.html", copy.locale)`));
+  const footer = app.match(/function Footer[\s\S]*?function ConstructionScreen/)[0];
+  for (const path of ["about", "consulting", "contact"]) assert.ok(footer.includes(`localizeHref("/${path}.html", copy.locale)`));
+  for (const path of ["case", "faq", "solutions", "digital-integration"]) assert.ok(!footer.includes(`localizeHref("/${path}.html", copy.locale)`));
 });
 
 test("solutions page has a distinct localized page heading", () => {

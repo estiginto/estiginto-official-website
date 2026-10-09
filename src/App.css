@@ -1381,7 +1381,7 @@ ul, ol  { margin: 0; }
     repeating-linear-gradient(90deg, transparent 0 79px, rgba(126, 179, 234, 0.2) 79px 80px),
     repeating-linear-gradient(0deg, transparent 0 63px, rgba(126, 179, 234, 0.16) 63px 64px);
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.06), #000 36%, rgba(0, 0, 0, 0.7) 76%, transparent);
-  animation: desktop-spatial-drift 13s ease-in-out infinite alternate;
+  animation: desktop-spatial-drift 7s ease-in-out infinite alternate;
   will-change: transform, opacity;
 }
 
@@ -1405,7 +1405,7 @@ ul, ol  { margin: 0; }
   opacity: 0.72;
   background-size: 124px 100%, 100% 88px;
   transform: rotateX(var(--spatial-plane-tilt)) translate3d(0, 4%, var(--spatial-plane-z)) scale(var(--spatial-plane-scale));
-  animation-duration: 17s;
+  animation-duration: 9s;
   animation-delay: -7s;
 }
 
@@ -1423,7 +1423,7 @@ ul, ol  { margin: 0; }
     inset 0 0 50px rgba(117, 182, 244, 0.12);
   opacity: 0.74;
   transform: translate(-50%, -50%) rotate(-7deg);
-  animation: desktop-spatial-orbit 20s ease-in-out infinite alternate;
+  animation: desktop-spatial-orbit 11s ease-in-out infinite alternate;
 }
 
 .desktop-spatial-orbit::before,
@@ -1449,7 +1449,7 @@ ul, ol  { margin: 0; }
 }
 
 .desktop-ambient-layer.cool {
-  --ambient-duration: 18s;
+  --ambient-duration: 10s;
   --ambient-from-x: -7%;
   --ambient-from-y: -4%;
   --ambient-to-x: 9%;
@@ -1458,7 +1458,7 @@ ul, ol  { margin: 0; }
 }
 
 .desktop-ambient-layer.warm {
-  --ambient-duration: 23s;
+  --ambient-duration: 12s;
   --ambient-delay: -8s;
   --ambient-from-x: 8%;
   --ambient-from-y: 5%;
@@ -1468,7 +1468,7 @@ ul, ol  { margin: 0; }
 }
 
 .desktop-ambient-layer.depth {
-  --ambient-duration: 27s;
+  --ambient-duration: 14s;
   --ambient-delay: -14s;
   --ambient-from-x: 2%;
   --ambient-from-y: -7%;
@@ -1537,7 +1537,7 @@ ul, ol  { margin: 0; }
 }
 
 .desktop-cursor-menu.open:not(.stream-closing) .desktop-service-menu::before {
-  animation: desktop-grid-breathe 8s ease-in-out infinite;
+  animation: desktop-grid-breathe 5s ease-in-out infinite;
 }
 
 .desktop-cursor-menu.open:not(.stream-closing) .desktop-service-menu::after {
