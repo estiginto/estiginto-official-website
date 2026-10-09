@@ -1,3 +1,4 @@
+import { useScrollExperience } from "./useScrollExperience.js";
 import BusinessJourney from "./BusinessJourney.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { faqContentByLocale } from "./faqContent.js";
@@ -967,7 +968,6 @@ function HomeDirectory({ copy }) {
 
   return (
     <section className="home-directory" id="home-directory">
-      <p className="home-service-summary wrap">{{ zh: "資訊系統、視覺設計、國際行銷與國際金融，提供需求規劃、建置及專業協作。", en: "Information systems, visual design, international marketing, and international finance: planning, implementation, and professional coordination.", ja: "情報システム、ビジュアルデザイン、国際マーケティング、国際金融の計画、構築、専門家連携を支援します。" }[copy.locale]}</p>
       <nav className="home-directory-scroll" aria-label={labels.servicesMenu}>
         <ul className="home-directory-row">
           {items.map((item) => (
@@ -2653,38 +2653,7 @@ export default function App() {
     };
   }, [initialSection, isStandalonePage]);
 
-  useEffect(() => {
-    const sections = document.querySelectorAll(".reveal");
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReducedMotion) {
-      sections.forEach((section) => section.classList.add("is-visible"));
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
-    );
-
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      if (rect.top < window.innerHeight && rect.bottom > 0) {
-        section.classList.add("is-visible");
-      } else {
-        observer.observe(section);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  useScrollExperience();
 
   return (
     <>

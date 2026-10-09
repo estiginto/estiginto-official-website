@@ -30,7 +30,6 @@
   .service-practice-grid article { padding: 20px; }
   .solution-delivery { margin-top: 32px; }
 }
-.home-service-summary { max-width: 820px; margin: 0 auto 28px; color: var(--ink-soft); font-size: var(--fs-base); line-height: 1.8; text-align: center; }
 .page-title-heading { min-width: 0; }
 html[lang="ja"] .page-title h1 { max-width: 100%; overflow-wrap: anywhere; font-size: clamp(2.4rem, 6vw, 5.5rem); line-height: 1.12; letter-spacing: -0.02em; }
 .service-related-links { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 20px; margin-block: 20px; }
