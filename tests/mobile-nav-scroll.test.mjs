@@ -104,41 +104,21 @@ test("mobile temporal channel presents safe-area navigation rows instead of a cr
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-channel-panel/);
 });
 
-test("mobile navigation keeps routes level and places category controls after the route list", () => {
+test("mobile navigation presents all routes above font controls without category switches", () => {
   const routesIndex = mobileNavSource.indexOf('className="mobile-nav-diamond-core mobile-channel-routes"');
-  const categoryIndex = mobileNavSource.indexOf('className="mobile-nav-category-switch"');
-
-  assert.ok(routesIndex >= 0);
-  assert.ok(categoryIndex > routesIndex);
-  assert.match(
-    cssSource,
-    /\.mobile-nav\.open \.mobile-channel-routes\s*\{[^}]*animation:\s*mobile-channel-routes-in[^}]*transform:\s*none/,
-  );
-});
-
-test("mobile menu switches between two localized service link groups", () => {
-  const expectedGroupLabels = {
-    zh: ["網站導覽", "顧問服務"],
-    en: ["Site navigation", "Consulting"],
-    ja: ["サイト案内", "コンサルティング"],
-  };
-
+  const footerIndex = mobileNavSource.indexOf('className="mobile-channel-footer"');
+  assert.ok(routesIndex >= 0 && footerIndex > routesIndex);
+  assert.doesNotMatch(mobileNavSource, /mobile-nav-category-switch|activeGroup|setActiveGroup/);
+  assert.match(mobileNavSource, /serviceMenuGroups\.growth\.items/);
   for (const locale of ["zh", "en", "ja"]) {
-    assert.deepEqual(Object.values(getServiceMenuGroups(locale)).map((group) => group.label), expectedGroupLabels[locale]);
+    const paths = getServiceMenuGroups(locale).growth.items.map((item) => item.href);
+    assert.equal(new Set(["/", "/about.html", ...paths, "/contact.html"]).size, 7);
   }
-
-  assert.match(mobileNavSource, /getServiceMenuGroups\(locale\)/);
-  assert.match(mobileNavSource, /useState\("digital"\)/);
-  assert.match(mobileNavSource, /className="mobile-nav-category-switch"/);
-  assert.match(mobileNavSource, /aria-pressed=\{activeGroup === groupKey\}/);
-  assert.match(mobileNavSource, /setActiveGroup\(groupKey\)/);
-  assert.match(mobileNavSource, /\.\.\.activeGroupCopy\.items/);
-  assert.match(mobileNavSource, /items\.map/);
 });
 
 test("closed mobile navigation removes hidden controls from pointer and keyboard navigation", () => {
   assert.match(mobileNavSource, /className="mobile-nav-scrim"[\s\S]*?tabIndex=\{-1\}/);
-  assert.equal((mobileNavSource.match(/tabIndex=\{interactive \? 0 : -1\}/g) || []).length, 3);
+  assert.equal((mobileNavSource.match(/tabIndex=\{interactive \? 0 : -1\}/g) || []).length, 2);
   assert.match(cssSource, /\.mobile-nav-category-button\s*\{[\s\S]*?pointer-events:\s*none;/);
   assert.match(cssSource, /\.mobile-nav\.open \.mobile-nav-category-button\s*\{[\s\S]*?pointer-events:\s*auto;/);
 });
@@ -214,7 +194,7 @@ test("mobile category labels adapt safely across supported locales", () => {
 
 test("short mobile viewports separate the diamond, font controls, categories, and trigger", () => {
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)\s*\{[\s\S]*?\.mobile-nav-diamond\s*\{[\s\S]*?top:\s*43%;/);
-  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?grid-template-rows:\s*auto minmax\(0, 1fr\) 50px auto;/);
+  assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?grid-template-rows:\s*auto minmax\(0, 1fr\) auto;/);
   assert.match(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav \.menu-font-controls\s*\{[\s\S]*?top:\s*calc\(43% \+ min\(44vw, 178px\)\);/);
   assert.doesNotMatch(cssSource, /@media \(max-width:\s*760px\) and \(max-height:\s*720px\)[\s\S]*?\.mobile-nav-category-switch\s*\{[\s\S]*?height:\s*52px;/);
 });

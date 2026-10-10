@@ -1906,7 +1906,6 @@ function FontSizeControls({ onIncrease, onDecrease, onReset, canIncrease, canDec
 function MobileNav({ locale, fontControls }) {
   const actions = actionCopyByLocale[locale] || actionCopyByLocale.zh;
   const localizedMenuLabels = menuLabels[locale] || menuLabels.zh;
-  const primaryLabels = desktopPrimaryMenuCopy[locale] || desktopPrimaryMenuCopy.zh;
   const serviceMenuGroups = getServiceMenuGroups(locale);
   const homeItem = { key: "home", label: localizedMenuLabels.home, href: "/", position: "center" };
   const primaryMenuItems = [
@@ -1914,22 +1913,16 @@ function MobileNav({ locale, fontControls }) {
     { key: "about", label: localizedMenuLabels.about, href: "/about.html" },
     { key: "contact", label: localizedMenuLabels.contact, href: "/contact.html" },
   ];
-  const mobileMenuGroups = {
-    digital: { label: primaryLabels.siteMenu, items: primaryMenuItems },
-    growth: serviceMenuGroups.growth,
-  };
   const [open, setOpen] = useState(false);
   const [opening, setOpening] = useState(false);
   const [closing, setClosing] = useState(false);
   const [compact, setCompact] = useState(false);
   const [selectingKey, setSelectingKey] = useState(null);
-  const [activeGroup, setActiveGroup] = useState("digital");
   const previousScrollYRef = useRef(0);
   const directionTravelRef = useRef(0);
   const motionTimerRef = useRef(null);
   const triggerRef = useRef(null);
-  const activeGroupCopy = mobileMenuGroups[activeGroup];
-  const items = activeGroup === "digital" ? primaryMenuItems : [homeItem, ...activeGroupCopy.items];
+  const items = [...primaryMenuItems.slice(0, 2), ...serviceMenuGroups.growth.items, primaryMenuItems[2]];
   const interactive = open && !opening && !closing;
 
   useEffect(() => () => window.clearTimeout(motionTimerRef.current), []);
@@ -2009,7 +2002,6 @@ function MobileNav({ locale, fontControls }) {
     window.clearTimeout(motionTimerRef.current);
     setCompact(false);
     setSelectingKey(null);
-    setActiveGroup("digital");
     directionTravelRef.current = 0;
     setClosing(false);
 
@@ -2051,7 +2043,7 @@ function MobileNav({ locale, fontControls }) {
 
           </header>
 
-          <div className="mobile-nav-diamond-core mobile-channel-routes" key={activeGroup}>
+          <div className="mobile-nav-diamond-core mobile-channel-routes">
             {items.map((item, index) => (
               <a
                 key={item.key}
@@ -2077,23 +2069,7 @@ function MobileNav({ locale, fontControls }) {
             <span>EST / 2026</span>
           </footer>
 
-          <div className="mobile-nav-category-switch" role="group" aria-label={actions.category}>
-            {Object.entries(mobileMenuGroups).map(([groupKey, group]) => (
-              <button
-                key={groupKey}
-                className={`mobile-nav-category-button ${groupKey}`}
-                type="button"
-                aria-pressed={activeGroup === groupKey}
-                tabIndex={interactive ? 0 : -1}
-                onClick={() => {
-                  setActiveGroup(groupKey);
-                  setSelectingKey(null);
-                }}
-              >
-                <span>{group.label}</span>
-              </button>
-            ))}
-          </div>
+
         </nav>
       </div>
     </div>
