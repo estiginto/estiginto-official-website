@@ -2071,6 +2071,12 @@ function MobileNav({ locale, fontControls }) {
             ))}
           </div>
 
+          <footer className="mobile-channel-footer">
+            <span>{fontControls.labels.label}</span>
+            <FontSizeControls {...fontControls} tabIndex={interactive ? 0 : -1} />
+            <span>EST / 2026</span>
+          </footer>
+
           <div className="mobile-nav-category-switch" role="group" aria-label={actions.category}>
             {Object.entries(mobileMenuGroups).map(([groupKey, group]) => (
               <button
@@ -2088,12 +2094,6 @@ function MobileNav({ locale, fontControls }) {
               </button>
             ))}
           </div>
-
-          <footer className="mobile-channel-footer">
-            <span>{fontControls.labels.label}</span>
-            <FontSizeControls {...fontControls} tabIndex={interactive ? 0 : -1} />
-            <span>EST / 2026</span>
-          </footer>
         </nav>
       </div>
     </div>
