@@ -4870,6 +4870,8 @@ ul, ol  { margin: 0; }
     background: #ffffff;
     transition: transform 220ms ease, opacity 220ms ease;
   }
+  .mobile-nav.open .mobile-nav-trigger-shape { background: #fff; }
+  .mobile-nav.open .mobile-nav-trigger-icon span { background: #202832; }
   .mobile-nav.open .mobile-nav-trigger-icon span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
