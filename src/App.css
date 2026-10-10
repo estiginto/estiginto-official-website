@@ -717,7 +717,7 @@ ul, ol  { margin: 0; }
 .brand-mark {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   letter-spacing: 0.02em;
 }
 .brand-mark .logo img {
