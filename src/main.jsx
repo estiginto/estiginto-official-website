@@ -4,6 +4,7 @@ import { getLegacyConsultingDestination } from "./consultingPages.js";
 import { getHiddenSolutionsDestination } from "./serviceImplementation.js";
 import App from "./App.jsx";
 import "./App.css";
+import "./interiorRefinements.css";
 
 const legacyDestination = getLegacyConsultingDestination(window.location.pathname, window.location.hash, window.location.search)
   || getHiddenSolutionsDestination(window.location.pathname, window.location.hash, window.location.search);

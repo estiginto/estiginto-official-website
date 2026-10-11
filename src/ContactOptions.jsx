@@ -20,6 +20,11 @@ export default function ContactOptions({ locale, page, children }) {
   const id = new URLSearchParams(window.location.search).get("service");
   const service = getServiceLabel(id, locale);
   const subject = service ? `${copy.subject}：${service}` : copy.subject;
+  const preparation = ({
+    zh: { title: "洽詢時，可以告訴我們", items: ["目前的業務與希望改善的問題", "既有網站、系統或參考資料", "預計時程與可投入的預算範圍"], faq: "了解合作方式" },
+    en: { title: "Helpful details for your inquiry", items: ["Your business and the problem you want to solve", "Existing websites, systems, or reference materials", "Your timing and available budget range"], faq: "Working with us" },
+    ja: { title: "ご相談時にお聞かせください", items: ["事業の概要と改善したい課題", "既存のWebサイト・システム・参考資料", "ご希望の日程と予算の目安"], faq: "ご依頼について" },
+  })[locale];
   const phones = [
     { type: "phone", title: copy.phone, value: "+886 2 2431 5362", href: "tel:+886224315362" },
     { type: "phone", title: copy.mobile, value: "+886 972 118 427", href: "tel:+886972118427" },
@@ -46,6 +51,7 @@ export default function ContactOptions({ locale, page, children }) {
           <div className="contact-phones">
             {phones.map((channel) => <a className="contact-option contact-phone" key={channel.title} href={channel.href}><span className="contact-channel-label"><ChannelIcon type={channel.type} />{channel.title}</span><span className="contact-phone-number">{channel.value}</span></a>)}
           </div>
+          <div className="contact-preparation"><h2>{preparation.title}</h2><ul>{preparation.items.map(item => <li key={item}>{item}</li>)}</ul><a className="service-inline-link" href={localizeHref("/faq.html", locale)}>{preparation.faq}</a></div>
         </div>
       </div>
     </section>

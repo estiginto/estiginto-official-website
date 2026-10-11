@@ -53,8 +53,8 @@ test("footer navigation keeps visible pages and omits hidden entries", () => {
   const app = read("src/App.jsx");
 
   const footer = app.match(/function Footer[\s\S]*?function ConstructionScreen/)[0];
-  for (const path of ["about", "consulting", "contact"]) assert.ok(footer.includes(`localizeHref("/${path}.html", copy.locale)`));
-  for (const path of ["case", "faq", "solutions", "digital-integration"]) assert.ok(!footer.includes(`localizeHref("/${path}.html", copy.locale)`));
+  for (const path of ["about", "consulting", "case", "faq", "contact"]) assert.ok(footer.includes(`localizeHref("/${path}.html", copy.locale)`));
+  for (const path of ["solutions", "digital-integration"]) assert.ok(!footer.includes(`localizeHref("/${path}.html", copy.locale)`));
 });
 
 test("solutions page has a distinct localized page heading", () => {

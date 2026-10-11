@@ -7,6 +7,8 @@ import { faqContentByLocale } from "./faqContent.js";
 import { serviceDetailsByLocale } from "./serviceDetails.js";
 import { getContactHref, getServiceLabel } from "./serviceConnections.js";
 import { localizeHref } from "./siteRoutes.js";
+import { BrandApplication, ServicePlanning, ServiceWorkingMethod } from "./ServicePresentation.jsx";
+import { servicePlanningByLocale, planningLabelsByLocale } from "./servicePlanning.js";
 
 const Arrow = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>;
 
@@ -88,6 +90,9 @@ export function ConsultingServicePage({ copy, id }) {
   const labels = consultingPageCopy[locale];
   const details = serviceDetailsByLocale[locale];
   const cases = consultingCaseIds[id].map((caseId) => caseStudiesByLocale[locale].find((item) => item.id === caseId));
+  const planning = servicePlanningByLocale[locale][id];
+  const planningLabels = planningLabelsByLocale[locale];
+  const scopeList = (items) => <ul className="advisory-scope-list">{items.map((item) => <li key={item.title}><h3>{item.title}</h3><p>{item.description}</p></li>)}</ul>;
   return <article className="section consulting-services advisory-page" data-service={id}>
     <div className="wrap">
       <div className="advisory-page-tools">
@@ -95,21 +100,26 @@ export function ConsultingServicePage({ copy, id }) {
       </div>
       <nav className="advisory-section-nav" aria-label={labels.contents}>
         <a href="#service-content">{labels.content}</a>
+        <a href="#service-working-method">{planningLabels.process}</a>
         {cases.length ? <a href="#reference-cases">{labels.cases}</a> : null}
         <a href="#service-faq">{labels.faq}</a>
       </nav>
+      <ServicePlanning locale={locale} id={id} />
+      {id === "visual-design" ? <BrandApplication locale={locale} /> : null}
       <section className="advisory-block" id="service-content" aria-labelledby="service-content-title">
         <h2 id="service-content-title">{labels.content}</h2>
-        <ul className="advisory-scope-list">{service.scope.map((item) => <li key={item.title}><h3>{item.title}</h3><p>{item.description}</p></li>)}</ul>
+        {planning.groups ? <div className="finance-scope-groups">{planning.groups.map((group, index) => <section key={group.title}><header><span className="editorial-number">0{index + 1}</span><h3>{group.title}</h3></header>{scopeList(group.indices.map(i => service.scope[i]))}</section>)}</div> : scopeList(service.scope)}
         <ServiceImplementation id={id} locale={locale} />
         {id === "international-finance" ? <div className="service-finance-note"><p>{labels.financeNote}</p><a className="service-inline-link" href={localizeHref(getImplementationHref("custom-systems"), locale)}>{details.labels.systemImplementation}<Arrow /></a></div> : null}
       </section>
+      <ServiceWorkingMethod locale={locale} id={id} />
       {cases.length ? <section className="advisory-block" id="reference-cases" aria-labelledby="reference-cases-title">
         <h2 id="reference-cases-title">{labels.cases}</h2>
         <p className="advisory-block-intro">{id === "international-marketing" ? labels.marketingCasesIntro : labels.casesIntro}</p>
-        <div className="advisory-case-grid">{cases.map((item) => <article className="advisory-case" key={item.id} data-case={item.id}>
+        <div className="advisory-case-grid">{cases.map((item) => <a className="advisory-case" href={localizeHref(`/case.html#${item.id}`, locale)} key={item.id} data-case={item.id}>
           <h3>{item.title}</h3><p>{item.summary}</p>
-        </article>)}</div>
+          <span className="advisory-card-action">{planningLabels.viewCase}<Arrow /></span>
+        </a>)}</div>
       </section> : null}
       <ServiceFAQ id={id} locale={locale} />
       <div className="advisory-inquiry" id="service-process"><a className="btn" href={getContactHref(id, locale)}><span>{labels.inquiry}</span><span className="arrow" aria-hidden="true" /></a></div>

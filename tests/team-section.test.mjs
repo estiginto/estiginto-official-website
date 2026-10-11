@@ -9,25 +9,25 @@ const root = resolve(import.meta.dirname, "..");
 
 test("about page publishes the approved four-part introduction in every locale", () => {
   assert.deepEqual(content2026.aboutIntroductionsByLocale, {
-    zh: [
-      "團隊早期由國家軟體競賽代表選手組成。",
-      "服務對象涵蓋政府單位、國際及涉外組織、金融投資機構、家族辦公室，以及有跨境營運需求的企業主。",
-      "服務範圍涵蓋企業資訊架構、營運系統、資料治理、資訊安全、AI 導入與風險治理，協助企業整合數位營運所需的系統與能力。",
-      "提升決策與執行效率，建立能支援長期成長與國際布局的數位能力。",
-    ],
-    en: [
-      "Our team was initially formed by national software competition representatives.",
-      "We serve government agencies, international and foreign-affairs organizations, financial investment institutions, family offices, and business owners with cross-border operating needs.",
-      "Our work spans enterprise information architecture, operational systems, data governance, information security, AI adoption, and risk governance, integrating the systems and capabilities companies need to operate digitally.",
-      "We improve decision-making and execution while building digital capabilities that support long-term growth and international expansion.",
-    ],
-    ja: [
-      "チームは、ソフトウェア全国大会の代表選手を中心に発足しました。",
-      "政府機関、国際・渉外組織、金融投資機関、ファミリーオフィス、そして国境を越えた事業運営を必要とする経営者を支援しています。",
-      "企業情報アーキテクチャ、業務システム、データガバナンス、情報セキュリティから、AI導入、リスクガバナンスまで、企業のデジタル運営に必要なシステムと能力を統合します。",
-      "意思決定と実行の効率を高め、長期的な成長と国際展開を支えるデジタル能力を構築します。",
-    ],
-  });
+  "zh": [
+    "團隊早期由國家軟體競賽代表選手組成。",
+    "服務對象涵蓋政府單位、國際及涉外組織、金融投資機構、家族辦公室，以及有跨境營運需求的企業主。",
+    "以資訊系統、視覺設計、國際行銷與國際金融協作為核心，連結品牌、數位營運與跨境發展。系統工作涵蓋資訊架構、資料治理、資訊安全及 AI 導入；法律、稅務及金融事項由受委任的專業人員處理。",
+    "提升決策與執行效率，建立能支援長期成長與國際布局的數位能力。"
+  ],
+  "en": [
+    "Our team was initially formed by national software competition representatives.",
+    "We serve government agencies, international and foreign-affairs organizations, financial investment institutions, family offices, and business owners with cross-border operating needs.",
+    "Our work connects information systems, visual design, international marketing, and international financial coordination. Systems work includes architecture, data governance, security, and AI adoption; appointed professionals handle legal, tax, and financial matters.",
+    "We improve decision-making and execution while building digital capabilities that support long-term growth and international expansion."
+  ],
+  "ja": [
+    "チームは、ソフトウェア全国大会の代表選手を中心に発足しました。",
+    "政府機関、国際・渉外組織、金融投資機関、ファミリーオフィス、そして国境を越えた事業運営を必要とする経営者を支援しています。",
+    "情報システム、ビジュアルデザイン、国際マーケティング、国際金融の専門家連携を通じて、ブランドとデジタル運営、海外展開を支援します。システムでは情報設計、データ管理、セキュリティ、AI導入を扱い、法務・税務・金融の事項は委任された専門家が担当します。",
+    "意思決定と実行の効率を高め、長期的な成長と国際展開を支えるデジタル能力を構築します。"
+  ]
+});
 
   const app = readFileSync(resolve(root, "src/App.jsx"), "utf8");
   assert.match(app, /Array\.isArray\(page\.lede\)/);

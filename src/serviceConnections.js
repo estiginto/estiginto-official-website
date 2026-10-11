@@ -1,11 +1,13 @@
 import { getServiceMenuGroups } from "./navigationMenu.js";
 import { serviceFamiliesByLocale } from "./content2026.js";
 import { localizeHref } from "./siteRoutes.js";
+import { consultingServicesByLocale } from "./consultingContent.js";
 
 export function getServiceLabel(id, locale = "zh") {
   const services = [...getServiceMenuGroups(locale).growth.items, ...(serviceFamiliesByLocale[locale] || serviceFamiliesByLocale.zh)];
   const service = services.find((item) => (item.key || item.id) === id);
-  return service?.label || service?.title || null;
+  const advisory = (consultingServicesByLocale[locale] || consultingServicesByLocale.zh).services.find((item) => item.id === id);
+  return service?.label || service?.title || advisory?.shortLabel || advisory?.title || null;
 }
 
 export function getContactHref(id, locale = "zh") {

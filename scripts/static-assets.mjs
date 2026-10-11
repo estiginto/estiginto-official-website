@@ -11,6 +11,7 @@ const clientLogoAssetPaths = [
 ].map((name) => `client-logos/${name}.webp`);
 
 export const marketingAssetPaths = [
+  "brand/estiginto-website.webp",
   "Logo_ESTIGINTO.svg",
   "logo_estiginto.png",
   "team/avatar_lanar.jpg",

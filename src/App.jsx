@@ -3,6 +3,7 @@ import BusinessJourney from "./BusinessJourney.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { faqContentByLocale } from "./faqContent.js";
 import "./pageCompletion.css";
+import PageContinuations from "./PageContinuations.jsx";
 import { ConsultingServices, ConsultingServicePage, ServiceFaqDirectory } from "./ConsultingPages.jsx";
 import { consultingServicesByLocale } from "./consultingContent.js";
 import { getImplementationHref } from "./serviceImplementation.js";
@@ -1128,8 +1129,10 @@ function TeamSection({ copy }) {
     <section className="section team-section reveal" id="team" aria-label={sectionCopy.eyebrow}>
       <div className="wrap">
         <SectionEyebrow index={`§ ${sectionCopy.eyebrow}`} meta={sectionCopy.meta} />
+        {Object.entries(sectionCopy.groupLabels).map(([group, label]) => <section className="team-group" key={group} aria-labelledby={`team-${group}`}>
+        <h2 id={`team-${group}`}>{label}</h2>
         <div className="team-grid">
-          {members.map((member) => (
+          {members.filter(member => member.group === group).map((member) => (
             <article className="team-member-card" data-group={member.group} key={member.id}>
               <div className={`team-member-identity${member.portrait ? " team-member-identity-portrait" : ""}`}>
                 {member.portrait ? (
@@ -1171,6 +1174,7 @@ function TeamSection({ copy }) {
             </article>
           ))}
         </div>
+        </section>)}
       </div>
     </section>
   );
@@ -1393,7 +1397,18 @@ function CasePortfolio({ copy }) {
   const cases = caseStudiesByLocale[copy.locale] || caseStudiesByLocale.zh;
   const groups = caseStudyGroupsByLocale[copy.locale] || caseStudyGroupsByLocale.zh;
   const casesById = new Map(cases.map((caseStudy) => [caseStudy.id, caseStudy]));
-  const [activeCaseId, setActiveCaseId] = useState(null);
+  const [activeCaseId, setActiveCaseId] = useState(() => {
+    const id = window.location.hash.slice(1);
+    return cases.some(item => item.id === id) ? id : cases[0]?.id;
+  });
+  useEffect(() => {
+    const selectLinkedCase = () => {
+      const id = window.location.hash.slice(1);
+      if (cases.some(item => item.id === id)) setActiveCaseId(id);
+    };
+    window.addEventListener("hashchange", selectLinkedCase);
+    return () => window.removeEventListener("hashchange", selectLinkedCase);
+  }, [cases]);
   const labels = {
     zh: { section: "精選實績", meta: "服務內容", intro: "以下依應用領域整理專案，點選案例可查看建置功能。", expand: "查看專案內容", collapse: "收合內容", details: "建置內容" },
     en: { section: "Selected Work", meta: "Services", intro: "Browse projects by application area and select a case to see the features delivered.", expand: "View project details", collapse: "Close details", details: "What we built" },
@@ -1428,7 +1443,7 @@ function CasePortfolio({ copy }) {
                   const detailId = `case-detail-${caseStudy.id}`;
 
                   return (
-                    <article className={`case-portfolio-item ${isActive ? "is-active" : ""}`} key={caseStudy.id}>
+                    <article className={`case-portfolio-item ${isActive ? "is-active" : ""}`} key={caseStudy.id} id={caseStudy.id}>
                       <button
                         className="case-portfolio-trigger"
                         id={triggerId}
@@ -1457,6 +1472,7 @@ function CasePortfolio({ copy }) {
                           <ul className="case-capability-list">
                             {caseStudy.capabilities.map((capability) => <li key={capability}>{capability}</li>)}
                           </ul>
+                          <a className="service-inline-link" href={localizeHref("/contact.html", copy.locale)}>{({ zh: "討論類似需求", en: "Discuss a similar project", ja: "同様の課題を相談する" })[copy.locale]}</a>
                         </div>
                       ) : null}
                     </article>
@@ -1831,6 +1847,8 @@ function Footer({ copy, isContact = false }) {
             <h5>{details.explore}</h5>
             <a href={localizeHref("/about.html", copy.locale)}>{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
             <a href={localizeHref("/consulting.html", copy.locale)}>{getServiceMenuGroups(copy.locale).growth.label}</a>
+            <a href={localizeHref("/case.html", copy.locale)}>{({ zh: "精選實績", en: "Selected work", ja: "実績紹介" })[copy.locale]}</a>
+            <a href={localizeHref("/faq.html", copy.locale)}>{({ zh: "合作說明", en: "Working with us", ja: "ご依頼について" })[copy.locale]}</a>
             <a href={localizeHref("/contact.html", copy.locale)}>{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
           </nav>
           {!isContact ? <div className="footer-links footer-contact-links" aria-label={details.contact}>
@@ -2618,7 +2636,7 @@ export default function App() {
     }
 
     const timer = window.setTimeout(() => {
-      const target = document.getElementById(initialSection);
+      const target = document.getElementById(window.location.hash.slice(1)) || document.getElementById(initialSection);
       if (target) {
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
@@ -2664,6 +2682,7 @@ export default function App() {
             {consultingServiceIds.includes(initialSection) ? <ConsultingServicePage copy={copy} id={initialSection} /> : null}
             {isFAQPage ? <><ServiceFaqDirectory locale={locale} /><FAQ copy={copy} /></> : null}
             {initialSection === "contact" ? <ContactOptions locale={locale} page={pageTitle}><HeroSoulRibbon /></ContactOptions> : null}
+            {["about", "case", "consulting", "faq"].includes(initialSection) ? <PageContinuations locale={locale} page={initialSection} /> : null}
           </>
         ) : (
           <>
