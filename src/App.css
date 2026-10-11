@@ -2144,10 +2144,10 @@ ul, ol  { margin: 0; }
 
 .page-transition-grille i:nth-child(even) { --grille-shift: 105%; }
 .page-transition.is-entering.transition-grille .page-transition-grille i {
-  animation: page-grille-enter 1250ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-grille-enter 420ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 .page-transition.is-leaving.transition-grille .page-transition-grille i {
-  animation: page-grille-leave 760ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-grille-leave 180ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
 .transition-matrix .page-transition-matrix {
@@ -2172,10 +2172,10 @@ ul, ol  { margin: 0; }
 .page-transition-matrix i:nth-child(8), .page-transition-matrix i:nth-child(11) { --matrix-delay: 120ms; }
 .page-transition-matrix i:nth-child(12) { --matrix-delay: 150ms; }
 .page-transition.is-entering.transition-matrix .page-transition-matrix i {
-  animation: page-matrix-enter 900ms cubic-bezier(0.7, 0, 0.2, 1) var(--matrix-delay) both;
+  animation: page-matrix-enter 270ms cubic-bezier(0.7, 0, 0.2, 1) var(--matrix-delay) both;
 }
 .page-transition.is-leaving.transition-matrix .page-transition-matrix i {
-  animation: page-matrix-leave 610ms cubic-bezier(0.7, 0, 0.2, 1) var(--matrix-delay) both;
+  animation: page-matrix-leave 180ms cubic-bezier(0.7, 0, 0.2, 1) var(--matrix-delay) both;
 }
 
 .transition-aperture .page-transition-aperture { display: block; }
@@ -2188,10 +2188,10 @@ ul, ol  { margin: 0; }
   will-change: clip-path, opacity;
 }
 .page-transition.is-entering.transition-aperture .page-transition-aperture i {
-  animation: page-aperture-enter 1050ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-aperture-enter 420ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 .page-transition.is-leaving.transition-aperture .page-transition-aperture i {
-  animation: page-aperture-leave 760ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-aperture-leave 180ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
 .transition-axis .page-transition-axis { display: block; }
@@ -2242,24 +2242,24 @@ ul, ol  { margin: 0; }
 .page-transition-axis i:first-child { left: 0; }
 .page-transition-axis i:last-child { right: 0; transform-origin: right center; background-color: var(--transition-graphite-soft); }
 .page-transition.is-entering.transition-axis .page-transition-axis i:first-child {
-  animation: page-axis-enter-left 1050ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-axis-enter-left 420ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 .page-transition.is-entering.transition-axis .page-transition-axis i:last-child {
-  animation: page-axis-enter-right 1050ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-axis-enter-right 420ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 .page-transition.is-leaving.transition-axis .page-transition-axis i:first-child {
-  animation: page-axis-leave-left 760ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-axis-leave-left 180ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 .page-transition.is-leaving.transition-axis .page-transition-axis i:last-child {
-  animation: page-axis-leave-right 760ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-axis-leave-right 180ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 .page-transition.is-entering.transition-axis .page-transition-axis::before,
 .page-transition.is-leaving.transition-axis .page-transition-axis::before {
-  animation: page-axis-cross-vertical 1050ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-axis-cross-vertical 420ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 .page-transition.is-entering.transition-axis .page-transition-axis::after,
 .page-transition.is-leaving.transition-axis .page-transition-axis::after {
-  animation: page-axis-cross-bloom 1050ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-axis-cross-bloom 420ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
 .transition-vortex .page-transition-vortex {
@@ -2441,17 +2441,17 @@ ul, ol  { margin: 0; }
 }
 
 .page-transition.is-entering.transition-vortex .page-transition-vortex-brand {
-  animation: page-vortex-brand-lock 4600ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-vortex-brand-lock 1000ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
 .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > i,
 .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > b,
 .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > em {
-  animation: page-vortex-interface 4600ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-vortex-interface 1000ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
 .page-transition.is-entering.transition-vortex .page-transition-vortex-hud {
-  animation: page-vortex-hud 4600ms ease both;
+  animation: page-vortex-hud 1000ms ease both;
 }
 
 .page-transition-scan {
@@ -2468,7 +2468,7 @@ ul, ol  { margin: 0; }
 
 .page-transition.is-entering .page-transition-scan,
 .page-transition.is-leaving .page-transition-scan {
-  animation: page-scan 760ms ease both;
+  animation: page-scan 180ms ease both;
 }
 
 @keyframes page-grille-enter { from { transform: translateY(0); } to { transform: translateY(var(--grille-shift)); } }
@@ -3171,6 +3171,7 @@ ul, ol  { margin: 0; }
 .home-directory-link:hover,
 .home-directory-link:focus-visible { color: #8a6536; }
 .home-directory-link:hover .home-directory-icon { transform: translateY(-3px); }
+.home-directory-link > .home-directory-short { display: none; }
 .home-directory-link:focus-visible {
   outline: 2px solid #8a6536;
   outline-offset: 3px;
@@ -3180,7 +3181,9 @@ ul, ol  { margin: 0; }
   .home-directory-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; width: 100%; padding-inline: 16px; }
   .home-directory-link { width: 100%; min-height: 82px; gap: 10px; }
   .home-directory-icon { width: 30px; height: 30px; }
-  .home-directory-link > span { font-size: clamp(.65rem, 2.9vw, .78rem); letter-spacing: 0; }
+  .home-directory-link > span { font-size: clamp(.75rem, 3.1vw, .875rem); letter-spacing: 0; overflow-wrap: normal; }
+  .home-directory-link > .home-directory-full { display: none; }
+  .home-directory-link > .home-directory-short { display: block; max-width: 100%; text-wrap: balance; }
 
 }
 @media (prefers-reduced-motion: reduce) {

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { INITIAL_PAGE_ENTER_DURATION } from "../src/pageTransition.js";
 
 import {
   createHeroVortexBackground,
@@ -62,7 +63,7 @@ test("homepage vortex renders the selected dense tunnel and cancels its active f
   });
 
   transition.start();
-  frames.get(1)(2400);
+  frames.get(1)(100 + INITIAL_PAGE_ENTER_DURATION / 2);
 
   assert.equal(canvas.width, 800);
   assert.equal(canvas.height, 450);

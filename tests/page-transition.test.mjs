@@ -35,10 +35,10 @@ function click(overrides = {}) {
   };
 }
 
-test("page transitions use deliberate premium timings", () => {
-  assert.equal(INITIAL_PAGE_ENTER_DURATION, 4600);
-  assert.equal(PAGE_ENTER_DURATION, 1050);
-  assert.equal(PAGE_LEAVE_DURATION, 760);
+test("page transitions keep arrival and navigation responsive", () => {
+  assert.ok(INITIAL_PAGE_ENTER_DURATION <= 1000);
+  assert.ok(PAGE_ENTER_DURATION + PAGE_LEAVE_DURATION <= 650);
+  assert.ok(PAGE_LEAVE_DURATION > 0);
   assert.equal(REDUCED_PAGE_TRANSITION_DURATION, 120);
 });
 

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { faqContentByLocale } from "./faqContent.js";
 import "./pageCompletion.css";
 import PageContinuations from "./PageContinuations.jsx";
+import { OwnBrandCase } from "./ServicePresentation.jsx";
 import { ConsultingServices, ConsultingServicePage, ServiceFaqDirectory } from "./ConsultingPages.jsx";
 import { consultingServicesByLocale } from "./consultingContent.js";
 import { getImplementationHref } from "./serviceImplementation.js";
@@ -952,6 +953,11 @@ function PageTransition() {
 
 function HomeDirectory({ copy }) {
   const labels = menuLabels[copy.locale] || menuLabels.zh;
+  const shortLabels = {
+    zh: ["關於我們", "資訊系統", "視覺設計", "國際行銷", "國際金融"],
+    en: ["About", "Systems", "Design", "Global Marketing", "Global Finance"],
+    ja: ["私たち", "システム", "デザイン", "海外販促", "国際金融"],
+  }[copy.locale];
   const items = [
     { key: "about", label: labels.about, href: "/about.html" },
     ...getServiceMenuGroups(copy.locale).growth.items,
@@ -971,13 +977,14 @@ function HomeDirectory({ copy }) {
     <section className="home-directory" id="home-directory">
       <nav className="home-directory-scroll" aria-label={labels.servicesMenu}>
         <ul className="home-directory-row">
-          {items.map((item) => (
+          {items.map((item, index) => (
             <li key={item.key}>
-              <a className="home-directory-link" href={localizeHref(item.href, copy.locale)}>
+              <a className="home-directory-link" href={localizeHref(item.href, copy.locale)} aria-label={item.label}>
                 <svg className="home-directory-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
                   {icons[item.key]}
                 </svg>
-                <span>{item.label}</span>
+                <span className="home-directory-full">{item.label}</span>
+                <span className="home-directory-short" aria-hidden="true">{shortLabels[index]}</span>
               </a>
             </li>
           ))}
@@ -1420,6 +1427,7 @@ function CasePortfolio({ copy }) {
       <div className="wrap">
         <SectionEyebrow index="§ Selected Work" label={labels.section} meta={labels.meta} />
         <p className="case-portfolio-intro">{labels.intro}</p>
+        <OwnBrandCase locale={copy.locale} />
         <div className="case-portfolio">
           {groups.map((group) => (
             <section className="case-portfolio-group" key={group.id} aria-labelledby={`case-group-${group.id}`}>
@@ -2548,7 +2556,7 @@ export default function App() {
   });
   const [showLanguagePrompt, setShowLanguagePrompt] = useState(promptEligible);
   const service = consultingServicesByLocale[locale].services.find((item) => item.id === initialSection);
-  const pageTitle = service ? { kicker: copy.pageTitles.consulting.kicker, title: getServiceLabel(initialSection, locale), lede: service.summary } : copy.pageTitles[initialSection];
+  const pageTitle = service ? { kicker: copy.pageTitles.consulting.kicker, title: service.title, lede: service.summary } : copy.pageTitles[initialSection];
   const isStandalonePage = Boolean(pageTitle);
   const isFAQPage = initialSection === "faq";
   const currentFontScaleIndex = fontScaleOptions.indexOf(fontScale);

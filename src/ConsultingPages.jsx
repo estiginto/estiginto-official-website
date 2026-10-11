@@ -2,12 +2,12 @@ import { useState } from "react";
 import { consultingServicesByLocale } from "./consultingContent.js";
 import { consultingCaseIds, consultingFaqByLocale, consultingPageCopy, consultingServiceIds, getConsultingHref } from "./consultingPages.js";
 import { caseStudiesByLocale } from "./content2026.js";
-import { getImplementationHref, getServiceImplementationIds } from "./serviceImplementation.js";
+import { getImplementationHref } from "./serviceImplementation.js";
 import { faqContentByLocale } from "./faqContent.js";
 import { serviceDetailsByLocale } from "./serviceDetails.js";
 import { getContactHref, getServiceLabel } from "./serviceConnections.js";
 import { localizeHref } from "./siteRoutes.js";
-import { BrandApplication, ServicePlanning, ServiceWorkingMethod } from "./ServicePresentation.jsx";
+import { BrandApplication, ServicePlanning, ServiceWorkingMethod, ServiceEntryGuide } from "./ServicePresentation.jsx";
 import { servicePlanningByLocale, planningLabelsByLocale } from "./servicePlanning.js";
 
 const Arrow = () => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>;
@@ -23,7 +23,7 @@ export function ConsultingServices({ copy }) {
             const service = content.services.find((item) => item.id === id);
             return <a className="advisory-directory-card" href={localizeHref(getConsultingHref(id), copy.locale)} key={id}>
               <span className="consulting-service-number">{String(index + 1).padStart(2, "0")}</span>
-              <h2>{getServiceLabel(id, copy.locale)}</h2>
+              <h2>{service.title}</h2>
               <p>{service.summary}</p>
               <span className="advisory-card-action">{labels.view}<Arrow /></span>
             </a>;
@@ -67,22 +67,6 @@ function ServiceFAQ({ id, locale }) {
   </section>;
 }
 
-function ServiceImplementation({ id, locale }) {
-  const ids = getServiceImplementationIds(id);
-  if (!ids.length) return null;
-  const details = serviceDetailsByLocale[locale];
-  return <div className="service-delivery" id="service-implementation">
-    {ids.map((target) => {
-      const delivery = details.solutions[target];
-      return <section className="service-implementation" id={`implementation-${target}`} key={target} aria-labelledby={`implementation-${target}-title`}>
-        <h3 id={`implementation-${target}-title`}>{details.labels.deliverables}</h3>
-        <ul>{delivery.deliverables.map((entry) => <li key={entry}>{entry}</li>)}</ul>
-      </section>;
-    })}
-    <p className="service-scope-note">{details.labels.note}</p>
-  </div>;
-}
-
 export function ConsultingServicePage({ copy, id }) {
   const locale = copy.locale;
   const content = consultingServicesByLocale[locale];
@@ -105,11 +89,11 @@ export function ConsultingServicePage({ copy, id }) {
         <a href="#service-faq">{labels.faq}</a>
       </nav>
       <ServicePlanning locale={locale} id={id} />
+      {["systems-consulting", "digital-integration"].includes(id) ? <ServiceEntryGuide locale={locale} id={id} /> : null}
       {id === "visual-design" ? <BrandApplication locale={locale} /> : null}
       <section className="advisory-block" id="service-content" aria-labelledby="service-content-title">
         <h2 id="service-content-title">{labels.content}</h2>
         {planning.groups ? <div className="finance-scope-groups">{planning.groups.map((group, index) => <section key={group.title}><header><span className="editorial-number">0{index + 1}</span><h3>{group.title}</h3></header>{scopeList(group.indices.map(i => service.scope[i]))}</section>)}</div> : scopeList(service.scope)}
-        <ServiceImplementation id={id} locale={locale} />
         {id === "international-finance" ? <div className="service-finance-note"><p>{labels.financeNote}</p><a className="service-inline-link" href={localizeHref(getImplementationHref("custom-systems"), locale)}>{details.labels.systemImplementation}<Arrow /></a></div> : null}
       </section>
       <ServiceWorkingMethod locale={locale} id={id} />

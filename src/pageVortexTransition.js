@@ -1,4 +1,5 @@
-const DURATION = 4600;
+import { INITIAL_PAGE_ENTER_DURATION } from "./pageTransition.js";
+const DURATION = INITIAL_PAGE_ENTER_DURATION;
 const TAU = Math.PI * 2;
 
 const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
