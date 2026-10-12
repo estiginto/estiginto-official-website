@@ -4,9 +4,9 @@ import { localizeHref } from "./siteRoutes.js";
 import { createOrbitalGlobe } from "./orbitalGlobe.js";
 
 const content = {
-  zh: { title: "從 0 到 1，持續成長。", stages: ["品牌起步", "數位營運", "營運成長", "國際拓展", "跨國經營"], pause: "暫停環繞動畫", play: "播放環繞動畫" },
-  en: { title: "From zero to one. And to the world.", stages: ["Brand foundation", "Digital operations", "Operational growth", "Global expansion", "Multinational operations"], pause: "Pause orbital animation", play: "Play orbital animation" },
-  ja: { title: "0 から 1 へ、そして世界へ。", stages: ["ブランドの始動", "デジタル運営", "事業の成長", "海外への展開", "多国籍経営"], pause: "周回アニメーションを停止", play: "周回アニメーションを再生" },
+  zh: { title: "從 0 到 1，持續成長。", stages: ["品牌策略", "數位營運", "企業成長", "國際行銷", "跨國拓展"], pause: "暫停環繞動畫", play: "播放環繞動畫" },
+  en: { title: "From zero to one. And to the world.", stages: ["Brand strategy", "Digital operations", "Business growth", "International marketing", "Cross-border expansion"], pause: "Pause orbital animation", play: "Play orbital animation" },
+  ja: { title: "0 から 1 へ、そして世界へ。", stages: ["ブランド戦略", "デジタル運営", "企業の成長", "国際マーケティング", "海外事業展開"], pause: "周回アニメーションを停止", play: "周回アニメーションを再生" },
 };
 const routes = ["visual-design", "digital-integration", "systems-consulting", "international-marketing", "international-finance"];
 const START = -150;
