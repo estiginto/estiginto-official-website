@@ -1,5 +1,5 @@
 import { consultingServiceIds } from "./consultingPages.js";
-export const INITIAL_PAGE_ENTER_DURATION = 1000;
+export const INITIAL_PAGE_ENTER_DURATION = 3000;
 export const PAGE_ENTER_DURATION = 420;
 export const PAGE_LEAVE_DURATION = 180;
 export const REDUCED_PAGE_TRANSITION_DURATION = 120;

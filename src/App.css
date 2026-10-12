@@ -2441,17 +2441,17 @@ ul, ol  { margin: 0; }
 }
 
 .page-transition.is-entering.transition-vortex .page-transition-vortex-brand {
-  animation: page-vortex-brand-lock 1000ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-vortex-brand-lock 3000ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
 .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > i,
 .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > b,
 .page-transition.is-entering.transition-vortex .page-transition-vortex-interface > em {
-  animation: page-vortex-interface 1000ms cubic-bezier(0.7, 0, 0.2, 1) both;
+  animation: page-vortex-interface 3000ms cubic-bezier(0.7, 0, 0.2, 1) both;
 }
 
 .page-transition.is-entering.transition-vortex .page-transition-vortex-hud {
-  animation: page-vortex-hud 1000ms ease both;
+  animation: page-vortex-hud 3000ms ease both;
 }
 
 .page-transition-scan {

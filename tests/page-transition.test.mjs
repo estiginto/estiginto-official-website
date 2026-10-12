@@ -36,7 +36,7 @@ function click(overrides = {}) {
 }
 
 test("page transitions keep arrival and navigation responsive", () => {
-  assert.ok(INITIAL_PAGE_ENTER_DURATION <= 1000);
+  assert.ok(INITIAL_PAGE_ENTER_DURATION >= 2500 && INITIAL_PAGE_ENTER_DURATION <= 3200);
   assert.ok(PAGE_ENTER_DURATION + PAGE_LEAVE_DURATION <= 650);
   assert.ok(PAGE_LEAVE_DURATION > 0);
   assert.equal(REDUCED_PAGE_TRANSITION_DURATION, 120);
