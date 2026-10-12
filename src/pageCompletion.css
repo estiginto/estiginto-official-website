@@ -164,20 +164,26 @@ html[lang="ja"] .contact-heading h1 { font-size: clamp(2.75rem, 4vw, 4.25rem); l
 .service-finance-note p { margin: 0; max-width: 80ch; }
 .service-finance-note a { gap: 12px; }
 .service-finance-note svg { width: 20px; height: 20px; }
-.page-footer.footer-compact { padding-top: 40px; }
-.footer-compact .footer-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 40px; padding-bottom: 24px; }
+.page-footer.footer-compact { padding-top: clamp(72px, 6vw, 88px); }
+.footer-compact .footer-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px 64px; padding-bottom: 40px; }
 .footer-compact .footer-wordmark { font-size: 32px; margin-bottom: 12px; }
 .footer-compact .footer-company { font-size: var(--fs-sm); }
 .footer-compact .footer-links { display: flex; flex-wrap: wrap; align-content: start; align-items: center; gap: 4px 24px; }
 .footer-compact .footer-links h5 { width: 100%; margin: 0 0 8px; }
 .footer-compact .footer-top a { min-height: 44px; font-size: var(--fs-sm); }
+.footer-compact nav.footer-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 24px; }
+.footer-compact nav.footer-links h5 { grid-column: 1 / -1; }
 .footer-compact .footer-contact-links { grid-column: 1 / -1; gap: 4px 32px; }
 .footer-office-disclosure { margin-top: 8px; font-size: var(--fs-xs); line-height: 1.8; }
 .footer-office-disclosure summary { width: fit-content; min-height: 44px; padding-block: 10px; cursor: pointer; }
 .footer-office-disclosure .footer-offices { margin-top: 8px; }
 .footer-office-disclosure summary:focus-visible, .footer-compact a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+@media (max-width: 1000px) {
+  .footer-compact nav.footer-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 760px) {
-  .footer-compact .footer-top { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .page-footer.footer-compact { padding-top: 56px; }
+  .footer-compact .footer-top { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .footer-compact .footer-links { gap: 4px 20px; }
   .footer-compact .footer-contact-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; }
   .footer-compact .footer-contact-links a:first-child { grid-column: 1 / -1; }

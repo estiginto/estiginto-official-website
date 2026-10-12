@@ -3198,7 +3198,7 @@ ul, ol  { margin: 0; }
   position: relative;
   overflow: hidden;
   scroll-margin-top: clamp(64px, 8vw, 88px);
-  padding: clamp(44px, 6vw, 76px) 0 clamp(36px, 5vw, 64px);
+  padding: clamp(44px, 6vw, 76px) 0 80px;
   border-top: 1px solid var(--ink-line);
   border-bottom: 1px solid var(--ink-line);
   background:
@@ -4622,7 +4622,7 @@ ul, ol  { margin: 0; }
   .hero .wrap > div { width: 100%; }
   .hero::after { background: linear-gradient(180deg, var(--paper) 0%, rgba(247, 244, 239, 0.97) 43%, rgba(247, 244, 239, 0.72) 60%, transparent 78%); }
 
-  .client-logo-marquee { padding: 40px 0 34px; }
+  .client-logo-marquee { padding: 40px 0 56px; }
   .client-logo-marquee-header {
     grid-template-columns: auto auto minmax(36px, 1fr);
     gap: 10px;
