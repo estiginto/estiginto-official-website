@@ -1853,11 +1853,10 @@ function Footer({ copy, isContact = false }) {
           </div>
           <nav className="footer-links" aria-label={footer.navLabel}>
             <h5>{details.explore}</h5>
-            <a href={localizeHref("/about.html", copy.locale)}>{menuLabels[copy.locale]?.about || menuLabels.zh.about}</a>
-            <a href={localizeHref("/consulting.html", copy.locale)}>{getServiceMenuGroups(copy.locale).growth.label}</a>
-            <a href={localizeHref("/case.html", copy.locale)}>{({ zh: "精選實績", en: "Selected work", ja: "実績紹介" })[copy.locale]}</a>
-            <a href={localizeHref("/faq.html", copy.locale)}>{({ zh: "合作說明", en: "Working with us", ja: "ご依頼について" })[copy.locale]}</a>
-            <a href={localizeHref("/contact.html", copy.locale)}>{menuLabels[copy.locale]?.contact || menuLabels.zh.contact}</a>
+            <a href={localizeHref("/", copy.locale)}>{menuLabels[copy.locale]?.home || menuLabels.zh.home}</a>
+            {getServiceMenuGroups(copy.locale).digital.items.filter(item => item.key === "about").map(item => <a key={item.key} href={localizeHref(item.href, copy.locale)}>{item.label}</a>)}
+            {getServiceMenuGroups(copy.locale).growth.items.map(item => <a key={item.key} href={localizeHref(item.href, copy.locale)}>{item.label}</a>)}
+            {getServiceMenuGroups(copy.locale).digital.items.filter(item => item.key === "contact").map(item => <a key={item.key} href={localizeHref(item.href, copy.locale)}>{item.label}</a>)}
           </nav>
           {!isContact ? <div className="footer-links footer-contact-links" aria-label={details.contact}>
             <a className="contact-channel-link" href="mailto:contact@estiginto.com"><ContactIcon type="email" /><span>contact@estiginto.com</span></a>

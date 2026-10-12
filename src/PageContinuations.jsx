@@ -8,7 +8,7 @@ const copy = {
 
 export default function PageContinuations({ locale, page }) {
   const ui = copy[locale] || copy.zh;
-  const related = page === "case" ? ["consulting", "faq"] : page === "faq" ? ["consulting", "case"] : ["case", "faq"];
+  const related = page === "case" ? ["consulting"] : page === "consulting" ? ["case"] : ["case", "consulting"];
   return <section className="page-continuation" aria-labelledby="continuation-title">
     <div className="wrap continuation-layout">
       <div><h2 id="continuation-title">{ui.title}</h2><p>{ui.description}</p></div>
