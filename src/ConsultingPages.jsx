@@ -76,18 +76,21 @@ export function ConsultingServicePage({ copy, id }) {
   const cases = consultingCaseIds[id].map((caseId) => caseStudiesByLocale[locale].find((item) => item.id === caseId));
   const planning = servicePlanningByLocale[locale][id];
   const planningLabels = planningLabelsByLocale[locale];
-  const scopeList = (items) => <ul className="advisory-scope-list">{items.map((item) => <li key={item.title}><h3>{item.title}</h3><p>{item.description}</p></li>)}</ul>;
+  const scopeList = (items) => <ul className="advisory-scope-list">{items.map((item, index) => <li key={item.title}><span className="scope-index" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span><div><h3>{item.title}</h3><p>{item.description}</p></div></li>)}</ul>;
   return <article className="section consulting-services advisory-page" data-service={id}>
     <div className="wrap">
       <div className="advisory-page-tools">
         <a className="service-inline-link" href={localizeHref("/consulting.html", locale)}>{labels.directory}</a>
       </div>
+      <div className="advisory-reading-layout">
       <nav className="advisory-section-nav" aria-label={labels.contents}>
+        <span className="reading-nav-label">{labels.contents}</span>
         <a href="#service-content">{labels.content}</a>
         <a href="#service-working-method">{planningLabels.process}</a>
         {cases.length ? <a href="#reference-cases">{labels.cases}</a> : null}
         <a href="#service-faq">{labels.faq}</a>
       </nav>
+      <div className="advisory-reading-content">
       <ServicePlanning locale={locale} id={id} />
       {["systems-consulting", "digital-integration"].includes(id) ? <ServiceEntryGuide locale={locale} id={id} /> : null}
       {id === "visual-design" ? <BrandApplication locale={locale} /> : null}
@@ -107,6 +110,8 @@ export function ConsultingServicePage({ copy, id }) {
       </section> : null}
       <ServiceFAQ id={id} locale={locale} />
       <div className="advisory-inquiry" id="service-process"><a className="btn" href={getContactHref(id, locale)}><span>{labels.inquiry}</span><span className="arrow" aria-hidden="true" /></a></div>
+      </div>
+      </div>
     </div>
   </article>;
 }

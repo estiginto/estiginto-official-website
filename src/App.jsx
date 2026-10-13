@@ -736,17 +736,18 @@ function SectionEyebrow({ index, label, meta, className = "" }) {
   );
 }
 
-function PageTitle({ page, compact = false }) {
+function PageTitle({ page, locale, compact = false }) {
   if (!page) {
     return null;
   }
 
-  const lede = Array.isArray(page.lede) ? page.lede : [page.lede];
+  const lede = Array.isArray(page.lede) ? page.lede.slice(0, 2) : [page.lede];
 
   return (
     <section className={`page-title reveal${compact ? " page-title-advisory" : ""}`} aria-labelledby="page-title">
       <HeroSoulRibbon />
       <div className="wrap">
+        <nav className="interior-breadcrumb" aria-label={({ zh: "頁面位置", en: "Breadcrumb", ja: "現在のページ" })[locale]}><a href={localizeHref("/", locale)}>{({ zh: "首頁", en: "Home", ja: "ホーム" })[locale]}</a><span aria-hidden="true">/</span><span aria-current="page">{page.title}</span></nav>
         <div className="page-title-heading">
           <p className="page-title-kicker">{page.kicker}</p>
           <h1 id="page-title">{page.title}</h1>
@@ -1127,6 +1128,19 @@ function Manifesto({ copy }) {
   );
 }
 
+function AboutOverview({ locale }) {
+  const paragraphs = aboutIntroductionsByLocale[locale] || aboutIntroductionsByLocale.zh;
+  const ui = {
+    zh: { label: "服務與協作", title: "品牌、營運與跨境發展。", team: "認識團隊" },
+    en: { label: "Our work", title: "Brand, operations, and international growth.", team: "Meet the team" },
+    ja: { label: "サービスと専門家連携", title: "ブランド、事業運営、海外展開。", team: "チームを見る" },
+  }[locale];
+  return <section className="about-overview wrap" aria-labelledby="about-overview-title">
+    <header><p className="editorial-label">{ui.label}</p><h2 id="about-overview-title">{ui.title}</h2><a className="service-inline-link" href="#team">{ui.team}</a></header>
+    <div><div className="about-overview-copy">{paragraphs.slice(2).map(p => <p key={p}>{p}</p>)}</div><nav aria-label={ui.label}>{["systems-consulting", "visual-design", "international-marketing", "international-finance"].map(id => <a key={id} href={localizeHref(getConsultingHref(id), locale)}>{getServiceLabel(id, locale)}<span aria-hidden="true">↗</span></a>)}</nav></div>
+  </section>;
+}
+
 function TeamSection({ copy }) {
   const members = (teamMembersByLocale[copy.locale] || teamMembersByLocale.en)
     .filter(member => !member.hidden);
@@ -1427,10 +1441,11 @@ function CasePortfolio({ copy }) {
       <div className="wrap">
         <SectionEyebrow index="§ Selected Work" label={labels.section} meta={labels.meta} />
         <p className="case-portfolio-intro">{labels.intro}</p>
+        <nav className="interior-jump-nav" aria-label={labels.section}>{groups.map(group => <a key={group.id} href={`#portfolio-${group.id}`}><span>{group.number}</span>{group.title}</a>)}</nav>
         <OwnBrandCase locale={copy.locale} />
         <div className="case-portfolio">
           {groups.map((group) => (
-            <section className="case-portfolio-group" key={group.id} aria-labelledby={`case-group-${group.id}`}>
+            <section className="case-portfolio-group" id={`portfolio-${group.id}`} key={group.id} aria-labelledby={`case-group-${group.id}`}>
               <header className="case-portfolio-group-header">
                 <span className="case-portfolio-group-number">{group.number}</span>
                 <div>
@@ -1687,81 +1702,31 @@ function Insights() {
 }
 
 function FAQ({ copy }) {
-  const [openGroup, setOpenGroup] = useState(0);
   const [open, setOpen] = useState("0-0");
-
-  return (
-    <section className="section bg-deep reveal" id="faq" aria-label="FAQ">
-      <div className="wrap">
-        <div className="faq-groups">
-          {copy.faqGroups.slice(0, 3).map((group, groupIndex) => (
-            <section
-              className={`faq-group ${openGroup === groupIndex ? "open" : ""}`}
-              key={group.title}
-              aria-labelledby={`faq-group-${groupIndex}`}
-            >
-              <button
-                className="faq-group-head"
-                type="button"
-                id={`faq-group-${groupIndex}`}
-                aria-expanded={openGroup === groupIndex}
-                aria-controls={`faq-body-${groupIndex}`}
-                onClick={() => {
-                  setOpenGroup((current) => {
-                    const next = current === groupIndex ? -1 : groupIndex;
-                    if (next !== -1) {
-                      setOpen(`${next}-0`);
-                    }
-                    return next;
-                  });
-                }}
-              >
-                <span className="faq-group-title">{group.title}</span>
-                <span className="faq-group-subtitle">{group.subtitle}</span>
-                <span className="faq-group-toggle" aria-hidden="true" />
-              </button>
-              <div className="faq-group-body" id={`faq-body-${groupIndex}`} inert={openGroup !== groupIndex} aria-hidden={openGroup !== groupIndex}>
-                <div>
-                  <div className="faq-list">
-                    {group.items.map(([num, q, a], itemIndex) => {
-                      const itemId = `${groupIndex}-${itemIndex}`;
-                      const isOpen = open === itemId;
-                      return (
-                        <div className={`faq-item ${isOpen ? "open" : ""}`} key={num}>
-                          <button
-                            className="faq-q"
-                            type="button"
-                            onClick={() => setOpen(isOpen ? "" : itemId)}
-                            aria-expanded={isOpen}
-                            aria-controls={`faq-answer-${itemId}`}
-                          >
-                            <span className="num">{num}</span>
-                            <span>{q}</span>
-                            <span className="toggle" aria-hidden="true" />
-                          </button>
-                          <div className="faq-a" id={`faq-answer-${itemId}`} aria-hidden={!isOpen}>
-                            <div>
-                              <p>{a}</p>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  {group.note ? (
-                    <p className="faq-note">
-                      <span>{copy.faqNoteLabel}</span>
-                      {group.note}
-                    </p>
-                  ) : null}
-                </div>
-              </div>
-            </section>
-          ))}
-        </div>
+  const groups = copy.faqGroups.slice(0, 3);
+  return <section className="section reveal editorial-faq" id="faq" aria-label="FAQ">
+    <div className="wrap faq-reading-layout">
+      <nav className="faq-category-nav" aria-label={({ zh: "問題分類", en: "Question categories", ja: "質問のカテゴリー" })[copy.locale]}>
+        {groups.map((group, index) => <a href={`#faq-category-${index}`} key={group.title}><span className="editorial-number">0{index + 1}</span>{group.title}</a>)}
+      </nav>
+      <div className="faq-groups">
+        {groups.map((group, groupIndex) => <section className="faq-category" id={`faq-category-${groupIndex}`} key={group.title} aria-labelledby={`faq-group-${groupIndex}`}>
+          <header><p className="editorial-label">{group.subtitle}</p><h2 id={`faq-group-${groupIndex}`}>{group.title}</h2></header>
+          <div className="faq-list">{group.items.map(([num, q, a], itemIndex) => {
+            const itemId = `${groupIndex}-${itemIndex}`;
+            const isOpen = open === itemId;
+            return <div className={`faq-item ${isOpen ? "open" : ""}`} key={num}>
+              <h3><button className="faq-q" id={`faq-question-${itemId}`} type="button" onClick={() => setOpen(isOpen ? "" : itemId)} aria-expanded={isOpen} aria-controls={`faq-answer-${itemId}`}>
+                <span className="num">{num}</span><span>{q}</span><span className="toggle" aria-hidden="true" />
+              </button></h3>
+              <div className="faq-a" id={`faq-answer-${itemId}`} role="region" aria-labelledby={`faq-question-${itemId}`} aria-hidden={!isOpen} inert={!isOpen}><div><p>{a}</p></div></div>
+            </div>;
+          })}</div>
+          {group.note ? <p className="faq-note"><span>{copy.faqNoteLabel}</span>{group.note}</p> : null}
+        </section>)}
       </div>
-    </section>
-  );
+    </div>
+  </section>;
 }
 
 function ContactIcon({ type }) {
@@ -2678,8 +2643,8 @@ export default function App() {
         <main className="page-main" id="mainpage">
         {isStandalonePage ? (
           <>
-            {initialSection !== "contact" ? <PageTitle page={pageTitle} compact={initialSection === "consulting" || Boolean(service)} /> : null}
-            {initialSection === "about" ? <TeamSection copy={copy} /> : null}
+            {initialSection !== "contact" ? <PageTitle page={pageTitle} locale={locale} compact={initialSection === "consulting" || Boolean(service)} /> : null}
+            {initialSection === "about" ? <><AboutOverview locale={locale} /><TeamSection copy={copy} /></> : null}
             {initialSection === "case" ? (
               <>
                 <CasePortfolio copy={copy} />

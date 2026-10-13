@@ -25,6 +25,12 @@ export default function ContactOptions({ locale, page, children }) {
     en: { title: "Helpful details for your inquiry", items: ["Your business and the problem you want to solve", "Existing websites, systems, or reference materials", "Your timing and available budget range"], faq: "Working with us" },
     ja: { title: "ご相談時にお聞かせください", items: ["事業の概要と改善したい課題", "既存のWebサイト・システム・参考資料", "ご希望の日程と予算の目安"], faq: "ご依頼について" },
   })[locale];
+  const channelHints = {
+    zh: { email: "傳送需求與參考資料", line: "簡短洽詢與聯絡" },
+    en: { email: "Send requirements and reference materials", line: "For brief questions and getting in touch" },
+    ja: { email: "要件や参考資料を送る", line: "簡単なご質問・ご連絡" },
+  }[locale] || { email: "", line: "" };
+  const inquiryBody = preparation.items.map(item => `${item}：\n`).join("\n");
   const phones = [
     { type: "phone", title: copy.phone, value: "+886 2 2431 5362", href: "tel:+886224315362" },
     { type: "phone", title: copy.mobile, value: "+886 972 118 427", href: "tel:+886972118427" },
@@ -40,13 +46,13 @@ export default function ContactOptions({ locale, page, children }) {
         </header>
         <div className="contact-methods">
           {service ? <div className="contact-selected-service"><p>{copy.selected}：<strong>{service}</strong></p><a href={localizeHref("/contact.html", locale)}>{copy.clear}</a></div> : null}
-          <a className="contact-option contact-email" href={`mailto:contact@estiginto.com?subject=${encodeURIComponent(subject)}`}>
+          <a className="contact-option contact-email" href={`mailto:contact@estiginto.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(inquiryBody)}`}>
             <span className="contact-channel-label"><ChannelIcon type="email" />{copy.email}</span>
-            <span className="contact-email-address">contact@estiginto.com</span>
+            <span className="contact-email-address">contact@estiginto.com</span><small className="contact-channel-hint">{channelHints.email}</small>
             <ContactArrow />
           </a>
           <a className="contact-option contact-line" href="https://lin.ee/vFdwfVg" target="_blank" rel="noopener noreferrer">
-            <span><ChannelIcon type="line" />{copy.line}</span><ContactArrow />
+            <span><ChannelIcon type="line" /><span>{copy.line}<small className="contact-channel-hint">{channelHints.line}</small></span></span><ContactArrow />
           </a>
           <div className="contact-phones">
             {phones.map((channel) => <a className="contact-option contact-phone" key={channel.title} href={channel.href}><span className="contact-channel-label"><ChannelIcon type={channel.type} />{channel.title}</span><span className="contact-phone-number">{channel.value}</span></a>)}
