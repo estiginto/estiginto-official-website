@@ -122,7 +122,7 @@ const teamIdentities = [
     mark: "LL",
     group: "leadership",
     portrait: "/img/team/avatar_lanar.jpg",
-    portraitFrame: { scale: 1.85, x: 50, y: 0, offsetY: -18 },
+    portraitFrame: { scale: 1.5, x: 50, y: 0, offsetY: -6 },
   },
   {
     id: "yu-liang-chen",
@@ -130,7 +130,7 @@ const teamIdentities = [
     mark: "YLC",
     group: "leadership",
     portrait: "/img/team/avatar_YuLiang.webp",
-    portraitFrame: { scale: 3, x: 50, y: 0, offsetY: -7 },
+    portraitFrame: { scale: 2, x: 50, y: 0, offsetY: 0 },
   },
   {
     id: "cindy-wu",
@@ -139,7 +139,7 @@ const teamIdentities = [
     group: "leadership",
     portrait: "/img/team/avatar_Cindy.jpg",
     linkedin: "https://www.linkedin.com/in/cindy-wu-b3b1b89/",
-    portraitFrame: { scale: 1.22, x: 50, y: 0, offsetY: 0 },
+    portraitFrame: { scale: 1, x: 50, y: 0, offsetY: 0 },
   },
   {
     id: "nicole-chien",
@@ -147,7 +147,7 @@ const teamIdentities = [
     mark: "NC",
     group: "leadership",
     portrait: "/img/team/avatar_Nicole.webp",
-    portraitFrame: { scale: 3, x: 50, y: 0, offsetY: -11 },
+    portraitFrame: { scale: 2, x: 50, y: 0, offsetY: 0 },
   },
   {
     id: "yen-chen",
@@ -155,7 +155,7 @@ const teamIdentities = [
     mark: "YC",
     group: "advisory",
     portrait: "/img/team/avatar_Yen.jpg",
-    portraitFrame: { scale: 1.02, x: 50, y: 0, offsetY: -1.5 },
+    portraitFrame: { scale: 1, x: 50, y: 0, offsetY: 0 },
   },
   {
     id: "wayne-schutte",
@@ -163,7 +163,7 @@ const teamIdentities = [
     mark: "WS",
     group: "advisory",
     portrait: "/img/team/avatar_wayne.png",
-    portraitFrame: { scale: 1.06, x: 50, y: 0, offsetY: -5 },
+    portraitFrame: { scale: 1, x: 50, y: 0, offsetY: 0 },
   },
   {
     id: "michael-mlejnek",
@@ -171,23 +171,23 @@ const teamIdentities = [
     mark: "MM",
     group: "advisory",
     portrait: "/img/team/avatar_Michael.webp",
-    portraitFrame: { scale: 2.8, x: 50, y: 0, offsetY: -2.5 },
+    portraitFrame: { scale: 2.2, x: 50, y: 0, offsetY: 0 },
   },
 ];
 
 export const teamSectionCopyByLocale = {
   zh: {
-    eyebrow: "領導與顧問團隊",
+    eyebrow: "團隊成員",
     meta: "Our Team",
     groupLabels: { leadership: "領導團隊", advisory: "顧問團隊" },
   },
   en: {
-    eyebrow: "Leadership & Advisory",
+    eyebrow: "Our Team",
     meta: "Our Team",
     groupLabels: { leadership: "Leadership", advisory: "Advisory" },
   },
   ja: {
-    eyebrow: "リーダーシップ＆アドバイザリー",
+    eyebrow: "チームメンバー",
     meta: "Our Team",
     groupLabels: { leadership: "リーダーシップ", advisory: "アドバイザリー" },
   },

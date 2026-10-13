@@ -38,17 +38,17 @@ test("about team localizes its section copy, roles, summaries, and group labels"
   assert.ok(teamMembersByLocale, "team member content must be exported");
   assert.deepEqual(teamSectionCopyByLocale, {
     zh: {
-      eyebrow: "領導與顧問團隊",
+      eyebrow: "團隊成員",
       meta: "Our Team",
       groupLabels: { leadership: "領導團隊", advisory: "顧問團隊" },
     },
     en: {
-      eyebrow: "Leadership & Advisory",
+      eyebrow: "Our Team",
       meta: "Our Team",
       groupLabels: { leadership: "Leadership", advisory: "Advisory" },
     },
     ja: {
-      eyebrow: "リーダーシップ＆アドバイザリー",
+      eyebrow: "チームメンバー",
       meta: "Our Team",
       groupLabels: { leadership: "リーダーシップ", advisory: "アドバイザリー" },
     },
@@ -172,16 +172,12 @@ test("every team portrait carries an individual crop so faces keep comparable vi
     assert.equal(member.portraitFrame.scale >= 1, true, `${member.name} must not shrink inside the portrait frame`);
   }
 
-  const michael = photographedMembers.find(({ id }) => id === "michael-mlejnek");
-  const yuLiang = photographedMembers.find(({ id }) => id === "yu-liang-chen");
-  const nicole = photographedMembers.find(({ id }) => id === "nicole-chien");
-  const lanar = photographedMembers.find(({ id }) => id === "lanar-lan");
-  const cindy = photographedMembers.find(({ id }) => id === "cindy-wu");
-  assert.equal(lanar.portraitFrame.scale >= 1.8, true, "Lanar's portrait needs a close chest-up crop");
-  assert.equal(lanar.portraitFrame.offsetY < 0, true, "Lanar's portrait needs an upward framing adjustment");
-  assert.equal(cindy.portraitFrame.scale >= 1.2, true, "Cindy's portrait needs comparable visual weight");
-  assert.equal(yuLiang.portraitFrame.scale >= 3, true, "Yu-Liang's full-body source needs a close chest-up crop");
-  assert.equal(nicole.name, "Nicole Chien");
-  assert.equal(nicole.portraitFrame.scale >= 2.8, true, "Nicole's full-body source needs a close chest-up crop");
-  assert.equal(michael.portraitFrame.scale >= 2.7, true, "Michael's full-body source needs a close chest-up crop");
+  for (const member of photographedMembers) {
+    assert.ok(member.portraitFrame.scale <= 2.2, `${member.name} must retain breathing room around the face`);
+  }
+  const css = readFileSync(resolve(root, "src/interiorRefinements.css"), "utf8");
+  assert.match(css, /\.team-directory \.team-member-identity \{[^}]*aspect-ratio: 3 \/ 4;[^}]*max-height: none/);
+  const app = readFileSync(resolve(root, "src/App.jsx"), "utf8");
+  assert.match(app, /className="team-group team-directory"/);
+  assert.doesNotMatch(app, /Object.entries\(sectionCopy.groupLabels\)/);
 });

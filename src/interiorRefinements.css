@@ -10,14 +10,14 @@
 .team-group > h2 { margin: 0 0 24px; font-size: 1.4rem; font-weight: 500; color: var(--night); }
 .team-group .team-grid { gap: 24px; grid-auto-rows: auto; }
 .team-group .team-member-card { border: 0; min-height: 0; background: transparent; }
-.team-group .team-member-identity { aspect-ratio: 4 / 5; max-height: 340px; background: #efeeea; }
+.team-group .team-member-identity { aspect-ratio: 3 / 4; max-height: none; background: #efeeea; }
 .team-group .team-member-copy { display: flex; flex-direction: column; padding: 20px 0 0; gap: 10px; }
 .team-group .team-member-group { display: none; }
 .team-group .team-member-role { min-height: 0; line-height: 1.65; font-family: var(--font-body); letter-spacing: 0; color: var(--ink-soft); font-size: .85rem; }
 .team-group .team-member-copy h3 { font-size: clamp(1.2rem, 1.8vw, 1.6rem); }
 .team-group .team-member-summary { font-size: .9rem; line-height: 1.85; }
 .team-group .team-member-linkedin { margin-top: 4px; }
-.team-section .team-group:last-child .team-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
 .advisory-directory-grid { gap: 0; border-top: 1px solid var(--ink-line); }
 .advisory-directory-card { padding: 32px; border: 0; border-bottom: 1px solid var(--ink-line); background: transparent; }
 .advisory-directory-card:nth-child(odd) { padding-left: 0; }
@@ -92,7 +92,7 @@ body[data-target-section="faq"] .page-main > #faq { padding-block: 24px 64px; }
   .service-fit { gap: 32px; }
   .finance-scope-groups > section { grid-template-columns: 1fr; gap: 20px; }
   .team-group .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .team-section .team-group:last-child .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
 }
 @media (max-width: 760px) {
   body[data-target-section] .mobile-nav:not(.open) .mobile-nav-trigger { left: auto; right: 14px; transform: none; }
@@ -104,7 +104,7 @@ body[data-target-section="faq"] .page-main > #faq { padding-block: 24px 64px; }
   .page-main > .team-section { padding-block: 32px 44px; }
   .team-group + .team-group { margin-top: 36px; }
   .team-group > h2 { font-size: 1.2rem; margin-bottom: 20px; }
-  .team-group .team-grid, .team-section .team-group:last-child .team-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .team-group .team-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .team-group .team-member-card { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 18px; padding-bottom: 24px; border-bottom: 1px solid var(--ink-line); align-items: start; }
   .team-group .team-member-identity { width: 96px; height: 126px; aspect-ratio: auto; }
   .team-group .team-member-copy { padding: 0; gap: 8px; }
@@ -331,4 +331,20 @@ body[data-target-section="case"] .case-portfolio-group { grid-template-rows: min
   .consulting-directory .advisory-directory-card h2 { font-size: 1.3rem; }
   .consulting-directory .advisory-directory-card p { grid-column: 2; }
   .consulting-directory .advisory-card-action { grid-column: 2; width: 100%; }
+}
+
+/* Keep one portrait shape at every width; the former height cap cropped faces. */
+.team-section .team-directory .team-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); border: 0; gap: 48px 28px; align-items: start; }
+.team-directory .team-member-identity { width: 100%; height: auto; aspect-ratio: 3 / 4; max-height: none; border: 0; }
+.team-directory .team-member-identity::before, .team-directory .team-member-identity::after { display: none; }
+.team-directory .team-member-copy { padding-top: 20px; }
+.team-directory .team-member-copy h3 { line-height: 1.4; margin: 0; }
+.team-directory .team-member-summary { margin: 0; }
+@media (max-width: 1100px) {
+  .team-section .team-directory .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px 28px; }
+}
+@media (max-width: 760px) {
+  .team-section .team-directory .team-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .team-directory .team-member-card { grid-template-columns: 96px minmax(0, 1fr); }
+  .team-directory .team-member-identity { width: 96px; height: 128px; aspect-ratio: 3 / 4; }
 }

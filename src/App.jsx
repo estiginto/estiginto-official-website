@@ -1150,10 +1150,9 @@ function TeamSection({ copy }) {
     <section className="section team-section reveal" id="team" aria-label={sectionCopy.eyebrow}>
       <div className="wrap">
         <SectionEyebrow index={`§ ${sectionCopy.eyebrow}`} meta={sectionCopy.meta} />
-        {Object.entries(sectionCopy.groupLabels).map(([group, label]) => <section className="team-group" key={group} aria-labelledby={`team-${group}`}>
-        <h2 id={`team-${group}`}>{label}</h2>
+        <div className="team-group team-directory">
         <div className="team-grid">
-          {members.filter(member => member.group === group).map((member) => (
+          {members.map((member) => (
             <article className="team-member-card" data-group={member.group} key={member.id}>
               <div className={`team-member-identity${member.portrait ? " team-member-identity-portrait" : ""}`}>
                 {member.portrait ? (
@@ -1175,7 +1174,6 @@ function TeamSection({ copy }) {
                 )}
               </div>
               <div className="team-member-copy">
-                <span className="team-member-group">{sectionCopy.groupLabels[member.group]}</span>
                 <h3>{member.name}</h3>
                 <p className="team-member-role">{member.role}</p>
                 <p className="team-member-summary">{member.summary}</p>
@@ -1195,7 +1193,7 @@ function TeamSection({ copy }) {
             </article>
           ))}
         </div>
-        </section>)}
+        </div>
       </div>
     </section>
   );
