@@ -16,9 +16,12 @@ function inside(x,y,polygon) {
  }
  return hit;
 }
-export function projectGlobe(lon, lat, rotation = 0) {
+export function projectGlobe(lon, lat, rotation = 0, tilt = 0, roll = 0) {
  const a=(lon-105+rotation)*RAD,b=lat*RAD;
- return {x:Math.cos(b)*Math.sin(a),y:-Math.sin(b),z:Math.cos(b)*Math.cos(a)};
+ const x=Math.cos(b)*Math.sin(a),y=-Math.sin(b),z=Math.cos(b)*Math.cos(a);
+ const t=tilt*RAD,s=roll*RAD;
+ const ty=y*Math.cos(t)-z*Math.sin(t),tz=y*Math.sin(t)+z*Math.cos(t);
+ return {x:x*Math.cos(s)-ty*Math.sin(s),y:x*Math.sin(s)+ty*Math.cos(s),z:tz};
 }
 const faces=[];
 for(let lat=-90;lat<90;lat+=15)for(let lon=-180;lon<180;lon+=15) {
@@ -30,17 +33,17 @@ for(let lat=-90;lat<90;lat+=15)for(let lon=-180;lon<180;lon+=15) {
 }
 export function createOrbitalGlobe(canvas) {
  const ctx=canvas.getContext('2d');
- return { draw(rotation=0) {
+ return { draw(rotation=0, pose={}) {
   if(!ctx)return;
   const w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(window.devicePixelRatio||1,2);
   if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);}
   ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);
-  const r=Math.min(w*.40,h*.43),cx=w/2,cy=h/2;
+  const r=Math.min(w*.34,h*.37)*(pose.scale??1),cx=w*(pose.x??50)/100,cy=h*(pose.y??50)/100;
   const glow=ctx.createRadialGradient(cx-r*.3,cy-r*.4,r*.1,cx,cy,r);
   glow.addColorStop(0,'#ffffff');glow.addColorStop(1,'#e5eaf0');
   ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fillStyle=glow;ctx.fill();
   for(const face of faces){
-   const pts=face.vertices.map(([lon,lat])=>projectGlobe(lon,lat,rotation));
+   const pts=face.vertices.map(([lon,lat])=>projectGlobe(lon,lat,rotation,pose.tilt,pose.roll));
    const z=pts.reduce((s,p)=>s+p.z,0)/3;if(z<.03)continue;
    ctx.beginPath();pts.forEach((p,i)=>{const x=cx+p.x*r,y=cy+p.y*r;i?ctx.lineTo(x,y):ctx.moveTo(x,y);});ctx.closePath();
    ctx.fillStyle=face.land?`rgba(24,52,83,${.14+z*.15+face.shade*.09})`:`rgba(255,255,255,${.09+face.shade*.24})`;

@@ -1,24 +1,25 @@
-/* One quiet orbital scene, with the globe behind the five service stages. */
+/* A fixed globe and orbit; the passing spacecraft highlights each station. */
 .business-journey { position: relative; overflow: hidden; padding-block: 80px 24px; background: #f8f9fa; }
 .business-journey > .wrap { position: relative; }
 .business-journey .journey-heading { position: relative; z-index: 2; margin: 0; max-width: 760px; }
 .business-journey .journey-heading h2 { margin: 0; font-size: var(--fs-h2); font-weight: 400; line-height: 1.4; letter-spacing: -.025em; }
-.orbital-scene { position: relative; height: clamp(580px, 52vw, 720px); margin-top: -12px; }
+.orbital-scene { position: relative; isolation: isolate; height: clamp(580px, 52vw, 720px); margin-top: -12px; }
 .orbital-globe, .orbital-track { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.orbital-track { overflow: visible; }
+.orbital-globe { z-index: 1; }
+.orbital-track { z-index: 1; overflow: visible; }
 .orbital-track ellipse { fill: none; stroke: #a3865c; stroke-opacity: .5; stroke-width: 1; vector-effect: non-scaling-stroke; }
-.orbital-track .orbital-track-secondary { stroke: #173052; stroke-opacity: .09; stroke-dasharray: 2 9; }
 .orbital-stages { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; z-index: 2; }
 .orbital-stages li { position: absolute; width: 196px; transform: translate(-50%, -50%) translateY(56px); }
 .orbital-stages a { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; min-height: 68px; padding: 12px 14px; text-align: center; color: #425166; text-decoration: none; background: transparent; text-shadow: 0 1px 8px #f8f9fa, 0 0 12px #f8f9fa; }
-.orbital-stage-number { font: .7rem/1 var(--font-mono); color: #8c7657; letter-spacing: .12em; }
-.orbital-stage-name { font-size: clamp(.95rem, 1.5vw, 1.15rem); line-height: 1.45; font-weight: 500; text-wrap: balance; }
+.orbital-stage-number { font: .85rem/1 var(--font-mono); color: #8c7657; letter-spacing: .12em; }
+.orbital-stage-name { font-size: clamp(1.15rem, 1.8vw, 1.4rem); line-height: 1.45; font-weight: 500; text-wrap: balance; transition: transform 350ms ease, color 350ms ease; transform-origin: center; }
 .orbital-stages li.is-current .orbital-stage-name, .orbital-stages a:hover { color: #0a1f44; }
+.orbital-stages li.is-current .orbital-stage-name { transform: scale(1.18); }
 .orbital-stages li.is-current .orbital-stage-number { color: #0a1f44; }
 .orbital-stages a:focus-visible, .orbital-motion-toggle:focus-visible { outline: 2px solid #0a1f44; outline-offset: 4px; }
-.orbital-rocket { position: absolute; width: 32px; height: 52px; z-index: 3; pointer-events: none; filter: drop-shadow(0 3px 4px #0a1f4418); }
-.orbital-rocket svg { display: block; width: 100%; height: 100%; }
-.rocket-flame { fill: #b18b54; opacity: .75; }
+.orbital-spaceship { position: absolute; width: 80px; height: 80px; z-index: 3; pointer-events: none; filter: drop-shadow(0 3px 4px #0a1f4418); }
+.orbital-spaceship canvas { display: block; width: 100%; height: 100%; }
+
 .orbital-motion-toggle { display: grid; place-items: center; width: 44px; height: 44px; margin: -12px 0 0 auto; padding: 0; border: 1px solid #17305225; border-radius: 50%; color: #173052; background: transparent; cursor: pointer; position: relative; z-index: 4; }
 .orbital-motion-toggle:hover { background: #17305208; }
 .orbital-motion-toggle svg { width: 18px; height: 18px; }
@@ -26,10 +27,10 @@
  .business-journey { padding-block: 48px 20px; }
  .business-journey .journey-heading h2 { font-size: clamp(1.65rem, 7vw, 2.2rem); }
  .orbital-scene { height: 510px; margin-top: 12px; }
- .orbital-stages li { width: 96px; transform: translate(-50%, -50%) translateY(44px); }
+ .orbital-stages li { width: 108px; transform: translate(-50%, -50%) translateY(44px); }
  .orbital-stages a { padding: 10px 4px; gap: 6px; min-height: 64px; }
- .orbital-stage-name { font-size: .8125rem; line-height: 1.5; }
- .orbital-stage-number { font-size: .625rem; }
- .orbital-rocket { width: 25px; height: 40px; }
+ .orbital-stage-name { font-size: 1rem; line-height: 1.5; }
+ .orbital-stage-number { font-size: .75rem; }
+ .orbital-spaceship { width: 60px; height: 60px; }
 }
-@media (prefers-reduced-motion: reduce) { .orbital-motion-toggle { display: none; } }
+@media (prefers-reduced-motion: reduce) { .orbital-motion-toggle { display: none; } .orbital-stage-name { transition: none; } }
