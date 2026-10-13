@@ -3,20 +3,6 @@ import { serviceDetailsByLocale } from "./serviceDetails.js";
 import { getServiceImplementationIds } from "./serviceImplementation.js";
 import { localizeHref } from "./siteRoutes.js";
 
-const ownCaseCopy = {
-  zh: { label: "自有品牌實作", title: "ESTIGINTO 品牌與官方網站", description: "從品牌識別延伸至多語官網，統一色彩、字體與資訊層級，支援手機與桌機瀏覽。", caption: "ESTIGINTO 官方網站實際畫面", features: ["品牌識別與視覺應用", "中文、英文與日文介面", "手機與桌機響應式排版"], design: "查看視覺設計", website: "查看網站與電商整合" },
-  en: { label: "Our own brand project", title: "ESTIGINTO brand & official website", description: "An actual view of our website shows how identity, information hierarchy, and digital design come together.", caption: "Actual ESTIGINTO website", features: ["Brand identity and visual applications", "Chinese, English, and Japanese interfaces", "Responsive mobile and desktop layouts"], design: "Explore visual design", website: "Explore website & commerce integration" },
-  ja: { label: "自社ブランドの制作実例", title: "ESTIGINTO ブランドと公式サイト", description: "当サイトの実際の画面を通して、ブランド識別、情報の階層、Webへの展開をご紹介します。", caption: "ESTIGINTO公式サイトの実際の画面", features: ["ブランド識別とビジュアル展開", "中国語・英語・日本語の画面", "スマートフォン・PCに対応したレイアウト"], design: "ビジュアルデザインを見る", website: "Web・EC連携を見る" },
-};
-
-export function OwnBrandCase({ locale }) {
-  const ui = ownCaseCopy[locale] || ownCaseCopy.zh;
-  return <section className="own-brand-case" id="estiginto-brand-website" aria-labelledby="own-brand-case-title">
-    <figure><img src="/img/brand/estiginto-website.webp" alt={ui.caption} width="1440" height="1000" loading="lazy" /><figcaption>{ui.caption}</figcaption></figure>
-    <div><p className="editorial-label">{ui.label}</p><h2 id="own-brand-case-title">{ui.title}</h2><p>{ui.description}</p><ul>{ui.features.map(item => <li key={item}>{item}</li>)}</ul><nav aria-label={ui.title}><a href={localizeHref("/visual-design.html", locale)}>{ui.design}</a><a href={localizeHref("/digital-integration.html", locale)}>{ui.website}</a></nav></div>
-  </section>;
-}
-
 export function ServiceEntryGuide({ locale, id }) {
   const ui = {
     zh: { title: "依需求選擇服務", internal: "企業內部營運", internalBody: "ERP、CRM、WMS、部門流程與資料權限", external: "網站與電商整合", externalBody: "品牌官網、線上交易、會員預約與訂單串接" },

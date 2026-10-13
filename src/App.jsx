@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { faqContentByLocale } from "./faqContent.js";
 import "./pageCompletion.css";
 import PageContinuations from "./PageContinuations.jsx";
-import { OwnBrandCase } from "./ServicePresentation.jsx";
 import { ConsultingServices, ConsultingServicePage, ServiceFaqDirectory } from "./ConsultingPages.jsx";
 import { consultingServicesByLocale } from "./consultingContent.js";
 import { getImplementationHref } from "./serviceImplementation.js";
@@ -1440,7 +1439,6 @@ function CasePortfolio({ copy }) {
         <SectionEyebrow index="§ Selected Work" label={labels.section} meta={labels.meta} />
         <p className="case-portfolio-intro">{labels.intro}</p>
         <nav className="interior-jump-nav" aria-label={labels.section}>{groups.map(group => <a key={group.id} href={`#portfolio-${group.id}`}><span>{group.number}</span>{group.title}</a>)}</nav>
-        <OwnBrandCase locale={copy.locale} />
         <div className="case-portfolio">
           {groups.map((group) => (
             <section className="case-portfolio-group" id={`portfolio-${group.id}`} key={group.id} aria-labelledby={`case-group-${group.id}`}>
