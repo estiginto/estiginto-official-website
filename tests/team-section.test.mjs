@@ -140,8 +140,8 @@ test("about team renders the confirmed portraits and keeps a monogram fallback",
     "yu-liang-chen": "/img/team/avatar_YuLiang.webp",
     "cindy-wu": "/img/team/avatar_Cindy.jpg",
     "nicole-chien": "/img/team/avatar_Nicole.webp",
-    "yen-chen": "/img/team/avatar_Yen.jpg",
-    "wayne-schutte": "/img/team/avatar_wayne.png",
+    "yen-chen": "/img/team/avatar_Yen_v01.jpg",
+    "wayne-schutte": "/img/team/avatar_wayne_v01.jpg",
     "michael-mlejnek": "/img/team/avatar_Michael.webp",
   });
 
