@@ -54,12 +54,13 @@ test("about team localizes its section copy, roles, summaries, and group labels"
     },
   });
 
-  const expectedNames = ["Lanar Lan", "Yu-Liang Chen", "Cindy Wu", "Nicole Chien", "Yen Chen", "Wayne Schutte", "Michael Mlejnek"];
+  const expectedNames = ["Lanar Lan", "Yu-Liang Chen", "Cindy Wu", "Nicole Chien", "Yen Chen", "Wayne Schutte", "Michael Mlejnek", "Rhys Cresswell"];
+  const rhysRoles = { zh: "國際專案助理", en: "International Project Assistant", ja: "国際プロジェクトアシスタント" };
 
   for (const locale of supportedLocales) {
     const members = teamMembersByLocale[locale];
     assert.deepEqual(members.map(({ name }) => name), expectedNames);
-    assert.equal(members.length, 7);
+    assert.equal(members.at(-1).role, rhysRoles[locale]);
   }
 
   assert.equal(teamMembersByLocale.zh.every(({ role, summary }) => /[\u3400-\u9fff]/u.test(`${role}${summary}`) || /^(CEO|CTO|CMO)$/.test(role)), true);
@@ -143,6 +144,7 @@ test("about team renders the confirmed portraits and keeps a monogram fallback",
     "yen-chen": "/img/team/avatar_Yen_v01.jpg",
     "wayne-schutte": "/img/team/avatar_wayne_v01.jpg",
     "michael-mlejnek": "/img/team/avatar_Michael.webp",
+    "rhys-cresswell": "/img/team/avatar_RhysCresswell_v03.webp",
   });
 
   for (const portrait of Object.values(portraits).filter(Boolean)) {

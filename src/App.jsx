@@ -1175,7 +1175,7 @@ function TeamSection({ copy }) {
               <div className="team-member-copy">
                 <h3>{member.name}</h3>
                 <p className="team-member-role">{member.role}</p>
-                <p className="team-member-summary">{member.summary}</p>
+                {member.summary ? <p className="team-member-summary">{member.summary}</p> : null}
                 {member.linkedin ? (
                   <a
                     className="team-member-linkedin"

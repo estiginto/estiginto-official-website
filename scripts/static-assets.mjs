@@ -21,6 +21,7 @@ export const marketingAssetPaths = [
   "team/avatar_Yen_v01.jpg",
   "team/avatar_wayne_v01.jpg",
   "team/avatar_Michael.webp",
+  "team/avatar_RhysCresswell_v03.webp",
   "plan/businesspeople-meeting-plan-analysis-graph-company-finance-strat.webp",
   "plan/close-up-elegant-decoration-house.webp",
   "plan/interior-large-distribution-warehouse-with-shelves-stacked-with-palettes-goods-ready-market.webp",
