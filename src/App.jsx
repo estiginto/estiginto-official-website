@@ -45,7 +45,6 @@ import {
 } from "./pageTransition.js";
 import { createHeroSoulRibbon } from "./heroSoulRibbon.js";
 import OrbitalMark from "./OrbitalMark.jsx";
-import { createPageVortexTransition } from "./pageVortexTransition.js";
 import { buildClientLogoLanes, clientLogos } from "./clientLogoMarquee.js";
 import {
   cancelCursorMenuFrame,
@@ -866,7 +865,6 @@ function PageTransition() {
   const [phase, setPhase] = useState("entering");
   const [variant, setVariant] = useState(() => getInitialPageTransitionVariant(window.location.pathname));
   const leavingRef = useRef(false);
-  const vortexCanvasRef = useRef(null);
   const transitionBrand = getPageTransitionBrand(variant);
 
   useEffect(() => {
@@ -876,10 +874,6 @@ function PageTransition() {
       ? REDUCED_PAGE_TRANSITION_DURATION
       : isHomepage ? INITIAL_PAGE_ENTER_DURATION : PAGE_ENTER_DURATION;
     const leaveDuration = reducedMotion ? REDUCED_PAGE_TRANSITION_DURATION : PAGE_LEAVE_DURATION;
-    const vortexTransition = variant === "vortex" && vortexCanvasRef.current
-      ? createPageVortexTransition({ canvas: vortexCanvasRef.current, reducedMotion })
-      : null;
-    vortexTransition?.start();
     const enteredTimer = window.setTimeout(() => {
       setPhase("idle");
       window.dispatchEvent(new CustomEvent("estiginto:page-entered"));
@@ -911,7 +905,6 @@ function PageTransition() {
     document.addEventListener("click", onClick);
     return () => {
       window.clearTimeout(enteredTimer);
-      vortexTransition?.stop();
       document.removeEventListener("click", onClick);
     };
   }, []);
@@ -926,24 +919,25 @@ function PageTransition() {
       </span>
       <span className="page-transition-aperture"><i /></span>
       <span className="page-transition-axis"><i /><i /></span>
-      <span className="page-transition-vortex">
-        <canvas ref={vortexCanvasRef} className="page-transition-vortex-canvas" />
-        <span className="page-transition-vortex-hud page-transition-vortex-hud-top">
-          <i>ESTIGINTO</i><i>DESIGN & TECHNOLOGY</i><i>TAIPEI</i>
-        </span>
-        <span className="page-transition-vortex-interface">
-          {transitionBrand ? (
-            <span className="page-transition-vortex-brand">
-              <img src={transitionBrand.src} alt={transitionBrand.alt} />
+      {transitionBrand && phase === "entering" && (
+        <span className="page-transition-vortex">
+          <span className="page-transition-brand-backdrop" />
+          <span className="page-transition-brand-stage">
+            <span className="page-transition-brand-object" style={{ "--brand-mask": `url(${transitionBrand.src})` }}>
+              {Array.from({ length: 8 }, (_, index) => (
+                <span key={index} className="page-transition-brand-slice" style={{ "--slice": index + 1 }} />
+              ))}
+              <img className="page-transition-brand-fallback" src={transitionBrand.src} alt={transitionBrand.alt} />
+              <span className="page-transition-brand-face" />
             </span>
-          ) : null}
-          <b data-text="ESTIGINTO">ESTIGINTO</b>
-          <em>Innovation across borders</em>
+          </span>
+          <span className="page-transition-brand-type">
+            <img className="page-transition-brand-wordmark" src="/img/Logo_ESTIGINTO.svg" alt="ESTIGINTO" />
+            <span className="page-transition-brand-name" lang="zh-Hant">造物者科技</span>
+            <em>Innovation across borders</em>
+          </span>
         </span>
-        <span className="page-transition-vortex-hud page-transition-vortex-hud-bottom">
-          <i>ESTIGINTO</i><i>BRAND · EXPERIENCE · TECHNOLOGY</i>
-        </span>
-      </span>
+      )}
       <span className="page-transition-panel-top" />
       <span className="page-transition-panel-bottom" />
       <span className="page-transition-scan" />
