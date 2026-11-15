@@ -44,6 +44,7 @@ import {
   getTransitionDestination,
 } from "./pageTransition.js";
 import { createHeroSoulRibbon } from "./heroSoulRibbon.js";
+import HomeParticleField from "./HomeParticleField.jsx";
 import OrbitalMark from "./OrbitalMark.jsx";
 import { buildClientLogoLanes, clientLogos } from "./clientLogoMarquee.js";
 import {
@@ -758,71 +759,144 @@ function PageTitle({ page, locale, compact = false }) {
   );
 }
 
-function HeroSoulRibbon() {
+function HeroSoulRibbon({ companion = false }) {
   const backgroundRef = useRef(null);
   const canvasRef = useRef(null);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const ribbon = createHeroSoulRibbon({ canvas: canvasRef.current, reducedMotion });
-    let activated = false;
-    let running = false;
-    let pointerFrame = null;
+    const background = backgroundRef.current;
+    const canvas = canvasRef.current;
+    if (!background || !canvas?.getContext("2d")) return;
 
-    const syncPlayback = () => {
-      const shouldRun = activated && document.visibilityState === "visible";
-      if (shouldRun && !running) {
-        ribbon.start();
-        running = true;
-      } else if (!shouldRun && running) {
-        ribbon.stop();
-        running = false;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const finePointer = window.matchMedia("(pointer: fine)");
+    let ribbon = createHeroSoulRibbon({ canvas, reducedMotion: motion.matches });
+    let activated = false;
+    let inView = !("IntersectionObserver" in window);
+    let showing = false;
+    let tracking = false;
+    let pointerFrame = null;
+    let pointer = null;
+
+    const resetPointer = () => {
+      if (pointerFrame !== null) window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = null;
+      if (!pointer) return;
+      pointer = null;
+      ribbon.setEnergy(0);
+      for (const property of ["--soul-ribbon-x", "--soul-ribbon-y", "--soul-ribbon-energy"]) {
+        background.style.removeProperty(property);
       }
     };
+
+    const renderPointer = () => {
+      pointerFrame = null;
+      const rect = background.getBoundingClientRect();
+      if (!rect.width || !rect.height) {
+        resetPointer();
+        return;
+      }
+      const x = (pointer.x - rect.left) / rect.width;
+      const y = (pointer.y - rect.top) / rect.height;
+      if (x < 0 || x > 1 || y < 0 || y > 1) {
+        resetPointer();
+        return;
+      }
+      const energy = Math.max(0, 1 - Math.abs(x + y - 1) * 1.9);
+      ribbon.setEnergy(energy);
+      if (!companion) {
+        background.style.setProperty("--soul-ribbon-x", `${((x - 0.5) * 8).toFixed(2)}px`);
+        background.style.setProperty("--soul-ribbon-y", `${((y - 0.5) * 6).toFixed(2)}px`);
+      }
+      background.style.setProperty("--soul-ribbon-energy", energy.toFixed(3));
+    };
+
+    const onPointerMove = (event) => {
+      if (event.pointerType === "touch") return;
+      pointer = { x: event.clientX, y: event.clientY };
+      if (pointerFrame === null) pointerFrame = window.requestAnimationFrame(renderPointer);
+    };
+
+    const syncPlayback = () => {
+      const shouldShow = activated && inView && document.visibilityState === "visible";
+      const shouldAnimate = shouldShow && !motion.matches;
+      background.dataset.playing = String(shouldAnimate);
+      if (shouldShow && !showing) ribbon.start();
+      if (!shouldShow && showing) ribbon.stop();
+      showing = shouldShow;
+
+      const shouldTrack = shouldAnimate && finePointer.matches;
+      if (shouldTrack && !tracking) window.addEventListener("pointermove", onPointerMove, { passive: true });
+      if (!shouldTrack && tracking) {
+        window.removeEventListener("pointermove", onPointerMove);
+        resetPointer();
+      }
+      tracking = shouldTrack;
+    };
+
+    const onMotionChange = () => {
+      resetPointer();
+      if (showing) ribbon.stop();
+      showing = false;
+      ribbon = createHeroSoulRibbon({ canvas, reducedMotion: motion.matches });
+      syncPlayback();
+    };
+
+    const onResize = () => {
+      if (showing && motion.matches) ribbon.start();
+      if (pointer && pointerFrame === null) pointerFrame = window.requestAnimationFrame(renderPointer);
+    };
+
     const activate = () => {
+      if (activated) return;
+      window.clearTimeout(fallbackTimer);
       activated = true;
       setReady(true);
       syncPlayback();
     };
+
     const fallbackTimer = window.setTimeout(activate, 5000);
+    const intersection = "IntersectionObserver" in window ? new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      syncPlayback();
+    }) : null;
+    intersection?.observe(background);
+    const resize = "ResizeObserver" in window ? new ResizeObserver(onResize) : null;
+    resize?.observe(background);
+
+    syncPlayback();
     window.addEventListener("estiginto:page-entered", activate, { once: true });
-
-    const finePointer = window.matchMedia("(pointer: fine)").matches;
-    const onPointerMove = (event) => {
-      if (!finePointer || !backgroundRef.current) return;
-      const rect = backgroundRef.current.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = (event.clientY - rect.top) / rect.height;
-      const energy = Math.max(0, 1 - Math.abs(x + y - 1) * 1.9);
-      window.cancelAnimationFrame(pointerFrame);
-      pointerFrame = window.requestAnimationFrame(() => {
-        ribbon.setEnergy(energy);
-        backgroundRef.current?.style.setProperty("--soul-ribbon-x", `${((x - 0.5) * 8).toFixed(2)}px`);
-        backgroundRef.current?.style.setProperty("--soul-ribbon-y", `${((y - 0.5) * 6).toFixed(2)}px`);
-        backgroundRef.current?.style.setProperty("--soul-ribbon-energy", energy.toFixed(3));
-      });
-    };
-
-    const onVisibilityChange = () => syncPlayback();
-
-    if (finePointer) window.addEventListener("pointermove", onPointerMove, { passive: true });
-    document.addEventListener("visibilitychange", onVisibilityChange);
+    window.addEventListener("resize", onResize, { passive: true });
+    window.addEventListener("scroll", resetPointer, { passive: true });
+    window.addEventListener("blur", resetPointer);
+    document.documentElement.addEventListener("pointerleave", resetPointer);
+    document.addEventListener("visibilitychange", syncPlayback);
+    motion.addEventListener("change", onMotionChange);
+    finePointer.addEventListener("change", syncPlayback);
     return () => {
       window.clearTimeout(fallbackTimer);
+      intersection?.disconnect();
+      resize?.disconnect();
       window.removeEventListener("estiginto:page-entered", activate);
       window.removeEventListener("pointermove", onPointerMove);
-      document.removeEventListener("visibilitychange", onVisibilityChange);
-      window.cancelAnimationFrame(pointerFrame);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", resetPointer);
+      window.removeEventListener("blur", resetPointer);
+      document.documentElement.removeEventListener("pointerleave", resetPointer);
+      document.removeEventListener("visibilitychange", syncPlayback);
+      motion.removeEventListener("change", onMotionChange);
+      finePointer.removeEventListener("change", syncPlayback);
+      resetPointer();
+      background.dataset.playing = "false";
       ribbon.stop();
     };
-  }, []);
+  }, [companion]);
 
   return (
-    <div ref={backgroundRef} className="hero-soul-ribbon" aria-hidden="true" data-ready={ready}>
+    <div ref={backgroundRef} className="hero-soul-ribbon" aria-hidden="true" data-ready={ready} data-particle-companion={companion || undefined}>
       <span className="hero-depth-grid" />
       <canvas ref={canvasRef} className="hero-soul-ribbon-canvas" />
-
     </div>
   );
 }
@@ -830,7 +904,7 @@ function HeroSoulRibbon() {
 function Hero({ copy }) {
   return (
     <section className="hero" id="home">
-      <HeroSoulRibbon />
+      <HeroSoulRibbon companion />
       <div className="wrap">
         <div>
           <div className="hero-meta">
@@ -2648,6 +2722,7 @@ export default function App() {
           </>
         ) : (
           <>
+            <HomeParticleField />
             <Hero copy={copy} />
             <HomeDirectory copy={copy} />
             <BusinessJourney locale={locale} />

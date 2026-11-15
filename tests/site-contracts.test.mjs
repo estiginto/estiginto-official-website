@@ -178,7 +178,8 @@ test("homepage hero hosts the full-field soul ribbon without covering its copy",
   const app = read("src/App.jsx");
   const css = read("src/App.css");
 
-  assert.match(app, /function HeroSoulRibbon\(\)/);
+  assert.match(app, /function HeroSoulRibbon\(/);
+  assert.match(app, /function Hero\(\{ copy \}\)[\s\S]*?<HeroSoulRibbon companion \/>/);
   assert.match(app, /createHeroSoulRibbon/);
   assert.match(app, /className="hero-soul-ribbon" aria-hidden="true"/);
   assert.match(app, /className="hero-soul-ribbon-canvas"/);
