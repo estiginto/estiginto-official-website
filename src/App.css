@@ -2413,7 +2413,7 @@ ul, ol  { margin: 0; }
 .page-transition-brand-type em {
   margin-top: clamp(12px, 2.2svh, 24px);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.05rem, 2.25vw, 2.25rem);
+  font-size: clamp(1.125rem, 2vw, 1.875rem);
   font-style: normal;
   color: #514137;
   line-height: 1.25;
