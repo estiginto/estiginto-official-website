@@ -173,14 +173,6 @@ const teamIdentities = [
     portrait: "/img/team/avatar_Michael.webp",
     portraitFrame: { scale: 2.2, x: 50, y: 0, offsetY: 0 },
   },
-  {
-    id: "rhys-cresswell",
-    name: "Rhys Cresswell",
-    mark: "RC",
-    group: "project-support",
-    portrait: "/img/team/avatar_RhysCresswell_v03.webp",
-    portraitFrame: { scale: 1, x: 50, y: 0, offsetY: 0 },
-  },
 ];
 
 export const teamSectionCopyByLocale = {
@@ -210,7 +202,6 @@ const teamDetailsByLocale = {
     { role: "國際商務與行銷發展總監", summary: "具備橫跨歐洲、亞洲與美國的品牌策略、包裝設計及國際行銷經驗。" },
     { role: "國際教育與課程顧問", summary: "擁有 25 年教學經驗，專注跨文化學習、教育創新與體驗式課程。" },
     { role: "法律顧問", summary: "美國執業律師，擅長國際商務專業，橫跨美國、亞洲及拉丁美洲，兼具法律實務、跨境商務與國際市場經驗，擅長以法律與商業雙重視角處理跨國事務。" },
-    { role: "國際專案助理" },
   ],
   en: [
     { role: "CEO", summary: "More than 20 years of experience in systems development and enterprise digital transformation.\nSpecializes in turning complex work into strategies and frameworks built for long-term execution." },
@@ -220,7 +211,6 @@ const teamDetailsByLocale = {
     { role: "Director of International Business & Marketing Development", summary: "Brings brand strategy, packaging design, and international marketing experience across Europe, Asia, and the United States." },
     { role: "International Education Coordinator & Curriculum Specialist", summary: "Brings 25 years of teaching experience to cross-cultural learning, education innovation, and experiential programs." },
     { role: "Legal Consultant", summary: "A practicing attorney in the United States with expertise in international business across the United States, Asia, and Latin America. Combining legal practice, cross-border business, and international market experience, he handles multinational matters through both legal and commercial perspectives." },
-    { role: "International Project Assistant" },
   ],
   ja: [
     { role: "最高経営責任者（CEO）", summary: "20年以上にわたるシステム開発および企業のデジタルトランスフォーメーション経験。\n複雑な業務を、長期的に実行可能な戦略と仕組みに転換することを得意とします。" },
@@ -230,7 +220,6 @@ const teamDetailsByLocale = {
     { role: "国際事業・マーケティング開発ディレクター", summary: "欧州、アジア、米国にまたがるブランド戦略、パッケージデザイン、国際マーケティングの経験を生かします。" },
     { role: "国際教育・カリキュラムアドバイザー", summary: "25年の指導経験を生かし、異文化学習、教育イノベーション、体験型プログラムを支援します。" },
     { role: "法律顧問", summary: "米国で実務に従事する弁護士。米国、アジア、ラテンアメリカにまたがる国際ビジネスを専門とし、法務実務、越境ビジネス、国際市場の経験を生かして、法務とビジネス双方の視点から国際案件に対応します。" },
-    { role: "国際プロジェクトアシスタント" },
   ],
 };
 
